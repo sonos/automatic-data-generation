@@ -1,0 +1,700 @@
+0 B-album I-album I-album 0 B-artist I-artist 
+0 B-album I-album I-album 0 B-artist I-artist 0 
+0 B-sort 0 B-music_item 0 B-service I-service 0 B-artist I-artist 0 
+0 B-service I-service 0 
+0 B-sort 0 B-artist 0 B-music_item 0 B-year 0 B-service 0 
+0 B-music_item 0 B-year 0 
+0 B-sort 0 B-artist I-artist 
+0 B-playlist 0 
+0 B-service 
+0 B-album I-album 0 B-artist I-artist 0 
+0 B-year 0 B-music_item I-music_item 0 
+0 B-artist I-artist 0 B-music_item 
+0 B-artist I-artist 0 B-sort I-sort 
+0 B-playlist 0 B-service 
+0 B-year 0 B-artist I-artist 0 B-service 
+0 B-year 0 
+0 B-artist I-artist 0 B-sort 
+0 B-artist I-artist 0 B-year 
+0 B-service 0 
+B-year 0 B-service 
+0 B-service 0 B-artist I-artist 0 B-album I-album I-album 
+0 B-music_item 0 B-artist I-artist 0 
+0 B-music_item 0 B-artist I-artist 0 
+0 B-service 
+0 B-service 
+0 B-playlist I-playlist 0 B-service 0 
+0 B-music_item 0 B-service 0 B-year 0 B-artist I-artist 
+0 B-track I-track I-track I-track 0 
+0 B-artist I-artist 0 B-year 
+0 B-service I-service 
+0 B-music_item 0 B-artist I-artist 0 
+0 B-track I-track 0 B-artist 
+0 B-artist I-artist I-artist I-artist 0 B-year 0 B-service I-service 
+0 B-music_item 0 B-year 0 
+0 B-artist I-artist 
+0 B-album I-album 0 B-music_item 
+0 B-music_item 0 B-year 0 
+0 B-playlist I-playlist I-playlist I-playlist 
+0 B-track I-track I-track I-track I-track 0 B-artist 0 B-service I-service 0 
+0 B-music_item 0 B-artist I-artist 0 B-service 
+0 B-year 0 B-service I-service 
+0 B-year 0 B-music_item 0 B-artist I-artist 0 B-service I-service 0 
+0 B-playlist 0 
+0 B-service 0 B-album I-album I-album I-album 0 B-artist I-artist 0 
+0 B-artist I-artist 0 B-album 0 B-service 
+0 B-year 0 B-music_item 
+0 B-playlist I-playlist I-playlist I-playlist 0 B-service 0 
+B-album I-album I-album B-artist I-artist 0 
+0 B-sort I-sort 0 B-artist I-artist 0 B-service 
+0 B-year 0 B-artist I-artist 
+0 B-sort I-sort 0 B-artist 
+0 B-artist 0 
+0 B-artist I-artist 0 B-service I-service 0 
+0 B-artist I-artist 0 B-music_item 
+0 B-artist I-artist 0 B-service 0 B-music_item 0 B-track I-track I-track I-track 0 
+0 B-music_item 0 B-artist I-artist 0 
+0 B-service 0 B-artist I-artist 0 B-sort 0 B-music_item 
+0 B-music_item 0 B-artist 
+0 B-music_item I-music_item 0 B-year 
+0 B-track I-track I-track I-track 0 B-artist I-artist 
+0 B-year 0 
+0 B-service 0 B-album I-album 0 B-artist I-artist 
+0 B-album I-album 0 B-artist I-artist 0 B-service 0 
+0 B-music_item 0 B-year 
+0 B-music_item 0 B-artist I-artist 0 B-sort 0 
+0 B-sort 0 B-artist I-artist 0 
+0 B-service I-service 
+0 B-artist I-artist 0 
+0 B-artist I-artist I-artist 
+0 B-artist I-artist 0 
+0 B-sort 0 B-service 0 B-artist 0 
+0 B-sort 0 B-artist I-artist 0 B-music_item 
+0 B-artist I-artist 0 
+0 B-sort 0 B-music_item 0 B-year 0 B-artist I-artist 0 
+0 B-album I-album 0 B-artist I-artist I-artist 0 
+0 B-sort 0 B-artist I-artist I-artist 0 B-service I-service 0 
+0 B-sort 0 B-artist 
+0 B-artist I-artist 0 B-year 
+0 B-service I-service 0 B-playlist I-playlist I-playlist I-playlist I-playlist 
+0 B-playlist I-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-artist I-artist 0 
+0 B-genre I-genre 0 
+0 B-year 0 B-music_item 0 
+0 B-album I-album I-album I-album I-album 0 B-artist I-artist 0 
+0 B-music_item 0 B-artist I-artist I-artist 0 
+0 B-sort 0 B-artist I-artist 0 B-service 
+0 B-service 
+0 B-genre I-genre 0 
+0 B-music_item 0 B-service 0 B-artist I-artist I-artist 
+0 B-music_item 0 B-artist I-artist 0 B-year 
+0 B-genre I-genre 0 
+0 B-artist I-artist 0 B-year 0 
+0 B-service 
+0 B-artist I-artist I-artist I-artist 0 
+0 B-artist I-artist 0 
+0 B-sort 0 B-artist I-artist 0 B-service 0 
+0 B-music_item I-music_item 0 B-year 0 B-service 
+0 B-album I-album I-album 0 B-artist I-artist 0 
+0 B-track I-track 0 B-service 
+0 B-playlist I-playlist 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-rating_value 0 B-rating_unit 0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_select 0 B-object_type 0 B-rating_value 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 B-object_name I-object_name I-object_name 0 B-object_part_of_series_type 
+0 B-rating_value 0 B-rating_unit 0 B-best_rating 0 B-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 
+0 B-rating_value 0 B-best_rating 0 B-object_select 0 B-object_type 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_part_of_series_type 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 
+0 B-object_name 0 B-object_part_of_series_type 0 B-rating_value 0 B-rating_unit 0 
+B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_part_of_series_type 0 B-rating_value 0 B-rating_unit 0 B-best_rating 0 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 
+B-object_name I-object_name I-object_name 0 B-rating_value 
+0 B-rating_value 0 B-rating_unit 0 B-object_select 0 B-object_type 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 
+0 B-object_name I-object_name 0 B-rating_value 0 B-best_rating 
+0 B-object_part_of_series_type 0 B-object_select 0 B-rating_value 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 
+0 B-object_select 0 B-object_type 0 B-rating_value 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select I-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select I-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 0 
+0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 B-object_select 0 B-object_type 
+0 B-rating_value 0 B-object_name 0 
+0 B-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 0 B-best_rating 
+0 B-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-rating_value 0 B-rating_unit 0 B-object_name I-object_name I-object_name 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 
+0 B-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 
+0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 B-object_select 0 B-object_type 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 
+0 B-rating_value 0 B-rating_unit 0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-rating_value 0 B-object_name I-object_name I-object_name 0 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-best_rating 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 
+0 B-object_name 0 B-rating_value 0 B-best_rating 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 
+0 B-rating_value 0 B-object_select 0 B-object_type 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 
+0 B-best_rating 0 B-object_name I-object_name I-object_name 0 B-rating_value 
+0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 B-object_name I-object_name 
+0 B-object_name I-object_name I-object_name 0 B-object_part_of_series_type 0 B-rating_value 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 
+0 B-rating_value 0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-rating_value 0 B-best_rating 0 B-object_select 0 B-object_type 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-rating_value 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 
+0 B-object_name I-object_name 0 B-rating_value 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-best_rating 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-best_rating 0 B-rating_unit 
+0 B-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-best_rating 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-rating_value 0 B-rating_unit 0 
+0 B-object_select 0 B-object_type 0 B-rating_value 0 B-rating_unit 0 B-best_rating 
+0 B-object_name I-object_name 0 B-rating_value 0 B-best_rating 
+0 B-rating_value 0 B-rating_unit 0 B-object_name I-object_name I-object_name 
+0 B-object_select 0 B-object_part_of_series_type 0 B-rating_value 0 B-rating_unit 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-object_type I-object_type 0 B-object_name 0 
+0 B-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-object_name I-object_name 
+0 B-object_type I-object_type 0 B-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name 0 
+0 B-object_name 0 
+0 B-object_name I-object_name 0 B-object_type I-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name 
+0 B-object_name I-object_name 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name I-object_name 
+0 B-object_type I-object_type 0 B-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-object_name 0 B-object_type 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name 
+0 B-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name 
+0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name I-object_name 0 
+0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name I-object_name 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 B-object_type 0 
+0 B-object_name I-object_name 0 
+0 B-object_type 0 B-object_name I-object_name 
+0 B-spatial_relation 0 B-current_location 0 
+0 B-condition_description 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 
+0 B-city 
+0 B-condition_description 0 B-timerange 0 B-state 0 
+0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 
+0 B-timerange I-timerange 0 B-country 
+0 B-condition_temperature 0 B-current_location 
+0 B-timerange I-timerange I-timerange 0 B-country 0 
+0 B-country 0 B-timerange I-timerange I-timerange I-timerange 0 
+B-condition_description 0 B-city 0 B-state I-state 
+0 B-state 0 
+B-condition_description 0 B-spatial_relation I-spatial_relation 0 B-city I-city 0 B-timerange I-timerange I-timerange I-timerange 
+0 B-state 0 B-city 0 B-condition_description 
+0 B-state I-state 0 
+0 B-timerange I-timerange I-timerange I-timerange 0 B-spatial_relation 0 B-state 
+0 B-condition_description 0 B-timerange 0 B-city 0 B-country I-country 0 
+0 B-state 0 
+0 B-condition_temperature 0 B-country I-country 0 B-timerange I-timerange 
+0 B-timerange I-timerange 0 B-spatial_relation 0 B-current_location 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 
+0 B-condition_description 0 B-geographic_poi I-geographic_poi I-geographic_poi 0 
+0 B-condition_description 0 B-timerange I-timerange I-timerange I-timerange 0 B-city I-city 0 B-state 
+0 B-timerange I-timerange I-timerange I-timerange 0 B-spatial_relation 0 B-country I-country I-country I-country 0 
+0 B-condition_description 0 B-timerange 0 B-country 
+0 B-condition_temperature 0 B-current_location 0 B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange 
+0 B-city 0 
+0 B-city 0 B-timerange I-timerange I-timerange I-timerange 0 
+0 B-state 0 
+0 B-timerange I-timerange I-timerange 0 B-country 0 B-city I-city 
+0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-timerange I-timerange B-spatial_relation 0 B-country 0 
+0 B-condition_temperature 0 B-city 0 
+0 B-condition_temperature 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 
+0 B-condition_temperature 0 B-timerange 0 B-city I-city I-city 0 B-country I-country I-country 0 
+0 B-state 0 B-timerange I-timerange I-timerange 0 
+0 B-city 0 B-state 
+0 B-timerange 0 B-state 
+0 B-spatial_relation I-spatial_relation 0 B-current_location 0 B-timerange I-timerange I-timerange I-timerange 0 
+0 B-city 0 B-country 
+0 B-current_location 
+0 B-spatial_relation 0 B-city 
+0 B-timerange 0 B-city 0 
+0 B-condition_temperature 0 B-timerange I-timerange I-timerange I-timerange 0 B-city 0 B-state 
+0 B-country 
+0 B-city I-city 0 
+0 B-state 0 B-timerange I-timerange I-timerange 0 
+0 B-condition_description 0 B-timerange I-timerange I-timerange 0 B-city 0 B-country 
+0 B-current_location 
+0 B-timerange I-timerange I-timerange I-timerange 0 B-country 0 
+0 B-state 0 B-timerange 0 
+0 B-state 0 B-condition_temperature 0 
+0 B-condition_temperature 0 B-current_location 0 B-timerange I-timerange I-timerange 0 
+0 B-condition_temperature 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 
+0 B-condition_description 0 B-current_location I-current_location 0 B-timerange I-timerange I-timerange 
+0 B-country 0 B-city I-city 0 B-timerange I-timerange I-timerange 
+0 B-condition_description 0 B-current_location I-current_location 0 B-timerange 0 
+0 B-city 0 B-spatial_relation 
+0 B-city 0 B-state 0 B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange 
+0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation I-spatial_relation 0 B-timerange I-timerange 0 
+0 B-timerange I-timerange 0 B-city 
+0 B-timerange I-timerange 0 B-city 0 B-country I-country I-country I-country 
+0 B-condition_description 0 B-timerange I-timerange 0 B-city 0 B-state 
+0 B-condition_temperature 0 B-state I-state I-state 0 B-timerange I-timerange I-timerange 0 
+0 B-current_location 0 B-timerange I-timerange 0 
+0 B-condition_temperature 0 B-timerange I-timerange 0 B-current_location 
+0 B-city 0 B-state I-state 
+0 B-current_location 0 B-condition_description 0 B-timerange I-timerange 
+0 B-condition_description 0 B-city 0 B-timerange I-timerange 0 
+0 B-condition_temperature 0 B-current_location I-current_location 0 B-timerange 
+0 B-city I-city 0 B-timerange I-timerange I-timerange 0 
+0 B-condition_temperature 0 B-timerange 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 
+0 B-city 0 B-state 0 B-timerange 0 
+0 B-state I-state 0 B-city 
+0 B-country I-country 
+0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-condition_description 0 
+0 B-city 0 B-country 0 B-timerange 
+0 B-condition_description 0 B-current_location 0 B-timerange 0 
+0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation 0 B-timerange 
+0 B-city 0 B-condition_temperature 0 
+B-condition_description 0 B-timerange I-timerange 0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation 0 
+0 B-city 
+0 B-timerange I-timerange 0 B-geographic_poi 
+0 B-state 0 B-timerange 
+0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 
+0 B-condition_temperature 0 B-state 0 B-timerange I-timerange 0 
+0 B-timerange I-timerange I-timerange 0 B-country 
+0 B-timerange 0 B-condition_description 0 B-city 0 B-country 
+0 B-current_location 0 B-timerange I-timerange 
+0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-condition_temperature 0 B-timerange I-timerange 
+0 B-timerange I-timerange 0 B-city I-city 0 B-condition_temperature 0 
+0 B-city I-city 0 
+0 B-condition_description 0 B-timerange I-timerange I-timerange I-timerange 0 B-country I-country 
+0 B-current_location 
+0 B-condition_description 0 B-state 0 B-timerange I-timerange I-timerange 0 
+0 B-condition_temperature 0 B-spatial_relation I-spatial_relation 0 B-state 0 B-timerange I-timerange 0 
+0 B-condition_temperature 0 B-timerange 0 B-city 0 B-country 0 
+0 B-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 
+0 B-condition_description 0 B-city 0 
+0 B-condition_temperature 0 B-country 0 B-timerange I-timerange 0 
+0 B-country 0 
+0 B-city I-city 0 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 
+0 B-restaurant_type 0 B-spatial_relation I-spatial_relation 0 B-state 
+0 B-restaurant_type 0 B-country 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 
+0 B-restaurant_type I-restaurant_type 
+0 B-party_size_number 0 B-cuisine 0 B-restaurant_type 0 B-country 
+0 B-city 0 B-cuisine I-cuisine 0 B-restaurant_type 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-spatial_relation 0 B-poi I-poi 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-served_dish 0 B-restaurant_type 0 B-city I-city 0 B-state 0 B-timerange I-timerange 
+0 B-party_size_number 0 B-restaurant_name I-restaurant_name 
+0 B-restaurant_type 0 B-party_size_number 0 B-country I-country 0 
+0 B-sort 0 B-restaurant_type 
+0 B-sort 0 B-country 0 B-party_size_number 0 B-restaurant_type 
+0 B-restaurant_type 0 B-facility 0 
+0 B-restaurant_type 0 B-cuisine 0 B-party_size_number 0 
+0 B-party_size_number 0 B-facility 0 B-restaurant_type 0 B-state 0 B-timerange 
+0 B-country 0 B-timerange I-timerange 
+0 B-restaurant_type 0 B-party_size_number 0 B-country I-country 0 
+0 B-party_size_number 0 B-sort I-sort 0 B-restaurant_type 0 B-city 0 B-state 
+0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-city I-city 0 
+0 B-party_size_number 0 
+0 B-sort 0 B-restaurant_type 0 B-party_size_number 0 
+0 B-restaurant_type 0 B-spatial_relation I-spatial_relation 0 B-poi I-poi 0 B-timerange 0 B-party_size_number 0 
+0 B-restaurant_type 0 B-timerange I-timerange I-timerange 0 B-cuisine I-cuisine 0 
+0 B-party_size_number 0 B-restaurant_type 0 B-city 
+0 B-restaurant_type 0 B-served_dish 
+0 B-party_size_number 0 B-country 
+0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 0 B-state 0 B-timerange 0 B-party_size_number 0 
+0 B-restaurant_type 0 B-city I-city 0 B-timerange I-timerange 0 B-party_size_number 0 
+0 B-sort 0 B-restaurant_type 0 B-party_size_number 0 
+0 B-party_size_number 0 B-city 0 B-state 
+0 B-restaurant_name I-restaurant_name 0 B-state 0 B-timerange I-timerange 
+0 B-restaurant_type 0 B-country 0 B-party_size_number 0 
+0 B-party_size_number 
+0 B-restaurant_type 0 B-city 0 B-party_size_number 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-restaurant_type I-restaurant_type 
+0 B-cuisine 0 B-restaurant_type 0 B-country 0 
+0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-spatial_relation 0 B-poi 
+0 B-party_size_number 0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 
+0 B-party_size_description I-party_size_description I-party_size_description 0 B-city 
+0 B-restaurant_type 0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-city 0 B-timerange I-timerange I-timerange I-timerange 0 
+0 B-restaurant_type 0 B-timerange I-timerange I-timerange 
+0 B-restaurant_type 0 B-facility 0 B-spatial_relation 0 B-state 
+0 B-party_size_number 0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 0 B-country 
+0 B-party_size_number 0 B-country I-country 0 B-restaurant_name I-restaurant_name I-restaurant_name 
+0 B-restaurant_type 0 B-city 0 B-timerange I-timerange I-timerange I-timerange 0 B-party_size_number 0 
+0 B-party_size_number 0 B-spatial_relation 0 B-city 
+0 B-timerange I-timerange 0 B-state 0 B-party_size_number 0 
+0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-state I-state 0 B-party_size_number 0 
+0 B-party_size_number 0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 
+0 B-restaurant_name I-restaurant_name I-restaurant_name 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-country 0 B-timerange 
+0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 0 B-state 0 
+0 B-party_size_number 0 B-timerange I-timerange 0 B-restaurant_name I-restaurant_name 
+0 B-party_size_number 0 B-timerange I-timerange 0 B-restaurant_type 0 B-state 0 B-served_dish I-served_dish 
+0 B-restaurant_type 0 B-spatial_relation 0 B-city 0 B-party_size_number 0 
+0 B-restaurant_name I-restaurant_name 0 B-state 0 B-party_size_number 
+0 B-restaurant_type 0 B-party_size_number 0 B-timerange I-timerange 
+0 B-sort 0 B-restaurant_type 0 B-spatial_relation 0 B-state 0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-timerange 0 
+0 B-party_size_number 0 B-restaurant_type 0 B-state 
+0 B-party_size_number 0 B-sort 0 B-restaurant_type 0 
+0 B-timerange 0 B-party_size_number 0 B-state 
+0 B-spatial_relation 0 B-poi I-poi 
+0 B-restaurant_type 0 B-city I-city 0 
+0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 0 B-state 
+0 B-country 0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 
+0 B-restaurant_type 0 B-country I-country 0 
+0 B-restaurant_type 0 B-cuisine 0 B-state 
+0 B-party_size_number 0 B-restaurant_type I-restaurant_type 0 B-facility 0 B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation 0 B-city 0 B-timerange I-timerange 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-cuisine 0 B-restaurant_type 0 B-timerange I-timerange 0 B-state 
+0 B-party_size_number 0 B-state 0 B-restaurant_name I-restaurant_name I-restaurant_name 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-restaurant_type 0 B-country I-country I-country 
+0 B-party_size_number 0 B-cuisine 0 B-restaurant_type 0 B-city 
+B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-restaurant_type 0 B-timerange I-timerange I-timerange 
+0 B-party_size_number 0 B-restaurant_type 0 B-state 
+0 B-restaurant_type I-restaurant_type 0 B-served_dish 0 B-spatial_relation 0 B-timerange 0 B-country 0 B-party_size_number 0 
+0 B-restaurant_type I-restaurant_type 0 B-party_size_number 0 B-country I-country I-country I-country 0 
+0 B-restaurant_type 0 B-party_size_number 0 
+0 B-spatial_relation 0 B-city 0 B-timerange I-timerange I-timerange I-timerange 0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 
+0 B-party_size_number 0 B-restaurant_type 0 B-cuisine 0 B-city 0 B-timerange I-timerange I-timerange I-timerange 
+0 B-restaurant_type 0 B-party_size_number 0 B-facility 0 B-country 
+0 B-timerange I-timerange 0 B-poi I-poi I-poi I-poi I-poi 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 B-party_size_number 
+0 B-restaurant_type 0 B-facility 0 B-country 0 
+0 B-party_size_number 0 B-facility 0 B-restaurant_type 0 B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation 0 B-state 0 B-timerange I-timerange I-timerange 0 
+0 B-restaurant_type 
+0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-restaurant_name I-restaurant_name 0 B-city 
+0 B-restaurant_type 0 B-city 0 B-timerange I-timerange 0 B-party_size_number 0 
+0 B-timerange I-timerange 0 B-restaurant_name I-restaurant_name I-restaurant_name 
+0 B-restaurant_type 0 B-served_dish I-served_dish 0 
+0 B-restaurant_type 0 B-party_size_number 0 B-city 0 B-state 0 
+0 B-sort I-sort 0 B-restaurant_type 0 B-party_size_number 0 
+0 B-cuisine 0 B-restaurant_type 0 B-spatial_relation 0 B-state 0 B-party_size_number 0 B-timerange 0 
+0 B-party_size_number 0 B-city 0 B-timerange 
+0 B-party_size_number 0 B-city 
+0 B-restaurant_type 0 B-timerange I-timerange I-timerange 0 B-party_size_number 0 B-city I-city 0 B-state 0 
+0 B-city 
+0 B-poi I-poi 0 B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation 0 B-restaurant_type 
+0 B-party_size_number 0 B-restaurant_type 0 B-country I-country I-country 
+0 B-cuisine 0 B-restaurant_type 0 B-timerange I-timerange 0 B-spatial_relation 0 B-city 0 B-party_size_number 0 
+0 B-party_size_number 0 B-sort 0 B-restaurant_type 0 B-spatial_relation 0 B-city 0 B-timerange I-timerange I-timerange 
+0 B-city 0 B-timerange I-timerange I-timerange I-timerange 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-playlist I-playlist 0 B-playlist_owner 0 B-entity_name I-entity_name I-entity_name 0 
+0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-playlist I-playlist 0 B-playlist_owner 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist I-playlist 0 
+0 B-playlist 0 B-artist I-artist 0 B-music_item 0 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-entity_name 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist 0 
+0 B-artist I-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist 0 B-artist I-artist 0 B-playlist_owner 0 
+0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 B-music_item 0 
+0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist I-playlist 
+0 B-artist I-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-artist 0 B-playlist I-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist I-artist 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist 0 
+0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist 0 
+0 B-artist I-artist 0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 
+0 B-music_item 0 B-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 
+0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist 
+0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist 
+0 B-artist I-artist 0 B-music_item 0 B-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist 0 
+0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-artist I-artist I-artist 0 B-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist 0 
+0 B-playlist_owner 0 B-playlist I-playlist 0 B-artist I-artist 0 
+0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-music_item 0 B-playlist I-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist 0 
+0 B-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-music_item 0 B-playlist 
+0 B-music_item 0 B-playlist_owner 0 B-playlist 0 
+0 B-music_item 0 B-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist 
+0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist 0 
+0 B-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-artist I-artist 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 
+0 B-music_item 0 B-playlist I-playlist 
+0 B-music_item 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist 0 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist I-playlist 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 B-artist I-artist 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+B-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 
+0 B-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 
+0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist 0 B-playlist I-playlist I-playlist 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 
+0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-artist I-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 
+0 B-music_item 0 B-playlist I-playlist 0 
+0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 
+0 B-movie_name I-movie_name 0 
+0 B-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange 0 
+0 B-object_type I-object_type 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-object_location_type 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange I-timerange 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 
+0 B-object_location_type I-object_location_type 0 B-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 
+0 B-object_type 0 B-movie_name I-movie_name 0 B-location_name I-location_name 0 
+0 B-object_type I-object_type 0 B-location_name 0 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 
+0 B-movie_name I-movie_name 0 B-timerange I-timerange I-timerange I-timerange I-timerange 
+0 B-movie_type I-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 B-timerange 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-object_location_type I-object_location_type 
+0 B-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange I-timerange 
+0 B-movie_type I-movie_type 0 B-location_name I-location_name 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name 
+0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 B-movie_name 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name I-location_name 0 
+0 B-movie_name I-movie_name 0 B-timerange I-timerange I-timerange I-timerange 0 B-spatial_relation 0 B-object_location_type 0 
+0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 B-movie_name I-movie_name 0 B-timerange 
+0 B-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name 
+0 B-object_type I-object_type 0 B-location_name I-location_name 0 
+0 B-object_type I-object_type 0 B-spatial_relation 
+0 B-object_type 0 B-location_name I-location_name I-location_name 0 
+0 B-movie_type 0 B-location_name I-location_name 0 
+0 B-movie_type 0 B-location_name I-location_name 0 
+0 B-object_type I-object_type 0 
+0 B-object_type I-object_type 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 
+0 B-object_type 0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-object_type I-object_type 0 B-location_name I-location_name 
+0 B-movie_type I-movie_type 0 B-spatial_relation I-spatial_relation 
+0 B-movie_name I-movie_name 0 B-location_name I-location_name 
+0 B-object_type I-object_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-object_type 0 B-location_name I-location_name I-location_name 0 
+0 B-movie_name 0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 
+0 B-object_type I-object_type 0 B-location_name I-location_name 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-object_type I-object_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 B-movie_type 
+0 B-movie_type 0 B-timerange 0 B-spatial_relation 0 B-object_location_type 0 
+0 B-movie_name I-movie_name I-movie_name 0 
+0 B-location_name I-location_name 0 B-object_type I-object_type 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type 0 
+0 B-object_type I-object_type 0 B-location_name I-location_name 0 
+0 B-movie_type 0 B-location_name I-location_name 0 
+0 B-movie_type I-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-movie_name I-movie_name 0 
+0 B-location_name I-location_name 0 B-object_type I-object_type 
+0 B-movie_name I-movie_name 0 B-timerange 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name 
+0 B-object_type I-object_type 0 B-location_name I-location_name I-location_name 0 
+0 B-movie_name I-movie_name 0 
+0 B-object_type 0 B-location_name I-location_name 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange 0 
+0 B-object_type 0 B-location_name I-location_name 0 B-movie_type I-movie_type 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation 
+0 B-movie_name I-movie_name I-movie_name 0 
+0 B-object_type I-object_type 0 B-location_name I-location_name I-location_name 
+0 B-object_type I-object_type 0 B-spatial_relation I-spatial_relation 
+0 B-movie_name 0 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 B-object_location_type I-object_location_type 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name 
+0 B-object_type I-object_type 0 B-location_name I-location_name I-location_name 0 
+0 B-object_type I-object_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 
+0 B-object_type I-object_type 0 B-movie_type 0 B-spatial_relation 
+0 B-object_type I-object_type 0 B-movie_type I-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name I-location_name 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-object_location_type I-object_location_type 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 B-object_location_type 0 
+0 B-movie_name I-movie_name I-movie_name B-object_type 0 B-spatial_relation 0 B-object_location_type I-object_location_type 
+0 B-spatial_relation I-spatial_relation 0 B-movie_type I-movie_type 0 
+B-object_type I-object_type 0 B-spatial_relation I-spatial_relation 0 B-movie_type I-movie_type 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation 
+0 B-object_type I-object_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 
+0 B-movie_name I-movie_name 0 
+0 B-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 B-timerange 0 
+0 B-object_type I-object_type 
+0 B-object_type I-object_type 
+0 B-object_type I-object_type 0 B-location_name I-location_name I-location_name 0 B-timerange I-timerange I-timerange 0 
+0 B-spatial_relation 0 B-object_location_type 0 B-movie_type 0 
+0 B-object_type I-object_type 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name 
+0 B-movie_type 0 B-spatial_relation I-spatial_relation 
+0 B-object_location_type 0 B-movie_name I-movie_name I-movie_name I-movie_name 
+0 B-object_type I-object_type 0 B-movie_type I-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 
+0 B-object_type I-object_type 0 B-location_name I-location_name I-location_name 
+0 B-object_type 0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name 0 
+0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-object_location_type 0 

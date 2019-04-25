@@ -1,0 +1,701 @@
+<sos>can you put on _album_ by _artist_<eos>
+<sos>Play _album_ by _artist_.<eos>
+<sos>Play the _sort_ _music_item_ on _service_ by _artist_.<eos>
+<sos>Use _service_ to play music<eos>
+<sos>Please play something _sort_ from _artist_.  Any _music_item_ from _year_ on _service_ will do.<eos>
+<sos>Play a _music_item_ from _year_.<eos>
+<sos>Let me hear the _sort_ songs from _artist_<eos>
+<sos>Play my _playlist_ playlist<eos>
+<sos>I want to play music from _service_<eos>
+<sos>Play _album_ from _artist_.<eos>
+<sos>I want to hear a _year_ _music_item_.<eos>
+<sos>play a _artist_ _music_item_<eos>
+<sos>Please play something from _artist_ that's on the _sort_<eos>
+<sos>Please play something _playlist_ on _service_<eos>
+<sos>Play something from _year_ by _artist_ on _service_<eos>
+<sos>Play _year_ music please.<eos>
+<sos>Play music from the artist _artist_ and sort it through _sort_<eos>
+<sos>Play anything _artist_ did in the _year_<eos>
+<sos>Play music off _service_.<eos>
+<sos>_year_ songs on _service_<eos>
+<sos>Open _service_ and play _artist_ _album_<eos>
+<sos>Play an _music_item_ by _artist_.<eos>
+<sos>Play an _music_item_ from _artist_.<eos>
+<sos>I want to listen to something on _service_<eos>
+<sos>Start playing something from _service_<eos>
+<sos>Play _playlist_ on _service_.<eos>
+<sos>Find and play a _music_item_ on _service_ from _year_ by _artist_<eos>
+<sos>Play _track_.<eos>
+<sos>I want to hear music from _artist_ from the _year_<eos>
+<sos>Turn on _service_<eos>
+<sos>Play a _music_item_ by _artist_.<eos>
+<sos>play _track_ by _artist_<eos>
+<sos>Play some _artist_ from the _year_ on _service_<eos>
+<sos>I want to listen to an _music_item_ from _year_.<eos>
+<sos>Play _artist_<eos>
+<sos>play _album_ _music_item_<eos>
+<sos>Play _music_item_'s from _year_.<eos>
+<sos>Play something from _playlist_<eos>
+<sos>Play _track_ by _artist_ from _service_.<eos>
+<sos>play _music_item_ by _artist_ on _service_<eos>
+<sos>Play some _year_ songs on _service_<eos>
+<sos>Play a _year_ _music_item_ from _artist_ on _service_.<eos>
+<sos>Please play my _playlist_ playlist.<eos>
+<sos>Open _service_ and play _album_ by _artist_.<eos>
+<sos>Let's play _artist_'s _album_ on _service_<eos>
+<sos>play a _year_ _music_item_<eos>
+<sos>Play _playlist_ on _service_.<eos>
+<sos>_album__artist_ please<eos>
+<sos>Play the _sort_ _artist_ on _service_<eos>
+<sos>play some _year_ _artist_<eos>
+<sos>Play the _sort_ _artist_<eos>
+<sos>Play music from _artist_.<eos>
+<sos>Can you play _artist_ on _service_?<eos>
+<sos>Play a _artist_ _music_item_<eos>
+<sos>I want to hear _artist_ on _service_ , play the _music_item_ _track_.<eos>
+<sos>Play some _music_item_ music from _artist_.<eos>
+<sos>Please play something on _service_ from artist _artist_ _sort_ _music_item_<eos>
+<sos>I want to hear _music_item_ from the artist _artist_<eos>
+<sos>Play _music_item_ music from the _year_<eos>
+<sos>Play _track_ by _artist_<eos>
+<sos>Play music from _year_.<eos>
+<sos>Go to _service_ and play _album_ by _artist_<eos>
+<sos>Play _album_. from _artist_ through _service_.<eos>
+<sos>Play some _music_item_ from the _year_<eos>
+<sos>Please _music_item_ into _artist_'s _sort_ music<eos>
+<sos>Play the _sort_ music from _artist_.<eos>
+<sos>Play something on _service_<eos>
+<sos>Play music by _artist_.<eos>
+<sos>play some _artist_<eos>
+<sos>Play music by _artist_.<eos>
+<sos>Can you play _sort_ _service_ by _artist_?<eos>
+<sos>play the _sort_ _artist_ _music_item_<eos>
+<sos>Let's hear stuff from _artist_.<eos>
+<sos>Play a _sort_ _music_item_ from the _year_ by _artist_.<eos>
+<sos>Play _album_ from _artist_.<eos>
+<sos>Play the _sort_ music from _artist_ off _service_.<eos>
+<sos>play the _sort_ _artist_<eos>
+<sos>Play something by _artist_ from the _year_<eos>
+<sos>Use the _service_ service to play _playlist_<eos>
+<sos>Play my _playlist_ playlist.<eos>
+<sos>Play an _music_item_ from _artist_.<eos>
+<sos>I want to hear anything from the _genre_ genre please.<eos>
+<sos>Please play a _year_ _music_item_.<eos>
+<sos>Put _album_ by _artist_ on the stereo.<eos>
+<sos>Please play a _music_item_ from _artist_.<eos>
+<sos>play some _sort_ _artist_ on _service_<eos>
+<sos>Please open _service_<eos>
+<sos>Play _genre_.<eos>
+<sos>I want to hear _music_item_ music on _service_ from _artist_<eos>
+<sos>play a _music_item_ by _artist_ from _year_<eos>
+<sos>Play some _genre_.<eos>
+<sos>Proceed with _artist_ music from _year_.<eos>
+<sos>Play something on _service_<eos>
+<sos>Play music from _artist_.<eos>
+<sos>Let me hear _artist_ music<eos>
+<sos>Let's hear _sort_ _artist_ on _service_.<eos>
+<sos>Please play a _music_item_ from the _year_ that's on _service_<eos>
+<sos>Play _album_ by _artist_.<eos>
+<sos>Play _track_ on _service_<eos>
+<sos>Play _playlist_.<eos>
+<sos>rate _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Give _object_select_ _object_type_ _rating_value_ _rating_unit_.<eos>
+<sos>rate _object_name_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_name_ _rating_value_ out of _best_rating_ _rating_unit_.<eos>
+<sos>Give _rating_value_ _rating_unit_ to _object_name_<eos>
+<sos>give _object_select_ _object_type_ a score of _rating_value_<eos>
+<sos>Give the _object_select_ _object_part_of_series_type_ _rating_value_ of _best_rating_ _rating_unit_.<eos>
+<sos>Give _rating_value_ out of _best_rating_ _rating_unit_ to _object_name_ _object_part_of_series_type_<eos>
+<sos>Give _rating_value_ _rating_unit_ out of _best_rating_ to _object_name_<eos>
+<sos>Rate _object_name_ a _rating_value_<eos>
+<sos>Rate the _object_select_ _object_part_of_series_type_ _rating_value_ _rating_unit_.<eos>
+<sos>rate _object_select_ _object_type_ a _rating_value_ out of _best_rating_<eos>
+<sos>rate the _object_select_ _object_type_ _rating_value_ of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_select_ _object_type_ a _rating_value_ <eos>
+<sos>Give _rating_value_ out of _best_rating_ to the _object_select_ _object_type_<eos>
+<sos>Give _object_select_ _object_type_ _rating_value_ _rating_unit_.<eos>
+<sos>Rate _object_name_ _object_part_of_series_type_ _rating_value_ _rating_unit_.<eos>
+<sos>Give the _object_select_ _object_type_ _rating_value_ _rating_unit_.<eos>
+<sos>Give the _object_select_ _object_type_ _rating_value_ _rating_unit_<eos>
+<sos>Give _object_name_ _rating_value_ _rating_unit_<eos>
+<sos>Rate _object_name_ _rating_value_ of _best_rating_ _rating_unit_<eos>
+<sos>rate _object_select_ _object_type_ _rating_value_ out of _best_rating_<eos>
+<sos>Give the _object_name_ _object_part_of_series_type_ _rating_value_ _rating_unit_.<eos>
+<sos>_object_name_ _object_part_of_series_type_ deserves _rating_value_ _rating_unit_ out of _best_rating_ for a rating.<eos>
+<sos>Give _object_name_ a _rating_value_ out of _best_rating_ rating.<eos>
+<sos>_object_name_ should get a _rating_value_<eos>
+<sos>Give _rating_value_ _rating_unit_ to _object_select_ _object_type_<eos>
+<sos>Rate the _object_select_ _object_type_ a _rating_value_ out of _best_rating_ _rating_unit_.<eos>
+<sos>Rate the _object_type_ _object_name_ _rating_value_ out of _best_rating_<eos>
+<sos>rate _object_name_ _rating_value_ out of _best_rating_<eos>
+<sos>Rate the _object_part_of_series_type_ _object_select_ _rating_value_ star<eos>
+<sos>mark _object_select_ _object_type_ a score of _rating_value_<eos>
+<sos>rate the _object_select_ _object_type_ _rating_value_ out of _best_rating_<eos>
+<sos>rate the _object_select_ _object_type_ a _rating_value_<eos>
+<sos>Give _object_name_ _rating_value_ _rating_unit_.<eos>
+<sos>Rate _object_select_ _object_type_ _rating_value_ out of _best_rating_.<eos>
+<sos>Give _object_name_ a _rating_value_ out of _best_rating_ rating.<eos>
+<sos>rate _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Rate the _object_select_ _object_type_ _rating_value_ _rating_unit_<eos>
+<sos>rate the _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>rate _object_select_ _object_type_ _rating_value_ _rating_unit_<eos>
+<sos>Give _object_name_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_name_ _rating_value_ out of _best_rating_ _rating_unit_.<eos>
+<sos>give my _object_select_ _object_type_ _rating_value_ of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_select_ _object_type_ _rating_value_ _rating_unit_.<eos>
+<sos>Give _rating_value_ out of _best_rating_ _rating_unit_ to _object_select_ _object_type_<eos>
+<sos>Give a rating of _rating_value_ to _object_name_.<eos>
+<sos>Rate _object_name_ _rating_value_ out of _best_rating_ _rating_unit_.<eos>
+<sos>rate _object_name_ _rating_value_ _rating_unit_ out of _best_rating_<eos>
+<sos>give _object_name_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Give _rating_value_ _rating_unit_ to _object_name_<eos>
+<sos>give the _object_select_ _object_type_ a _rating_value_ of _best_rating_<eos>
+<sos>rate _object_name_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Rate the _object_select_ _object_part_of_series_type_ a _rating_value_<eos>
+<sos>Give _rating_value_ of _best_rating_ _rating_unit_ to _object_name_<eos>
+<sos>Give _rating_value_ out of _best_rating_ _rating_unit_ to _object_select_ _object_type_<eos>
+<sos>Give _object_select_ _object_type_ _rating_value_ _rating_unit_<eos>
+<sos>Rate _object_name_ _rating_value_ out of _best_rating_.<eos>
+<sos>rate _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>rate _object_name_ _rating_value_ _rating_unit_<eos>
+<sos>Give _object_name_ _rating_value_ of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_select_ _object_type_ a _rating_value_.<eos>
+<sos>Give _object_name_ _rating_value_ _rating_unit_.<eos>
+<sos>Give the _object_select_ _object_type_ a rating of _rating_value_.<eos>
+<sos>Give _rating_value_ _rating_unit_ to _object_name_<eos>
+<sos>Give a _rating_value_ rating to _object_name_.<eos>
+<sos>rate _object_select_ _object_part_of_series_type_ _rating_value_ _rating_unit_<eos>
+<sos>Give _object_name_ a rating of _rating_value_ _rating_unit_.<eos>
+<sos>Rate _object_select_ _object_part_of_series_type_ _rating_value_ out of _best_rating_.<eos>
+<sos>rate _object_name_ _rating_value_ _rating_unit_<eos>
+<sos>rate _object_name_ _rating_value_ out of _best_rating_<eos>
+<sos>Rate _object_name_ a _rating_value_ out of _best_rating_<eos>
+<sos>Give _rating_value_ start to the _object_select_ _object_type_<eos>
+<sos>Give _object_select_ _object_part_of_series_type_ a _rating_value_ rating.<eos>
+<sos>rate _object_select_ _object_type_ a _rating_value_<eos>
+<sos>Out of _best_rating_, give _object_name_ a _rating_value_<eos>
+<sos>Give _rating_value_ of _best_rating_ _rating_unit_ to _object_name_<eos>
+<sos>rate _object_name_ _object_part_of_series_type_ a _rating_value_<eos>
+<sos>rate _object_name_? _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>I would rate _object_name_ _rating_value_ out of _best_rating_ _rating_unit_.<eos>
+<sos>Rate _object_name_ _rating_value_ _rating_unit_<eos>
+<sos>Give _rating_value_ rating to _object_name_<eos>
+<sos>Give _rating_value_ out of _best_rating_ rating to the _object_select_ _object_type_<eos>
+<sos>give the _object_select_ _object_part_of_series_type_ _rating_value_ of _best_rating_ _rating_unit_<eos>
+<sos>Rate _object_name_ a _rating_value_<eos>
+<sos>Give _object_select_ _object_type_ _rating_value_ _rating_unit_<eos>
+<sos>rate _object_name_ _rating_value_ _rating_unit_<eos>
+<sos>Rate _object_name_ a _rating_value_.<eos>
+<sos>Give _object_name_ a _rating_value_ out of _best_rating_ _rating_unit_.<eos>
+<sos>Give _object_select_ _object_type_ a _rating_value_.<eos>
+<sos>rate the _object_select_ _object_type_ _rating_value_ out of _best_rating_<eos>
+<sos>Give _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_<eos>
+<sos>Give _object_name_ _rating_value_ _rating_unit_<eos>
+<sos>Rate _object_select_ _object_part_of_series_type_ _rating_value_ out of _best_rating_.<eos>
+<sos>Give _object_name_ a rating of _rating_value_ _rating_unit_.<eos>
+<sos>Rate _object_select_ _object_type_ _rating_value_ _rating_unit_ out of _best_rating_<eos>
+<sos>rate the _object_name_ _rating_value_ out of _best_rating_<eos>
+<sos>Give _rating_value_ _rating_unit_ to _object_name_<eos>
+<sos>Rate the _object_select_ _object_part_of_series_type_ _rating_value_ _rating_unit_<eos>
+<sos>Wish to find the _object_type_ the _object_name_<eos>
+<sos>Please look up the _object_type_, _object_name_.<eos>
+<sos>Get me the _object_name_ _object_type_.<eos>
+<sos>Please find me the _object_type_, _object_name_.<eos>
+<sos>Wish to see the _object_type_ with the name _object_name_<eos>
+<sos>Looking for a _object_type_ called _object_name_<eos>
+<sos>Can you find me the work, _object_name_?<eos>
+<sos>Please get me _object_name_ _object_type_.<eos>
+<sos>Need a creative work called _object_name_<eos>
+<sos>search for the _object_type_ for _object_name_<eos>
+<sos>Looking for a creative work called _object_name_<eos>
+<sos>Find the _object_type_ _object_name_<eos>
+<sos>Can you please find me the _object_type_ _object_name_?<eos>
+<sos>Can you find me _object_name_ _object_type_?<eos>
+<sos>Please fine me the _object_type_, _object_name_.<eos>
+<sos>Please look up the work, _object_name_.<eos>
+<sos>Please help me find the _object_name_ _object_type_.<eos>
+<sos>Please help me find, _object_name_.<eos>
+<sos>Please look up the _object_type_ _object_name_.<eos>
+<sos>Can you find me, _object_name_?<eos>
+<sos>Please search for _object_name_.<eos>
+<sos>Can you get me the _object_name_ _object_type_?<eos>
+<sos>Please look up the _object_type_ _object_name_.<eos>
+<sos>Please search for the _object_type_, _object_name_.<eos>
+<sos>Please find me _object_name_.<eos>
+<sos>Get me the _object_name_ _object_type_.<eos>
+<sos>Looking for a _object_type_ called _object_name_<eos>
+<sos>Can you search the _object_name_ _object_type_?<eos>
+<sos>look for the _object_type_ _object_name_ <eos>
+<sos>Find me a _object_type_ called _object_name_<eos>
+<sos>Search for _object_name_<eos>
+<sos>Look for the _object_type_ _object_name_<eos>
+<sos>Can you find me _object_name_?<eos>
+<sos>Please help me search the _object_name_ _object_type_.<eos>
+<sos>Get me the _object_name_ _object_type_.<eos>
+<sos>Can you find me the work titled _object_name_?<eos>
+<sos>Please search for the _object_type_ titled _object_name_.<eos>
+<sos>Could you locate the _object_name_ _object_type_?<eos>
+<sos>get me the _object_type_ of _object_name_<eos>
+<sos>Please search the _object_name_ _object_type_.<eos>
+<sos>Can you find me the _object_name_ _object_type_?<eos>
+<sos>Could you find the _object_type_ _object_name_<eos>
+<sos>Search for the _object_type_, _object_name_.<eos>
+<sos>Please look up _object_name_ _object_type_.<eos>
+<sos>Please get me the _object_name_ _object_type_.<eos>
+<sos>Can you look up the _object_name_ _object_type_?<eos>
+<sos>Search for _object_name_<eos>
+<sos>Find the creative work _object_name_<eos>
+<sos>Need the creative work called _object_name_<eos>
+<sos>Can you find me the _object_name_ _object_type_?<eos>
+<sos>Can you please find me the _object_name_ _object_type_?<eos>
+<sos>Can you find me the work, _object_name_?<eos>
+<sos>Please look up and find me _object_name_.<eos>
+<sos>Please search for _object_name_.<eos>
+<sos>Please search the _object_type_ _object_name_.<eos>
+<sos>Find me the _object_type_ with the name _object_name_â¦<eos>
+<sos>Looking for a _object_type_ with the title of _object_name_<eos>
+<sos>Can you find the _object_name_ _object_type_?<eos>
+<sos>Can you find me the _object_name_ _object_type_?<eos>
+<sos>Please find me the _object_name_ _object_type_.<eos>
+<sos>Look for the _object_type_ _object_name_<eos>
+<sos>Please find me the _object_name_.<eos>
+<sos>Can you get me the _object_name_ _object_type_?<eos>
+<sos>Find me the _object_type_ _object_name_<eos>
+<sos>Please get me _object_name_ _object_type_.<eos>
+<sos>Find the _object_type_ _object_name_<eos>
+<sos>Am looking for a _object_type_ with the title _object_name_<eos>
+<sos>Look for the _object_type_ _object_name_<eos>
+<sos>Can you search the _object_type_, _object_name_?<eos>
+<sos>Looking for a _object_type_ with the title _object_name_<eos>
+<sos>Please find me the _object_name_ _object_type_.<eos>
+<sos>Look for the _object_type_ _object_name_<eos>
+<sos>Find the creative work _object_name_<eos>
+<sos>Find _object_name_<eos>
+<sos>Find me the _object_type_ _object_name_<eos>
+<sos>Please search for the _object_type_, _object_name_.<eos>
+<sos>Find a creative work called _object_name_<eos>
+<sos>Looking for the _object_type_ with the name of _object_name_?<eos>
+<sos>Look for the _object_type_ _object_name_<eos>
+<sos>Find the _object_type_ _object_name_<eos>
+<sos>Please find me the _object_name_ _object_type_.<eos>
+<sos>Find the _object_type_ _object_name_<eos>
+<sos>Can you please get me the _object_type_ _object_name_?<eos>
+<sos>Please look up the _object_type_, _object_name_.<eos>
+<sos>Please find me the _object_type_ titled _object_name_.<eos>
+<sos>Find the creative work _object_name_<eos>
+<sos>Please look up the work, _object_name_.<eos>
+<sos>I'm looking for _object_name_<eos>
+<sos>Please search for the _object_name_ _object_type_.<eos>
+<sos>Please look up _object_name_ _object_type_.<eos>
+<sos>Please search the _object_name_.<eos>
+<sos>Can you find the creative works associated with _object_name_<eos>
+<sos>Please get me the _object_name_ _object_type_.<eos>
+<sos>Please search the _object_name_ _object_type_.<eos>
+<sos>Please look up the _object_name_ _object_type_.<eos>
+<sos>Can you find me _object_name_ _object_type_?<eos>
+<sos>I wish to watch _object_name_ _object_type_, please search.<eos>
+<sos>Can you find me the _object_name_ _object_type_?<eos>
+<sos>Please find me the work, _object_name_!.<eos>
+<sos>Search for the _object_type_ _object_name_<eos>
+<sos>What will the weather be _spatial_relation_ from _current_location_?<eos>
+<sos>Will there be _condition_description_ in _geographic_poi_?<eos>
+<sos>Tell me the weather forecast for _city_<eos>
+<sos>Is there a _condition_description_ _timerange_ in _state_?<eos>
+<sos>What will the weather be in _geographic_poi_ on _timerange_?<eos>
+<sos>Weather _timerange_ in _country_<eos>
+<sos>When will it be _condition_temperature_ _current_location_<eos>
+<sos>What will the weather be _timerange_ in _country_?<eos>
+<sos>What kind of weather will be in _country_ _timerange_?<eos>
+<sos>_condition_description_ in _city_ _state_<eos>
+<sos>What's the weather going to be in _state_?<eos>
+<sos>_condition_description_ _spatial_relation_ from _city_ on _timerange_<eos>
+<sos>What is the forecast for _state_ at _city_ during the _condition_description_<eos>
+<sos>What will the weather be in _state_?<eos>
+<sos>what is the forecast starting _timerange_ _spatial_relation_ the state of _state_<eos>
+<sos>Will it be _condition_description_ at _timerange_ in _city_ _country_?<eos>
+<sos>Check the forecast for _state_.<eos>
+<sos>Will it be _condition_temperature_ in _country_ at _timerange_<eos>
+<sos>Let me know the weather forecast around _timerange_ _spatial_relation_ from _current_location_ in _geographic_poi_.<eos>
+<sos>Will it be _condition_description_ in the _geographic_poi_?<eos>
+<sos>Tell me if it will be _condition_description_ _timerange_ in _city_, _state_<eos>
+<sos>What will the weather be _timerange_ _spatial_relation_ _country_?<eos>
+<sos>Will there be _condition_description_ on _timerange_ in _country_<eos>
+<sos>Will it be _condition_temperature_ _current_location_ _timerange_<eos>
+<sos>What's the weather going to be in _city_?<eos>
+<sos>What will the weather be in _city_ on _timerange_?<eos>
+<sos>What will the weather be in _state_?<eos>
+<sos>I need to know the weather for _timerange_ in _country_ when I go to _city_<eos>
+<sos>what is the forecast for _geographic_poi_ _timerange_ and _spatial_relation_<eos>
+<sos>What kind of weather is forecast around _timerange__spatial_relation_ _country_?<eos>
+<sos>Will it be _condition_temperature_ in _city_?<eos>
+<sos>Will it be _condition_temperature_ in _geographic_poi_?<eos>
+<sos>Will it be _condition_temperature_ at _timerange_ in _city_ _country_?<eos>
+<sos>What is the weather going to be like in _state_ on _timerange_?<eos>
+<sos>Weather in _city_ _state_<eos>
+<sos>When is _timerange_ for _state_<eos>
+<sos>What will the weather be _spatial_relation_ from _current_location_ on _timerange_?<eos>
+<sos>what is the forecast for _city_ in _country_<eos>
+<sos>Tell me the weather forecast _current_location_<eos>
+<sos>What is the weather forecast _spatial_relation_ _city_<eos>
+<sos>What will the weather be in _timerange_ in _city_?<eos>
+<sos>Will it be _condition_temperature_ _timerange_ in _city_ _state_<eos>
+<sos>What is the weather forecast for _country_<eos>
+<sos>What's the weather in _city_?<eos>
+<sos>What will the weather be in _state_ on _timerange_?<eos>
+<sos>Will the _condition_description_ be out _timerange_ in _city_, _country_<eos>
+<sos>what is the weather _current_location_<eos>
+<sos>What will the weather be _timerange_ in _country_?<eos>
+<sos>What kind of weather is forecast in _state_ _timerange_?<eos>
+<sos>what is the forecast for _state_ for _condition_temperature_ <eos>
+<sos>how _condition_temperature_ will it be _current_location_ _timerange_ <eos>
+<sos>what is the forecast for _condition_temperature_ weather at _geographic_poi_<eos>
+<sos>what is the _condition_description_ forecast for the _current_location_ starting on _timerange_<eos>
+<sos>what is the forecast for _country_  at _city_ on _timerange_<eos>
+<sos>What will the _condition_description_ be in the _current_location_ at _timerange_?<eos>
+<sos>what is the forecast in _city_ and _spatial_relation_<eos>
+<sos>What is the weather going to be like in _city_ _state_ _timerange_<eos>
+<sos>What's the weather forecast for _geographic_poi_ _spatial_relation_ _timerange_?<eos>
+<sos>what is the forecast for beginning on _timerange_ for _city_<eos>
+<sos>what's the forecast for _timerange_ in _city_ _country_<eos>
+<sos>Will there be a _condition_description_ _timerange_ in _city_, _state_<eos>
+<sos>Will it be _condition_temperature_ in the _state_ on _timerange_?<eos>
+<sos>What will the weather be _current_location_ on _timerange_?<eos>
+<sos>what is the forecast for _condition_temperature_ temps beginning on _timerange_ _current_location_<eos>
+<sos>What's the weather like in _city_, _state_<eos>
+<sos>what is the forecast for _current_location_ for _condition_description_ conditions at _timerange_<eos>
+<sos>Will there be a _condition_description_ in _city_ at _timerange_?<eos>
+<sos>what is the _condition_temperature_ condition of our _current_location_ for _timerange_<eos>
+<sos>What will the weather be in _city_ on _timerange_?<eos>
+<sos>Will it be _condition_temperature_ _timerange_ in _geographic_poi_?<eos>
+<sos>what is the forecast in _city_ in _state_ starting at _timerange_ <eos>
+<sos>what is the forecast in _state_ for _city_<eos>
+<sos>what is the forecast for _country_<eos>
+<sos>Need weather for _geographic_poi_ to see if it will be _condition_description_ today<eos>
+<sos>Weather in _city_ _country_ on _timerange_<eos>
+<sos>What's the _condition_description_ _current_location_ right _timerange_?<eos>
+<sos>How's the weather at _geographic_poi_ and _spatial_relation_ right _timerange_<eos>
+<sos>what is the forecast for _city_ for _condition_temperature_ weather<eos>
+<sos>_condition_description_ on _timerange_ in _geographic_poi_  and _spatial_relation_ places<eos>
+<sos>I need the weather in _city_<eos>
+<sos>Tell me the forecast for _timerange_ in _geographic_poi_<eos>
+<sos>Tell me the weather forecast for _state_ on _timerange_<eos>
+<sos>what is the forecast for _geographic_poi_<eos>
+<sos>Will it be _condition_temperature_ in _state_ at _timerange_?<eos>
+<sos>Weather _timerange_  in _country_<eos>
+<sos>What is the forecast for this _timerange_ for _condition_description_ conditions in _city_ _country_<eos>
+<sos>how's the weather _current_location_ at _timerange_<eos>
+<sos>will _geographic_poi_ be _condition_temperature_ at _timerange_<eos>
+<sos>what is the forecast for starting at _timerange_ in _city_ for _condition_temperature_ weather<eos>
+<sos>What's the weather in _city_?<eos>
+<sos>What is the _condition_description_ forecast for _timerange_ in _country_<eos>
+<sos>Tell me the weather forecast _current_location_<eos>
+<sos>Will there be a _condition_description_ in _state_ _timerange_ ?<eos>
+<sos>How much _condition_temperature_ will it be _spatial_relation_ from _state_ around _timerange_?<eos>
+<sos>Will it be _condition_temperature_ _timerange_ in _city_ _country_?<eos>
+<sos>What will the weather be in _geographic_poi_ on _timerange_?<eos>
+<sos>Will it be _condition_description_ in _city_?<eos>
+<sos>Will it be _condition_temperature_ in the _country_ on _timerange_?<eos>
+<sos>Where is _country_ located<eos>
+<sos>What will the weather be in _city_?<eos>
+<sos>Book a reservation for _party_size_description_<eos>
+<sos>Book a reservation for a _restaurant_type_ _spatial_relation_ from _state_<eos>
+<sos>I would like to book a _restaurant_type_ in _country_ that is _spatial_relation_ for _party_size_description_<eos>
+<sos>Book a reservation for an _restaurant_type_<eos>
+<sos>Book a reservation for _party_size_number_ people for a _cuisine_ _restaurant_type_ in _country_<eos>
+<sos>I need a table in _city_ at a _cuisine_ _restaurant_type_<eos>
+<sos>book sot for _party_size_description_ _spatial_relation_ _poi_<eos>
+<sos>Book _party_size_description_ a reservation for a _served_dish_ _restaurant_type_ in _city_, _state_ on _timerange_<eos>
+<sos>book spot for _party_size_number_ at _restaurant_name_<eos>
+<sos>I want to book a _restaurant_type_ for _party_size_number_ people in _country_.<eos>
+<sos>Book me a reservation for the _sort_ _restaurant_type_<eos>
+<sos>book the _sort_ table in _country_ for _party_size_number_ people at a _restaurant_type_<eos>
+<sos>I want to book a _restaurant_type_ in a  _facility_.<eos>
+<sos>book a _restaurant_type_ that serves _cuisine_ food for _party_size_number_ people<eos>
+<sos>book spot for _party_size_number_ at an _facility_ _restaurant_type_ in _state_ _timerange_<eos>
+<sos>book a table in _country_ for _timerange_<eos>
+<sos>I want to book a _restaurant_type_ for _party_size_number_ people in _country_.<eos>
+<sos>I need a table for _party_size_number_ at a _sort_ _restaurant_type_ in _city_ _state_<eos>
+<sos>I want to book _restaurant_name_ in _city_.<eos>
+<sos>I need a table for _party_size_number_; please confirm the reservation.<eos>
+<sos>Book a _sort_ _restaurant_type_ for _party_size_number_ people<eos>
+<sos>I want to book a _restaurant_type_ _spatial_relation_ the _poi_ for a _timerange_ for _party_size_number_ people.<eos>
+<sos>I want to eat a _restaurant_type_ _timerange_ that serves _cuisine_ food<eos>
+<sos>Book a reservation for _party_size_number_ people at a _restaurant_type_ in _city_<eos>
+<sos>Book a reservation at _restaurant_type_ for _served_dish_<eos>
+<sos>book spot for _party_size_number_ in _country_<eos>
+<sos>I want to book _restaurant_name_ in _city_ _state_ _timerange_ for a party of _party_size_number_.<eos>
+<sos>I want to book a _restaurant_type_ in _city_ for _timerange_ for _party_size_number_ people.<eos>
+<sos>I want to book a _sort_ _restaurant_type_ for _party_size_number_ people.<eos>
+<sos>Book a reservation for _party_size_number_ people in _city_, _state_<eos>
+<sos>table for _restaurant_name_ in _state_ _timerange_<eos>
+<sos>I want to book a _restaurant_type_ in _country_ for _party_size_number_ people.<eos>
+<sos>Book spot for _party_size_number_<eos>
+<sos>Book me a reservation for a _restaurant_type_ in _city_ for a party of _party_size_number_<eos>
+<sos>book spot for _party_size_description_ at a _restaurant_type_<eos>
+<sos>I want to book a _cuisine_ _restaurant_type_ in _country_.<eos>
+<sos>Book a reservation for _restaurant_name_ _spatial_relation_ to _poi_<eos>
+<sos>book spot for _party_size_number_ at _restaurant_name_ in _city_<eos>
+<sos>Book a spot for _party_size_description_  at _city_<eos>
+<sos>I want to book a _restaurant_type_ for _party_size_description_ in _city_ _timerange_.<eos>
+<sos>Book a _restaurant_type_ reservation _timerange_<eos>
+<sos>Book a reservation for a _restaurant_type_ with a _facility_ _spatial_relation_ _state_<eos>
+<sos>book spot for _party_size_number_ at _restaurant_name_ in _country_<eos>
+<sos>I need a table for _party_size_number_ in _country_ at _restaurant_name_<eos>
+<sos>I want to book a _restaurant_type_ in _city_ _timerange_ for _party_size_number_ people.<eos>
+<sos>Book _party_size_number_ in _spatial_relation_ _city_<eos>
+<sos>I want to eat by _timerange_ in _state_ for a _party_size_number_ people<eos>
+<sos>I want to book _restaurant_name_ in _state_ for _party_size_number_ people.<eos>
+<sos>Book a reservation for _party_size_number_ at _restaurant_name_ in _city_<eos>
+<sos>book a table at a _restaurant_name_<eos>
+<sos>book spot for _party_size_description_ in _country_ at _timerange_<eos>
+<sos>Can you book me a table at _restaurant_name_ in _city_ , _state_?<eos>
+<sos>Book me a table for _party_size_number_ _timerange_ at _restaurant_name_<eos>
+<sos>book spot for _party_size_number_  at _timerange_ at a _restaurant_type_ in _state_ that serves _served_dish_<eos>
+<sos>I want to book a _restaurant_type_ _spatial_relation_ in _city_ for _party_size_number_ people.<eos>
+<sos>I need a table at _restaurant_name_ in _state_ for _party_size_number_<eos>
+<sos>Book a reservation for an _restaurant_type_ restaurant for _party_size_number_ people on _timerange_<eos>
+<sos>I want to book a _sort_ _restaurant_type_ _spatial_relation_ by in _state_ for _party_size_description_ on _timerange_.<eos>
+<sos>Book a reservation for _party_size_number_ at a _restaurant_type_ in _state_<eos>
+<sos>Book a reservation for _party_size_number_ people at the _sort_ _restaurant_type_ restaurant<eos>
+<sos>book a table on _timerange_ for _party_size_number_ people in _state_<eos>
+<sos>book a table _spatial_relation_ _poi_<eos>
+<sos>I want to book a _restaurant_type_ in _city_.<eos>
+<sos>I want a table at _restaurant_name_ in _city_ _state_<eos>
+<sos>Like to book a seat in _country_ for the _restaurant_name_<eos>
+<sos>I want to book a table in a _restaurant_type_ in _country_.<eos>
+<sos>I would like to book a _restaurant_type_ for _cuisine_ cuisine in the state of _state_<eos>
+<sos>Book a reservation for _party_size_number_ people at an _restaurant_type_ with a _facility_ _spatial_relation_ of _city_ for _timerange_<eos>
+<sos>Book a reservation for _party_size_description_ for an _cuisine_ _restaurant_type_ at _timerange_ in _state_<eos>
+<sos>Book a spot for _party_size_number_ in _state_ at _restaurant_name_<eos>
+<sos>Book a reservation for _party_size_description_ at a _restaurant_type_ in _country_<eos>
+<sos>Book a reservation for _party_size_number_ people for a _cuisine_ _restaurant_type_ in _city_<eos>
+<sos>_party_size_description_ need a table at a _restaurant_type_ _timerange_<eos>
+<sos>Book a reservation for _party_size_number_ at a _restaurant_type_ in _state_<eos>
+<sos>I want to book a _restaurant_type_ that serves _served_dish_ _spatial_relation_ from here at _timerange_ in _country_ for _party_size_number_ people.<eos>
+<sos>I want to book a _restaurant_type_ for _party_size_number_ people in the _country_.<eos>
+<sos>I want to book a _restaurant_type_ for _party_size_number_ people.<eos>
+<sos>Lets eat _spatial_relation_ _city_ _timerange_ at _restaurant_name_<eos>
+<sos>Book sot for _party_size_number_ at a _restaurant_type_ that serves _cuisine_ in _city_ on _timerange_<eos>
+<sos>book a _restaurant_type_ for _party_size_number_ at an _facility_ cafe in _country_<eos>
+<sos>Book a table for _timerange_. at _poi_ _spatial_relation_ for _party_size_number_<eos>
+<sos>Please book me a table at a _restaurant_type_ with a _facility_ facility in _country_.<eos>
+<sos>book spot for _party_size_number_ at a _facility_ _restaurant_type_ _spatial_relation_ of _state_ _timerange_ <eos>
+<sos>Please book me a _restaurant_type_<eos>
+<sos>Book a reservation for _party_size_description_ at _restaurant_name_ in _city_<eos>
+<sos>I want to book a _restaurant_type_ in _city_ at _timerange_ for _party_size_number_ people.<eos>
+<sos>table for _timerange_. at _restaurant_name_<eos>
+<sos>Please book me a table at a _restaurant_type_ which serves _served_dish_.<eos>
+<sos>I want to book a _restaurant_type_ for _party_size_number_ people in _city_ _state_.<eos>
+<sos>I would like to book a _sort_ _restaurant_type_ for a party of _party_size_number_.<eos>
+<sos>I want to book a _cuisine_ _restaurant_type_ _spatial_relation_ in _state_ for _party_size_number_ people on _timerange_.<eos>
+<sos>book a party of _party_size_number_ at _city_ for _timerange_<eos>
+<sos>Book spot for _party_size_number_ at _city_<eos>
+<sos>I want to book a _restaurant_type_ _timerange_ for _party_size_number_ people in _city_ _state_.<eos>
+<sos>I want to eat in _city_<eos>
+<sos>book a party at _poi_ _spatial_relation_ for _restaurant_type_<eos>
+<sos>Book me a reservation for a party of _party_size_number_ at a _restaurant_type_ in _country_<eos>
+<sos>I want to book a _cuisine_ _restaurant_type_ in _timerange_ _spatial_relation_ _city_ for _party_size_number_ people.<eos>
+<sos>Book a reservation for _party_size_number_ people at the _sort_ _restaurant_type_ _spatial_relation_ _city_ _timerange_<eos>
+<sos>need a table somewhere in _city_ _timerange_<eos>
+<sos>I'd like to have this _music_item_ onto _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add the _music_item_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>add _playlist_ to _playlist_owner_ _entity_name_ playlist<eos>
+<sos>add this _music_item_ by _artist_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add this _music_item_ to _playlist_<eos>
+<sos>I need to add _artist_ to the _playlist_ under _playlist_owner_ name<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>To the _playlist_ playlist, please add this _artist_ _music_item_.<eos>
+<sos>Please add some _artist_ to _playlist_owner_ playlist _playlist_<eos>
+<sos>I'd like for _artist_'s _music_item_ to be an addition to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add _entity_name_ to _playlist_<eos>
+<sos>add _entity_name_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add _artist_ music to the _playlist_ playlist<eos>
+<sos>Put _artist_ onto _playlist_owner_ _playlist_.<eos>
+<sos>Add the _music_item_ _playlist_ by the _artist_ to _playlist_owner_ gym playlist.<eos>
+<sos>Onto _playlist_owner_ _playlist_, please add the _music_item_.<eos>
+<sos>add _entity_name_ in playlist _playlist_<eos>
+<sos>Add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add _artist_ to the _playlist_ playlist.<eos>
+<sos>Add the _music_item_ _artist_ to the _playlist_ playlist.<eos>
+<sos>Add _entity_name_ to _playlist_<eos>
+<sos>Add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Put _artist_ onto the _playlist_ playlist.<eos>
+<sos>Can you add _artist_ to _playlist_owner_ _playlist_ playlist?<eos>
+<sos>Put _artist_'s _music_item_ onto _playlist_.<eos>
+<sos>Add _artist_ to _playlist_ playlist<eos>
+<sos>Add _entity_name_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>add this _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>I'd like for you to add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>add _artist_ _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>add _entity_name_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>Add _artist_ to _playlist_owner_ playlist _playlist_<eos>
+<sos>Add this _music_item_ to the _playlist_ playlist<eos>
+<sos>Add _entity_name_ to the _playlist_ playlist.<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>Add a _music_item_ to _playlist_<eos>
+<sos>add _music_item_ in _playlist_owner_
+ playlist called _playlist_<eos>
+<sos>Can you put this _music_item_ from _artist_ onto _playlist_owner_ _playlist_ playlist?<eos>
+<sos>Add a _music_item_ to playlist _playlist_<eos>
+<sos>Add _entity_name_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add a _music_item_ to _playlist_<eos>
+<sos>Add the _artist_ _music_item_ to the _playlist_ playlist.<eos>
+<sos>Add the _music_item_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add the _artist_ _music_item_ to the _playlist_ playlist.<eos>
+<sos>add _entity_name_ to _playlist_ playlist<eos>
+<sos>Can I put this _music_item_ onto _playlist_owner_ _playlist_ playlist?<eos>
+<sos>I'd like to add _artist_ onto the _playlist_ playlist.<eos>
+<sos>Add _artist_ to the _playlist_ soundtrack.<eos>
+<sos>Add the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Can you put the _music_item_ _artist_ onto the _playlist_ playlist?<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>add the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>For _playlist_owner_ _playlist_ can you add _artist_?<eos>
+<sos>Add the _artist_ _music_item_ to the _playlist_ playlist.<eos>
+<sos>Add _artist_ to the _playlist_ playlist.<eos>
+<sos>Can you add _entity_name_ to the playlist called _playlist_?<eos>
+<sos>Add this _music_item_ to _playlist_<eos>
+<sos>put the _music_item_ onto _playlist_.<eos>
+<sos>Add _artist_ music to _playlist_ playlist<eos>
+<sos>add _entity_name_ in _playlist_owner_ playlist _playlist_<eos>
+<sos>Add _artist_ newest _music_item_ to the _playlist_ playlist<eos>
+<sos>Add _artist_ _music_item_ to playlist _playlist_<eos>
+<sos>Add the _music_item_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add this _music_item_ to _playlist_ playlist<eos>
+<sos>add _entity_name_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add a _artist_ _music_item_ to _playlist_<eos>
+<sos>Add _entity_name_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>add the current _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Put _artist_ onto the _playlist_ playlist.<eos>
+<sos>add _entity_name_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Please add this _music_item_ by _artist_ to the _playlist_ playlist.<eos>
+<sos>can you add the current _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Please add _entity_name_ to _playlist_owner_ playlist _playlist_<eos>
+<sos>Add a _music_item_ to _playlist_<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>add this _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add _artist_ to _playlist_owner_ playlist _playlist_<eos>
+<sos>add _artist_ to _playlist_<eos>
+<sos>Add the _artist_ _music_item_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add an _music_item_ to _playlist_<eos>
+<sos>add this _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>I need to add to _playlist_owner_ _playlist_ list the works of _artist_<eos>
+<sos>Add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>add _artist_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add this _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>_entity_name_ needs to be added to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>add this _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add a _music_item_ to _playlist_owner_ playlist _playlist_<eos>
+<sos>Add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>add _artist_ songs in _playlist_<eos>
+<sos>add a _music_item_ in _playlist_owner_ _playlist_<eos>
+<sos>add _entity_name_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>add the _music_item_ to _playlist_owner_ _playlist_ playlist<eos>
+<sos>Add _artist_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Add the _music_item_ to the _playlist_ playlist.<eos>
+<sos>Add the _music_item_ to _playlist_owner_ _playlist_ playlist.<eos>
+<sos>Is _movie_name_ playing <eos>
+<sos>Is _movie_name_ playing<eos>
+<sos>Is _movie_name_ playing at _timerange_?<eos>
+<sos>What's the _object_type_<eos>
+<sos>i want to see _movie_name_<eos>
+<sos>when is _movie_name_ playing in this _object_location_type_<eos>
+<sos>show me the _object_type_ for _movie_name_!<eos>
+<sos>Is _movie_name_ playing _timerange_<eos>
+<sos>I want to see _movie_name_ at the _spatial_relation_ _object_location_type_.<eos>
+<sos>Where can I see _movie_name_<eos>
+<sos>I need to find the _object_location_type_ showing _movie_name_ _spatial_relation_ to me<eos>
+<sos>I want to see _movie_name_ at the _spatial_relation_ _object_location_type_.<eos>
+<sos>I want to see _movie_name_, when will it be showing?<eos>
+<sos>Find the _object_type_ for _movie_name_ at _location_name_.<eos>
+<sos>What are the _object_type_ for my favorite _location_name_ <eos>
+<sos>What are the _movie_type_ showing _spatial_relation_ <eos>
+<sos>Is _movie_name_ playing _timerange_<eos>
+<sos>I need _movie_type_ _spatial_relation_ for _timerange_ time<eos>
+<sos>i want to see _movie_name_ in a _object_location_type_<eos>
+<sos>Can I see _movie_name_ _timerange_<eos>
+<sos>I want _movie_type_ at _location_name_<eos>
+<sos>show me the _object_type_ for _movie_name_<eos>
+<sos>I want to know if there are any _movie_type_ playing _spatial_relation_.<eos>
+<sos>Is _movie_name_ showing at _location_name_<eos>
+<sos>show the _spatial_relation_ _object_location_type_ that shows _movie_name_<eos>
+<sos>I want to see _movie_name_ at _location_name_.<eos>
+<sos>is _movie_name_ showing _timerange_ at the _spatial_relation_ _object_location_type_.<eos>
+<sos>What is the _spatial_relation_ _object_location_type_ with _movie_name_ playing at _timerange_<eos>
+<sos>Is _movie_name_ showing at _location_name_<eos>
+<sos>Fine the _object_type_ for the _location_name_.<eos>
+<sos>Give me the _object_type_ _spatial_relation_<eos>
+<sos>Find the _object_type_ at the _location_name_.<eos>
+<sos>Show me the _movie_type_ at _location_name_.<eos>
+<sos>what _movie_type_ at _location_name_.<eos>
+<sos>I want a _object_type_.<eos>
+<sos>Can I get the _object_type_<eos>
+<sos>I want to see _movie_name_<eos>
+<sos>Can I get the _object_type_ for _movie_type_ _spatial_relation_<eos>
+<sos>May I have the _object_type_ for _location_name_<eos>
+<sos>Find _movie_type_ _spatial_relation_<eos>
+<sos>Is _movie_name_ showing in _location_name_<eos>
+<sos>what are the _object_type_ _spatial_relation_<eos>
+<sos>Check the _object_type_ for _location_name_.<eos>
+<sos>Check the timings for _movie_name_ at the _spatial_relation_ _object_location_type_.<eos>
+<sos>What are the _object_type_ at _location_name_<eos>
+<sos>I need _movie_type_ _spatial_relation_<eos>
+<sos>Show the _object_type_ _spatial_relation_<eos>
+<sos>where's the _spatial_relation_ _object_location_type_ showing foreign _movie_type_<eos>
+<sos>What _movie_type_ are showing _timerange_ at the _spatial_relation_ _object_location_type_?<eos>
+<sos>Is _movie_name_ playing<eos>
+<sos>I need a list of _location_name_ _object_type_<eos>
+<sos>When is _movie_name_ playing at the _spatial_relation_ _object_location_type_.<eos>
+<sos>Find the _object_type_ at _location_name_.<eos>
+<sos>Find the _movie_type_ at _location_name_.<eos>
+<sos>show the _movie_type_ playing _spatial_relation_<eos>
+<sos>I want to see _movie_name_.<eos>
+<sos>Show me _location_name_ _object_type_<eos>
+<sos>Is _movie_name_ showing at _timerange_.<eos>
+<sos>Is _movie_name_ showing at _location_name_<eos>
+<sos>Find the _object_type_ for _location_name_.<eos>
+<sos>I want to see _movie_name_.<eos>
+<sos>Find the _object_type_ at _location_name_.<eos>
+<sos>Will _movie_name_ be playing at _timerange_?<eos>
+<sos>Show me the _object_type_ for _location_name_ for only _movie_type_<eos>
+<sos>Find the _object_type_ for _movie_name_.<eos>
+<sos>Give me the _movie_type_ _spatial_relation_ <eos>
+<sos>What _movie_type_ are playing _spatial_relation_<eos>
+<sos>Is _movie_name_ playing<eos>
+<sos>What's the _object_type_ for _location_name_<eos>
+<sos>Find the _object_type_ _spatial_relation_<eos>
+<sos>I want to see _movie_name_.<eos>
+<sos>show me the _object_type_ of movie _movie_name_ near _object_location_type_<eos>
+<sos>I need _object_type_ for _movie_name_ at _location_name_<eos>
+<sos>Find the _object_type_ at _location_name_.<eos>
+<sos>show me the _object_type_ _spatial_relation_ <eos>
+<sos>show me the _object_type_ for _movie_type_  _spatial_relation_<eos>
+<sos>show the _object_type_ for _movie_type_ _spatial_relation_<eos>
+<sos>Is _movie_name_ playing at _location_name_<eos>
+<sos>Can you check the timings for _movie_name_?<eos>
+<sos>is _movie_name_ playing in any _object_location_type_<eos>
+<sos>What _object_type_ will _movie_name_ be showing at my _object_location_type_?<eos>
+<sos>Show the _movie_name__object_type_ at the  _spatial_relation_ _object_location_type_<eos>
+<sos>what are some _spatial_relation_ _movie_type_ showing<eos>
+<sos>_object_type_ _spatial_relation_ for _movie_type_<eos>
+<sos>what _movie_type_ are playing _spatial_relation_<eos>
+<sos>Find the _object_type_ _spatial_relation_.<eos>
+<sos>Is _movie_name_ playing<eos>
+<sos>Is _movie_name_ showing at the _spatial_relation_ _object_location_type_ at _timerange_.<eos>
+<sos>What are the _object_type_<eos>
+<sos>Where can I find the _object_type_<eos>
+<sos>Find the _object_type_ for _location_name_ _timerange_.<eos>
+<sos>Find the _spatial_relation_ _object_location_type_ with _movie_type_ playing<eos>
+<sos>what are the _object_type_<eos>
+<sos>what are the _object_type_ for _movie_name_<eos>
+<sos>What _movie_type_ are playing _spatial_relation_<eos>
+<sos>Is any _object_location_type_ playing _movie_name_<eos>
+<sos>What are the _object_type_ for _movie_type_ _spatial_relation_<eos>
+<sos>What's the _object_type_ at _location_name_<eos>
+<sos>Show the _object_type_ for _movie_name_ at _location_name_.<eos>
+<sos>I want to see _movie_name_ at a _object_location_type_.<eos>
