@@ -6,7 +6,7 @@ import torch
 
 class Datasets():
     
-    def __init__(self, train_path='train.csv', valid_path='validate.csv', emb_dim=100, tokenizer='nltk'):
+    def __init__(self, train_path='train.csv', valid_path='validate.csv', emb_dim=100, tokenizer='split'):
     
         if tokenizer == 'spacy':
             from spacy.symbols import ORTH

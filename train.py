@@ -114,11 +114,12 @@ if __name__ == '__main__':
 
     parser.add_argument('--max_sequence_length', type=int, default=10)
     parser.add_argument('--emb_dim' , type=int, default=100)
+    parser.add_argument('--tokenizer' , type=str, default='split')
     parser.add_argument('--slot_averaging' , type=str, default='micro')
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.001)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru')
     parser.add_argument('-hs', '--hidden_size', type=int, default=256)
@@ -137,7 +138,7 @@ if __name__ == '__main__':
     print(args)
     
     print('loading and embedding datasets')
-    datasets = Datasets(train_path=os.path.join(args.datadir,'train.csv'), valid_path=os.path.join(args.datadir, 'validate.csv'), emb_dim=100)
+    datasets = Datasets(train_path=os.path.join(args.datadir,'train.csv'), valid_path=os.path.join(args.datadir, 'validate.csv'), emb_dim=args.emb_dim, tokenizer='split')
     print('embedding the slots with %s averaging' %args.slot_averaging)
     datasets.embed_slots()
     
