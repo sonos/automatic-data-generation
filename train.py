@@ -46,10 +46,11 @@ def train(model, datasets, args):
         model.train() # turn on training mode
         for batch in tqdm(train_iter): 
             step += 1
-            batch = to_device(batch)
+            opt.zero_grad()
+
             x = batch.delexicalised
             y = batch.intent - 1
-            opt.zero_grad()
+            x, y = to_device(x), to_device(y) 
             
             logp, mean, logv, z = model(x)
             
@@ -78,9 +79,9 @@ def train(model, datasets, args):
 
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
-            batch = to_device(batch)
             x = batch.delexicalised
             y = batch.intent - 1
+            x, y = to_device(x), to_device(y) 
             
             logp, mean, logv, z = model(x)
             

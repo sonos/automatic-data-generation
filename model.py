@@ -120,6 +120,8 @@ class SentenceVAE(nn.Module):
         else:
             batch_size = z.size(0)
 
+        z = to_device(z)
+            
         hidden = self.latent2hidden(z)
 
         if self.bidirectional or self.num_layers > 1:
@@ -144,7 +146,7 @@ class SentenceVAE(nn.Module):
                 #input_sequence = torch.Tensor(batch_size).fill_(sos_idx).long()
                 input_sequence = torch.randint(0, self.vocab_size, (batch_size,))
 
-            input_sequence = input_sequence.unsqueeze(1)
+            input_sequence = to_device(input_sequence.unsqueeze(1))
 
             input_embedding = self.embedding(input_sequence).view(-1, batch_size, self.embedding_size)
     
