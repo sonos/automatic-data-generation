@@ -24,6 +24,8 @@ class SentenceVAE(nn.Module):
         self.num_layers = num_layers
         self.hidden_size = hidden_size
 
+        self.vocab_size = vocab_size
+        self.embedding_size = embedding_size
         self.embedding = nn.Embedding(vocab_size, embedding_size)
         self.word_dropout_rate = word_dropout
         self.embedding_dropout = nn.Dropout(p=embedding_dropout)
@@ -40,7 +42,7 @@ class SentenceVAE(nn.Module):
         self.encoder_rnn = rnn(embedding_size, hidden_size, num_layers=num_layers, bidirectional=self.bidirectional, batch_first=False)
         self.decoder_rnn = rnn(embedding_size, hidden_size, num_layers=num_layers, bidirectional=self.bidirectional, batch_first=False)
 
-        self.hidden_factor = 1 #(2 if bidirectional else 1) * num_layers
+        self.hidden_factor = (2 if bidirectional else 1) * num_layers
 
         self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, latent_size)
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, latent_size)
@@ -50,19 +52,17 @@ class SentenceVAE(nn.Module):
     def forward(self, input_sequence):
 
         batch_size = input_sequence.size(1)
-        #sorted_lengths, sorted_idx = torch.sort(length, descending=True)
-        #input_sequence = input_sequence[sorted_idx]
 
         # ENCODER
         input_embedding = self.embedding(input_sequence)
 
         _, hidden = self.encoder_rnn(input_embedding)
 
-#        if self.bidirectional or self.num_layers > 1:
-#            # flatten hidden state
-#            hidden = hidden.view(batch_size, self.hidden_size*self.hidden_factor)
-#        else:
-#            hidden = hidden.squeeze()
+        if self.bidirectional or self.num_layers > 1:
+            # flatten hidden state
+            hidden = hidden.view(batch_size, self.hidden_size*self.hidden_factor)
+        else:
+            hidden = hidden.squeeze()
 
         # REPARAMETERIZATION
         mean = self.hidden2mean(hidden)
@@ -75,22 +75,22 @@ class SentenceVAE(nn.Module):
         # DECODER
         hidden = self.latent2hidden(z)
 
-#        if self.bidirectional or self.num_layers > 1:
-#            # unflatten hidden state
-#            hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
-#        else:
-#            hidden = hidden.unsqueeze(0)
+        if self.bidirectional or self.num_layers > 1:
+            # unflatten hidden state
+            hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
+        else:
+            hidden = hidden.unsqueeze(0)
 
         # decoder input
-#        if self.word_dropout_rate > 0:
-#            # randomly replace decoder input with <unk>
-#            prob = torch.rand(input_sequence.size())
-#            if torch.cuda.is_available():
-#                prob=prob.cuda()
-#            prob[(input_sequence.data - self.sos_idx) * (input_sequence.data - self.pad_idx) == 0] = 1
-#            decoder_input_sequence = input_sequence.clone()
-#            decoder_input_sequence[prob < self.word_dropout_rate] = self.unk_idx
-#            input_embedding = self.embedding(decoder_input_sequence)
+        if self.word_dropout_rate > 0:
+            # randomly replace decoder input with <unk>
+            prob = torch.rand(input_sequence.size())
+            if torch.cuda.is_available():
+                prob=prob.cuda()
+            prob[(input_sequence.data - self.sos_idx) * (input_sequence.data - self.pad_idx) == 0] = 1
+            decoder_input_sequence = input_sequence.clone()
+            decoder_input_sequence[prob < self.word_dropout_rate] = self.unk_idx
+            input_embedding = self.embedding(decoder_input_sequence)
         input_embedding = self.embedding_dropout(input_embedding)
         #packed_input = rnn_utils.pack_padded_sequence(input_embedding, sorted_lengths.data.tolist(), batch_first=True)
 
@@ -112,7 +112,7 @@ class SentenceVAE(nn.Module):
         return logp, mean, logv, z
 
 
-    def inference(self, n=4, z=None):
+    def inference(self, n=10, z=None):
 
         if z is None:
             batch_size = n
@@ -125,8 +125,8 @@ class SentenceVAE(nn.Module):
         if self.bidirectional or self.num_layers > 1:
             # unflatten hidden state
             hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
-
-        hidden = hidden.unsqueeze(0)
+        else:
+            hidden = hidden.unsqueeze(0)
 
         # required for dynamic stopping of sentence generation
         sequence_idx = torch.arange(0, batch_size, out=self.tensor()).long() # all idx of batch
@@ -141,12 +141,13 @@ class SentenceVAE(nn.Module):
         while(t<self.max_sequence_length and len(running_seqs)>0):
 
             if t == 0:
-                input_sequence = torch.Tensor(batch_size).fill_(self.sos_idx).long()
+                #input_sequence = torch.Tensor(batch_size).fill_(sos_idx).long()
+                input_sequence = torch.randint(0, self.vocab_size, (batch_size,))
 
             input_sequence = input_sequence.unsqueeze(1)
 
-            input_embedding = self.embedding(input_sequence)
-
+            input_embedding = self.embedding(input_sequence).view(-1, batch_size, self.embedding_size)
+    
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
             logits = self.outputs2vocab(output)

@@ -17,10 +17,6 @@ def kl_anneal_function(anneal_function, step, k, x0):
         return min(1, step/x0)
 
 def loss_fn(logp, target, mean, logv, anneal_function, step, k, x0):
-    # cut-off unnecessary padding from target, and flatten
-    #target = target[:, :torch.max(length).data[0]].contiguous().view(-1)
-    #logp = logp.view(-1, logp.size(2))
-    #print(target.size(), logp.size())
     
     target = target.view(-1)
     logp = logp.view(-1, logp.size(2))
@@ -104,18 +100,19 @@ def train(model, datasets, args):
         KL_val_loss  = KL_val_loss / len(datasets.valid)
         
         print('Epoch: {}'.format(epoch, epoch_loss, val_loss))
-        print('Training :  NLL loss : {:.4f}, KL loss : {:.4f}'.format(NLL_epoch_loss, KL_epoch_loss))
-        print('Valid    :  NLL loss : {:.4f}, KL loss : {:.4f}'.format(NLL_val_loss, KL_val_loss))
+        print('Training :  NLL loss : {:.6f}, KL loss : {:.6f}'.format(NLL_epoch_loss, KL_epoch_loss))
+        print('Valid    :  NLL loss : {:.6f}, KL loss : {:.6f}'.format(NLL_val_loss, KL_val_loss))
 
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str, default='./data')
-    parser.add_argument('--savedir', type=str, default='./pretrained')
+    parser.add_argument('--load_model', type=str, default=None)
+    parser.add_argument('--save_model', type=str, default=None)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--n_generated', type=int, default=5)
 
-    parser.add_argument('--max_sequence_length', type=int, default=60)
+    parser.add_argument('--max_sequence_length', type=int, default=10)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--slot_averaging' , type=str, default='micro')
 
@@ -129,7 +126,7 @@ if __name__ == '__main__':
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0)
-    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
+    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic')
     parser.add_argument('-k', '--k', type=float, default=0.0025)
@@ -143,12 +140,24 @@ if __name__ == '__main__':
     datasets = Datasets(train_path=os.path.join(args.datadir,'train.csv'), valid_path=os.path.join(args.datadir, 'validate.csv'), emb_dim=100)
     print('embedding the slots with %s averaging' %args.slot_averaging)
     datasets.embed_slots()
-    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=datasets.TEXT.vocab.stoi['<pad>'])
+    
+    vocab = datasets.DELEX.vocab
+    i2w = vocab.itos
+    w2i = vocab.stoi
+    sos_idx = w2i['#']
+    eos_idx = w2i['.']
+    pad_idx = w2i['<pad>']
+    unk_idx = w2i['<unk>']
+    
+    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
 
     model = SentenceVAE(
-        vocab_size=len(datasets.TEXT.vocab.itos),
+        vocab_size=len(i2w),
         max_sequence_length=args.max_sequence_length,
-        eos_idx=datasets.TEXT.vocab.stoi['.'],
+        sos_idx=sos_idx,
+        eos_idx=eos_idx,
+        pad_idx=pad_idx,
+        unk_idx=unk_idx,
         embedding_size=args.emb_dim,
         rnn_type=args.rnn_type,
         hidden_size=args.hidden_size,
@@ -158,31 +167,23 @@ if __name__ == '__main__':
         num_layers=args.num_layers,
         bidirectional=args.bidirectional
         )
-    
-#    if args.device == 'cuda' and not torch.cuda.is_available():
-#        args.device = 'cpu'
-        
+    model.embedding.weight.data.copy_(vocab.vectors)
     model = to_device(model)
-        
     print(model)
+    
+    if args.load_model is not None:
+        model.load_state_dict(torch.load(args.load_model))
     
     train(model, datasets, args)
     
+    if args.save_model is not None:
+        torch.save(model.state_dict(), args.save_model)
         
     if args.n_generated>0:
     
         model.eval()
-        
-        i2w = datasets.DELEX.vocab.stoi
-        w2i = datasets.DELEX.vocab.itos
 
         samples, z = model.inference(n=args.n_generated)
         print('----------SAMPLES----------')
         print(*idx2word(samples, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
 
-        z1 = torch.randn([args.latent_size]).numpy()
-        z2 = torch.randn([args.latent_size]).numpy()
-        z = to_var(torch.from_numpy(interpolate(start=z1, end=z2, steps=8)).float())
-        samples, _ = model.inference(z=z)
-        print('-------INTERPOLATION-------')
-        print(*idx2word(samples, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')

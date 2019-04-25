@@ -16,7 +16,7 @@ def idx2word(idx, i2w, pad_idx):
 
             if word_id == pad_idx:
                 break
-            sent_str[i] += i2w[str(word_id)] + " "
+            sent_str[i] += i2w[word_id] + " "
 
         sent_str[i] = sent_str[i].strip()
 
