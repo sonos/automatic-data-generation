@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from embedding import Datasets
-from model import SentenceVAE
+from model import VAE, CVAE
 from tqdm import tqdm
 import argparse
 import os
@@ -79,7 +79,7 @@ def train(model, datasets, args):
 
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
-            x = batch.utterance
+            x = getattr(batch, args.input_type)
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
@@ -112,6 +112,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_model', type=str, default=None)
     parser.add_argument('--n_generated', type=int, default=5)
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
+    parser.add_argument('--conditional', type=int, default=1)
 
     parser.add_argument('--max_sequence_length', type=int, default=10)
     parser.add_argument('--emb_dim' , type=int, default=100)
@@ -155,22 +156,42 @@ if __name__ == '__main__':
     
     NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
 
-    model = SentenceVAE(
-        vocab_size=len(i2w),
-        max_sequence_length=args.max_sequence_length,
-        sos_idx=sos_idx,
-        eos_idx=eos_idx,
-        pad_idx=pad_idx,
-        unk_idx=unk_idx,
-        embedding_size=args.emb_dim,
-        rnn_type=args.rnn_type,
-        hidden_size=args.hidden_size,
-        word_dropout=args.word_dropout,
-        embedding_dropout=args.embedding_dropout,
-        latent_size=args.latent_size,
-        num_layers=args.num_layers,
-        bidirectional=args.bidirectional
+    if args.conditional:
+        model = CVAE(
+            vocab_size=len(i2w),
+            max_sequence_length=args.max_sequence_length,
+            sos_idx=sos_idx,
+            eos_idx=eos_idx,
+            pad_idx=pad_idx,
+            unk_idx=unk_idx,
+            embedding_size=args.emb_dim,
+            rnn_type=args.rnn_type,
+            hidden_size=args.hidden_size,
+            word_dropout=args.word_dropout,
+            embedding_dropout=args.embedding_dropout,
+            z_size=args.latent_size,
+            n_classes=7,
+            num_layers=args.num_layers,
+            bidirectional=args.bidirectional
         )
+    else:
+        model = VAE(
+            vocab_size=len(i2w),
+            max_sequence_length=args.max_sequence_length,
+            sos_idx=sos_idx,
+            eos_idx=eos_idx,
+            pad_idx=pad_idx,
+            unk_idx=unk_idx,
+            embedding_size=args.emb_dim,
+            rnn_type=args.rnn_type,
+            hidden_size=args.hidden_size,
+            word_dropout=args.word_dropout,
+            embedding_dropout=args.embedding_dropout,
+            latent_size=args.latent_size,
+            num_layers=args.num_layers,
+            bidirectional=args.bidirectional
+        )
+        
     model.embedding.weight.data.copy_(vocab.vectors)
     model = to_device(model)
     print(model)
