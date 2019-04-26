@@ -119,17 +119,23 @@ class CVAE(nn.Module):
         return logp, mean, logv, z
 
 
-    def inference(self, n=10, z=None):
+    def inference(self, n=10, z=None, y_onehot=None):
 
         if z is None:
             batch_size = n
-            z = torch.randn(batch_size, self.latent_size)
+            z = torch.randn(batch_size, self.z_size)
         else:
             batch_size = z.size(0)
 
-        z = to_device(z)
+        if y_onehot is None:
+            y = torch.LongTensor(batch_size,1).random_() % self.n_classes
+            y_onehot = torch.FloatTensor(batch_size, self.n_classes)
+            y_onehot.zero_()
+            y_onehot.scatter_(1, y, 1)
+
+        latent = to_device(torch.cat((z, y_onehot), dim=1))
             
-        hidden = self.latent2hidden(z)
+        hidden = self.latent2hidden(latent)
 
         if self.bidirectional or self.num_layers > 1:
             # unflatten hidden state
