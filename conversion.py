@@ -29,8 +29,8 @@ def convert(datadir, outdir):
             for sentence in data:
                 utterance = ''
                 labelling = ''
-                #delexicalised = ''
-                delexicalised = '#'
+                delexicalised = ''
+                #delexicalised = '# '
 
                 for group in sentence['data']:
                     

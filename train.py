@@ -15,14 +15,14 @@ def kl_anneal_function(anneal_function, step, k, x0):
         return float(1/(1+np.exp(-k*(step-x0))))
     elif anneal_function == 'linear':
         return min(1, step/x0)
-
+    
 def loss_fn(logp, target, mean, logv, anneal_function, step, k, x0):
     
     target = target.view(-1)
     logp = logp.view(-1, logp.size(2))
     
     # Negative Log Likelihood
-    NLL_loss = F.nll_loss(logp, target)
+    NLL_loss = NLL(logp, target)
 
     # KL Divergence
     KL_loss = -0.5 * torch.sum(1 + logv - mean.pow(2) - logv.exp())
@@ -35,6 +35,7 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
 
     step = 0
     
@@ -53,6 +54,15 @@ def train(model, datasets, args):
             x, y = to_device(x), to_device(y) 
             
             logp, mean, logv, z = model(x)
+
+            # to inspect input and output
+            if epoch>0:
+                x_sentences = x.transpose(0,1)[:3]
+                print(*idx2word(x_sentences, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
+                _, y_sentences = torch.topk(logp, 1, dim=-1)
+                y_sentences = y_sentences[:3]
+                print(*idx2word(y_sentences, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
+                print('\n')
             
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
@@ -120,7 +130,7 @@ if __name__ == '__main__':
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
-    parser.add_argument('-bs', '--batch_size', type=int, default=32)
+    parser.add_argument('-bs', '--batch_size', type=int, default=64)
     parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
@@ -210,5 +220,6 @@ if __name__ == '__main__':
 
         samples, z = model.inference(n=args.n_generated)
         print('----------SAMPLES----------')
+        print(samples)
         print(*idx2word(samples, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
 

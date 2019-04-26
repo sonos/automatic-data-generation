@@ -103,18 +103,17 @@ class CVAE(nn.Module):
 
         # decoder forward pass
         outputs, _ = self.decoder_rnn(input_embedding, hidden)
-
         # process outputs
         #padded_outputs = rnn_utils.pad_packed_sequence(outputs, batch_first=True)[0]
         #padded_outputs = padded_outputs.contiguous()
         #_,reversed_idx = torch.sort(sorted_idx)
         #padded_outputs = padded_outputs[reversed_idx]
-        padded_outputs = outputs
-        b,s,_ = padded_outputs.size()
+        # padded_outputs = outputs
+        seqlen, bs, hs = outputs.size()
 
         # project outputs to vocab
-        logp = nn.functional.log_softmax(self.outputs2vocab(padded_outputs.view(-1, padded_outputs.size(2))), dim=-1)
-        logp = logp.view(b, s, self.embedding.num_embeddings)
+        logp = nn.functional.log_softmax(self.outputs2vocab(outputs.view(-1, hs)), dim=-1)
+        logp = logp.view(bs, seqlen, self.embedding.num_embeddings)
 
         return logp, mean, logv, z
 
@@ -166,6 +165,7 @@ class CVAE(nn.Module):
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
             logits = self.outputs2vocab(output)
+            #logits[:,:,input_sequence] = -1000
 
             input_sequence = self._sample(logits)
 
