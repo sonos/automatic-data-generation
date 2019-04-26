@@ -48,7 +48,7 @@ def train(model, datasets, args):
             step += 1
             opt.zero_grad()
 
-            x = batch.delexicalised
+            x = getattr(batch, args.input_type)
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
@@ -79,7 +79,7 @@ def train(model, datasets, args):
 
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
-            x = batch.delexicalised
+            x = batch.utterance
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
@@ -110,19 +110,19 @@ if __name__ == '__main__':
     parser.add_argument('--datadir', type=str, default='./data')
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default=None)
-    parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--n_generated', type=int, default=5)
+    parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
 
     parser.add_argument('--max_sequence_length', type=int, default=10)
     parser.add_argument('--emb_dim' , type=int, default=100)
-    parser.add_argument('--tokenizer' , type=str, default='split')
-    parser.add_argument('--slot_averaging' , type=str, default='micro')
+    parser.add_argument('--tokenizer' , type=str, default='split', choices=['split', 'nltk', 'spacy'])
+    parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
     parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
 
-    parser.add_argument('-rnn', '--rnn_type', type=str, default='gru')
+    parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
     parser.add_argument('-hs', '--hidden_size', type=int, default=256)
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
@@ -130,7 +130,7 @@ if __name__ == '__main__':
     parser.add_argument('-wd', '--word_dropout', type=float, default=0)
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0)
 
-    parser.add_argument('-af', '--anneal_function', type=str, default='logistic')
+    parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
     parser.add_argument('-k', '--k', type=float, default=0.0025)
     parser.add_argument('-x0', '--x0', type=int, default=2500)
 
@@ -140,10 +140,12 @@ if __name__ == '__main__':
     
     print('loading and embedding datasets')
     datasets = Datasets(train_path=os.path.join(args.datadir,'train.csv'), valid_path=os.path.join(args.datadir, 'validate.csv'), emb_dim=args.emb_dim, tokenizer='split')
-    print('embedding the slots with %s averaging' %args.slot_averaging)
-    datasets.embed_slots()
+
+    if args.input_type=='utterance':
+        print('embedding the slots with %s averaging' %args.slot_averaging)
+        datasets.embed_slots(args.slot_averaging)
     
-    vocab = datasets.DELEX.vocab
+    vocab = datasets.TEXT.vocab if args.input_type=='utterance' else datasets.DELEX.vocab
     i2w = vocab.itos
     w2i = vocab.stoi
     sos_idx = w2i['#']

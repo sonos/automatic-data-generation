@@ -46,6 +46,9 @@ class Datasets():
         Create embeddings for the 
         '''
 
+        if averaging ==  'none':
+            return
+
         with open(slotdic_path, 'rb') as f:
             slotdic = pickle.load(f)
 
