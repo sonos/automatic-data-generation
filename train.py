@@ -72,7 +72,7 @@ def train(model, datasets, args):
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
 
-            NMI = normalized_mutual_info_score(y.detach().numpy(), y_onehot.max(1)[1].numpy())
+            NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), y_onehot.cpu().max(1)[1].numpy())
 
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
@@ -107,7 +107,7 @@ def train(model, datasets, args):
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
 
-            NMI = normalized_mutual_info_score(y.detach().numpy(), y_onehot.max(1)[1].numpy())
+            NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), y_onehot.cpu().max(1)[1].numpy())
 
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
