@@ -35,7 +35,7 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
-    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
+    NLL = torch.nn.NLLLoss(size_average=False)#, ignore_index=pad_idx)
 
     step = 0
     
@@ -56,12 +56,14 @@ def train(model, datasets, args):
             logp, mean, logv, z = model(x)
 
             # to inspect input and output
-            if epoch>0:
+            if epoch > 1:
                 x_sentences = x.transpose(0,1)[:3]
-                print(*idx2word(x_sentences, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
+                print('\nInput sentences :')
+                print(*idx2word(x_sentences, i2w=i2w, pad_idx=pad_idx), sep='\n')
                 _, y_sentences = torch.topk(logp, 1, dim=-1)
-                y_sentences = y_sentences[:3]
-                print(*idx2word(y_sentences, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
+                y_sentences = y_sentences.transpose(0,1)[:3]
+                print('\nOutput sentences : ')
+                print(*idx2word(y_sentences, i2w=i2w, pad_idx=pad_idx), sep='\n')
                 print('\n')
             
             # loss calculation
@@ -221,5 +223,4 @@ if __name__ == '__main__':
         samples, z = model.inference(n=args.n_generated)
         print('----------SAMPLES----------')
         print(samples)
-        print(*idx2word(samples, i2w=i2w, pad_idx=w2i['<pad>']), sep='\n')
-
+        print(*idx2word(samples, i2w=i2w, pad_idx=pad_idx), sep='\n')
