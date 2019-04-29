@@ -129,7 +129,7 @@ def train(model, datasets, args):
         KL_val_loss  = KL_val_loss / len(datasets.valid)
         NMI_val  = NMI_val / len(datasets.valid)
         
-        print('Epoch: train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
+        print('Epoch {} : train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
         print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, NMI_tr))
         print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, NMI_val))
 
