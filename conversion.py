@@ -59,7 +59,7 @@ def convert(datadir, outdir):
                         delexicalised += words
                         labelling += '0 '
                   
-                if delexicalised[-1] != '.':
+                if delexicalised[-1] not in ['.', '?', '!']:
                     delexicalised += '.'
                 #delexicalised += '<eos>'
                         

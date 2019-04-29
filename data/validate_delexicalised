@@ -50,7 +50,7 @@ Play the _sort_ _artist_ on _service_.
 play some _year_ _artist_.
 Play the _sort_ _artist_.
 Play music from _artist_.
-Can you play _artist_ on _service_?.
+Can you play _artist_ on _service_?
 Play a _artist_ _music_item_.
 I want to hear _artist_ on _service_ , play the _music_item_ _track_.
 Play some _music_item_ music from _artist_.
@@ -68,7 +68,7 @@ Play something on _service_.
 Play music by _artist_.
 play some _artist_.
 Play music by _artist_.
-Can you play _sort_ _service_ by _artist_?.
+Can you play _sort_ _service_ by _artist_?
 play the _sort_ _artist_ _music_item_.
 Let's hear stuff from _artist_.
 Play a _sort_ _music_item_ from the _year_ by _artist_.
@@ -204,69 +204,69 @@ Get me the _object_name_ _object_type_.
 Please find me the _object_type_, _object_name_.
 Wish to see the _object_type_ with the name _object_name_.
 Looking for a _object_type_ called _object_name_.
-Can you find me the work, _object_name_?.
+Can you find me the work, _object_name_?
 Please get me _object_name_ _object_type_.
 Need a creative work called _object_name_.
 search for the _object_type_ for _object_name_.
 Looking for a creative work called _object_name_.
 Find the _object_type_ _object_name_.
-Can you please find me the _object_type_ _object_name_?.
-Can you find me _object_name_ _object_type_?.
+Can you please find me the _object_type_ _object_name_?
+Can you find me _object_name_ _object_type_?
 Please fine me the _object_type_, _object_name_.
 Please look up the work, _object_name_.
 Please help me find the _object_name_ _object_type_.
 Please help me find, _object_name_.
 Please look up the _object_type_ _object_name_.
-Can you find me, _object_name_?.
+Can you find me, _object_name_?
 Please search for _object_name_.
-Can you get me the _object_name_ _object_type_?.
+Can you get me the _object_name_ _object_type_?
 Please look up the _object_type_ _object_name_.
 Please search for the _object_type_, _object_name_.
 Please find me _object_name_.
 Get me the _object_name_ _object_type_.
 Looking for a _object_type_ called _object_name_.
-Can you search the _object_name_ _object_type_?.
+Can you search the _object_name_ _object_type_?
 look for the _object_type_ _object_name_ .
 Find me a _object_type_ called _object_name_.
 Search for _object_name_.
 Look for the _object_type_ _object_name_.
-Can you find me _object_name_?.
+Can you find me _object_name_?
 Please help me search the _object_name_ _object_type_.
 Get me the _object_name_ _object_type_.
-Can you find me the work titled _object_name_?.
+Can you find me the work titled _object_name_?
 Please search for the _object_type_ titled _object_name_.
-Could you locate the _object_name_ _object_type_?.
+Could you locate the _object_name_ _object_type_?
 get me the _object_type_ of _object_name_.
 Please search the _object_name_ _object_type_.
-Can you find me the _object_name_ _object_type_?.
+Can you find me the _object_name_ _object_type_?
 Could you find the _object_type_ _object_name_.
 Search for the _object_type_, _object_name_.
 Please look up _object_name_ _object_type_.
 Please get me the _object_name_ _object_type_.
-Can you look up the _object_name_ _object_type_?.
+Can you look up the _object_name_ _object_type_?
 Search for _object_name_.
 Find the creative work _object_name_.
 Need the creative work called _object_name_.
-Can you find me the _object_name_ _object_type_?.
-Can you please find me the _object_name_ _object_type_?.
-Can you find me the work, _object_name_?.
+Can you find me the _object_name_ _object_type_?
+Can you please find me the _object_name_ _object_type_?
+Can you find me the work, _object_name_?
 Please look up and find me _object_name_.
 Please search for _object_name_.
 Please search the _object_type_ _object_name_.
 Find me the _object_type_ with the name _object_name_â¦.
 Looking for a _object_type_ with the title of _object_name_.
-Can you find the _object_name_ _object_type_?.
-Can you find me the _object_name_ _object_type_?.
+Can you find the _object_name_ _object_type_?
+Can you find me the _object_name_ _object_type_?
 Please find me the _object_name_ _object_type_.
 Look for the _object_type_ _object_name_.
 Please find me the _object_name_.
-Can you get me the _object_name_ _object_type_?.
+Can you get me the _object_name_ _object_type_?
 Find me the _object_type_ _object_name_.
 Please get me _object_name_ _object_type_.
 Find the _object_type_ _object_name_.
 Am looking for a _object_type_ with the title _object_name_.
 Look for the _object_type_ _object_name_.
-Can you search the _object_type_, _object_name_?.
+Can you search the _object_type_, _object_name_?
 Looking for a _object_type_ with the title _object_name_.
 Please find me the _object_name_ _object_type_.
 Look for the _object_type_ _object_name_.
@@ -275,12 +275,12 @@ Find _object_name_.
 Find me the _object_type_ _object_name_.
 Please search for the _object_type_, _object_name_.
 Find a creative work called _object_name_.
-Looking for the _object_type_ with the name of _object_name_?.
+Looking for the _object_type_ with the name of _object_name_?
 Look for the _object_type_ _object_name_.
 Find the _object_type_ _object_name_.
 Please find me the _object_name_ _object_type_.
 Find the _object_type_ _object_name_.
-Can you please get me the _object_type_ _object_name_?.
+Can you please get me the _object_type_ _object_name_?
 Please look up the _object_type_, _object_name_.
 Please find me the _object_type_ titled _object_name_.
 Find the creative work _object_name_.
@@ -293,87 +293,87 @@ Can you find the creative works associated with _object_name_.
 Please get me the _object_name_ _object_type_.
 Please search the _object_name_ _object_type_.
 Please look up the _object_name_ _object_type_.
-Can you find me _object_name_ _object_type_?.
+Can you find me _object_name_ _object_type_?
 I wish to watch _object_name_ _object_type_, please search.
-Can you find me the _object_name_ _object_type_?.
+Can you find me the _object_name_ _object_type_?
 Please find me the work, _object_name_!.
 Search for the _object_type_ _object_name_.
-What will the weather be _spatial_relation_ from _current_location_?.
-Will there be _condition_description_ in _geographic_poi_?.
+What will the weather be _spatial_relation_ from _current_location_?
+Will there be _condition_description_ in _geographic_poi_?
 Tell me the weather forecast for _city_.
-Is there a _condition_description_ _timerange_ in _state_?.
-What will the weather be in _geographic_poi_ on _timerange_?.
+Is there a _condition_description_ _timerange_ in _state_?
+What will the weather be in _geographic_poi_ on _timerange_?
 Weather _timerange_ in _country_.
 When will it be _condition_temperature_ _current_location_.
-What will the weather be _timerange_ in _country_?.
-What kind of weather will be in _country_ _timerange_?.
+What will the weather be _timerange_ in _country_?
+What kind of weather will be in _country_ _timerange_?
 _condition_description_ in _city_ _state_.
-What's the weather going to be in _state_?.
+What's the weather going to be in _state_?
 _condition_description_ _spatial_relation_ from _city_ on _timerange_.
 What is the forecast for _state_ at _city_ during the _condition_description_.
-What will the weather be in _state_?.
+What will the weather be in _state_?
 what is the forecast starting _timerange_ _spatial_relation_ the state of _state_.
-Will it be _condition_description_ at _timerange_ in _city_ _country_?.
+Will it be _condition_description_ at _timerange_ in _city_ _country_?
 Check the forecast for _state_.
 Will it be _condition_temperature_ in _country_ at _timerange_.
 Let me know the weather forecast around _timerange_ _spatial_relation_ from _current_location_ in _geographic_poi_.
-Will it be _condition_description_ in the _geographic_poi_?.
+Will it be _condition_description_ in the _geographic_poi_?
 Tell me if it will be _condition_description_ _timerange_ in _city_, _state_.
-What will the weather be _timerange_ _spatial_relation_ _country_?.
+What will the weather be _timerange_ _spatial_relation_ _country_?
 Will there be _condition_description_ on _timerange_ in _country_.
 Will it be _condition_temperature_ _current_location_ _timerange_.
-What's the weather going to be in _city_?.
-What will the weather be in _city_ on _timerange_?.
-What will the weather be in _state_?.
+What's the weather going to be in _city_?
+What will the weather be in _city_ on _timerange_?
+What will the weather be in _state_?
 I need to know the weather for _timerange_ in _country_ when I go to _city_.
 what is the forecast for _geographic_poi_ _timerange_ and _spatial_relation_.
-What kind of weather is forecast around _timerange__spatial_relation_ _country_?.
-Will it be _condition_temperature_ in _city_?.
-Will it be _condition_temperature_ in _geographic_poi_?.
-Will it be _condition_temperature_ at _timerange_ in _city_ _country_?.
-What is the weather going to be like in _state_ on _timerange_?.
+What kind of weather is forecast around _timerange__spatial_relation_ _country_?
+Will it be _condition_temperature_ in _city_?
+Will it be _condition_temperature_ in _geographic_poi_?
+Will it be _condition_temperature_ at _timerange_ in _city_ _country_?
+What is the weather going to be like in _state_ on _timerange_?
 Weather in _city_ _state_.
 When is _timerange_ for _state_.
-What will the weather be _spatial_relation_ from _current_location_ on _timerange_?.
+What will the weather be _spatial_relation_ from _current_location_ on _timerange_?
 what is the forecast for _city_ in _country_.
 Tell me the weather forecast _current_location_.
 What is the weather forecast _spatial_relation_ _city_.
-What will the weather be in _timerange_ in _city_?.
+What will the weather be in _timerange_ in _city_?
 Will it be _condition_temperature_ _timerange_ in _city_ _state_.
 What is the weather forecast for _country_.
-What's the weather in _city_?.
-What will the weather be in _state_ on _timerange_?.
+What's the weather in _city_?
+What will the weather be in _state_ on _timerange_?
 Will the _condition_description_ be out _timerange_ in _city_, _country_.
 what is the weather _current_location_.
-What will the weather be _timerange_ in _country_?.
-What kind of weather is forecast in _state_ _timerange_?.
+What will the weather be _timerange_ in _country_?
+What kind of weather is forecast in _state_ _timerange_?
 what is the forecast for _state_ for _condition_temperature_ .
 how _condition_temperature_ will it be _current_location_ _timerange_ .
 what is the forecast for _condition_temperature_ weather at _geographic_poi_.
 what is the _condition_description_ forecast for the _current_location_ starting on _timerange_.
 what is the forecast for _country_  at _city_ on _timerange_.
-What will the _condition_description_ be in the _current_location_ at _timerange_?.
+What will the _condition_description_ be in the _current_location_ at _timerange_?
 what is the forecast in _city_ and _spatial_relation_.
 What is the weather going to be like in _city_ _state_ _timerange_.
-What's the weather forecast for _geographic_poi_ _spatial_relation_ _timerange_?.
+What's the weather forecast for _geographic_poi_ _spatial_relation_ _timerange_?
 what is the forecast for beginning on _timerange_ for _city_.
 what's the forecast for _timerange_ in _city_ _country_.
 Will there be a _condition_description_ _timerange_ in _city_, _state_.
-Will it be _condition_temperature_ in the _state_ on _timerange_?.
-What will the weather be _current_location_ on _timerange_?.
+Will it be _condition_temperature_ in the _state_ on _timerange_?
+What will the weather be _current_location_ on _timerange_?
 what is the forecast for _condition_temperature_ temps beginning on _timerange_ _current_location_.
 What's the weather like in _city_, _state_.
 what is the forecast for _current_location_ for _condition_description_ conditions at _timerange_.
-Will there be a _condition_description_ in _city_ at _timerange_?.
+Will there be a _condition_description_ in _city_ at _timerange_?
 what is the _condition_temperature_ condition of our _current_location_ for _timerange_.
-What will the weather be in _city_ on _timerange_?.
-Will it be _condition_temperature_ _timerange_ in _geographic_poi_?.
+What will the weather be in _city_ on _timerange_?
+Will it be _condition_temperature_ _timerange_ in _geographic_poi_?
 what is the forecast in _city_ in _state_ starting at _timerange_ .
 what is the forecast in _state_ for _city_.
 what is the forecast for _country_.
 Need weather for _geographic_poi_ to see if it will be _condition_description_ today.
 Weather in _city_ _country_ on _timerange_.
-What's the _condition_description_ _current_location_ right _timerange_?.
+What's the _condition_description_ _current_location_ right _timerange_?
 How's the weather at _geographic_poi_ and _spatial_relation_ right _timerange_.
 what is the forecast for _city_ for _condition_temperature_ weather.
 _condition_description_ on _timerange_ in _geographic_poi_  and _spatial_relation_ places.
@@ -381,23 +381,23 @@ I need the weather in _city_.
 Tell me the forecast for _timerange_ in _geographic_poi_.
 Tell me the weather forecast for _state_ on _timerange_.
 what is the forecast for _geographic_poi_.
-Will it be _condition_temperature_ in _state_ at _timerange_?.
+Will it be _condition_temperature_ in _state_ at _timerange_?
 Weather _timerange_  in _country_.
 What is the forecast for this _timerange_ for _condition_description_ conditions in _city_ _country_.
 how's the weather _current_location_ at _timerange_.
 will _geographic_poi_ be _condition_temperature_ at _timerange_.
 what is the forecast for starting at _timerange_ in _city_ for _condition_temperature_ weather.
-What's the weather in _city_?.
+What's the weather in _city_?
 What is the _condition_description_ forecast for _timerange_ in _country_.
 Tell me the weather forecast _current_location_.
-Will there be a _condition_description_ in _state_ _timerange_ ?.
-How much _condition_temperature_ will it be _spatial_relation_ from _state_ around _timerange_?.
-Will it be _condition_temperature_ _timerange_ in _city_ _country_?.
-What will the weather be in _geographic_poi_ on _timerange_?.
-Will it be _condition_description_ in _city_?.
-Will it be _condition_temperature_ in the _country_ on _timerange_?.
+Will there be a _condition_description_ in _state_ _timerange_ ?
+How much _condition_temperature_ will it be _spatial_relation_ from _state_ around _timerange_?
+Will it be _condition_temperature_ _timerange_ in _city_ _country_?
+What will the weather be in _geographic_poi_ on _timerange_?
+Will it be _condition_description_ in _city_?
+Will it be _condition_temperature_ in the _country_ on _timerange_?
 Where is _country_ located.
-What will the weather be in _city_?.
+What will the weather be in _city_?
 Book a reservation for _party_size_description_.
 Book a reservation for a _restaurant_type_ _spatial_relation_ from _state_.
 I would like to book a _restaurant_type_ in _country_ that is _spatial_relation_ for _party_size_description_.
@@ -449,7 +449,7 @@ I want to book _restaurant_name_ in _state_ for _party_size_number_ people.
 Book a reservation for _party_size_number_ at _restaurant_name_ in _city_.
 book a table at a _restaurant_name_.
 book spot for _party_size_description_ in _country_ at _timerange_.
-Can you book me a table at _restaurant_name_ in _city_ , _state_?.
+Can you book me a table at _restaurant_name_ in _city_ , _state_?
 Book me a table for _party_size_number_ _timerange_ at _restaurant_name_.
 book spot for _party_size_number_  at _timerange_ at a _restaurant_type_ in _state_ that serves _served_dish_.
 I want to book a _restaurant_type_ _spatial_relation_ in _city_ for _party_size_number_ people.
@@ -521,7 +521,7 @@ Add the _music_item_ _artist_ to the _playlist_ playlist.
 Add _entity_name_ to _playlist_.
 Add _artist_ to _playlist_owner_ _playlist_ playlist.
 Put _artist_ onto the _playlist_ playlist.
-Can you add _artist_ to _playlist_owner_ _playlist_ playlist?.
+Can you add _artist_ to _playlist_owner_ _playlist_ playlist?
 Put _artist_'s _music_item_ onto _playlist_.
 Add _artist_ to _playlist_ playlist.
 Add _entity_name_ to _playlist_owner_ _playlist_ playlist.
@@ -537,7 +537,7 @@ Add the _music_item_ to the _playlist_ playlist.
 Add a _music_item_ to _playlist_.
 add _music_item_ in _playlist_owner_
  playlist called _playlist_.
-Can you put this _music_item_ from _artist_ onto _playlist_owner_ _playlist_ playlist?.
+Can you put this _music_item_ from _artist_ onto _playlist_owner_ _playlist_ playlist?
 Add a _music_item_ to playlist _playlist_.
 Add _entity_name_ to _playlist_owner_ _playlist_ playlist.
 Add a _music_item_ to _playlist_.
@@ -545,18 +545,18 @@ Add the _artist_ _music_item_ to the _playlist_ playlist.
 Add the _music_item_ to _playlist_owner_ _playlist_ playlist.
 Add the _artist_ _music_item_ to the _playlist_ playlist.
 add _entity_name_ to _playlist_ playlist.
-Can I put this _music_item_ onto _playlist_owner_ _playlist_ playlist?.
+Can I put this _music_item_ onto _playlist_owner_ _playlist_ playlist?
 I'd like to add _artist_ onto the _playlist_ playlist.
 Add _artist_ to the _playlist_ soundtrack.
 Add the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist.
-Can you put the _music_item_ _artist_ onto the _playlist_ playlist?.
+Can you put the _music_item_ _artist_ onto the _playlist_ playlist?
 Add the _music_item_ to the _playlist_ playlist.
 add the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist.
 Add the _music_item_ to the _playlist_ playlist.
-For _playlist_owner_ _playlist_ can you add _artist_?.
+For _playlist_owner_ _playlist_ can you add _artist_?
 Add the _artist_ _music_item_ to the _playlist_ playlist.
 Add _artist_ to the _playlist_ playlist.
-Can you add _entity_name_ to the playlist called _playlist_?.
+Can you add _entity_name_ to the playlist called _playlist_?
 Add this _music_item_ to _playlist_.
 put the _music_item_ onto _playlist_.
 Add _artist_ music to _playlist_ playlist.
@@ -601,17 +601,17 @@ Add the _music_item_ to the _playlist_ playlist.
 Add the _music_item_ to _playlist_owner_ _playlist_ playlist.
 Is _movie_name_ playing .
 Is _movie_name_ playing.
-Is _movie_name_ playing at _timerange_?.
+Is _movie_name_ playing at _timerange_?
 What's the _object_type_.
 i want to see _movie_name_.
 when is _movie_name_ playing in this _object_location_type_.
-show me the _object_type_ for _movie_name_!.
+show me the _object_type_ for _movie_name_!
 Is _movie_name_ playing _timerange_.
 I want to see _movie_name_ at the _spatial_relation_ _object_location_type_.
 Where can I see _movie_name_.
 I need to find the _object_location_type_ showing _movie_name_ _spatial_relation_ to me.
 I want to see _movie_name_ at the _spatial_relation_ _object_location_type_.
-I want to see _movie_name_, when will it be showing?.
+I want to see _movie_name_, when will it be showing?
 Find the _object_type_ for _movie_name_ at _location_name_.
 What are the _object_type_ for my favorite _location_name_ .
 What are the _movie_type_ showing _spatial_relation_ .
@@ -647,7 +647,7 @@ What are the _object_type_ at _location_name_.
 I need _movie_type_ _spatial_relation_.
 Show the _object_type_ _spatial_relation_.
 where's the _spatial_relation_ _object_location_type_ showing foreign _movie_type_.
-What _movie_type_ are showing _timerange_ at the _spatial_relation_ _object_location_type_?.
+What _movie_type_ are showing _timerange_ at the _spatial_relation_ _object_location_type_?
 Is _movie_name_ playing.
 I need a list of _location_name_ _object_type_.
 When is _movie_name_ playing at the _spatial_relation_ _object_location_type_.
@@ -661,7 +661,7 @@ Is _movie_name_ showing at _location_name_.
 Find the _object_type_ for _location_name_.
 I want to see _movie_name_.
 Find the _object_type_ at _location_name_.
-Will _movie_name_ be playing at _timerange_?.
+Will _movie_name_ be playing at _timerange_?
 Show me the _object_type_ for _location_name_ for only _movie_type_.
 Find the _object_type_ for _movie_name_.
 Give me the _movie_type_ _spatial_relation_ .
@@ -677,9 +677,9 @@ show me the _object_type_ _spatial_relation_ .
 show me the _object_type_ for _movie_type_  _spatial_relation_.
 show the _object_type_ for _movie_type_ _spatial_relation_.
 Is _movie_name_ playing at _location_name_.
-Can you check the timings for _movie_name_?.
+Can you check the timings for _movie_name_?
 is _movie_name_ playing in any _object_location_type_.
-What _object_type_ will _movie_name_ be showing at my _object_location_type_?.
+What _object_type_ will _movie_name_ be showing at my _object_location_type_?
 Show the _movie_name__object_type_ at the  _spatial_relation_ _object_location_type_.
 what are some _spatial_relation_ _movie_type_ showing.
 _object_type_ _spatial_relation_ for _movie_type_.

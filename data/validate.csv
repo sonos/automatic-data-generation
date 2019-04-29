@@ -51,7 +51,7 @@ Play the top twenty Hisham Abbas on Youtube,0 B-sort I-sort 0 B-artist I-artist 
 play some seventies Filipp Kirkorow,0 B-year 0 B-artist I-artist ,play some _year_ _artist_.,PlayMusic
 Play the most popular Puretone,0 B-sort I-sort 0 B-artist ,Play the _sort_ _artist_.,PlayMusic
 Play music from E-type.,0 B-artist 0 ,Play music from _artist_.,PlayMusic
-Can you play A.j. Pero on Groove Shark?,0 B-artist I-artist 0 B-service I-service 0 ,Can you play _artist_ on _service_?.,PlayMusic
+Can you play A.j. Pero on Groove Shark?,0 B-artist I-artist 0 B-service I-service 0 ,Can you play _artist_ on _service_?,PlayMusic
 Play a Bob Burns song,0 B-artist I-artist 0 B-music_item ,Play a _artist_ _music_item_.,PlayMusic
 "I want to hear Leroi Moore on vimeo , play the song Chance Of A Lifetime.",0 B-artist I-artist 0 B-service 0 B-music_item 0 B-track I-track I-track I-track 0 ,"I want to hear _artist_ on _service_ , play the _music_item_ _track_.",PlayMusic
 Play some symphony music from David Lindley.,0 B-music_item 0 B-artist I-artist 0 ,Play some _music_item_ music from _artist_.,PlayMusic
@@ -69,7 +69,7 @@ Play something on Last Fm,0 B-service I-service ,Play something on _service_.,Pl
 Play music by Joy Nilo.,0 B-artist I-artist 0 ,Play music by _artist_.,PlayMusic
 play some Gary Lee Conner,0 B-artist I-artist I-artist ,play some _artist_.,PlayMusic
 Play music by Brian Chase.,0 B-artist I-artist 0 ,Play music by _artist_.,PlayMusic
-Can you play top Zvooq by Fink?,0 B-sort 0 B-service 0 B-artist 0 ,Can you play _sort_ _service_ by _artist_?.,PlayMusic
+Can you play top Zvooq by Fink?,0 B-sort 0 B-service 0 B-artist 0 ,Can you play _sort_ _service_ by _artist_?,PlayMusic
 play the top-20 Nawang Khechog soundtrack,0 B-sort 0 B-artist I-artist 0 B-music_item ,play the _sort_ _artist_ _music_item_.,PlayMusic
 Let's hear stuff from Andrew Hewitt.,0 B-artist I-artist 0 ,Let's hear stuff from _artist_.,PlayMusic
 Play a good ep from the eighties by Peter Murphy.,0 B-sort 0 B-music_item 0 B-year 0 B-artist I-artist 0 ,Play a _sort_ _music_item_ from the _year_ by _artist_.,PlayMusic
@@ -205,69 +205,69 @@ Get me the Elvis' Christmas Album TV show.,0 B-object_name I-object_name I-objec
 "Please find me the saga, The Deep Six.",0 B-object_type 0 B-object_name I-object_name I-object_name 0 ,"Please find me the _object_type_, _object_name_.",SearchCreativeWork
 Wish to see the photograph with the name Live: Right Here,0 B-object_type 0 B-object_name I-object_name I-object_name ,Wish to see the _object_type_ with the name _object_name_.,SearchCreativeWork
 Looking for a novel called Death March,0 B-object_type 0 B-object_name I-object_name ,Looking for a _object_type_ called _object_name_.,SearchCreativeWork
-"Can you find me the work, The Curse of Oak Island?",0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Can you find me the work, _object_name_?.",SearchCreativeWork
+"Can you find me the work, The Curse of Oak Island?",0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Can you find me the work, _object_name_?",SearchCreativeWork
 Please get me The Sacred and Profane Love Machine game.,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Please get me _object_name_ _object_type_.,SearchCreativeWork
 Need a creative work called Hit by Love,0 B-object_name I-object_name I-object_name ,Need a creative work called _object_name_.,SearchCreativeWork
 search for the trailer for The Office,0 B-object_type 0 B-object_name I-object_name ,search for the _object_type_ for _object_name_.,SearchCreativeWork
 Looking for a creative work called Plant Ecology,0 B-object_name I-object_name ,Looking for a creative work called _object_name_.,SearchCreativeWork
 Find the television show To Me,0 B-object_type I-object_type 0 B-object_name I-object_name ,Find the _object_type_ _object_name_.,SearchCreativeWork
-Can you please find me the saga Chump Change?,0 B-object_type 0 B-object_name I-object_name 0 ,Can you please find me the _object_type_ _object_name_?.,SearchCreativeWork
-Can you find me The Ridiculous 6 book?,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you find me _object_name_ _object_type_?.,SearchCreativeWork
+Can you please find me the saga Chump Change?,0 B-object_type 0 B-object_name I-object_name 0 ,Can you please find me the _object_type_ _object_name_?,SearchCreativeWork
+Can you find me The Ridiculous 6 book?,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you find me _object_name_ _object_type_?,SearchCreativeWork
 "Please fine me the TV series, Now We Are Married.",0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,"Please fine me the _object_type_, _object_name_.",SearchCreativeWork
 "Please look up the work, Bachelor Pad.",0 B-object_name I-object_name 0 ,"Please look up the work, _object_name_.",SearchCreativeWork
 Please help me find the Late Night Heartbroken Blues television show.,0 B-object_name I-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 ,Please help me find the _object_name_ _object_type_.,SearchCreativeWork
 "Please help me find, Bend It Like Beckham the Musical.",0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Please help me find, _object_name_.",SearchCreativeWork
 Please look up the TV series Parables for Wooden Ears.,0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,Please look up the _object_type_ _object_name_.,SearchCreativeWork
-"Can you find me, Hey Man?",0 B-object_name I-object_name 0 ,"Can you find me, _object_name_?.",SearchCreativeWork
+"Can you find me, Hey Man?",0 B-object_name I-object_name 0 ,"Can you find me, _object_name_?",SearchCreativeWork
 Please search for Switched.,0 B-object_name 0 ,Please search for _object_name_.,SearchCreativeWork
-Can you get me the Controlled Conversations TV series?,0 B-object_name I-object_name 0 B-object_type I-object_type 0 ,Can you get me the _object_name_ _object_type_?.,SearchCreativeWork
+Can you get me the Controlled Conversations TV series?,0 B-object_name I-object_name 0 B-object_type I-object_type 0 ,Can you get me the _object_name_ _object_type_?,SearchCreativeWork
 Please look up the song The Mad Magician.,0 B-object_type 0 B-object_name I-object_name I-object_name 0 ,Please look up the _object_type_ _object_name_.,SearchCreativeWork
 "Please search for the TV show, The Best of White Lion.",0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Please search for the _object_type_, _object_name_.",SearchCreativeWork
 Please find me Phineas Redux.,0 B-object_name I-object_name 0 ,Please find me _object_name_.,SearchCreativeWork
 Get me the Procession of Ants TV show.,0 B-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 ,Get me the _object_name_ _object_type_.,SearchCreativeWork
 Looking for a game called Phinally Phamous,0 B-object_type 0 B-object_name I-object_name ,Looking for a _object_type_ called _object_name_.,SearchCreativeWork
-Can you search the Daring Youth saga?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you search the _object_name_ _object_type_?.,SearchCreativeWork
+Can you search the Daring Youth saga?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you search the _object_name_ _object_type_?,SearchCreativeWork
 look for the book The Girl Who Was Plugged In ,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 ,look for the _object_type_ _object_name_ .,SearchCreativeWork
 Find me a TV show called Baby Blue,0 B-object_type I-object_type 0 B-object_name I-object_name ,Find me a _object_type_ called _object_name_.,SearchCreativeWork
 Search for Appalachian Journey,0 B-object_name I-object_name ,Search for _object_name_.,SearchCreativeWork
 Look for the television show Meet the Prince,0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name ,Look for the _object_type_ _object_name_.,SearchCreativeWork
-Can you find me Cracks the Safe?,0 B-object_name I-object_name I-object_name 0 ,Can you find me _object_name_?.,SearchCreativeWork
+Can you find me Cracks the Safe?,0 B-object_name I-object_name I-object_name 0 ,Can you find me _object_name_?,SearchCreativeWork
 Please help me search the Hell Money saga.,0 B-object_name I-object_name 0 B-object_type 0 ,Please help me search the _object_name_ _object_type_.,SearchCreativeWork
 Get me the Secret South song.,0 B-object_name I-object_name 0 B-object_type 0 ,Get me the _object_name_ _object_type_.,SearchCreativeWork
-Can you find me the work titled Music for Millions?,0 B-object_name I-object_name I-object_name 0 ,Can you find me the work titled _object_name_?.,SearchCreativeWork
+Can you find me the work titled Music for Millions?,0 B-object_name I-object_name I-object_name 0 ,Can you find me the work titled _object_name_?,SearchCreativeWork
 Please search for the painting titled This Is the Night.,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,Please search for the _object_type_ titled _object_name_.,SearchCreativeWork
-Could you locate the Epic Conditions picture?,0 B-object_name I-object_name 0 B-object_type 0 ,Could you locate the _object_name_ _object_type_?.,SearchCreativeWork
+Could you locate the Epic Conditions picture?,0 B-object_name I-object_name 0 B-object_type 0 ,Could you locate the _object_name_ _object_type_?,SearchCreativeWork
 get me the trailer of Good Morning Sunshine,0 B-object_type 0 B-object_name I-object_name I-object_name ,get me the _object_type_ of _object_name_.,SearchCreativeWork
 Please search the An Introduction to Karl Marx painting.,0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Please search the _object_name_ _object_type_.,SearchCreativeWork
-Can you find me the Blue Spring trailer?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you find me the _object_name_ _object_type_?.,SearchCreativeWork
+Can you find me the Blue Spring trailer?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you find me the _object_name_ _object_type_?,SearchCreativeWork
 Could you find the TV series The Approach,0 B-object_type I-object_type 0 B-object_name I-object_name ,Could you find the _object_type_ _object_name_.,SearchCreativeWork
 "Search for the TV show, A Lawless Street.",0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name 0 ,"Search for the _object_type_, _object_name_.",SearchCreativeWork
 Please look up Three Essays on the Theory of Sexuality show.,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Please look up _object_name_ _object_type_.,SearchCreativeWork
 Please get me the Compulsive Disclosure song.,0 B-object_name I-object_name 0 B-object_type 0 ,Please get me the _object_name_ _object_type_.,SearchCreativeWork
-Can you look up the Molecular Oncology saga?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you look up the _object_name_ _object_type_?.,SearchCreativeWork
+Can you look up the Molecular Oncology saga?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you look up the _object_name_ _object_type_?,SearchCreativeWork
 Search for The Sound of One Hand Clapping,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,Search for _object_name_.,SearchCreativeWork
 Find the creative work Deadly Weapons,0 B-object_name I-object_name ,Find the creative work _object_name_.,SearchCreativeWork
 Need the creative work called The Logic of Scientific Discovery,0 B-object_name I-object_name I-object_name I-object_name I-object_name ,Need the creative work called _object_name_.,SearchCreativeWork
-Can you find me the National Anthem of the Ancient Britons television show?,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 ,Can you find me the _object_name_ _object_type_?.,SearchCreativeWork
-Can you please find me the Harry Hood saga?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you please find me the _object_name_ _object_type_?.,SearchCreativeWork
-"Can you find me the work, Bible translations into Hawaii Pidgin?",0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Can you find me the work, _object_name_?.",SearchCreativeWork
+Can you find me the National Anthem of the Ancient Britons television show?,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type I-object_type 0 ,Can you find me the _object_name_ _object_type_?,SearchCreativeWork
+Can you please find me the Harry Hood saga?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you please find me the _object_name_ _object_type_?,SearchCreativeWork
+"Can you find me the work, Bible translations into Hawaii Pidgin?",0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Can you find me the work, _object_name_?",SearchCreativeWork
 Please look up and find me Monty Python Live at the Hollywood Bowl.,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 ,Please look up and find me _object_name_.,SearchCreativeWork
 Please search for Mary.,0 B-object_name 0 ,Please search for _object_name_.,SearchCreativeWork
 Please search the game ATLA: All This Life Allows.,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,Please search the _object_type_ _object_name_.,SearchCreativeWork
 Find me the novel with the name To Lose My Lifeâ¦,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,Find me the _object_type_ with the name _object_name_â¦.,SearchCreativeWork
 Looking for a song with the title of Live at the Kings Center,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name ,Looking for a _object_type_ with the title of _object_name_.,SearchCreativeWork
-Can you find the American Bison photograph?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you find the _object_name_ _object_type_?.,SearchCreativeWork
-Can you find me the Free for All show?,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you find me the _object_name_ _object_type_?.,SearchCreativeWork
+Can you find the American Bison photograph?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you find the _object_name_ _object_type_?,SearchCreativeWork
+Can you find me the Free for All show?,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you find me the _object_name_ _object_type_?,SearchCreativeWork
 Please find me the Olympia 74 soundtrack.,0 B-object_name I-object_name 0 B-object_type 0 ,Please find me the _object_name_ _object_type_.,SearchCreativeWork
 Look for the album Slave to the Grind,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name ,Look for the _object_type_ _object_name_.,SearchCreativeWork
 Please find me the Projekt: The New Face of Goth.,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 ,Please find me the _object_name_.,SearchCreativeWork
-Can you get me the Message from God saga?,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you get me the _object_name_ _object_type_?.,SearchCreativeWork
+Can you get me the Message from God saga?,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you get me the _object_name_ _object_type_?,SearchCreativeWork
 Find me the soundtrack A Honeymoon Adventure,0 B-object_type 0 B-object_name I-object_name I-object_name ,Find me the _object_type_ _object_name_.,SearchCreativeWork
 Please get me The Henderson Kids saga.,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Please get me _object_name_ _object_type_.,SearchCreativeWork
 Find the movie Splendor in the Grass,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name ,Find the _object_type_ _object_name_.,SearchCreativeWork
 Am looking for a book with the title Free to Play,0 B-object_type 0 B-object_name I-object_name I-object_name ,Am looking for a _object_type_ with the title _object_name_.,SearchCreativeWork
 Look for the TV series Jersey Boys,0 B-object_type I-object_type 0 B-object_name I-object_name ,Look for the _object_type_ _object_name_.,SearchCreativeWork
-"Can you search the book, Paris - When It Sizzles?",0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Can you search the _object_type_, _object_name_?.",SearchCreativeWork
+"Can you search the book, Paris - When It Sizzles?",0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,"Can you search the _object_type_, _object_name_?",SearchCreativeWork
 Looking for a painting with the title With You,0 B-object_type 0 B-object_name I-object_name ,Looking for a _object_type_ with the title _object_name_.,SearchCreativeWork
 Please find me the Classified book.,0 B-object_name 0 B-object_type 0 ,Please find me the _object_name_ _object_type_.,SearchCreativeWork
 Look for the show V-The New Mythology Suite,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name ,Look for the _object_type_ _object_name_.,SearchCreativeWork
@@ -276,12 +276,12 @@ Find Four Songs,0 B-object_name I-object_name ,Find _object_name_.,SearchCreativ
 Find me the soundtrack Live at the Greek Theatre,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name ,Find me the _object_type_ _object_name_.,SearchCreativeWork
 "Please search for the television show, Episodi di The Blacklist.",0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,"Please search for the _object_type_, _object_name_.",SearchCreativeWork
 Find a creative work called Fire in the Hole,0 B-object_name I-object_name I-object_name I-object_name ,Find a creative work called _object_name_.,SearchCreativeWork
-Looking for the picture with the name of Who Made Stevie Crye?,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,Looking for the _object_type_ with the name of _object_name_?.,SearchCreativeWork
+Looking for the picture with the name of Who Made Stevie Crye?,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,Looking for the _object_type_ with the name of _object_name_?,SearchCreativeWork
 Look for the album Wolves Within,0 B-object_type 0 B-object_name I-object_name ,Look for the _object_type_ _object_name_.,SearchCreativeWork
 Find the album Orphan Girl at the Cemetery,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name ,Find the _object_type_ _object_name_.,SearchCreativeWork
 Please find me the Journal of the British Astronomical Association movie.,0 B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Please find me the _object_name_ _object_type_.,SearchCreativeWork
 Find the TV show The Daydreamer,0 B-object_type I-object_type 0 B-object_name I-object_name ,Find the _object_type_ _object_name_.,SearchCreativeWork
-Can you please get me the book Dracula 5: The Blood Legacy?,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,Can you please get me the _object_type_ _object_name_?.,SearchCreativeWork
+Can you please get me the book Dracula 5: The Blood Legacy?,0 B-object_type 0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 ,Can you please get me the _object_type_ _object_name_?,SearchCreativeWork
 "Please look up the novel, Live to Dance.",0 B-object_type 0 B-object_name I-object_name I-object_name 0 ,"Please look up the _object_type_, _object_name_.",SearchCreativeWork
 Please find me the video game titled 20 Hours in America.,0 B-object_type I-object_type 0 B-object_name I-object_name I-object_name I-object_name 0 ,Please find me the _object_type_ titled _object_name_.,SearchCreativeWork
 Find the creative work The Devil in Stitches,0 B-object_name I-object_name I-object_name I-object_name ,Find the creative work _object_name_.,SearchCreativeWork
@@ -294,87 +294,87 @@ Can you find the creative works associated with Caryl & Marilyn: Real Friends,0 
 Please get me the Dead Soul saga.,0 B-object_name I-object_name 0 B-object_type 0 ,Please get me the _object_name_ _object_type_.,SearchCreativeWork
 Please search the Live from Leeds album.,0 B-object_name I-object_name I-object_name 0 B-object_type 0 ,Please search the _object_name_ _object_type_.,SearchCreativeWork
 Please look up the Johnny English - La rinascita painting.,0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Please look up the _object_name_ _object_type_.,SearchCreativeWork
-Can you find me The Sword with No Name trailer?,0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you find me _object_name_ _object_type_?.,SearchCreativeWork
+Can you find me The Sword with No Name trailer?,0 B-object_name I-object_name I-object_name I-object_name I-object_name 0 B-object_type 0 ,Can you find me _object_name_ _object_type_?,SearchCreativeWork
 "I wish to watch The Fold trailer, please search.",0 B-object_name I-object_name 0 B-object_type 0 ,"I wish to watch _object_name_ _object_type_, please search.",SearchCreativeWork
-Can you find me the ALMOST HUMAN painting?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you find me the _object_name_ _object_type_?.,SearchCreativeWork
+Can you find me the ALMOST HUMAN painting?,0 B-object_name I-object_name 0 B-object_type 0 ,Can you find me the _object_name_ _object_type_?,SearchCreativeWork
 "Please find me the work, Serious Awesomeness!.",0 B-object_name I-object_name 0 ,"Please find me the work, _object_name_!.",SearchCreativeWork
 Search for the game Difficult Loves,0 B-object_type 0 B-object_name I-object_name ,Search for the _object_type_ _object_name_.,SearchCreativeWork
-What will the weather be faraway from here?,0 B-spatial_relation 0 B-current_location 0 ,What will the weather be _spatial_relation_ from _current_location_?.,GetWeather
-Will there be fog in Tahquamenon Falls State Park?,0 B-condition_description 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will there be _condition_description_ in _geographic_poi_?.,GetWeather
+What will the weather be faraway from here?,0 B-spatial_relation 0 B-current_location 0 ,What will the weather be _spatial_relation_ from _current_location_?,GetWeather
+Will there be fog in Tahquamenon Falls State Park?,0 B-condition_description 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will there be _condition_description_ in _geographic_poi_?,GetWeather
 Tell me the weather forecast for Gibsland,0 B-city ,Tell me the weather forecast for _city_.,GetWeather
-Is there a storm now in NC?,0 B-condition_description 0 B-timerange 0 B-state 0 ,Is there a _condition_description_ _timerange_ in _state_?.,GetWeather
-What will the weather be in Monument of Lihula on december the 5th?,0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _geographic_poi_ on _timerange_?.,GetWeather
+Is there a storm now in NC?,0 B-condition_description 0 B-timerange 0 B-state 0 ,Is there a _condition_description_ _timerange_ in _state_?,GetWeather
+What will the weather be in Monument of Lihula on december the 5th?,0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _geographic_poi_ on _timerange_?,GetWeather
 Weather next year in Dominica,0 B-timerange I-timerange 0 B-country ,Weather _timerange_ in _country_.,GetWeather
 When will it be hot here,0 B-condition_temperature 0 B-current_location ,When will it be _condition_temperature_ _current_location_.,GetWeather
-What will the weather be in 1 day in Kuwait?,0 B-timerange I-timerange I-timerange 0 B-country 0 ,What will the weather be _timerange_ in _country_?.,GetWeather
-What kind of weather will be in Ukraine one minute from now?,0 B-country 0 B-timerange I-timerange I-timerange I-timerange 0 ,What kind of weather will be in _country_ _timerange_?.,GetWeather
+What will the weather be in 1 day in Kuwait?,0 B-timerange I-timerange I-timerange 0 B-country 0 ,What will the weather be _timerange_ in _country_?,GetWeather
+What kind of weather will be in Ukraine one minute from now?,0 B-country 0 B-timerange I-timerange I-timerange I-timerange 0 ,What kind of weather will be in _country_ _timerange_?,GetWeather
 humidity in Olvey New Hampshire,B-condition_description 0 B-city 0 B-state I-state ,_condition_description_ in _city_ _state_.,GetWeather
-What's the weather going to be in UT?,0 B-state 0 ,What's the weather going to be in _state_?.,GetWeather
+What's the weather going to be in UT?,0 B-state 0 ,What's the weather going to be in _state_?,GetWeather
 "humidity not far from Colorado City on November the 7th, 2024",B-condition_description 0 B-spatial_relation I-spatial_relation 0 B-city I-city 0 B-timerange I-timerange I-timerange I-timerange ,_condition_description_ _spatial_relation_ from _city_ on _timerange_.,GetWeather
 What is the forecast for Wyoming at Stanardsville during the storm,0 B-state 0 B-city 0 B-condition_description ,What is the forecast for _state_ at _city_ during the _condition_description_.,GetWeather
-What will the weather be in North Carolina?,0 B-state I-state 0 ,What will the weather be in _state_?.,GetWeather
+What will the weather be in North Carolina?,0 B-state I-state 0 ,What will the weather be in _state_?,GetWeather
 what is the forecast starting 11 weeks from now nearby the state of Wisconsin,0 B-timerange I-timerange I-timerange I-timerange 0 B-spatial_relation 0 B-state ,what is the forecast starting _timerange_ _spatial_relation_ the state of _state_.,GetWeather
-Will it be rainy at Sunrise in Ramey Saudi Arabia?,0 B-condition_description 0 B-timerange 0 B-city 0 B-country I-country 0 ,Will it be _condition_description_ at _timerange_ in _city_ _country_?.,GetWeather
+Will it be rainy at Sunrise in Ramey Saudi Arabia?,0 B-condition_description 0 B-timerange 0 B-city 0 B-country I-country 0 ,Will it be _condition_description_ at _timerange_ in _city_ _country_?,GetWeather
 Check the forecast for Nebraska.,0 B-state 0 ,Check the forecast for _state_.,GetWeather
 Will it be warmer in North Korea at nineteen o'clock,0 B-condition_temperature 0 B-country I-country 0 B-timerange I-timerange ,Will it be _condition_temperature_ in _country_ at _timerange_.,GetWeather
 Let me know the weather forecast around ten Pm faraway from here in Park Narodowy Brimstone Hill Fortress.,0 B-timerange I-timerange 0 B-spatial_relation 0 B-current_location 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Let me know the weather forecast around _timerange_ _spatial_relation_ from _current_location_ in _geographic_poi_.,GetWeather
-Will it be stormy in the Ouachita National Forest?,0 B-condition_description 0 B-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will it be _condition_description_ in the _geographic_poi_?.,GetWeather
+Will it be stormy in the Ouachita National Forest?,0 B-condition_description 0 B-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will it be _condition_description_ in the _geographic_poi_?,GetWeather
 "Tell me if it will be snowy 8 hours from now in Mount Airy, VI",0 B-condition_description 0 B-timerange I-timerange I-timerange I-timerange 0 B-city I-city 0 B-state ,"Tell me if it will be _condition_description_ _timerange_ in _city_, _state_.",GetWeather
-What will the weather be nineteen hours from now neighboring Saint Kitts and Nevis?,0 B-timerange I-timerange I-timerange I-timerange 0 B-spatial_relation 0 B-country I-country I-country I-country 0 ,What will the weather be _timerange_ _spatial_relation_ _country_?.,GetWeather
+What will the weather be nineteen hours from now neighboring Saint Kitts and Nevis?,0 B-timerange I-timerange I-timerange I-timerange 0 B-spatial_relation 0 B-country I-country I-country I-country 0 ,What will the weather be _timerange_ _spatial_relation_ _country_?,GetWeather
 Will there be hail on 11/12/2036 in Singapore,0 B-condition_description 0 B-timerange 0 B-country ,Will there be _condition_description_ on _timerange_ in _country_.,GetWeather
 Will it be colder here in 48 and a half weeks,0 B-condition_temperature 0 B-current_location 0 B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange ,Will it be _condition_temperature_ _current_location_ _timerange_.,GetWeather
-What's the weather going to be in Knobel?,0 B-city 0 ,What's the weather going to be in _city_?.,GetWeather
-"What will the weather be in Dane on sep. the fifth, 2030?",0 B-city 0 B-timerange I-timerange I-timerange I-timerange 0 ,What will the weather be in _city_ on _timerange_?.,GetWeather
-What will the weather be in Ohio?,0 B-state 0 ,What will the weather be in _state_?.,GetWeather
+What's the weather going to be in Knobel?,0 B-city 0 ,What's the weather going to be in _city_?,GetWeather
+"What will the weather be in Dane on sep. the fifth, 2030?",0 B-city 0 B-timerange I-timerange I-timerange I-timerange 0 ,What will the weather be in _city_ on _timerange_?,GetWeather
+What will the weather be in Ohio?,0 B-state 0 ,What will the weather be in _state_?,GetWeather
 I need to know the weather for Jan. the 3rd in Mexico when I go to Port Vue,0 B-timerange I-timerange I-timerange 0 B-country 0 B-city I-city ,I need to know the weather for _timerange_ in _country_ when I go to _city_.,GetWeather
 what is the forecast for Åtone Prefectural Natural Park in 1 hour and within the same area,0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation ,what is the forecast for _geographic_poi_ _timerange_ and _spatial_relation_.,GetWeather
-What kind of weather is forecast around one pmnear Vatican?,0 B-timerange I-timerange B-spatial_relation 0 B-country 0 ,What kind of weather is forecast around _timerange__spatial_relation_ _country_?.,GetWeather
-Will it be chilly in Weldona?,0 B-condition_temperature 0 B-city 0 ,Will it be _condition_temperature_ in _city_?.,GetWeather
-Will it be colder in Virgin Islands National Park?,0 B-condition_temperature 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will it be _condition_temperature_ in _geographic_poi_?.,GetWeather
-Will it be hot at 13:19 in De Funiak Springs Serbia and Montenegro?,0 B-condition_temperature 0 B-timerange 0 B-city I-city I-city 0 B-country I-country I-country 0 ,Will it be _condition_temperature_ at _timerange_ in _city_ _country_?.,GetWeather
-What is the weather going to be like in Virginia on st. patrick's day?,0 B-state 0 B-timerange I-timerange I-timerange 0 ,What is the weather going to be like in _state_ on _timerange_?.,GetWeather
+What kind of weather is forecast around one pmnear Vatican?,0 B-timerange I-timerange B-spatial_relation 0 B-country 0 ,What kind of weather is forecast around _timerange__spatial_relation_ _country_?,GetWeather
+Will it be chilly in Weldona?,0 B-condition_temperature 0 B-city 0 ,Will it be _condition_temperature_ in _city_?,GetWeather
+Will it be colder in Virgin Islands National Park?,0 B-condition_temperature 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will it be _condition_temperature_ in _geographic_poi_?,GetWeather
+Will it be hot at 13:19 in De Funiak Springs Serbia and Montenegro?,0 B-condition_temperature 0 B-timerange 0 B-city I-city I-city 0 B-country I-country I-country 0 ,Will it be _condition_temperature_ at _timerange_ in _city_ _country_?,GetWeather
+What is the weather going to be like in Virginia on st. patrick's day?,0 B-state 0 B-timerange I-timerange I-timerange 0 ,What is the weather going to be like in _state_ on _timerange_?,GetWeather
 Weather in Kaneville Maryland,0 B-city 0 B-state ,Weather in _city_ _state_.,GetWeather
 When is sunrise for AR,0 B-timerange 0 B-state ,When is _timerange_ for _state_.,GetWeather
-"What will the weather be not far from here on October the nineteenth, 2026?",0 B-spatial_relation I-spatial_relation 0 B-current_location 0 B-timerange I-timerange I-timerange I-timerange 0 ,What will the weather be _spatial_relation_ from _current_location_ on _timerange_?.,GetWeather
+"What will the weather be not far from here on October the nineteenth, 2026?",0 B-spatial_relation I-spatial_relation 0 B-current_location 0 B-timerange I-timerange I-timerange I-timerange 0 ,What will the weather be _spatial_relation_ from _current_location_ on _timerange_?,GetWeather
 what is the forecast for Waurika in Samoa,0 B-city 0 B-country ,what is the forecast for _city_ in _country_.,GetWeather
 Tell me the weather forecast here,0 B-current_location ,Tell me the weather forecast _current_location_.,GetWeather
 What is the weather forecast nearby Nicodemus,0 B-spatial_relation 0 B-city ,What is the weather forecast _spatial_relation_ _city_.,GetWeather
-What will the weather be in nov. in Brookneal?,0 B-timerange 0 B-city 0 ,What will the weather be in _timerange_ in _city_?.,GetWeather
+What will the weather be in nov. in Brookneal?,0 B-timerange 0 B-city 0 ,What will the weather be in _timerange_ in _city_?,GetWeather
 Will it be colder four months from now in Suwanee AK,0 B-condition_temperature 0 B-timerange I-timerange I-timerange I-timerange 0 B-city 0 B-state ,Will it be _condition_temperature_ _timerange_ in _city_ _state_.,GetWeather
 What is the weather forecast for Burundi,0 B-country ,What is the weather forecast for _country_.,GetWeather
-What's the weather in Benton City?,0 B-city I-city 0 ,What's the weather in _city_?.,GetWeather
-"What will the weather be in KY on Oct. 16, 2036?",0 B-state 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _state_ on _timerange_?.,GetWeather
+What's the weather in Benton City?,0 B-city I-city 0 ,What's the weather in _city_?,GetWeather
+"What will the weather be in KY on Oct. 16, 2036?",0 B-state 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _state_ on _timerange_?,GetWeather
 "Will the sun be out in 1 minute in Searcy, Uganda",0 B-condition_description 0 B-timerange I-timerange I-timerange 0 B-city 0 B-country ,"Will the _condition_description_ be out _timerange_ in _city_, _country_.",GetWeather
 what is the weather here,0 B-current_location ,what is the weather _current_location_.,GetWeather
-What will the weather be one second from now in Chad?,0 B-timerange I-timerange I-timerange I-timerange 0 B-country 0 ,What will the weather be _timerange_ in _country_?.,GetWeather
-What kind of weather is forecast in MS now?,0 B-state 0 B-timerange 0 ,What kind of weather is forecast in _state_ _timerange_?.,GetWeather
+What will the weather be one second from now in Chad?,0 B-timerange I-timerange I-timerange I-timerange 0 B-country 0 ,What will the weather be _timerange_ in _country_?,GetWeather
+What kind of weather is forecast in MS now?,0 B-state 0 B-timerange 0 ,What kind of weather is forecast in _state_ _timerange_?,GetWeather
 what is the forecast for LA for freezing ,0 B-state 0 B-condition_temperature 0 ,what is the forecast for _state_ for _condition_temperature_ .,GetWeather
 how cold will it be here in 1 second ,0 B-condition_temperature 0 B-current_location 0 B-timerange I-timerange I-timerange 0 ,how _condition_temperature_ will it be _current_location_ _timerange_ .,GetWeather
 what is the forecast for hotter weather at Southford Falls State Park,0 B-condition_temperature 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,what is the forecast for _condition_temperature_ weather at _geographic_poi_.,GetWeather
 "what is the overcast forecast for the current position starting on jul. 19, 2030",0 B-condition_description 0 B-current_location I-current_location 0 B-timerange I-timerange I-timerange ,what is the _condition_description_ forecast for the _current_location_ starting on _timerange_.,GetWeather
 "what is the forecast for Morocco  at Lake Ozark on December seventeenth, 2022",0 B-country 0 B-city I-city 0 B-timerange I-timerange I-timerange ,what is the forecast for _country_  at _city_ on _timerange_.,GetWeather
-What will the humidity be in the current spot at 15:19:29?,0 B-condition_description 0 B-current_location I-current_location 0 B-timerange 0 ,What will the _condition_description_ be in the _current_location_ at _timerange_?.,GetWeather
+What will the humidity be in the current spot at 15:19:29?,0 B-condition_description 0 B-current_location I-current_location 0 B-timerange 0 ,What will the _condition_description_ be in the _current_location_ at _timerange_?,GetWeather
 what is the forecast in Nicodemus and nearby,0 B-city 0 B-spatial_relation ,what is the forecast in _city_ and _spatial_relation_.,GetWeather
 What is the weather going to be like in Benton Colorado in 2 and a half months,0 B-city 0 B-state 0 B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange ,What is the weather going to be like in _city_ _state_ _timerange_.,GetWeather
-What's the weather forecast for Bothe-Napa Valley State Park close by february 20?,0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation I-spatial_relation 0 B-timerange I-timerange 0 ,What's the weather forecast for _geographic_poi_ _spatial_relation_ _timerange_?.,GetWeather
+What's the weather forecast for Bothe-Napa Valley State Park close by february 20?,0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation I-spatial_relation 0 B-timerange I-timerange 0 ,What's the weather forecast for _geographic_poi_ _spatial_relation_ _timerange_?,GetWeather
 what is the forecast for beginning on nov. 17 for Franklinville,0 B-timerange I-timerange 0 B-city ,what is the forecast for beginning on _timerange_ for _city_.,GetWeather
 what's the forecast for sep. 26 in Emerado Saint Pierre and Miquelon,0 B-timerange I-timerange 0 B-city 0 B-country I-country I-country I-country ,what's the forecast for _timerange_ in _city_ _country_.,GetWeather
 "Will there be a blizzard next winter in Visalia, Idaho",0 B-condition_description 0 B-timerange I-timerange 0 B-city 0 B-state ,"Will there be a _condition_description_ _timerange_ in _city_, _state_.",GetWeather
-"Will it be warmer in the District Of Columbia on may 25, 2033?",0 B-condition_temperature 0 B-state I-state I-state 0 B-timerange I-timerange I-timerange 0 ,Will it be _condition_temperature_ in the _state_ on _timerange_?.,GetWeather
-What will the weather be here on dec. 7th?,0 B-current_location 0 B-timerange I-timerange 0 ,What will the weather be _current_location_ on _timerange_?.,GetWeather
+"Will it be warmer in the District Of Columbia on may 25, 2033?",0 B-condition_temperature 0 B-state I-state I-state 0 B-timerange I-timerange I-timerange 0 ,Will it be _condition_temperature_ in the _state_ on _timerange_?,GetWeather
+What will the weather be here on dec. 7th?,0 B-current_location 0 B-timerange I-timerange 0 ,What will the weather be _current_location_ on _timerange_?,GetWeather
 what is the forecast for colder temps beginning on Law Day here,0 B-condition_temperature 0 B-timerange I-timerange 0 B-current_location ,what is the forecast for _condition_temperature_ temps beginning on _timerange_ _current_location_.,GetWeather
 "What's the weather like in Tyonek, New Jersey",0 B-city 0 B-state I-state ,"What's the weather like in _city_, _state_.",GetWeather
 what is the forecast for here for blizzard conditions at five pm,0 B-current_location 0 B-condition_description 0 B-timerange I-timerange ,what is the forecast for _current_location_ for _condition_description_ conditions at _timerange_.,GetWeather
-Will there be a storm in Gibsonia at 8 p.m?,0 B-condition_description 0 B-city 0 B-timerange I-timerange 0 ,Will there be a _condition_description_ in _city_ at _timerange_?.,GetWeather
+Will there be a storm in Gibsonia at 8 p.m?,0 B-condition_description 0 B-city 0 B-timerange I-timerange 0 ,Will there be a _condition_description_ in _city_ at _timerange_?,GetWeather
 what is the cold condition of our current position for tomorrow,0 B-condition_temperature 0 B-current_location I-current_location 0 B-timerange ,what is the _condition_temperature_ condition of our _current_location_ for _timerange_.,GetWeather
-What will the weather be in Hialeah Gardens on October the 24th?,0 B-city I-city 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _city_ on _timerange_?.,GetWeather
-Will it be freezing today in Delaware and Lehigh National Heritage Corridor?,0 B-condition_temperature 0 B-timerange 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will it be _condition_temperature_ _timerange_ in _geographic_poi_?.,GetWeather
+What will the weather be in Hialeah Gardens on October the 24th?,0 B-city I-city 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _city_ on _timerange_?,GetWeather
+Will it be freezing today in Delaware and Lehigh National Heritage Corridor?,0 B-condition_temperature 0 B-timerange 0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 ,Will it be _condition_temperature_ _timerange_ in _geographic_poi_?,GetWeather
 what is the forecast in Admire in TX starting at seventeen ,0 B-city 0 B-state 0 B-timerange 0 ,what is the forecast in _city_ in _state_ starting at _timerange_ .,GetWeather
 what is the forecast in North Carolina for Edgemoor,0 B-state I-state 0 B-city ,what is the forecast in _state_ for _city_.,GetWeather
 what is the forecast for Costa Rica,0 B-country I-country ,what is the forecast for _country_.,GetWeather
 Need weather for Parc national Tolhuaca to see if it will be fog today,0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-condition_description 0 ,Need weather for _geographic_poi_ to see if it will be _condition_description_ today.,GetWeather
 Weather in Walden Russia on 12/26/2018,0 B-city 0 B-country 0 B-timerange ,Weather in _city_ _country_ on _timerange_.,GetWeather
-What's the humidity here right now?,0 B-condition_description 0 B-current_location 0 B-timerange 0 ,What's the _condition_description_ _current_location_ right _timerange_?.,GetWeather
+What's the humidity here right now?,0 B-condition_description 0 B-current_location 0 B-timerange 0 ,What's the _condition_description_ _current_location_ right _timerange_?,GetWeather
 How's the weather at Petit Manan National Wildlife Refuge and nearby right now,0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation 0 B-timerange ,How's the weather at _geographic_poi_ and _spatial_relation_ right _timerange_.,GetWeather
 what is the forecast for Lansford for temperate weather,0 B-city 0 B-condition_temperature 0 ,what is the forecast for _city_ for _condition_temperature_ weather.,GetWeather
 overcast on State Holiday in Pawling Nature Reserve  and neighboring places,B-condition_description 0 B-timerange I-timerange 0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-spatial_relation 0 ,_condition_description_ on _timerange_ in _geographic_poi_  and _spatial_relation_ places.,GetWeather
@@ -382,23 +382,23 @@ I need the weather in Wakarusa,0 B-city ,I need the weather in _city_.,GetWeathe
 Tell me the forecast for 6 am in Tatra-Nationalpark,0 B-timerange I-timerange 0 B-geographic_poi ,Tell me the forecast for _timerange_ in _geographic_poi_.,GetWeather
 Tell me the weather forecast for UT on thursday,0 B-state 0 B-timerange ,Tell me the weather forecast for _state_ on _timerange_.,GetWeather
 what is the forecast for Turtle Islands National Park,0 B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,what is the forecast for _geographic_poi_.,GetWeather
-Will it be hotter in PR at 23 o'clock?,0 B-condition_temperature 0 B-state 0 B-timerange I-timerange 0 ,Will it be _condition_temperature_ in _state_ at _timerange_?.,GetWeather
+Will it be hotter in PR at 23 o'clock?,0 B-condition_temperature 0 B-state 0 B-timerange I-timerange 0 ,Will it be _condition_temperature_ in _state_ at _timerange_?,GetWeather
 Weather in two hours  in Uzbekistan,0 B-timerange I-timerange I-timerange 0 B-country ,Weather _timerange_  in _country_.,GetWeather
 What is the forecast for this afternoon for blizzard conditions in Dieterich Chad,0 B-timerange 0 B-condition_description 0 B-city 0 B-country ,What is the forecast for this _timerange_ for _condition_description_ conditions in _city_ _country_.,GetWeather
 how's the weather here at two Am,0 B-current_location 0 B-timerange I-timerange ,how's the weather _current_location_ at _timerange_.,GetWeather
 will Custer National Forest be chillier at seven Pm,0 B-geographic_poi I-geographic_poi I-geographic_poi 0 B-condition_temperature 0 B-timerange I-timerange ,will _geographic_poi_ be _condition_temperature_ at _timerange_.,GetWeather
 what is the forecast for starting at three a.m in Two Buttes for warm weather,0 B-timerange I-timerange 0 B-city I-city 0 B-condition_temperature 0 ,what is the forecast for starting at _timerange_ in _city_ for _condition_temperature_ weather.,GetWeather
-What's the weather in Fox Chapel?,0 B-city I-city 0 ,What's the weather in _city_?.,GetWeather
+What's the weather in Fox Chapel?,0 B-city I-city 0 ,What's the weather in _city_?,GetWeather
 What is the rain forecast for one hour from now in South Korea,0 B-condition_description 0 B-timerange I-timerange I-timerange I-timerange 0 B-country I-country ,What is the _condition_description_ forecast for _timerange_ in _country_.,GetWeather
 Tell me the weather forecast here,0 B-current_location ,Tell me the weather forecast _current_location_.,GetWeather
-Will there be a cloud in VI in 14 minutes ?,0 B-condition_description 0 B-state 0 B-timerange I-timerange I-timerange 0 ,Will there be a _condition_description_ in _state_ _timerange_ ?.,GetWeather
-How much colder will it be not far from Utah around 3 Am?,0 B-condition_temperature 0 B-spatial_relation I-spatial_relation 0 B-state 0 B-timerange I-timerange 0 ,How much _condition_temperature_ will it be _spatial_relation_ from _state_ around _timerange_?.,GetWeather
-Will it be chilly midday in Cresbard Afghanistan?,0 B-condition_temperature 0 B-timerange 0 B-city 0 B-country 0 ,Will it be _condition_temperature_ _timerange_ in _city_ _country_?.,GetWeather
-"What will the weather be in SarygamyÅ Sanctuary on august 21, 2035?",0 B-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _geographic_poi_ on _timerange_?.,GetWeather
-Will it be rainy in Tenino?,0 B-condition_description 0 B-city 0 ,Will it be _condition_description_ in _city_?.,GetWeather
-Will it be hot in the Netherlands on February 16th?,0 B-condition_temperature 0 B-country 0 B-timerange I-timerange 0 ,Will it be _condition_temperature_ in the _country_ on _timerange_?.,GetWeather
+Will there be a cloud in VI in 14 minutes ?,0 B-condition_description 0 B-state 0 B-timerange I-timerange I-timerange 0 ,Will there be a _condition_description_ in _state_ _timerange_ ?,GetWeather
+How much colder will it be not far from Utah around 3 Am?,0 B-condition_temperature 0 B-spatial_relation I-spatial_relation 0 B-state 0 B-timerange I-timerange 0 ,How much _condition_temperature_ will it be _spatial_relation_ from _state_ around _timerange_?,GetWeather
+Will it be chilly midday in Cresbard Afghanistan?,0 B-condition_temperature 0 B-timerange 0 B-city 0 B-country 0 ,Will it be _condition_temperature_ _timerange_ in _city_ _country_?,GetWeather
+"What will the weather be in SarygamyÅ Sanctuary on august 21, 2035?",0 B-geographic_poi I-geographic_poi 0 B-timerange I-timerange I-timerange 0 ,What will the weather be in _geographic_poi_ on _timerange_?,GetWeather
+Will it be rainy in Tenino?,0 B-condition_description 0 B-city 0 ,Will it be _condition_description_ in _city_?,GetWeather
+Will it be hot in the Netherlands on February 16th?,0 B-condition_temperature 0 B-country 0 B-timerange I-timerange 0 ,Will it be _condition_temperature_ in the _country_ on _timerange_?,GetWeather
 Where is Belgium located,0 B-country 0 ,Where is _country_ located.,GetWeather
-What will the weather be in Milleville Beach?,0 B-city I-city 0 ,What will the weather be in _city_?.,GetWeather
+What will the weather be in Milleville Beach?,0 B-city I-city 0 ,What will the weather be in _city_?,GetWeather
 Book a reservation for my babies and I,0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description ,Book a reservation for _party_size_description_.,BookRestaurant
 Book a reservation for a restaurant not far from MA,0 B-restaurant_type 0 B-spatial_relation I-spatial_relation 0 B-state ,Book a reservation for a _restaurant_type_ _spatial_relation_ from _state_.,BookRestaurant
 I would like to book a restaurant in Tanzania that is within walking distance for my mom and I,0 B-restaurant_type 0 B-country 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description ,I would like to book a _restaurant_type_ in _country_ that is _spatial_relation_ for _party_size_description_.,BookRestaurant
@@ -450,7 +450,7 @@ I want to book Tupelo Honey Cafe in New Jersey for five people.,0 B-restaurant_n
 Book a reservation for two at Mickies Dairy Bar in Weedsport,0 B-party_size_number 0 B-restaurant_name I-restaurant_name I-restaurant_name 0 B-city ,Book a reservation for _party_size_number_ at _restaurant_name_ in _city_.,BookRestaurant
 book a table at a Fried chicken restaurant,0 B-restaurant_name I-restaurant_name I-restaurant_name ,book a table at a _restaurant_name_.,BookRestaurant
 "book spot for mavis, sheila and I in Syria at elevenses",0 B-party_size_description I-party_size_description I-party_size_description I-party_size_description 0 B-country 0 B-timerange ,book spot for _party_size_description_ in _country_ at _timerange_.,BookRestaurant
-"Can you book me a table at Windows on the World in Cokeville , MI?",0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 0 B-state 0 ,"Can you book me a table at _restaurant_name_ in _city_ , _state_?.",BookRestaurant
+"Can you book me a table at Windows on the World in Cokeville , MI?",0 B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name 0 B-city 0 B-state 0 ,"Can you book me a table at _restaurant_name_ in _city_ , _state_?",BookRestaurant
 Book me a table for 5 this year at Cherwell Boathouse,0 B-party_size_number 0 B-timerange I-timerange 0 B-restaurant_name I-restaurant_name ,Book me a table for _party_size_number_ _timerange_ at _restaurant_name_.,BookRestaurant
 book spot for six  at 8 pm at a coffeehouse in NE that serves hog fry,0 B-party_size_number 0 B-timerange I-timerange 0 B-restaurant_type 0 B-state 0 B-served_dish I-served_dish ,book spot for _party_size_number_  at _timerange_ at a _restaurant_type_ in _state_ that serves _served_dish_.,BookRestaurant
 I want to book a restaurant close-by in Inman for five people.,0 B-restaurant_type 0 B-spatial_relation 0 B-city 0 B-party_size_number 0 ,I want to book a _restaurant_type_ _spatial_relation_ in _city_ for _party_size_number_ people.,BookRestaurant
@@ -522,7 +522,7 @@ Add the artist mike to the Sexy as Folk playlist.,0 B-music_item 0 B-artist 0 B-
 Add Brazilian Flag Anthem to Top 100 Alternative Tracks on Spotify,0 B-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist I-playlist ,Add _entity_name_ to _playlist_.,AddToPlaylist
 Add Andy Hunter to my Evening Commute playlist.,0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Add _artist_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
 Put petar georgiev kalica onto the Old School Hip Hop playlist.,0 B-artist I-artist I-artist 0 B-playlist I-playlist I-playlist I-playlist 0 ,Put _artist_ onto the _playlist_ playlist.,AddToPlaylist
-Can you add Larry Heard to my laundry playlist?,0 B-artist I-artist 0 B-playlist_owner 0 B-playlist 0 ,Can you add _artist_ to _playlist_owner_ _playlist_ playlist?.,AddToPlaylist
+Can you add Larry Heard to my laundry playlist?,0 B-artist I-artist 0 B-playlist_owner 0 B-playlist 0 ,Can you add _artist_ to _playlist_owner_ _playlist_ playlist?,AddToPlaylist
 Put Vandemataram Srinivas's track onto HipHop Hot 50.,0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist I-playlist 0 ,Put _artist_'s _music_item_ onto _playlist_.,AddToPlaylist
 Add millie corretjer to the rhythm playlist,0 B-artist I-artist 0 B-playlist I-playlist 0 ,Add _artist_ to _playlist_ playlist.,AddToPlaylist
 Add give us rest to my 70s Smash Hits playlist.,0 B-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist I-playlist 0 ,Add _entity_name_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
@@ -539,7 +539,7 @@ Add a song to this is racionais mc's,0 B-music_item 0 B-playlist I-playlist I-pl
 "add track in my
  playlist called Hands Up",0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist ,"add _music_item_ in _playlist_owner_
  playlist called _playlist_.",AddToPlaylist
-Can you put this song from Yutaka Ozaki onto my this is miles davis playlist?,0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 ,Can you put this _music_item_ from _artist_ onto _playlist_owner_ _playlist_ playlist?.,AddToPlaylist
+Can you put this song from Yutaka Ozaki onto my this is miles davis playlist?,0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist I-playlist I-playlist 0 ,Can you put this _music_item_ from _artist_ onto _playlist_owner_ _playlist_ playlist?,AddToPlaylist
 Add a track to playlist Cena con Amigos,0 B-music_item 0 B-playlist I-playlist I-playlist ,Add a _music_item_ to playlist _playlist_.,AddToPlaylist
 Add The Famous Flower of Serving-Men to my evening acoustic playlist.,0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Add _entity_name_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
 Add a song to Indie Hipster,0 B-music_item 0 B-playlist I-playlist ,Add a _music_item_ to _playlist_.,AddToPlaylist
@@ -547,18 +547,18 @@ Add the 40 cal tune to the laundry playlist.,0 B-artist I-artist 0 B-music_item 
 Add the album to my Perfect Concentration playlist.,0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Add the _music_item_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
 Add the Matt Murphy tune to the Flow EspaÃ±ol playlist.,0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist 0 ,Add the _artist_ _music_item_ to the _playlist_ playlist.,AddToPlaylist
 add A Very Cellular Song to masters of metal playlist,0 B-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist 0 ,add _entity_name_ to _playlist_ playlist.,AddToPlaylist
-Can I put this tune onto my sin estrÃ©s playlist?,0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Can I put this _music_item_ onto _playlist_owner_ _playlist_ playlist?.,AddToPlaylist
+Can I put this tune onto my sin estrÃ©s playlist?,0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Can I put this _music_item_ onto _playlist_owner_ _playlist_ playlist?,AddToPlaylist
 I'd like to add jordan rudess onto the Divertido para niÃ±os playlist.,0 B-artist I-artist 0 B-playlist I-playlist I-playlist 0 ,I'd like to add _artist_ onto the _playlist_ playlist.,AddToPlaylist
 Add kent james to the disney soundtrack.,0 B-artist I-artist 0 B-playlist 0 ,Add _artist_ to the _playlist_ soundtrack.,AddToPlaylist
 Add the artist Adam Deibert to my Perfect Concentration playlist.,0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Add the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
-Can you put the artist Giovanni Giacomo Gastoldi onto the Chill Out Music playlist?,0 B-music_item 0 B-artist I-artist I-artist 0 B-playlist I-playlist I-playlist 0 ,Can you put the _music_item_ _artist_ onto the _playlist_ playlist?.,AddToPlaylist
+Can you put the artist Giovanni Giacomo Gastoldi onto the Chill Out Music playlist?,0 B-music_item 0 B-artist I-artist I-artist 0 B-playlist I-playlist I-playlist 0 ,Can you put the _music_item_ _artist_ onto the _playlist_ playlist?,AddToPlaylist
 Add the album to the hot 50 playlist.,0 B-music_item 0 B-playlist I-playlist 0 ,Add the _music_item_ to the _playlist_ playlist.,AddToPlaylist
 add the artist Pete Murray to my relaxing playlist,0 B-music_item 0 B-artist I-artist 0 B-playlist_owner 0 B-playlist 0 ,add the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
 Add the track to the drum & breaks playlist.,0 B-music_item 0 B-playlist I-playlist I-playlist 0 ,Add the _music_item_ to the _playlist_ playlist.,AddToPlaylist
-For my fantastic workout can you add sara bareilles?,0 B-playlist_owner 0 B-playlist I-playlist 0 B-artist I-artist 0 ,For _playlist_owner_ _playlist_ can you add _artist_?.,AddToPlaylist
+For my fantastic workout can you add sara bareilles?,0 B-playlist_owner 0 B-playlist I-playlist 0 B-artist I-artist 0 ,For _playlist_owner_ _playlist_ can you add _artist_?,AddToPlaylist
 Add the boy george track to the Emo Forever playlist.,0 B-artist I-artist 0 B-music_item 0 B-playlist I-playlist 0 ,Add the _artist_ _music_item_ to the _playlist_ playlist.,AddToPlaylist
 Add Ted Heath to the road trip playlist.,0 B-artist I-artist 0 B-playlist I-playlist 0 ,Add _artist_ to the _playlist_ playlist.,AddToPlaylist
-Can you add last of the ghetto astronauts to the playlist called black sabbath the dio years?,0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist 0 ,Can you add _entity_name_ to the playlist called _playlist_?.,AddToPlaylist
+Can you add last of the ghetto astronauts to the playlist called black sabbath the dio years?,0 B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name 0 B-playlist I-playlist I-playlist I-playlist I-playlist 0 ,Can you add _entity_name_ to the playlist called _playlist_?,AddToPlaylist
 Add this artist to Showstopper Being Mary Jane,0 B-music_item 0 B-playlist I-playlist I-playlist I-playlist ,Add this _music_item_ to _playlist_.,AddToPlaylist
 put the artist onto Top Latin Alternative.,0 B-music_item 0 B-playlist I-playlist I-playlist 0 ,put the _music_item_ onto _playlist_.,AddToPlaylist
 Add Michael Wittig music to Country Icon playlist,0 B-artist I-artist 0 B-playlist I-playlist 0 ,Add _artist_ music to _playlist_ playlist.,AddToPlaylist
@@ -603,17 +603,17 @@ Add the artist to the political punks playlist.,0 B-music_item 0 B-playlist I-pl
 Add the album to my Club Hits playlist.,0 B-music_item 0 B-playlist_owner 0 B-playlist I-playlist 0 ,Add the _music_item_ to _playlist_owner_ _playlist_ playlist.,AddToPlaylist
 Is Babar: King of the Elephants playing ,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 ,Is _movie_name_ playing .,SearchScreeningEvent
 Is The Ghost playing,0 B-movie_name I-movie_name 0 ,Is _movie_name_ playing.,SearchScreeningEvent
-Is Bartok the Magnificent playing at seven AM?,0 B-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange 0 ,Is _movie_name_ playing at _timerange_?.,SearchScreeningEvent
+Is Bartok the Magnificent playing at seven AM?,0 B-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange 0 ,Is _movie_name_ playing at _timerange_?,SearchScreeningEvent
 What's the movie schedule,0 B-object_type I-object_type ,What's the _object_type_.,SearchScreeningEvent
 i want to see JLA Adventures: Trapped In Time,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name ,i want to see _movie_name_.,SearchScreeningEvent
 when is The Fox and the Child playing in this cinema,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-object_location_type ,when is _movie_name_ playing in this _object_location_type_.,SearchScreeningEvent
-show me the schedule for Rat Rod Rockers!,0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 ,show me the _object_type_ for _movie_name_!.,SearchScreeningEvent
+show me the schedule for Rat Rod Rockers!,0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 ,show me the _object_type_ for _movie_name_!,SearchScreeningEvent
 Is Any Which Way You Can playing in 15 seconds,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange I-timerange ,Is _movie_name_ playing _timerange_.,SearchScreeningEvent
 I want to see The Portrait of a Lady at the nearest cinema.,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type 0 ,I want to see _movie_name_ at the _spatial_relation_ _object_location_type_.,SearchScreeningEvent
 Where can I see The Prime Ministers: The Pioneers,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name ,Where can I see _movie_name_.,SearchScreeningEvent
 I need to find the movie theatre showing The Crooked Web closest to me,0 B-object_location_type I-object_location_type 0 B-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 ,I need to find the _object_location_type_ showing _movie_name_ _spatial_relation_ to me.,SearchScreeningEvent
 I want to see While the Sun Shines at the closest movie house.,0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 ,I want to see _movie_name_ at the _spatial_relation_ _object_location_type_.,SearchScreeningEvent
-"I want to see Those Kids from Town, when will it be showing?",0 B-movie_name I-movie_name I-movie_name I-movie_name 0 ,"I want to see _movie_name_, when will it be showing?.",SearchScreeningEvent
+"I want to see Those Kids from Town, when will it be showing?",0 B-movie_name I-movie_name I-movie_name I-movie_name 0 ,"I want to see _movie_name_, when will it be showing?",SearchScreeningEvent
 Find the schedule for The Comedian at Santikos Theatres.,0 B-object_type 0 B-movie_name I-movie_name 0 B-location_name I-location_name 0 ,Find the _object_type_ for _movie_name_ at _location_name_.,SearchScreeningEvent
 What are the movie schedules for my favorite theaters ,0 B-object_type I-object_type 0 B-location_name 0 ,What are the _object_type_ for my favorite _location_name_ .,SearchScreeningEvent
 What are the movies showing in the neighbourhood ,0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 ,What are the _movie_type_ showing _spatial_relation_ .,SearchScreeningEvent
@@ -649,7 +649,7 @@ What are the movie times at Caribbean Cinemas,0 B-object_type I-object_type 0 B-
 I need films in the neighborhood,0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation ,I need _movie_type_ _spatial_relation_.,SearchScreeningEvent
 Show the movie schedules in the neighborhood,0 B-object_type I-object_type 0 B-spatial_relation I-spatial_relation I-spatial_relation ,Show the _object_type_ _spatial_relation_.,SearchScreeningEvent
 where's the nearest movie house showing foreign films,0 B-spatial_relation 0 B-object_location_type I-object_location_type 0 B-movie_type ,where's the _spatial_relation_ _object_location_type_ showing foreign _movie_type_.,SearchScreeningEvent
-What movies are showing now at the closest cinema?,0 B-movie_type 0 B-timerange 0 B-spatial_relation 0 B-object_location_type 0 ,What _movie_type_ are showing _timerange_ at the _spatial_relation_ _object_location_type_?.,SearchScreeningEvent
+What movies are showing now at the closest cinema?,0 B-movie_type 0 B-timerange 0 B-spatial_relation 0 B-object_location_type 0 ,What _movie_type_ are showing _timerange_ at the _spatial_relation_ _object_location_type_?,SearchScreeningEvent
 Is Rumor Has It playing,0 B-movie_name I-movie_name I-movie_name 0 ,Is _movie_name_ playing.,SearchScreeningEvent
 I need a list of Speakeasy Theaters movie times,0 B-location_name I-location_name 0 B-object_type I-object_type ,I need a list of _location_name_ _object_type_.,SearchScreeningEvent
 When is The Outer Space Connection playing at the nearest cinema.,0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-spatial_relation 0 B-object_location_type 0 ,When is _movie_name_ playing at the _spatial_relation_ _object_location_type_.,SearchScreeningEvent
@@ -663,7 +663,7 @@ Is No Time to Be Young showing at AMC Theaters,0 B-movie_name I-movie_name I-mov
 Find the movie schedules for Regal Entertainment Group.,0 B-object_type I-object_type 0 B-location_name I-location_name I-location_name 0 ,Find the _object_type_ for _location_name_.,SearchScreeningEvent
 I want to see Shattered Image.,0 B-movie_name I-movie_name 0 ,I want to see _movie_name_.,SearchScreeningEvent
 Find the schedule at Star Theatres.,0 B-object_type 0 B-location_name I-location_name 0 ,Find the _object_type_ at _location_name_.,SearchScreeningEvent
-Will I Think I Do be playing at 7 PM?,0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange 0 ,Will _movie_name_ be playing at _timerange_?.,SearchScreeningEvent
+Will I Think I Do be playing at 7 PM?,0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-timerange I-timerange 0 ,Will _movie_name_ be playing at _timerange_?,SearchScreeningEvent
 Show me the schedule for ArcLight Hollywood for only animated movies,0 B-object_type 0 B-location_name I-location_name 0 B-movie_type I-movie_type ,Show me the _object_type_ for _location_name_ for only _movie_type_.,SearchScreeningEvent
 Find the schedule for Great Mail Robbery.,0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 ,Find the _object_type_ for _movie_name_.,SearchScreeningEvent
 Give me the movies in the neighborhood ,0 B-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation 0 ,Give me the _movie_type_ _spatial_relation_ .,SearchScreeningEvent
@@ -679,9 +679,9 @@ show me the movie schedule in the neighbourhood ,0 B-object_type I-object_type 0
 show me the movie times for films  nearby,0 B-object_type I-object_type 0 B-movie_type 0 B-spatial_relation ,show me the _object_type_ for _movie_type_  _spatial_relation_.,SearchScreeningEvent
 show the movie times for animated movies in the neighbourhood,0 B-object_type I-object_type 0 B-movie_type I-movie_type 0 B-spatial_relation I-spatial_relation I-spatial_relation ,show the _object_type_ for _movie_type_ _spatial_relation_.,SearchScreeningEvent
 Is The Eye â Infinity playing at General Cinema Corporation,0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-location_name I-location_name I-location_name ,Is _movie_name_ playing at _location_name_.,SearchScreeningEvent
-Can you check the timings for Super Sweet 16: The Movie?,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 ,Can you check the timings for _movie_name_?.,SearchScreeningEvent
+Can you check the timings for Super Sweet 16: The Movie?,0 B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name 0 ,Can you check the timings for _movie_name_?,SearchScreeningEvent
 is We Are Northern Lights playing in any movie theatre,0 B-movie_name I-movie_name I-movie_name I-movie_name 0 B-object_location_type I-object_location_type ,is _movie_name_ playing in any _object_location_type_.,SearchScreeningEvent
-What times will The Young Swordsman be showing at my cinema?,0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 B-object_location_type 0 ,What _object_type_ will _movie_name_ be showing at my _object_location_type_?.,SearchScreeningEvent
+What times will The Young Swordsman be showing at my cinema?,0 B-object_type 0 B-movie_name I-movie_name I-movie_name 0 B-object_location_type 0 ,What _object_type_ will _movie_name_ be showing at my _object_location_type_?,SearchScreeningEvent
 Show the Sexy Dance 2times at the  closest movie house,0 B-movie_name I-movie_name I-movie_name B-object_type 0 B-spatial_relation 0 B-object_location_type I-object_location_type ,Show the _movie_name__object_type_ at the  _spatial_relation_ _object_location_type_.,SearchScreeningEvent
 what are some close by animated movies showing,0 B-spatial_relation I-spatial_relation 0 B-movie_type I-movie_type 0 ,what are some _spatial_relation_ _movie_type_ showing.,SearchScreeningEvent
 movie schedules close by for animated movies,B-object_type I-object_type 0 B-spatial_relation I-spatial_relation 0 B-movie_type I-movie_type ,_object_type_ _spatial_relation_ for _movie_type_.,SearchScreeningEvent

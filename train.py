@@ -35,7 +35,7 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
-    NLL = torch.nn.NLLLoss(size_average=False)#, ignore_index=pad_idx)
+    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
 
     step = 0
     
@@ -56,7 +56,7 @@ def train(model, datasets, args):
             logp, mean, logv, z = model(x)
 
             # to inspect input and output
-            if epoch > 1:
+            if epoch == args.print_reconstruction:
                 x_sentences = x.transpose(0,1)[:3]
                 print('\nInput sentences :')
                 print(*idx2word(x_sentences, i2w=i2w, pad_idx=pad_idx), sep='\n')
@@ -125,6 +125,7 @@ if __name__ == '__main__':
     parser.add_argument('--n_generated', type=int, default=5)
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=int, default=1)
+    parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
     parser.add_argument('--max_sequence_length', type=int, default=10)
     parser.add_argument('--emb_dim' , type=int, default=100)
