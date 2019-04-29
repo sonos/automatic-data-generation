@@ -55,7 +55,8 @@ def train(model, datasets, args):
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, y_onehot = model(x)
+            logp, mean, logv, logc = model(x)
+            c = torch.exp(logc)
 
             # to inspect input and output
             if epoch == args.print_reconstruction:
@@ -72,10 +73,13 @@ def train(model, datasets, args):
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
 
-            NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), y_onehot.cpu().max(1)[1].numpy())
-
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
+            if args.conditional:
+                entropy = torch.sum(c * torch.log(args.n_classes * c))
+                NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
+                loss += entropy
+                
             loss.backward()
             opt.step()
 
@@ -101,15 +105,19 @@ def train(model, datasets, args):
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, y_onehot = model(x)
+            logp, mean, logv, logc = model(x)
+            c = torch.exp(logc)
             
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
 
-            NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), y_onehot.cpu().max(1)[1].numpy())
-
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
+
+            if args.conditional:
+                entropy = torch.sum(c * torch.log(args.n_classes * c))
+                NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
+                loss += entropy
 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
@@ -121,9 +129,9 @@ def train(model, datasets, args):
         KL_val_loss  = KL_val_loss / len(datasets.valid)
         NMI_val  = NMI_val / len(datasets.valid)
         
-        print('Epoch: {}'.format(epoch, tr_loss, val_loss))
-        print('Training :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, NMI_tr))
-        print('Valid    :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, NMI_val))
+        print('Epoch: train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
+        print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, NMI_tr))
+        print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, NMI_val))
 
     
 if __name__ == '__main__':
@@ -134,6 +142,7 @@ if __name__ == '__main__':
     parser.add_argument('--n_generated', type=int, default=5)
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=int, default=1)
+    parser.add_argument('--n_classes', type=int, default=7)
     parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
     parser.add_argument('--max_sequence_length', type=int, default=10)
@@ -192,7 +201,7 @@ if __name__ == '__main__':
             word_dropout=args.word_dropout,
             embedding_dropout=args.embedding_dropout,
             z_size=args.latent_size,
-            n_classes=7,
+            n_classes=args.n_classes,
             num_layers=args.num_layers,
             bidirectional=args.bidirectional
         )

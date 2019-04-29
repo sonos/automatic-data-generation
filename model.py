@@ -6,7 +6,7 @@ from utils import to_device
 
 class CVAE(nn.Module):
 
-    def __init__(self, vocab_size, embedding_size, rnn_type, hidden_size, word_dropout=0, embedding_dropout=0, z_size=100, n_classes=7, sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0, max_sequence_length=30, num_layers=1, bidirectional=False):
+    def __init__(self, vocab_size, embedding_size, rnn_type, hidden_size, word_dropout=0, embedding_dropout=0, z_size=100, n_classes=10, sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0, max_sequence_length=30, num_layers=1, bidirectional=False):
 
         super().__init__()
         self.tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.Tensor
@@ -74,8 +74,8 @@ class CVAE(nn.Module):
         z = to_device(torch.randn(batch_size, self.z_size))
         z = z * std + mean
 
-        logp = nn.functional.log_softmax(self.hidden2cat(hidden), dim=1)
-        y_onehot = nn.functional.gumbel_softmax(logp)
+        logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=1)
+        y_onehot = nn.functional.gumbel_softmax(logc)
 
         latent = torch.cat((z, y_onehot), dim=1)
         
@@ -116,7 +116,7 @@ class CVAE(nn.Module):
         logp = nn.functional.log_softmax(logits, dim=0)
         logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
-        return logp, mean, logv, y_onehot
+        return logp, mean, logv, logc
 
 
     def inference(self, n=10, z=None, y_onehot=None):
