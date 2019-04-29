@@ -36,9 +36,13 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
-    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
+    NLL = torch.nn.NLLLoss(size_average=True, ignore_index=pad_idx)
 
     step = 0
+
+    NLL_hist = []
+    KL_hist = []
+    NMI_hist = []
     
     for epoch in range(1, args.epochs + 1):
         tr_loss = 0.0
@@ -72,12 +76,14 @@ def train(model, datasets, args):
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
-
+            NLL_hist.append(NLL_loss)
+            KL_hist.append(KL_loss)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.conditional:
                 entropy = torch.sum(c * torch.log(args.n_classes * c))
                 NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
+                NMI_hist.append(NMI)
                 loss += entropy
                 
             loss.backward()
@@ -133,12 +139,18 @@ def train(model, datasets, args):
         print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, NMI_tr))
         print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, NMI_val))
 
+    run['NLL_hist'] = NLL_hist
+    run['KL_hist'] = KL_hist
+    run['NMI_hist'] = NMI_hist
+
+    return
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str, default='./data')
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default=None)
+    parser.add_argument('--save_run', type=str, default='run.pyT')
     parser.add_argument('--n_generated', type=int, default=5)
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=int, default=1)
@@ -147,7 +159,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--max_sequence_length', type=int, default=10)
     parser.add_argument('--emb_dim' , type=int, default=100)
-    parser.add_argument('--tokenizer' , type=str, default='split', choices=['split', 'nltk', 'spacy'])
+    parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
@@ -164,10 +176,12 @@ if __name__ == '__main__':
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
     parser.add_argument('-k', '--k', type=float, default=0.0025)
-    parser.add_argument('-x0', '--x0', type=int, default=2500)
+    parser.add_argument('-x0', '--x0', type=int, default=100)
+
+    run = {}
 
     args = parser.parse_args()
-    
+    run['args'] = args
     print(args)
     
     print('loading and embedding datasets')
@@ -229,11 +243,11 @@ if __name__ == '__main__':
     
     if args.load_model is not None:
         model.load_state_dict(torch.load(args.load_model))
-    
     train(model, datasets, args)
-    
     if args.save_model is not None:
         torch.save(model.state_dict(), args.save_model)
+
+    torch.save(run, args.save_run)
         
     if args.n_generated>0:
     
