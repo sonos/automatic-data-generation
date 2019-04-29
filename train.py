@@ -9,6 +9,7 @@ import argparse
 import os
 import torch
 from utils import to_device, idx2word
+from sklearn.metrics import normalized_mutual_info_score
 
 def kl_anneal_function(anneal_function, step, k, x0):
     if anneal_function == 'logistic':
@@ -40,9 +41,10 @@ def train(model, datasets, args):
     step = 0
     
     for epoch in range(1, args.epochs + 1):
-        running_loss = 0.0
-        NLL_running_loss = 0.0
-        KL_running_loss = 0.0
+        tr_loss = 0.0
+        NLL_tr_loss = 0.0
+        KL_tr_loss = 0.0
+        NMI_tr = 0.0
         
         model.train() # turn on training mode
         for batch in tqdm(train_iter): 
@@ -53,7 +55,7 @@ def train(model, datasets, args):
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, z = model(x)
+            logp, mean, logv, y_onehot = model(x)
 
             # to inspect input and output
             if epoch == args.print_reconstruction:
@@ -70,24 +72,28 @@ def train(model, datasets, args):
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
 
+            NMI = normalized_mutual_info_score(y.detach().numpy(), y_onehot.max(1)[1].numpy())
+
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             loss.backward()
             opt.step()
 
-            running_loss += loss.item()
-            NLL_running_loss += NLL_loss.item()
-            KL_running_loss += KL_loss.item()
+            tr_loss += loss.item()
+            NLL_tr_loss += NLL_loss.item()
+            KL_tr_loss += KL_loss.item()
+            NMI_tr += NMI.item()
 
-        epoch_loss     = running_loss / len(datasets.train)
-        NLL_epoch_loss = NLL_running_loss / len(datasets.train)
-        KL_epoch_loss  = KL_running_loss / len(datasets.train)
-        
+        tr_loss     = tr_loss / len(datasets.train)
+        NLL_tr_loss = NLL_tr_loss / len(datasets.train)
+        KL_tr_loss  = KL_tr_loss / len(datasets.train)
+        NMI_tr = NMI_tr / len(datasets.train)
 
         # calculate the validation loss for this epoch
         val_loss = 0.0
         NLL_val_loss = 0.0
         KL_val_loss = 0.0
+        NMI_val = 0.0
 
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
@@ -95,26 +101,29 @@ def train(model, datasets, args):
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, z = model(x)
+            logp, mean, logv, y_onehot = model(x)
             
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
+
+            NMI = normalized_mutual_info_score(y.detach().numpy(), y_onehot.max(1)[1].numpy())
 
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
             KL_val_loss += KL_loss.item()
-
+            NMI_val += NMI.item()
 
         val_loss     = val_loss / len(datasets.valid)
         NLL_val_loss = NLL_val_loss / len(datasets.valid)
         KL_val_loss  = KL_val_loss / len(datasets.valid)
+        NMI_val  = NMI_val / len(datasets.valid)
         
-        print('Epoch: {}'.format(epoch, epoch_loss, val_loss))
-        print('Training :  NLL loss : {:.6f}, KL loss : {:.6f}'.format(NLL_epoch_loss, KL_epoch_loss))
-        print('Valid    :  NLL loss : {:.6f}, KL loss : {:.6f}'.format(NLL_val_loss, KL_val_loss))
+        print('Epoch: {}'.format(epoch, tr_loss, val_loss))
+        print('Training :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, NMI_tr))
+        print('Valid    :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, NMI_val))
 
     
 if __name__ == '__main__':

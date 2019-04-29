@@ -116,7 +116,7 @@ class CVAE(nn.Module):
         logp = nn.functional.log_softmax(logits, dim=0)
         logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
-        return logp, mean, logv, z
+        return logp, mean, logv, y_onehot
 
 
     def inference(self, n=10, z=None, y_onehot=None):
