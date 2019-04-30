@@ -36,7 +36,7 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
-    NLL = torch.nn.NLLLoss(size_average=True, ignore_index=pad_idx)
+    NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
     step = 0
 
@@ -76,8 +76,8 @@ def train(model, datasets, args):
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
                     mean, logv, args.anneal_function, step, args.k, args.x0)
-            NLL_hist.append(NLL_loss)
-            KL_hist.append(KL_loss)
+            NLL_hist.append(NLL_loss/args.batch_size)
+            KL_hist.append(KL_loss/args.batch_size)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.conditional:
@@ -199,8 +199,6 @@ if __name__ == '__main__':
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
     
-    NLL = torch.nn.NLLLoss(size_average=False, ignore_index=pad_idx)
-
     if args.conditional:
         model = CVAE(
             vocab_size=len(i2w),

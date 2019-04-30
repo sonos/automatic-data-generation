@@ -17,11 +17,11 @@ def convert(datadir, outdir):
                 
         slotdic = {}
 
-        intentfile = open('{}/{}_intents'       .format(outdir, split), 'w')
-        utterfile  = open('{}/{}_utterances'    .format(outdir, split), 'w')
-        labelfile  = open('{}/{}_labels'        .format(outdir, split), 'w')
-        delexfile  = open('{}/{}_delexicalised' .format(outdir, split), 'w')
-        csvfile    = open('{}/{}.csv'           .format(outdir, split), 'w')
+        intentfile = open('{}/{}_intents.txt'       .format(outdir, split), 'w')
+        utterfile  = open('{}/{}_utterances.txt'    .format(outdir, split), 'w')
+        labelfile  = open('{}/{}_labels.txt'        .format(outdir, split), 'w')
+        delexfile  = open('{}/{}_delexicalised.txt' .format(outdir, split), 'w')
+        csvfile    = open('{}/{}.csv'               .format(outdir, split), 'w')
         csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow(['utterance', 'labels', 'delexicalised', 'intent'])
 
