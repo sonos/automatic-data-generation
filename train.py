@@ -36,13 +36,14 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
-    NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
     step = 0
 
     NLL_hist = []
     KL_hist = []
     NMI_hist = []
+
+    latent_rep={i:[] for i in range(args.n_classes)}
     
     for epoch in range(1, args.epochs + 1):
         tr_loss = 0.0
@@ -59,7 +60,9 @@ def train(model, datasets, args):
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, logc = model(x)
+            logp, mean, logv, logc, z = model(x)
+            for i,intent in enumerate(y):
+                latent_rep[int(intent)].append(z[i].detach().numpy())
             c = torch.exp(logc)
 
             # to inspect input and output
@@ -111,7 +114,7 @@ def train(model, datasets, args):
             y = batch.intent - 1
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, logc = model(x)
+            logp, mean, logv, logc, z = model(x)
             c = torch.exp(logc)
             
             # loss calculation
@@ -142,6 +145,7 @@ def train(model, datasets, args):
     run['NLL_hist'] = NLL_hist
     run['KL_hist'] = KL_hist
     run['NMI_hist'] = NMI_hist
+    run['latent'] = latent_rep
 
     return
     
@@ -171,11 +175,11 @@ if __name__ == '__main__':
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
-    parser.add_argument('-wd', '--word_dropout', type=float, default=0)
-    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0)
+    parser.add_argument('-wd', '--word_dropout', type=float, default=0.5)
+    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k', '--k', type=float, default=0.0025)
+    parser.add_argument('-k', '--k', type=float, default=0.1)
     parser.add_argument('-x0', '--x0', type=int, default=100)
 
     run = {}
@@ -198,7 +202,9 @@ if __name__ == '__main__':
     eos_idx = w2i['.']
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
-    
+
+    NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
+
     if args.conditional:
         model = CVAE(
             vocab_size=len(i2w),

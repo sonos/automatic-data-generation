@@ -116,7 +116,7 @@ class CVAE(nn.Module):
         logp = nn.functional.log_softmax(logits, dim=0)
         logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
-        return logp, mean, logv, logc
+        return logp, mean, logv, logc, z
 
 
     def inference(self, n=10, z=None, y_onehot=None):
@@ -162,12 +162,9 @@ class CVAE(nn.Module):
             input_sequence = to_device(input_sequence.unsqueeze(1))
 
             input_embedding = self.embedding(input_sequence).view(-1, batch_size, self.embedding_size)
-    
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
             logits = self.outputs2vocab(output)
-            #logits[:,:,input_sequence] = -1000
-
             input_sequence = self._sample(logits)
 
             # save next input
