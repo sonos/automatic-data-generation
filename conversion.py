@@ -35,6 +35,10 @@ def convert(datadir, outdir):
                 for group in sentence['data']:
                     
                     words = group['text']
+                    if args.remove_punctuation :
+                        punctuation = [',', '.', ':', ';', '?', '!']
+                        for p in punctuation:
+                            words.replace('p', '')
                     utterance += words
                     
                     if 'entity' in group.keys(): #this group is a slot
@@ -84,6 +88,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str, default='/Users/stephane/Dropbox/Work/Codes/data/2017-06-custom-intent-engines')
     parser.add_argument('--outdir' , type=str, default='./data/')
+    parser.add_argument('--remove_punctuation' , type=int, default=1)
     args = parser.parse_args()
     
     if not os.path.isdir(args.outdir):

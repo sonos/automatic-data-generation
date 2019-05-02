@@ -168,19 +168,19 @@ if __name__ == '__main__':
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=64)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.0001)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
-    parser.add_argument('-hs', '--hidden_size', type=int, default=256)
+    parser.add_argument('-hs', '--hidden_size', type=int, default=512)
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
-    parser.add_argument('-wd', '--word_dropout', type=float, default=0.5)
-    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
+    parser.add_argument('-wd', '--word_dropout', type=float, default=0.9)
+    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.2)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k', '--k', type=float, default=0.1)
-    parser.add_argument('-x0', '--x0', type=int, default=100)
+    parser.add_argument('-k', '--k', type=float, default=0.01)
+    parser.add_argument('-x0', '--x0', type=int, default=500)
 
     run = {}
 
