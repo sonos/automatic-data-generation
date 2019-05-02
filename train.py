@@ -62,7 +62,7 @@ def train(model, datasets, args):
             
             logp, mean, logv, logc, z = model(x)
             for i,intent in enumerate(y):
-                latent_rep[int(intent)].append(z[i].detach().numpy())
+                latent_rep[int(intent)].append(z[i].cpu().detach().numpy())
             c = torch.exp(logc)
 
             # to inspect input and output
