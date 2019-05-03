@@ -8,7 +8,7 @@ from tqdm import tqdm
 import argparse
 import os
 import torch
-from utils import to_device, idx2word
+from utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
 
 def kl_anneal_function(anneal_function, step, k, x0):
@@ -151,11 +151,13 @@ def train(model, datasets, args):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--datadir', type=str, default='./data')
+    parser.add_argument('--train_path', type=str, default='./data/train.csv')
+    parser.add_argument('--validate_path', type=str, default='./data/validate.csv')
     parser.add_argument('--load_model', type=str, default=None)
-    parser.add_argument('--save_model', type=str, default=None)
+    parser.add_argument('--save_model', type=str, default='model.pyT')
     parser.add_argument('--save_run', type=str, default='run.pyT')
     parser.add_argument('--n_generated', type=int, default=5)
+    parser.add_argument('--augment_dataset', type=int, default=0)
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=int, default=1)
     parser.add_argument('--n_classes', type=int, default=7)
@@ -189,7 +191,7 @@ if __name__ == '__main__':
     print(args)
     
     print('loading and embedding datasets')
-    datasets = Datasets(train_path=os.path.join(args.datadir,'train.csv'), valid_path=os.path.join(args.datadir, 'validate.csv'), emb_dim=args.emb_dim, tokenizer='split')
+    datasets = Datasets(train_path=os.path.join(args.train_path), valid_path=os.path.join(args.validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
 
     if args.input_type=='utterance':
         print('embedding the slots with %s averaging' %args.slot_averaging)
@@ -198,8 +200,8 @@ if __name__ == '__main__':
     vocab = datasets.TEXT.vocab if args.input_type=='utterance' else datasets.DELEX.vocab
     i2w = vocab.itos
     w2i = vocab.stoi
-    sos_idx = w2i['#']
-    eos_idx = w2i['.']
+    sos_idx = w2i['SOS']
+    eos_idx = w2i['EOS']
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
 
@@ -252,12 +254,23 @@ if __name__ == '__main__':
         torch.save(model.state_dict(), args.save_model)
 
     torch.save(run, args.save_run)
-        
+    
     if args.n_generated>0:
     
         model.eval()
 
-        samples, z = model.inference(n=args.n_generated)
+        samples, z, y_onehot = model.inference(n=args.n_generated)
         print('----------SAMPLES----------')
         print(samples)
-        print(*idx2word(samples, i2w=i2w, pad_idx=pad_idx), sep='\n')
+        delexicalised = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
+        print('----------DELEXICALISED----------')
+        print(*delexicalised, sep='\n')
+        labelling, utterance = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
+        print('----------LEXICALISED----------')
+        print(*utterance, sep='\n')
+        print('----------LABELS----------')
+        print(*labelling, sep='\n')
+
+        if args.augment_dataset:
+            csvfile    = open(train_path.split('/')[-1]+'augmented.json', 'a')
+            csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
