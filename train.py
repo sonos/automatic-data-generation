@@ -269,8 +269,8 @@ if __name__ == '__main__':
         labelling, utterance = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
         print('----------LEXICALISED----------')
         print(*utterance, sep='\n')
-        print('----------LABELS----------')
-        print(*labelling, sep='\n')
+        print('----------INTENTS----------')
+        print(*[i2int[int] for int in intent], sep='\n')
 
         if args.augment_dataset:
             augmented_path = args.train_path.replace('.csv', '_augmented.csv')
@@ -280,5 +280,4 @@ if __name__ == '__main__':
             csvfile    = open(augmented_path, 'a')
             csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
-                print(u)
                 csv_writer.writerow([u, l, d, i2int[i]])
