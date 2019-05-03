@@ -51,7 +51,7 @@ def surface_realisation(idx, i2w, pad_idx, slotdic_path='./data/train_slot_value
                     else:
                         labellings[isent] += ('I-'+slot+' ')
             else:
-                labellings[isent] += '0 '
+                labellings[isent] += 'O '
                 utterances[isent] += word + " "
 
     return labellings, utterances

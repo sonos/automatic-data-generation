@@ -1,7 +1,4 @@
 import numpy as np
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
 from embedding import Datasets
 from model import VAE, CVAE
 from tqdm import tqdm
@@ -10,6 +7,7 @@ import os
 import torch
 from utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
+import csv
 
 def kl_anneal_function(anneal_function, step, k, x0):
     if anneal_function == 'logistic':
@@ -57,8 +55,8 @@ def train(model, datasets, args):
             opt.zero_grad()
 
             x = getattr(batch, args.input_type)
-            y = batch.intent - 1
-            x, y = to_device(x), to_device(y) 
+            y = batch.intent
+            x, y = to_device(x), to_device(y)
             
             logp, mean, logv, logc, z = model(x)
             for i,intent in enumerate(y):
@@ -111,7 +109,7 @@ def train(model, datasets, args):
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
             x = getattr(batch, args.input_type)
-            y = batch.intent - 1
+            y = batch.intent
             x, y = to_device(x), to_device(y) 
             
             logp, mean, logv, logc, z = model(x)
@@ -156,8 +154,8 @@ if __name__ == '__main__':
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default='model.pyT')
     parser.add_argument('--save_run', type=str, default='run.pyT')
-    parser.add_argument('--n_generated', type=int, default=5)
-    parser.add_argument('--augment_dataset', type=int, default=0)
+    parser.add_argument('--n_generated', type=int, default=10)
+    parser.add_argument('--augment_dataset', action='store_true')
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=int, default=1)
     parser.add_argument('--n_classes', type=int, default=7)
@@ -200,6 +198,8 @@ if __name__ == '__main__':
     vocab = datasets.TEXT.vocab if args.input_type=='utterance' else datasets.DELEX.vocab
     i2w = vocab.itos
     w2i = vocab.stoi
+    i2int = datasets.INTENT.vocab.itos
+    int2i = datasets.INTENT.vocab.stoi
     sos_idx = w2i['SOS']
     eos_idx = w2i['EOS']
     pad_idx = w2i['<pad>']
@@ -260,6 +260,7 @@ if __name__ == '__main__':
         model.eval()
 
         samples, z, y_onehot = model.inference(n=args.n_generated)
+        intent = y_onehot.data.max(1)[1].cpu().numpy()
         print('----------SAMPLES----------')
         print(samples)
         delexicalised = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
@@ -272,5 +273,12 @@ if __name__ == '__main__':
         print(*labelling, sep='\n')
 
         if args.augment_dataset:
-            csvfile    = open(train_path.split('/')[-1]+'augmented.json', 'a')
+            augmented_path = args.train_path.replace('.csv', '_augmented.csv')
+            print('Dumping augmented dataset at %s' %augmented_path)
+            #from shutil import copyfile
+            #copyfile(train_path, augmented_path)
+            csvfile    = open(augmented_path, 'a')
             csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
+                print(u)
+                csv_writer.writerow([u, l, d, i2int[i]])

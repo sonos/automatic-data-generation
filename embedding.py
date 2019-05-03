@@ -3,6 +3,7 @@ import torchtext
 from torchtext.data import Iterator, BucketIterator
 import pickle
 import torch
+import spacy
 
 class Datasets():
     
@@ -21,7 +22,7 @@ class Datasets():
 
         TEXT   = torchtext.data.Field(lower=True, tokenize=tokenize, sequential=True, batch_first=False)
         DELEX  = torchtext.data.Field(lower=True, tokenize=tokenize, sequential=True, batch_first=False)
-        INTENT = torchtext.data.Field(sequential=False, batch_first=True)
+        INTENT = torchtext.data.Field(sequential=False, batch_first=True, unk_token=None)
         datafields = [("utterance", TEXT), ("labels", None), ("delexicalised", DELEX), ("intent", INTENT)]
 
         train, valid = torchtext.data.TabularDataset.splits(
@@ -55,7 +56,6 @@ class Datasets():
         for i, token in enumerate(self.DELEX.vocab.itos):
             if token.startswith("_") and token.endswith("_"):
                 slot = token.lstrip('_').rstrip('_')
-                slot_vector = self.DELEX.vocab.vectors[self.DELEX.vocab.stoi[token]]
                 new_vectors = []
 
                 slot_values = slotdic[slot]
@@ -74,7 +74,7 @@ class Datasets():
                         new_vectors.append(torch.mean(torch.stack(new_vectors)))
                     new_vector = torch.mean(torch.stack(new_vectors))
 
-                slot_vector = new_vector
+                self.DELEX.vocab.vectors[self.DELEX.vocab.stoi[token]] = new_vector
 
     def get_iterators(self, batch_size=64):
     
