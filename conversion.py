@@ -5,6 +5,8 @@ import csv
 import pickle
 from nltk import word_tokenize
 
+remove_punctuation = True
+
 def json2csv(datadir, outdir, samples_per_class):
     
     print('Starting json2csv conversion...')
@@ -80,7 +82,7 @@ def json2csv(datadir, outdir, samples_per_class):
         with open('{}/{}_slot_values'.format(outdir, split), 'wb') as f:
             print(slotdic.keys())
             pickle.dump(slotdic, f)
-            print('dumped dic')
+            print('Dumped slot dictionnary')
             
     print('Example : ')
     print('Original utterance : ', utterance)
@@ -184,7 +186,7 @@ if __name__ == '__main__':
         os.mkdir(args.outdir)
 
     if args.convert_to == 'csv':
-        json2csv(args.datadir, args.outdir, args.augmented)
+        json2csv(args.datadir, args.outdir, args.samples_per_class)
     if args.convert_to == 'json':
-        csv2json(args.datadir, args.outdir, args.samples_per_class)
+        csv2json(args.datadir, args.outdir, args.augmented)
     
