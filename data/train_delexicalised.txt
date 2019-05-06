@@ -98,6 +98,208 @@ SOS play songs from the _year_ EOS
 SOS Play a _music_item_ from _artist_ EOS
 SOS Open _service_ and paly _track_ _music_item_ released in _year_ EOS
 SOS Find me music by _artist_ off the _music_item_ that has _sort_ hits EOS
+SOS book _restaurant_name_ _restaurant_type_ in _state_ for _timerange_ EOS
+SOS Book a table at _restaurant_name_ _spatial_relation_ from _poi_ EOS
+SOS I'd like to eat at a _restaurant_type_ that serves _served_dish_ for a party of _party_size_number_  EOS
+SOS I have a party of _party_size_number_ in _country_ and need a reservation at _restaurant_name_ on _timerange_ EOS
+SOS Please make a _restaurant_type_ reservation for somewhere in _city_ _state_ EOS
+SOS book a spot _spatial_relation_ from _country_ EOS
+SOS I'd like to eat at the _sort_ _restaurant_type_ in _city_ EOS
+SOS book a _restaurant_type_ that serves _served_dish_ _spatial_relation_ in _state_ EOS
+SOS I want to book a _sort_ _cuisine_ _restaurant_type_ in _city_ _state_ _timerange_ EOS
+SOS Find a table for _party_size_number_ somewhere in _country_ _timerange_ EOS
+SOS Book a _restaurant_type_ with _facility_ facility for _party_size_number_ EOS
+SOS please book a room in _restaurant_name_ for _party_size_description_ at _timerange_ EOS
+SOS I need a table for _party_size_number_ at a _sort_ _restaurant_type_ _timerange_ in _city_ _state_ EOS
+SOS book a spot _timerange_ that is _spatial_relation_ _poi_ EOS
+SOS _party_size_description_ need a table booked at a _sort_ _restaurant_type_ in _city_ EOS
+SOS Make a reservation for _party_size_number_ at a _restaurant_type_ in _city_ EOS
+SOS book a table for a _country_ _restaurant_type_ EOS
+SOS I'd like to go to a _cuisine_ _restaurant_type_ _timerange_ _spatial_relation_ the _state_ and book seats for _party_size_number_ EOS
+SOS Book a table for _party_size_number_ people at _restaurant_name_ in _city_ EOS
+SOS Book a table in a _poi_ _restaurant_type_ for _party_size_number_ that is _spatial_relation_ EOS
+SOS book _timerange_ at a _spatial_relation_ _cuisine_ place for _party_size_number_ at a _sort_ _restaurant_type_ in _city_ EOS
+SOS Book a _restaurant_type_ with _facility_ for _party_size_number_ in _country_ EOS
+SOS Book a _restaurant_type_ for _party_size_number_ in _state_ EOS
+SOS Book the _restaurant_name_ in _country_ for _party_size_number_ person EOS
+SOS book a _restaurant_name_ for _party_size_description_ at _city_ EOS
+SOS Book a _restaurant_type_ with _served_dish_ in _city_ EOS
+SOS _restaurant_type_ _spatial_relation_ _poi_ uses _timerange_  EOS
+SOS Book seating at a _restaurant_type_ in _city_ EOS
+SOS I need a table for _party_size_number_ at a _restaurant_type_ in _country_ EOS
+SOS I want to go to _country_ and eat at a table for _party_size_number_ EOS
+SOS I want to eat at a _cuisine_ _restaurant_type_ that is _sort_ in _city_ _state_ EOS
+SOS I want to eat for _party_size_number_ at a _restaurant_type_ in _city_ _state_ with _served_dish_ _timerange_  EOS
+SOS book on _timerange_ in _city_ for _party_size_number_ at a _restaurant_type_ EOS
+SOS I'd like to eat in _country_ with a party of _party_size_number_ on _timerange_ EOS
+SOS Book _restaurant_name_ in _city_ for a party of _party_size_number_ EOS
+SOS book a table on _timerange_ at a _restaurant_type_ _spatial_relation_ of _country_ that serves _served_dish_ EOS
+SOS book me _sort_ _restaurant_type_ for _party_size_number_ members for _timerange_ at _city_ _state_ EOS
+SOS book a _country_ _restaurant_type_ serves _cuisine_ EOS
+SOS Book a _restaurant_type_ in _country_ for _party_size_number_ person EOS
+SOS _party_size_description_ want to eat somewhere _spatial_relation_ _poi_ EOS
+SOS Can you book me a table for _party_size_number_ in _state_ EOS
+SOS I need a reservation for a _restaurant_type_ _spatial_relation_ _city_ EOS
+SOS I want to book a _restaurant_type_ _spatial_relation_ _poi_ EOS
+SOS Book me a table for _party_size_number_ people at a _restaurant_type_ with a _facility_ EOS
+SOS Book a spot for _party_size_description_ at a _restaurant_type_ at _timerange_ EOS
+SOS book a _restaurant_type_ serves _served_dish_ for _party_size_number_ EOS
+SOS I need a reservation for _party_size_number_ people at a _restaurant_type_ in _country_ that serves _served_dish_ EOS
+SOS I need to book a table at a _restaurant_type_ in _state_ that serves _served_dish_ EOS
+SOS Book a _restaurant_type_ in _state_ at _timerange_ with _served_dish_ EOS
+SOS Book an _cuisine_ _restaurant_type_ in _city_ _timerange_ for _party_size_description_ EOS
+SOS Please book reservations at a _restaurant_type_ that serves _served_dish_ party for three with _party_size_description_ EOS
+SOS I need a table at _restaurant_name_ at _timerange_ EOS
+SOS At _timerange_ I need a table for _party_size_number_ at a _restaurant_type_ in _country_ that serves _served_dish_ EOS
+SOS book a table _timerange_ for _party_size_description_ at a _restaurant_type_ in _country_ that is _sort_ EOS
+SOS I'm looking to reserve a table at a _served_dish_ _restaurant_type_ in _country_ EOS
+SOS Book me a reservation for _restaurant_name_ in _country_ for a party of _party_size_number_ EOS
+SOS Lets go eat in _city_ _timerange_ EOS
+SOS I need a reservation for a _restaurant_type_ that serves _served_dish_ in _state_ EOS
+SOS Please book reservations for _party_size_number_ people at a _restaurant_type_ in _city_ EOS
+SOS book a table in _state_ for _party_size_number_ for _timerange_ at a _restaurant_type_ that serves _cuisine_ EOS
+SOS Book a table in _city_ for a party of _party_size_number_ at the _restaurant_name_ EOS
+SOS I want to book a _restaurant_type_ _spatial_relation_ _state_ for _party_size_number_ people EOS
+SOS Get me a table at _restaurant_name_ in _city_ for _party_size_number_ EOS
+SOS Locate the _sort_ _restaurant_type_ in _city_ EOS
+SOS book a _restaurant_type_ in _city_ on _timerange_ for _party_size_description_ EOS
+SOS Book a table for _party_size_description_ at a _restaurant_type_ which serves _served_dish_  EOS
+SOS I need a table for _party_size_number_ on _timerange_ EOS
+SOS book a _sort_ _restaurant_type_ of _cuisine_ cuisine
+ EOS
+SOS I want to book a _cuisine_ _restaurant_type_ in _state_ for _party_size_description_ EOS
+SOS I need a reservation for _timerange_ in _city_ _state_ EOS
+SOS Book a table at a _restaurant_type_ in _city_ for _party_size_description_ EOS
+SOS Can you find me reservations for this _timerange_ at a _restaurant_type_ that serves _served_dish_ EOS
+SOS Book the _sort_ _restaurant_type_ for _party_size_number_ people EOS
+SOS book a spot for _party_size_description_ at a _sort_ _restaurant_type_ in _state_ with _cuisine_ EOS
+SOS Please book a _restaurant_type_ room which serves _served_dish_ dish in _city_  EOS
+SOS I need a reservation for the _sort_ _cuisine_ _restaurant_type_ on _timerange_ in _city_ _state_ for a party of _party_size_number_ EOS
+SOS Book a _restaurant_type_ that has _cuisine_ food _timerange_ in _city_ for _party_size_description_ EOS
+SOS I need to book a _restaurant_name_ _timerange_ in _country_ EOS
+SOS Book a table for _party_size_number_ people at a _restaurant_type_ which serves _served_dish_ EOS
+SOS I would like to book a _restaurant_type_ in _country_ EOS
+SOS Book the _restaurant_name_ for _timerange_ EOS
+SOS book a spot for _party_size_description_ at a _restaurant_type_ with a _facility_ at _timerange_ EOS
+SOS I need a table at _restaurant_name_ for _party_size_number_ in _country_ EOS
+SOS Book a table for _party_size_number_ for _timerange_ EOS
+SOS book a spot at a _restaurant_type_ with _facility_ that is _spatial_relation_ _country_ EOS
+SOS Book a _restaurant_type_ in _country_ for _party_size_description_ EOS
+SOS book a spot at a _sort_ _restaurant_type_ in _country_ EOS
+SOS Make a reservation at a _restaurant_type_ which serves _served_dish_ for a party of _party_size_number_ in _country_ EOS
+SOS Make me a reservation in _state_ EOS
+SOS Book a table for _party_size_number_ at a _restaurant_type_ in _city_ EOS
+SOS book a _served_dish_ serving _restaurant_type_ in _country_ EOS
+SOS I need a table for _party_size_number_ during _timerange_ in _state_ EOS
+SOS book a table in _state_ for _party_size_description_ at _restaurant_name_ on _timerange_ EOS
+SOS _party_size_description_ want to eat _cuisine_ food on _timerange_ at a _restaurant_type_ EOS
+SOS book a _restaurant_type_ for _party_size_number_ that's _spatial_relation_ from _state_ EOS
+SOS Book me a _restaurant_type_ please EOS
+SOS book for _party_size_number_ in _state_ at _restaurant_name_ EOS
+SOS Book a table for _party_size_number_ in _state_ for _timerange_ EOS
+SOS book a table at _restaurant_name_ in _city_ for _party_size_description_ EOS
+SOS book a _cuisine_ cuisine _restaurant_type_ in _timerange_ for _party_size_number_ in _city__state_
+ EOS
+SOS find the _object_type_ titled _object_name_ EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS find the _object_type_ _object_name_ EOS
+SOS show creative work of _object_name_ EOS
+SOS Where can I watch the _object_type_ _object_name_ EOS
+SOS Play _object_name_ _object_type_ EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Can you find the _object_type_ _object_name_ EOS
+SOS I want to watch the _object_type_ _object_name_ EOS
+SOS Need to find the _object_type_ called _object_name_ EOS
+SOS Play _object_name_ EOS
+SOS find _object_name_ a _object_type_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS show creativity in _object_type_ of _object_name_ EOS
+SOS I'd like to see the _object_type_ for _object_name_ EOS
+SOS Get me the _object_type_ from _object_name_ EOS
+SOS Show _object_name_ EOS
+SOS Show me the _object_type_ _object_name_ EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS I want to watch the _object_type_ _object_name_ EOS
+SOS find the _object_type_ _object_name_ EOS
+SOS Please search for the _object_name_ _object_type_ EOS
+SOS What system is _object_name_ the _object_type_ for EOS
+SOS Show me _object_name_ EOS
+SOS How to buy _object_type_ of _object_name_ EOS
+SOS Find the _object_name_ _object_type_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS show me the _object_type_ _object_name_ EOS
+SOS find the _object_name_ _object_type_ EOS
+SOS Find _object_name_ for me EOS
+SOS Search for _object_name_ _object_type_ EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS Show me the lowest price for the _object_type_ _object_name_ EOS
+SOS Please help me find the _object_name_ _object_type_ EOS
+SOS look for the creative work _object_name_ EOS
+SOS Where can I find the _object_type_ _object_name_ EOS
+SOS What is the price for the _object_type_ _object_name_ EOS
+SOS Find _object_name_ EOS
+SOS Where did the _object_type_ _object_name_ go EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS Find _object_name_ _object_type_ EOS
+SOS find _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS I'm looking for _object_name_ EOS
+SOS Show me work of _object_name_ EOS
+SOS I want to read the _object_type_ _object_name_ EOS
+SOS Find me the _object_name_ _object_type_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS find _object_name_ a _object_type_ EOS
+SOS Look up _object_name_ EOS
+SOS Please search the _object_name_ _object_type_ EOS
+SOS find _object_name_ EOS
+SOS I need to find the _object_name_ _object_type_ EOS
+SOS play the _object_name_ _object_type_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Look for the _object_name_ _object_type_ EOS
+SOS I'm looking for a _object_type_ titled _object_name_ EOS
+SOS Where can I watch the _object_type_ for _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Find _object_name_ EOS
+SOS Find the _object_type_ _object_name_ EOS
+SOS Please look up _object_name_ EOS
+SOS find _object_name_ a _object_type_ EOS
+SOS I want to watch the _object_type_ _object_name_ EOS
+SOS I want to listen to the _object_type_ _object_name_ EOS
+SOS find _object_name_ a _object_type_ EOS
+SOS I'd like to see the _object_type_ _object_name_ EOS
+SOS show _object_name_ _object_type_ EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS Where is the _object_type_ _object_name_  EOS
+SOS find the _object_type_ _object_name_ EOS
+SOS Find me the _object_type_ _object_name_ EOS
+SOS Where can I buy the _object_name_ _object_type_ EOS
+SOS Show me the _object_name_ _object_type_ EOS
+SOS Where to watch _object_type_ _object_name_ EOS
+SOS find the _object_type_ _object_name_ EOS
+SOS show creative _object_type_ _object_name_ EOS
+SOS Find _object_name_ in some form of creative work EOS
+SOS Find _object_name_ _object_type_ EOS
+SOS Play me a _object_type_ for _object_name_ EOS
+SOS Find me _object_name_ EOS
+SOS Find the _object_type_ _object_name_ EOS
+SOS Play _object_name_ _object_type_ EOS
+SOS play the _object_name_ _object_type_ EOS
+SOS play _object_name_ _object_type_ EOS
+SOS Please find me _object_name_ _object_type_ EOS
+SOS I want to read the _object_type_ _object_name_ EOS
+SOS Show me the _object_type_ of _object_name_ EOS
+SOS Where to buy _object_type_ _object_name_ EOS
+SOS find a _object_type_ called _object_name_ EOS
+SOS find the _object_type_ _object_name_ EOS
+SOS When is _object_name_ playing EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Find a _object_type_ called _object_name_ EOS
+SOS Show me the _object_type_ _object_name_ EOS
+SOS Locate me the _object_type_ entitled _object_name_ EOS
 SOS rate _object_name_ _rating_value_ of _best_rating_
  EOS
 SOS Rate _object_name_ _rating_value_ _rating_unit_ EOS
@@ -206,106 +408,6 @@ SOS For this _object_select_ _object_part_of_series_type_ I give _rating_value_ 
 
  
  EOS
-SOS find the _object_type_ titled _object_name_ EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS find the _object_type_ _object_name_ EOS
-SOS show creative work of _object_name_ EOS
-SOS Where can I watch the _object_type_ _object_name_ EOS
-SOS Play _object_name_ _object_type_ EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Can you find the _object_type_ _object_name_ EOS
-SOS I want to watch the _object_type_ _object_name_ EOS
-SOS Need to find the _object_type_ called _object_name_ EOS
-SOS Play _object_name_ EOS
-SOS find _object_name_ a _object_type_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS show creativity in _object_type_ of _object_name_ EOS
-SOS I'd like to see the _object_type_ for _object_name_ EOS
-SOS Get me the _object_type_ from _object_name_ EOS
-SOS Show _object_name_ EOS
-SOS Show me the _object_type_ _object_name_ EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS I want to watch the _object_type_ _object_name_ EOS
-SOS find the _object_type_ _object_name_ EOS
-SOS Please search for the _object_name_ _object_type_ EOS
-SOS What system is _object_name_ the _object_type_ for EOS
-SOS Show me _object_name_ EOS
-SOS How to buy _object_type_ of _object_name_ EOS
-SOS Find the _object_name_ _object_type_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS show me the _object_type_ _object_name_ EOS
-SOS find the _object_name_ _object_type_ EOS
-SOS Find _object_name_ for me EOS
-SOS Search for _object_name_ _object_type_ EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS Show me the lowest price for the _object_type_ _object_name_ EOS
-SOS Please help me find the _object_name_ _object_type_ EOS
-SOS look for the creative work _object_name_ EOS
-SOS Where can I find the _object_type_ _object_name_ EOS
-SOS What is the price for the _object_type_ _object_name_ EOS
-SOS Find _object_name_ EOS
-SOS Where did the _object_type_ _object_name_ go EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS Find _object_name_ _object_type_ EOS
-SOS find _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS I'm looking for _object_name_ EOS
-SOS Show me work of _object_name_ EOS
-SOS I want to read the _object_type_ _object_name_ EOS
-SOS Find me the _object_name_ _object_type_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS find _object_name_ a _object_type_ EOS
-SOS Look up _object_name_ EOS
-SOS Please search the _object_name_ _object_type_ EOS
-SOS find _object_name_ EOS
-SOS I need to find the _object_name_ _object_type_ EOS
-SOS play the _object_name_ _object_type_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Look for the _object_name_ _object_type_ EOS
-SOS I'm looking for a _object_type_ titled _object_name_ EOS
-SOS Where can I watch the _object_type_ for _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Find _object_name_ EOS
-SOS Find the _object_type_ _object_name_ EOS
-SOS Please look up _object_name_ EOS
-SOS find _object_name_ a _object_type_ EOS
-SOS I want to watch the _object_type_ _object_name_ EOS
-SOS I want to listen to the _object_type_ _object_name_ EOS
-SOS find _object_name_ a _object_type_ EOS
-SOS I'd like to see the _object_type_ _object_name_ EOS
-SOS show _object_name_ _object_type_ EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS Where is the _object_type_ _object_name_  EOS
-SOS find the _object_type_ _object_name_ EOS
-SOS Find me the _object_type_ _object_name_ EOS
-SOS Where can I buy the _object_name_ _object_type_ EOS
-SOS Show me the _object_name_ _object_type_ EOS
-SOS Where to watch _object_type_ _object_name_ EOS
-SOS find the _object_type_ _object_name_ EOS
-SOS show creative _object_type_ _object_name_ EOS
-SOS Find _object_name_ in some form of creative work EOS
-SOS Find _object_name_ _object_type_ EOS
-SOS Play me a _object_type_ for _object_name_ EOS
-SOS Find me _object_name_ EOS
-SOS Find the _object_type_ _object_name_ EOS
-SOS Play _object_name_ _object_type_ EOS
-SOS play the _object_name_ _object_type_ EOS
-SOS play _object_name_ _object_type_ EOS
-SOS Please find me _object_name_ _object_type_ EOS
-SOS I want to read the _object_type_ _object_name_ EOS
-SOS Show me the _object_type_ of _object_name_ EOS
-SOS Where to buy _object_type_ _object_name_ EOS
-SOS find a _object_type_ called _object_name_ EOS
-SOS find the _object_type_ _object_name_ EOS
-SOS When is _object_name_ playing EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Find a _object_type_ called _object_name_ EOS
-SOS Show me the _object_type_ _object_name_ EOS
-SOS Locate me the _object_type_ entitled _object_name_ EOS
 SOS What will the weather be _timerange_ in _geographic_poi_ EOS
 SOS Will it be _condition_description_ _timerange_ in _geographic_poi_ EOS
 SOS Is it supposed to _condition_description_ _spatial_relation_ my _current_location_ at _timerange_ EOS
@@ -407,208 +509,6 @@ SOS What will the weather be like _timerange_ will there be _condition_descripti
 SOS What's the weather like in _city_ _state_ EOS
 SOS Is the forecast _condition_description_ in _country_ on _timerange_ EOS
 SOS What's the wather in _city_ _country_ EOS
-SOS book _restaurant_name_ _restaurant_type_ in _state_ for _timerange_ EOS
-SOS Book a table at _restaurant_name_ _spatial_relation_ from _poi_ EOS
-SOS I'd like to eat at a _restaurant_type_ that serves _served_dish_ for a party of _party_size_number_  EOS
-SOS I have a party of _party_size_number_ in _country_ and need a reservation at _restaurant_name_ on _timerange_ EOS
-SOS Please make a _restaurant_type_ reservation for somewhere in _city_ _state_ EOS
-SOS book a spot _spatial_relation_ from _country_ EOS
-SOS I'd like to eat at the _sort_ _restaurant_type_ in _city_ EOS
-SOS book a _restaurant_type_ that serves _served_dish_ _spatial_relation_ in _state_ EOS
-SOS I want to book a _sort_ _cuisine_ _restaurant_type_ in _city_ _state_ _timerange_ EOS
-SOS Find a table for _party_size_number_ somewhere in _country_ _timerange_ EOS
-SOS Book a _restaurant_type_ with _facility_ facility for _party_size_number_ EOS
-SOS please book a room in _restaurant_name_ for _party_size_description_ at _timerange_ EOS
-SOS I need a table for _party_size_number_ at a _sort_ _restaurant_type_ _timerange_ in _city_ _state_ EOS
-SOS book a spot _timerange_ that is _spatial_relation_ _poi_ EOS
-SOS _party_size_description_ need a table booked at a _sort_ _restaurant_type_ in _city_ EOS
-SOS Make a reservation for _party_size_number_ at a _restaurant_type_ in _city_ EOS
-SOS book a table for a _country_ _restaurant_type_ EOS
-SOS I'd like to go to a _cuisine_ _restaurant_type_ _timerange_ _spatial_relation_ the _state_ and book seats for _party_size_number_ EOS
-SOS Book a table for _party_size_number_ people at _restaurant_name_ in _city_ EOS
-SOS Book a table in a _poi_ _restaurant_type_ for _party_size_number_ that is _spatial_relation_ EOS
-SOS book _timerange_ at a _spatial_relation_ _cuisine_ place for _party_size_number_ at a _sort_ _restaurant_type_ in _city_ EOS
-SOS Book a _restaurant_type_ with _facility_ for _party_size_number_ in _country_ EOS
-SOS Book a _restaurant_type_ for _party_size_number_ in _state_ EOS
-SOS Book the _restaurant_name_ in _country_ for _party_size_number_ person EOS
-SOS book a _restaurant_name_ for _party_size_description_ at _city_ EOS
-SOS Book a _restaurant_type_ with _served_dish_ in _city_ EOS
-SOS _restaurant_type_ _spatial_relation_ _poi_ uses _timerange_  EOS
-SOS Book seating at a _restaurant_type_ in _city_ EOS
-SOS I need a table for _party_size_number_ at a _restaurant_type_ in _country_ EOS
-SOS I want to go to _country_ and eat at a table for _party_size_number_ EOS
-SOS I want to eat at a _cuisine_ _restaurant_type_ that is _sort_ in _city_ _state_ EOS
-SOS I want to eat for _party_size_number_ at a _restaurant_type_ in _city_ _state_ with _served_dish_ _timerange_  EOS
-SOS book on _timerange_ in _city_ for _party_size_number_ at a _restaurant_type_ EOS
-SOS I'd like to eat in _country_ with a party of _party_size_number_ on _timerange_ EOS
-SOS Book _restaurant_name_ in _city_ for a party of _party_size_number_ EOS
-SOS book a table on _timerange_ at a _restaurant_type_ _spatial_relation_ of _country_ that serves _served_dish_ EOS
-SOS book me _sort_ _restaurant_type_ for _party_size_number_ members for _timerange_ at _city_ _state_ EOS
-SOS book a _country_ _restaurant_type_ serves _cuisine_ EOS
-SOS Book a _restaurant_type_ in _country_ for _party_size_number_ person EOS
-SOS _party_size_description_ want to eat somewhere _spatial_relation_ _poi_ EOS
-SOS Can you book me a table for _party_size_number_ in _state_ EOS
-SOS I need a reservation for a _restaurant_type_ _spatial_relation_ _city_ EOS
-SOS I want to book a _restaurant_type_ _spatial_relation_ _poi_ EOS
-SOS Book me a table for _party_size_number_ people at a _restaurant_type_ with a _facility_ EOS
-SOS Book a spot for _party_size_description_ at a _restaurant_type_ at _timerange_ EOS
-SOS book a _restaurant_type_ serves _served_dish_ for _party_size_number_ EOS
-SOS I need a reservation for _party_size_number_ people at a _restaurant_type_ in _country_ that serves _served_dish_ EOS
-SOS I need to book a table at a _restaurant_type_ in _state_ that serves _served_dish_ EOS
-SOS Book a _restaurant_type_ in _state_ at _timerange_ with _served_dish_ EOS
-SOS Book an _cuisine_ _restaurant_type_ in _city_ _timerange_ for _party_size_description_ EOS
-SOS Please book reservations at a _restaurant_type_ that serves _served_dish_ party for three with _party_size_description_ EOS
-SOS I need a table at _restaurant_name_ at _timerange_ EOS
-SOS At _timerange_ I need a table for _party_size_number_ at a _restaurant_type_ in _country_ that serves _served_dish_ EOS
-SOS book a table _timerange_ for _party_size_description_ at a _restaurant_type_ in _country_ that is _sort_ EOS
-SOS I'm looking to reserve a table at a _served_dish_ _restaurant_type_ in _country_ EOS
-SOS Book me a reservation for _restaurant_name_ in _country_ for a party of _party_size_number_ EOS
-SOS Lets go eat in _city_ _timerange_ EOS
-SOS I need a reservation for a _restaurant_type_ that serves _served_dish_ in _state_ EOS
-SOS Please book reservations for _party_size_number_ people at a _restaurant_type_ in _city_ EOS
-SOS book a table in _state_ for _party_size_number_ for _timerange_ at a _restaurant_type_ that serves _cuisine_ EOS
-SOS Book a table in _city_ for a party of _party_size_number_ at the _restaurant_name_ EOS
-SOS I want to book a _restaurant_type_ _spatial_relation_ _state_ for _party_size_number_ people EOS
-SOS Get me a table at _restaurant_name_ in _city_ for _party_size_number_ EOS
-SOS Locate the _sort_ _restaurant_type_ in _city_ EOS
-SOS book a _restaurant_type_ in _city_ on _timerange_ for _party_size_description_ EOS
-SOS Book a table for _party_size_description_ at a _restaurant_type_ which serves _served_dish_  EOS
-SOS I need a table for _party_size_number_ on _timerange_ EOS
-SOS book a _sort_ _restaurant_type_ of _cuisine_ cuisine
- EOS
-SOS I want to book a _cuisine_ _restaurant_type_ in _state_ for _party_size_description_ EOS
-SOS I need a reservation for _timerange_ in _city_ _state_ EOS
-SOS Book a table at a _restaurant_type_ in _city_ for _party_size_description_ EOS
-SOS Can you find me reservations for this _timerange_ at a _restaurant_type_ that serves _served_dish_ EOS
-SOS Book the _sort_ _restaurant_type_ for _party_size_number_ people EOS
-SOS book a spot for _party_size_description_ at a _sort_ _restaurant_type_ in _state_ with _cuisine_ EOS
-SOS Please book a _restaurant_type_ room which serves _served_dish_ dish in _city_  EOS
-SOS I need a reservation for the _sort_ _cuisine_ _restaurant_type_ on _timerange_ in _city_ _state_ for a party of _party_size_number_ EOS
-SOS Book a _restaurant_type_ that has _cuisine_ food _timerange_ in _city_ for _party_size_description_ EOS
-SOS I need to book a _restaurant_name_ _timerange_ in _country_ EOS
-SOS Book a table for _party_size_number_ people at a _restaurant_type_ which serves _served_dish_ EOS
-SOS I would like to book a _restaurant_type_ in _country_ EOS
-SOS Book the _restaurant_name_ for _timerange_ EOS
-SOS book a spot for _party_size_description_ at a _restaurant_type_ with a _facility_ at _timerange_ EOS
-SOS I need a table at _restaurant_name_ for _party_size_number_ in _country_ EOS
-SOS Book a table for _party_size_number_ for _timerange_ EOS
-SOS book a spot at a _restaurant_type_ with _facility_ that is _spatial_relation_ _country_ EOS
-SOS Book a _restaurant_type_ in _country_ for _party_size_description_ EOS
-SOS book a spot at a _sort_ _restaurant_type_ in _country_ EOS
-SOS Make a reservation at a _restaurant_type_ which serves _served_dish_ for a party of _party_size_number_ in _country_ EOS
-SOS Make me a reservation in _state_ EOS
-SOS Book a table for _party_size_number_ at a _restaurant_type_ in _city_ EOS
-SOS book a _served_dish_ serving _restaurant_type_ in _country_ EOS
-SOS I need a table for _party_size_number_ during _timerange_ in _state_ EOS
-SOS book a table in _state_ for _party_size_description_ at _restaurant_name_ on _timerange_ EOS
-SOS _party_size_description_ want to eat _cuisine_ food on _timerange_ at a _restaurant_type_ EOS
-SOS book a _restaurant_type_ for _party_size_number_ that's _spatial_relation_ from _state_ EOS
-SOS Book me a _restaurant_type_ please EOS
-SOS book for _party_size_number_ in _state_ at _restaurant_name_ EOS
-SOS Book a table for _party_size_number_ in _state_ for _timerange_ EOS
-SOS book a table at _restaurant_name_ in _city_ for _party_size_description_ EOS
-SOS book a _cuisine_ cuisine _restaurant_type_ in _timerange_ for _party_size_number_ in _city__state_
- EOS
-SOS Add another _music_item_ to the _playlist_ playlist  EOS
-SOS add _artist_ in _playlist_owner_ playlist _playlist_ EOS
-SOS Add _entity_name_ to _playlist_ EOS
-SOS add _entity_name_ to _playlist_owner_ _playlist_ EOS
-SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS
-SOS add _playlist_ to _playlist_owner_ _artist_ EOS
-SOS Add _entity_name_ to _playlist_ EOS
-SOS add _entity_name_ in _playlist_ _playlist_owner_ playlist EOS
-SOS Add the name _entity_name_ to the plylist _playlist_ EOS
-SOS add _music_item_ _playlist_ EOS
-SOS Add _entity_name_ to the _playlist_ playlist  EOS
-SOS Add _artist_ to the _playlist_ playlist EOS
-SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS
-SOS I need another _music_item_ in the _playlist_ playlist  EOS
-SOS Add to playlist _playlist_ the name _entity_name_ EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add _artist_ to _playlist_owner_ _playlist_ list EOS
-SOS add _entity_name_ to the playlist named _playlist_ EOS
-SOS add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
-SOS I need another _music_item_ in _playlist_owner_ _playlist_ playlist  EOS
-SOS Add _artist_ to _playlist_owner_ _playlist_ playlist  EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
-SOS add _music_item_ to _playlist_ EOS
-SOS Add an _music_item_ to _playlist_owner_ list _playlist_ EOS
-SOS add _entity_name_ to _playlist_ playlist EOS
-SOS Add the _music_item_ to the _playlist_ playlist  EOS
-SOS Can you add _entity_name_ to _playlist_owner_ playlist entitled _playlist_ EOS
-SOS Add _artist_ to the _playlist_ playlist EOS
-SOS Incorporate _entity_name_ into _playlist_owner_ _playlist_ playlist  EOS
-SOS add this _artist_ _music_item_ to _playlist_ EOS
-SOS add _music_item_ to _playlist_owner_ playlist _playlist_ EOS
-SOS Add this _music_item_ to _playlist_owner_ _playlist_ list EOS
-SOS add _entity_name_ _playlist_ playlist EOS
-SOS add a _music_item_ in _playlist_ EOS
-SOS Can you add a _music_item_ to _playlist_owner_ _playlist_ playlist EOS
-SOS put this _music_item_ by _artist_ on _playlist_ EOS
-SOS Add _artist_ to _playlist_owner_ _playlist_ list EOS
-SOS Add some _artist_ to the _playlist_ playlist  EOS
-SOS add _artist_ to _playlist_owner_ _playlist_ song list EOS
-SOS add _artist_ to _playlist_owner_ _playlist_ EOS
-SOS Add this _music_item_ to _playlist_ playlist EOS
-SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add an _music_item_ by _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
-SOS I want to put _artist_ on _playlist_owner_ _playlist_ playlist EOS
-SOS Add this _music_item_ to _playlist_owner_ _playlist_ EOS
-SOS A _artist_ to the _playlist_ playlist EOS
-SOS Add this _music_item_ to _playlist_ EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ list EOS
-SOS add this _artist_ _music_item_ to _playlist_owner_ _playlist_ EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
-SOS Add the _music_item_  _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add the _music_item_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add this _music_item_ to _playlist_ EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
-SOS add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Put this _music_item_ in _playlist_ EOS
-SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS Add _artist_ to _playlist_ EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add _artist_ to _playlist_ EOS
-SOS can you add _entity_name_ to _playlist_ EOS
-SOS add this _music_item_ to _playlist_owner_ _playlist_ EOS
-SOS Can you put this _music_item_ onto the playlist _playlist_ EOS
-SOS _playlist_owner_ _playlist_ needs more _entity_name_ EOS
-SOS add the _music_item_ _playlist_ to _playlist_owner_ playlist EOS
-SOS add _artist_ to _playlist_ EOS
-SOS Add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add _entity_name_ to _playlist_ playlst EOS
-SOS Add this _music_item_ to _playlist_ EOS
-SOS Can you add something by the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add _entity_name_ to _playlist_owner_ playlist titled _playlist_ EOS
-SOS Put _entity_name_ on _playlist_ EOS
-SOS Add an _music_item_ by _artist_ to the _playlist_ playlist EOS
-SOS Please add a _music_item_ to _playlist_owner_ playlist called _playlist_ EOS
-SOS For playlist _playlist_ add _entity_name_ EOS
-SOS add _entity_name_ to _playlist_ EOS
-SOS Can you add _entity_name_ to the playlist called _playlist_ EOS
-SOS The _playlist_ playlist needs _entity_name_ added to it  EOS
-SOS add the _music_item_ _artist_ to the _playlist_ playlist EOS
-SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
-SOS Add _artist_ to _playlist_owner_ _playlist_ list EOS
-SOS add _music_item_ to _playlist_ EOS
-SOS I want to put another _music_item_ into the _playlist_ playlist  EOS
-SOS Open _playlist_owner_ _playlist_ playlist and play an entire _music_item_ EOS
-SOS add _entity_name_ to _playlist_owner_ _playlist_ EOS
-SOS I want more _artist_ in the _playlist_ playlist  EOS
-SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS
-SOS add _music_item_ to _playlist_ playlist EOS
-SOS add _music_item_ to _playlist_ EOS
-SOS Add to _playlist_owner_ _playlist_ list a _music_item_ by _artist_ EOS
-SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS
-SOS add this _music_item_ to _playlist_owner_ playlist titled _playlist_ EOS
-SOS Add _entity_name_ to the _playlist_ playlist EOS
-SOS Put this _music_item_ on _playlist_ EOS
-SOS put this _music_item_ into _playlist_owner_ _playlist_ playlist EOS
 SOS What are the _object_type_ at _location_name_ EOS
 SOS I want to get the _object_type_ EOS
 SOS Show me movie time for _movie_name_  at my _object_location_type_ EOS
@@ -709,3 +609,103 @@ SOS find _object_type_ EOS
 SOS what _location_name_ are showing _movie_name_ starting at _timerange_ EOS
 SOS find a _object_location_type_ _spatial_relation_ with _movie_type_ EOS
 SOS Show me _object_type_ at _location_name_ EOS
+SOS Add another _music_item_ to the _playlist_ playlist  EOS
+SOS add _artist_ in _playlist_owner_ playlist _playlist_ EOS
+SOS Add _entity_name_ to _playlist_ EOS
+SOS add _entity_name_ to _playlist_owner_ _playlist_ EOS
+SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS
+SOS add _playlist_ to _playlist_owner_ _artist_ EOS
+SOS Add _entity_name_ to _playlist_ EOS
+SOS add _entity_name_ in _playlist_ _playlist_owner_ playlist EOS
+SOS Add the name _entity_name_ to the plylist _playlist_ EOS
+SOS add _music_item_ _playlist_ EOS
+SOS Add _entity_name_ to the _playlist_ playlist  EOS
+SOS Add _artist_ to the _playlist_ playlist EOS
+SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS
+SOS I need another _music_item_ in the _playlist_ playlist  EOS
+SOS Add to playlist _playlist_ the name _entity_name_ EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add _artist_ to _playlist_owner_ _playlist_ list EOS
+SOS add _entity_name_ to the playlist named _playlist_ EOS
+SOS add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
+SOS I need another _music_item_ in _playlist_owner_ _playlist_ playlist  EOS
+SOS Add _artist_ to _playlist_owner_ _playlist_ playlist  EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
+SOS add _music_item_ to _playlist_ EOS
+SOS Add an _music_item_ to _playlist_owner_ list _playlist_ EOS
+SOS add _entity_name_ to _playlist_ playlist EOS
+SOS Add the _music_item_ to the _playlist_ playlist  EOS
+SOS Can you add _entity_name_ to _playlist_owner_ playlist entitled _playlist_ EOS
+SOS Add _artist_ to the _playlist_ playlist EOS
+SOS Incorporate _entity_name_ into _playlist_owner_ _playlist_ playlist  EOS
+SOS add this _artist_ _music_item_ to _playlist_ EOS
+SOS add _music_item_ to _playlist_owner_ playlist _playlist_ EOS
+SOS Add this _music_item_ to _playlist_owner_ _playlist_ list EOS
+SOS add _entity_name_ _playlist_ playlist EOS
+SOS add a _music_item_ in _playlist_ EOS
+SOS Can you add a _music_item_ to _playlist_owner_ _playlist_ playlist EOS
+SOS put this _music_item_ by _artist_ on _playlist_ EOS
+SOS Add _artist_ to _playlist_owner_ _playlist_ list EOS
+SOS Add some _artist_ to the _playlist_ playlist  EOS
+SOS add _artist_ to _playlist_owner_ _playlist_ song list EOS
+SOS add _artist_ to _playlist_owner_ _playlist_ EOS
+SOS Add this _music_item_ to _playlist_ playlist EOS
+SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add an _music_item_ by _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
+SOS I want to put _artist_ on _playlist_owner_ _playlist_ playlist EOS
+SOS Add this _music_item_ to _playlist_owner_ _playlist_ EOS
+SOS A _artist_ to the _playlist_ playlist EOS
+SOS Add this _music_item_ to _playlist_ EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ list EOS
+SOS add this _artist_ _music_item_ to _playlist_owner_ _playlist_ EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
+SOS Add the _music_item_  _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add the _music_item_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add this _music_item_ to _playlist_ EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
+SOS add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Put this _music_item_ in _playlist_ EOS
+SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS Add _artist_ to _playlist_ EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add _artist_ to _playlist_ EOS
+SOS can you add _entity_name_ to _playlist_ EOS
+SOS add this _music_item_ to _playlist_owner_ _playlist_ EOS
+SOS Can you put this _music_item_ onto the playlist _playlist_ EOS
+SOS _playlist_owner_ _playlist_ needs more _entity_name_ EOS
+SOS add the _music_item_ _playlist_ to _playlist_owner_ playlist EOS
+SOS add _artist_ to _playlist_ EOS
+SOS Add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add _entity_name_ to _playlist_ playlst EOS
+SOS Add this _music_item_ to _playlist_ EOS
+SOS Can you add something by the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add _entity_name_ to _playlist_owner_ playlist titled _playlist_ EOS
+SOS Put _entity_name_ on _playlist_ EOS
+SOS Add an _music_item_ by _artist_ to the _playlist_ playlist EOS
+SOS Please add a _music_item_ to _playlist_owner_ playlist called _playlist_ EOS
+SOS For playlist _playlist_ add _entity_name_ EOS
+SOS add _entity_name_ to _playlist_ EOS
+SOS Can you add _entity_name_ to the playlist called _playlist_ EOS
+SOS The _playlist_ playlist needs _entity_name_ added to it  EOS
+SOS add the _music_item_ _artist_ to the _playlist_ playlist EOS
+SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS
+SOS Add _artist_ to _playlist_owner_ _playlist_ list EOS
+SOS add _music_item_ to _playlist_ EOS
+SOS I want to put another _music_item_ into the _playlist_ playlist  EOS
+SOS Open _playlist_owner_ _playlist_ playlist and play an entire _music_item_ EOS
+SOS add _entity_name_ to _playlist_owner_ _playlist_ EOS
+SOS I want more _artist_ in the _playlist_ playlist  EOS
+SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS
+SOS add _music_item_ to _playlist_ playlist EOS
+SOS add _music_item_ to _playlist_ EOS
+SOS Add to _playlist_owner_ _playlist_ list a _music_item_ by _artist_ EOS
+SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS
+SOS add this _music_item_ to _playlist_owner_ playlist titled _playlist_ EOS
+SOS Add _entity_name_ to the _playlist_ playlist EOS
+SOS Put this _music_item_ on _playlist_ EOS
+SOS put this _music_item_ into _playlist_owner_ _playlist_ playlist EOS

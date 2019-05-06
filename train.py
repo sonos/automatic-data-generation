@@ -154,7 +154,7 @@ if __name__ == '__main__':
     parser.add_argument('--validate_path', type=str, default='./data/validate.csv')
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default='model.pyT')
-    parser.add_argument('--save_run', type=str, default='run.pyT')
+    parser.add_argument('--pickle', type=str, default='run.pyT')
     parser.add_argument('--n_generated', type=int, default=10)
     parser.add_argument('--augment_dataset', action='store_true')
     parser.add_argument('--benchmark', action='store_true')
@@ -275,6 +275,8 @@ if __name__ == '__main__':
         print('----------INTENTS----------')
         print(*[i2int[int] for int in intent], sep='\n')
 
+        run['generated'] = utterance
+        
         if args.augment_dataset:
             augmented_path = args.train_path.replace('.csv', '_augmented.csv')
             print('Dumping augmented dataset at %s' %augmented_path)
@@ -290,6 +292,7 @@ if __name__ == '__main__':
             from snips_nlu_metrics import compute_train_test_metrics
 
             datadir = os.path.join(*args.train_path.split('/')[:-1])
+            csv2json(datadir, datadir, augmented=False)
             csv2json(datadir, datadir, augmented=True)
 
             print('Starting benchmarking...')
@@ -320,3 +323,5 @@ if __name__ == '__main__':
             score = intent_improvement + slot_improvement
 
             print('Improvement metrics : intent {:.4f} slot {:.4f} total {:.4f}'.format(intent_improvement, slot_improvement, score))
+
+            run['metrics'] = {'raw':raw_metrics, 'augmented':augmented_metrics}
