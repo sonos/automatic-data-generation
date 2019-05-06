@@ -8,6 +8,7 @@ import torch
 from utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
 import csv
+from conversion import csv2json
 
 def kl_anneal_function(anneal_function, step, k, x0):
     if anneal_function == 'logistic':
@@ -156,6 +157,8 @@ if __name__ == '__main__':
     parser.add_argument('--save_run', type=str, default='run.pyT')
     parser.add_argument('--n_generated', type=int, default=10)
     parser.add_argument('--augment_dataset', action='store_true')
+    parser.add_argument('--benchmark', action='store_true')
+
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=int, default=1)
     parser.add_argument('--n_classes', type=int, default=7)
@@ -275,9 +278,45 @@ if __name__ == '__main__':
         if args.augment_dataset:
             augmented_path = args.train_path.replace('.csv', '_augmented.csv')
             print('Dumping augmented dataset at %s' %augmented_path)
-            #from shutil import copyfile
-            #copyfile(train_path, augmented_path)
+            from shutil import copyfile
+            copyfile(args.train_path, augmented_path)
             csvfile    = open(augmented_path, 'a')
             csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
                 csv_writer.writerow([u, l, d, i2int[i]])
+
+        if args.benchmark:
+            from snips_nlu import SnipsNLUEngine
+            from snips_nlu_metrics import compute_train_test_metrics
+
+            datadir = os.path.join(*args.train_path.split('/')[:-1])
+            csv2json(datadir, datadir, augmented=True)
+
+            print('Starting benchmarking...')
+
+            def my_matching_lambda(lhs_slot, rhs_slot):
+                return lhs_slot['text'].strip() == rhs_slot["rawValue"].strip()
+
+            raw_metrics = compute_train_test_metrics(train_dataset="data/train.json",
+                                                    test_dataset="data/validate.json",
+                                                    engine_class=SnipsNLUEngine,
+                                                    slot_matching_lambda = my_matching_lambda
+                                                    )
+            augmented_metrics = compute_train_test_metrics(train_dataset="data/train_augmented.json",
+                                                    test_dataset="data/validate.json",
+                                                    engine_class=SnipsNLUEngine,
+                                                    slot_matching_lambda = my_matching_lambda
+                                                    )
+
+            print('----------METRICS----------')
+            print('Without augmentation : ')
+            print(raw_metrics['average_metrics'])
+            print('With augmentation : ')
+            print(augmented_metrics['average_metrics'])
+            intent_improvement = 100 * ((augmented_metrics['average_metrics']['intent']['f1'] - raw_metrics['average_metrics']['intent']['f1'])
+                                        / raw_metrics['average_metrics']['intent']['f1'])
+            slot_improvement = 100 * ((augmented_metrics['average_metrics']['slot']['f1'] - raw_metrics['average_metrics']['slot']['f1'])
+                                        / raw_metrics['average_metrics']['slot']['f1'])
+            score = intent_improvement + slot_improvement
+
+            print('Improvement metrics : intent {:.4f} slot {:.4f} total {:.4f}'.format(intent_improvement, slot_improvement, score))

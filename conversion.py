@@ -5,9 +5,9 @@ import csv
 import pickle
 from nltk import word_tokenize
 
-def json2csv(datadir, outdir):
+def json2csv(datadir, outdir, samples_per_class):
     
-    print('starting conversion')
+    print('Starting json2csv conversion...')
     punctuation = [',', '.', ':', ';', '?', '!']
     
     for split in ['train','validate']:
@@ -28,7 +28,9 @@ def json2csv(datadir, outdir):
         csv_writer.writerow(['utterance', 'labels', 'delexicalised', 'intent'])
 
         for intent, data in datadic.items():
-            for sentence in data:
+            for isent, sentence in enumerate(data):
+                if isent >= samples_per_class:
+                    break
                 utterance = ''
                 labelling = ''
                 #delexicalised = ''
@@ -36,14 +38,14 @@ def json2csv(datadir, outdir):
 
                 for group in sentence['data']:
                     words = group['text']
-                    if args.remove_punctuation :
+                    if remove_punctuation :
                         for p in punctuation:
                             words = words.replace(p, '')
                     utterance += words
                     
                     if 'entity' in group.keys(): #this group is a slot
                         slot = group['entity'].lower()
-                        if args.remove_punctuation :
+                        if remove_punctuation :
                             for p in punctuation:
                                 slot = slot.replace(p, '')
 
@@ -84,7 +86,8 @@ def json2csv(datadir, outdir):
     print('Original utterance : ', utterance)
     print('Labelled : ', labelling)   
     print('Delexicalised : ', delexicalised)   
-    print('done')
+
+    print('Successfully converted csv2json !')
 
 def get_groups(zipped):
 
@@ -108,20 +111,20 @@ def get_groups(zipped):
 
     return groups
 
-def csv2json(datadir, outdir):
-    
-    print('starting conversion')
-    punctuation = [',', '.', ':', ';', '?', '!']
+def csv2json(datadir, outdir, augmented):
+
+    print('Starting csv2json conversion...')
 
     jsondic = {'language':'en'}
     intents = {}
     entities = {}
 
-    for split in ['train','validate']:
+    for split in ['train' if not augmented else 'train_augmented','validate']:
 
         encountered_slot_values = {}
-        
-        csvfile    = open('{}/{}.csv'.format(datadir, split), 'r')
+
+        csvname = '{}/{}.csv'.format(datadir, split)
+        csvfile = open(csvname, 'r')
         reader = csv.reader(csvfile)
 
         for irow, row in enumerate(reader):
@@ -159,14 +162,19 @@ def csv2json(datadir, outdir):
         jsondic['intents'] = intents
         jsondic['entities'] = entities
 
-        with open('{}/{}.json'.format(outdir, split), 'w') as jsonfile:
+        jsonname = '{}/{}.json'.format(outdir, split)
+        with open(jsonname, 'w') as jsonfile:
             json.dump(jsondic, jsonfile)
+
+    print('Successfully converted csv2json !')
 
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str, default='/Users/stephane/Dropbox/Work/Codes/data/2017-06-custom-intent-engines')
     parser.add_argument('--outdir' , type=str, default='./data/')
+    parser.add_argument('--samples_per_class' , type=int, default=100)
+    parser.add_argument('--augmented' , type=int, default=1)
     parser.add_argument('--convert_to' , type=str, default='csv')
     parser.add_argument('--remove_punctuation' , type=int, default=1)
     args = parser.parse_args()
@@ -176,7 +184,7 @@ if __name__ == '__main__':
         os.mkdir(args.outdir)
 
     if args.convert_to == 'csv':
-        json2csv(args.datadir, args.outdir)
+        json2csv(args.datadir, args.outdir, args.augmented)
     if args.convert_to == 'json':
-        csv2json(args.datadir, args.outdir)
+        csv2json(args.datadir, args.outdir, args.samples_per_class)
     
