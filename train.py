@@ -155,8 +155,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default='model.pyT')
     parser.add_argument('--pickle', type=str, default='run.pyT')
-    parser.add_argument('--n_generated', type=int, default=10)
-    parser.add_argument('--augment_dataset', action='store_true')
+    parser.add_argument('--n_generated', type=int, default=100)
     parser.add_argument('--benchmark', action='store_true')
 
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
@@ -256,7 +255,7 @@ if __name__ == '__main__':
     if args.save_model is not None:
         torch.save(model.state_dict(), args.save_model)
 
-    torch.save(run, args.save_run)
+    torch.save(run, args.pickle)
     
     if args.n_generated>0:
     
@@ -277,15 +276,14 @@ if __name__ == '__main__':
 
         run['generated'] = utterance
         
-        if args.augment_dataset:
-            augmented_path = args.train_path.replace('.csv', '_augmented.csv')
-            print('Dumping augmented dataset at %s' %augmented_path)
-            from shutil import copyfile
-            copyfile(args.train_path, augmented_path)
-            csvfile    = open(augmented_path, 'a')
-            csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
-                csv_writer.writerow([u, l, d, i2int[i]])
+        augmented_path = args.train_path.replace('.csv', '_augmented.csv')
+        print('Dumping augmented dataset at %s' %augmented_path)
+        from shutil import copyfile
+        copyfile(args.train_path, augmented_path)
+        csvfile    = open(augmented_path, 'a')
+        csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
+            csv_writer.writerow([u, l, d, i2int[i]])
 
         if args.benchmark:
             from snips_nlu import SnipsNLUEngine
