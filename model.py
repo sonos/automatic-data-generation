@@ -156,8 +156,8 @@ class CVAE(nn.Module):
         while(t<self.max_sequence_length and len(running_seqs)>0):
 
             if t == 0:
-                input_sequence = torch.Tensor(batch_size).fill_(self.sos_idx).long()
-                # input_sequence = torch.randint(0, self.vocab_size, (batch_size,))
+                # input_sequence = torch.Tensor(batch_size).fill_(self.sos_idx).long()
+                input_sequence = torch.randint(0, self.vocab_size, (batch_size,))
 
             input_sequence = to_device(input_sequence.unsqueeze(1))
 
