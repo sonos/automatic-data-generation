@@ -208,6 +208,9 @@ if __name__ == '__main__':
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
 
+    run['i2w'] = i2w
+    run['w2i'] = w2i
+    
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
     if args.conditional:
