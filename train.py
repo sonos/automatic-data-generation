@@ -8,15 +8,15 @@ import torch
 from utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
 import csv
-from conversion import csv2json
+from conversion import json2csv, csv2json
 
-def kl_anneal_function(anneal_function, step, k, x0):
+def anneal_fn(anneal_function, step, k, x0):
     if anneal_function == 'logistic':
         return float(1/(1+np.exp(-k*(step-x0))))
     elif anneal_function == 'linear':
         return min(1, step/x0)
     
-def loss_fn(logp, target, mean, logv, anneal_function, step, k, x0):
+def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1):
     
     target = target.view(-1)
     logp = logp.view(-1, logp.size(2))
@@ -26,9 +26,18 @@ def loss_fn(logp, target, mean, logv, anneal_function, step, k, x0):
 
     # KL Divergence
     KL_loss = -0.5 * torch.sum(1 + logv - mean.pow(2) - logv.exp())
-    KL_weight = kl_anneal_function(anneal_function, step, k, x0)
+    KL_weight = anneal_fn(anneal_function, step, k1, x1)
 
     return NLL_loss, KL_loss, KL_weight
+
+def loss_labels(logc, target, anneal_function, step, k2, x2):
+    
+    # Negative Log Likelihood
+    label_loss = NLL(logc, target)
+    label_weight = anneal_fn(anneal_function, step, k2, x2)
+
+    return label_loss, label_weight
+
 
 def train(model, datasets, args):
     
@@ -41,7 +50,8 @@ def train(model, datasets, args):
     NLL_hist = []
     KL_hist = []
     NMI_hist = []
-
+    acc_hist = []
+    
     latent_rep={i:[] for i in range(args.n_classes)}
     
     for epoch in range(1, args.epochs + 1):
@@ -49,6 +59,7 @@ def train(model, datasets, args):
         NLL_tr_loss = 0.0
         KL_tr_loss = 0.0
         NMI_tr = 0.0
+        acc_tr = 0.0
         
         model.train() # turn on training mode
         for batch in tqdm(train_iter): 
@@ -77,16 +88,20 @@ def train(model, datasets, args):
             
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
-                    mean, logv, args.anneal_function, step, args.k, args.x0)
+                    mean, logv, args.anneal_function, step, args.k1, args.x1)
             NLL_hist.append(NLL_loss/args.batch_size)
             KL_hist.append(KL_loss/args.batch_size)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.conditional:
                 entropy = torch.sum(c * torch.log(args.n_classes * c))
+                label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2)
+                loss += label_weight * label_loss #entropy
+                pred_labels = logc.data.max(1)[1].long()
+                acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
+                acc_hist.append(acc)
                 NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
                 NMI_hist.append(NMI)
-                loss += entropy
                 
             loss.backward()
             opt.step()
@@ -95,18 +110,21 @@ def train(model, datasets, args):
             NLL_tr_loss += NLL_loss.item()
             KL_tr_loss += KL_loss.item()
             NMI_tr += NMI.item()
+            acc_tr += acc.item()
 
         tr_loss     = tr_loss / len(datasets.train)
         NLL_tr_loss = NLL_tr_loss / len(datasets.train)
         KL_tr_loss  = KL_tr_loss / len(datasets.train)
         NMI_tr = NMI_tr / len(datasets.train)
+        acc_tr = acc_tr / len(datasets.train)
 
         # calculate the validation loss for this epoch
         val_loss = 0.0
         NLL_val_loss = 0.0
         KL_val_loss = 0.0
         NMI_val = 0.0
-
+        acc_val = 0.0
+        
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
             x = getattr(batch, args.input_type)
@@ -118,32 +136,37 @@ def train(model, datasets, args):
             
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
-                    mean, logv, args.anneal_function, step, args.k, args.x0)
+                    mean, logv, args.anneal_function, step, args.k1, args.x1)
 
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.conditional:
                 entropy = torch.sum(c * torch.log(args.n_classes * c))
+                label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2)
+                loss += label_weight * label_loss #entropy
+                pred_labels = logc.data.max(1)[1].long()             
+                acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
                 NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
-                loss += entropy
 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
             KL_val_loss += KL_loss.item()
             NMI_val += NMI.item()
-
+            acc_val += acc.item()
+            
         val_loss     = val_loss / len(datasets.valid)
         NLL_val_loss = NLL_val_loss / len(datasets.valid)
         KL_val_loss  = KL_val_loss / len(datasets.valid)
-        NMI_val  = NMI_val / len(datasets.valid)
-        
+        NMI_val = NMI_val / len(datasets.valid)
+        acc_val = acc_val / len(datasets.valid)
         print('Epoch {} : train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
-        print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, NMI_tr))
-        print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, NMI_val))
+        print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, acc_tr, NMI_tr))
+        print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, acc_val, NMI_val))
 
     run['NLL_hist'] = NLL_hist
     run['KL_hist'] = KL_hist
     run['NMI_hist'] = NMI_hist
+    run['acc_hist'] = acc_hist
     run['latent'] = latent_rep
 
     return
@@ -181,8 +204,10 @@ if __name__ == '__main__':
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.2)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k', '--k', type=float, default=0.01)
-    parser.add_argument('-x0', '--x0', type=int, default=500)
+    parser.add_argument('-k1', '--k1', type=float, default=0.1)
+    parser.add_argument('-x1', '--x1', type=int, default=300)
+    parser.add_argument('-k2', '--k2', type=float, default=0.1)
+    parser.add_argument('-x2', '--x2', type=int, default=100)
 
     run = {}
 
@@ -191,9 +216,10 @@ if __name__ == '__main__':
     print(args)
     
     print('loading and embedding datasets')
+#    json2csv(args.datadir+'/2017-06-custom-intents-engine', args.)
     datasets = Datasets(train_path=os.path.join(args.train_path), valid_path=os.path.join(args.validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
 
-    if args.input_type=='utterance':
+    if args.input_type=='delexicalised':
         print('embedding the slots with %s averaging' %args.slot_averaging)
         datasets.embed_slots(args.slot_averaging)
     
@@ -207,9 +233,6 @@ if __name__ == '__main__':
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
 
-    run['i2w'] = i2w
-    run['w2i'] = w2i
-    
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
     if args.conditional:
@@ -257,8 +280,6 @@ if __name__ == '__main__':
     train(model, datasets, args)
     if args.save_model is not None:
         torch.save(model.state_dict(), args.save_model)
-
-    torch.save(run, args.pickle)
     
     if args.n_generated>0:
     
@@ -326,3 +347,9 @@ if __name__ == '__main__':
             print('Improvement metrics : intent {:.4f} slot {:.4f} total {:.4f}'.format(intent_improvement, slot_improvement, score))
 
             run['metrics'] = {'raw':raw_metrics, 'augmented':augmented_metrics}
+
+    run['i2w'] = i2w
+    run['w2i'] = w2i
+    run['vectors'] = {'before':vocab.vectors, 'after':model.embedding.weight.data}
+    
+    torch.save(run, args.pickle)

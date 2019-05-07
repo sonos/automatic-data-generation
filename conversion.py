@@ -42,7 +42,7 @@ def json2csv(datadir, outdir, samples_per_class):
                     words = group['text']
                     if remove_punctuation :
                         for p in punctuation:
-                            words = words.replace(p, '')
+                            words = words.replace(p, ' ')
                     utterance += words
                     
                     if 'entity' in group.keys(): #this group is a slot

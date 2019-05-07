@@ -20,8 +20,10 @@ class Datasets():
         elif tokenizer=='split':
             tokenize = lambda s : s.split(" ")
 
-        TEXT   = torchtext.data.Field(lower=True, tokenize=tokenize, sequential=True, batch_first=False)
-        DELEX  = torchtext.data.Field(lower=True, tokenize=tokenize, sequential=True, batch_first=False)
+        self.tokenize = tokenize
+
+        TEXT   = torchtext.data.Field(lower=True, tokenize=self.tokenize, sequential=True, batch_first=False)
+        DELEX  = torchtext.data.Field(lower=True, tokenize=self.tokenize, sequential=True, batch_first=False)
         INTENT = torchtext.data.Field(sequential=False, batch_first=True, unk_token=None)
         datafields = [("utterance", TEXT), ("labels", None), ("delexicalised", DELEX), ("intent", INTENT)]
 
@@ -44,7 +46,7 @@ class Datasets():
     
     def embed_slots(self, averaging='micro', slotdic_path='./data/train_slot_values'):
         '''
-        Create embeddings for the 
+        Create embeddings for the slots
         '''
 
         if averaging ==  'none':
@@ -62,16 +64,18 @@ class Datasets():
 
                 if averaging == 'micro':
                     for slot_value in slot_values:
-                        for word in slot_value:
-                            new_vectors.append(self.TEXT.vocab.vectors[self.TEXT.vocab.stoi[word]])
+                        for word in self.tokenize(slot_value):
+                            if self.TEXT.vocab.stoi[word] != '<unk>' :
+                                new_vectors.append(self.TEXT.vocab.vectors[self.TEXT.vocab.stoi[word]])
                     new_vector = torch.mean(torch.stack(new_vectors))   
 
                 elif averaging == 'macro':
                     for slot_value in slot_values:
                         tmp = []
-                        for word in slot_value:
-                            tmp.append(self.TEXT.vocab.vectors[self.TEXT.vocab.stoi[word]])
-                        new_vectors.append(torch.mean(torch.stack(new_vectors)))
+                        for word in self.tokenize(slot_value):
+                            if self.TEXT.vocab.stoi[word] != '<unk>' :
+                                tmp.append(self.TEXT.vocab.vectors[self.TEXT.vocab.stoi[word]])
+                        new_vectors.append(torch.mean(torch.stack(tmp)))
                     new_vector = torch.mean(torch.stack(new_vectors))
 
                 self.DELEX.vocab.vectors[self.DELEX.vocab.stoi[token]] = new_vector
