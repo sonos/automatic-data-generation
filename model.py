@@ -6,7 +6,7 @@ from utils import to_device
 
 class CVAE(nn.Module):
 
-    def __init__(self, vocab_size, embedding_size, rnn_type, hidden_size, word_dropout=0, embedding_dropout=0, z_size=100, n_classes=10, sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0, max_sequence_length=30, num_layers=1, bidirectional=False):
+    def __init__(self, vocab_size, embedding_size, rnn_type, hidden_size, word_dropout=0, embedding_dropout=0, z_size=100, n_classes=10, sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0, max_sequence_length=30, num_layers=1, bidirectional=False, temperature=1):
 
         super().__init__()
         self.tensor = torch.cuda.FloatTensor if torch.cuda.is_available() else torch.Tensor
@@ -25,7 +25,8 @@ class CVAE(nn.Module):
         self.bidirectional = bidirectional
         self.num_layers = num_layers
         self.hidden_size = hidden_size
-
+        self.temperature = temperature
+        
         self.vocab_size = vocab_size
         self.embedding_size = embedding_size
         self.embedding = nn.Embedding(vocab_size, embedding_size)
@@ -113,13 +114,13 @@ class CVAE(nn.Module):
 
         # project outputs to vocab
         logits = self.outputs2vocab(outputs.view(-1, hs))
-        logp = nn.functional.log_softmax(logits, dim=0)
+        logp = nn.functional.log_softmax(logits/self.temperature, dim=0)
         logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
         return logp, mean, logv, logc, z
 
 
-    def inference(self, n=10, z=None, y_onehot=None):
+    def inference(self, n=10, z=None, y_onehot=None, temperature=0):
 
         if z is None:
             batch_size = n
@@ -156,8 +157,8 @@ class CVAE(nn.Module):
         while(t<self.max_sequence_length and len(running_seqs)>0):
 
             if t == 0:
-                # input_sequence = torch.Tensor(batch_size).fill_(self.sos_idx).long()
-                input_sequence = torch.randint(0, self.vocab_size, (batch_size,))
+                input_sequence = torch.Tensor(batch_size).fill_(self.sos_idx).long()
+                # input_sequence = torch.randint(0, self.vocab_size, (batch_size,))
 
             input_sequence = to_device(input_sequence.unsqueeze(1))
 
@@ -191,7 +192,7 @@ class CVAE(nn.Module):
 
     def _sample(self, dist, mode='greedy'):
 
-        if mode == 'greedy':
+        if mode=='greedy':
             _, sample = torch.topk(dist, 1, dim=-1)
         sample = sample.squeeze()
 
@@ -208,8 +209,7 @@ class CVAE(nn.Module):
         return save_to
 
 
-class VAE(nn.Module):
-    empty=True
+# class VAE(nn.Module):
 #     def __init__(self, vocab_size, embedding_size, rnn_type, hidden_size, word_dropout=0, embedding_dropout=0, latent_size=100,
 #                 sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0, max_sequence_length=30, num_layers=1, bidirectional=False):
 

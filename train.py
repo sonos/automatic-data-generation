@@ -1,6 +1,6 @@
 import numpy as np
 from embedding import Datasets
-from model import VAE, CVAE
+from model import CVAE
 from tqdm import tqdm
 import argparse
 import os
@@ -93,15 +93,18 @@ def train(model, datasets, args):
             KL_hist.append(KL_loss/args.batch_size)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
-            if args.conditional:
-                entropy = torch.sum(c * torch.log(args.n_classes * c))
+            if args.supervised:
                 label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2)
-                loss += label_weight * label_loss #entropy
-                pred_labels = logc.data.max(1)[1].long()
-                acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
-                acc_hist.append(acc)
-                NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
-                NMI_hist.append(NMI)
+                loss += label_weight * label_loss
+            else:
+                entropy = torch.sum(c * torch.log(args.n_classes * c))
+                loss += entropy
+
+            pred_labels = logc.data.max(1)[1].long()
+            acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
+            acc_hist.append(acc)
+            NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
+            NMI_hist.append(NMI)                
                 
             loss.backward()
             opt.step()
@@ -116,7 +119,6 @@ def train(model, datasets, args):
         NLL_tr_loss = NLL_tr_loss / len(datasets.train)
         KL_tr_loss  = KL_tr_loss / len(datasets.train)
         NMI_tr = NMI_tr / len(datasets.train)
-        acc_tr = acc_tr / len(datasets.train)
 
         # calculate the validation loss for this epoch
         val_loss = 0.0
@@ -140,13 +142,16 @@ def train(model, datasets, args):
 
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
-            if args.conditional:
-                entropy = torch.sum(c * torch.log(args.n_classes * c))
+            if args.supervised:
                 label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2)
-                loss += label_weight * label_loss #entropy
-                pred_labels = logc.data.max(1)[1].long()             
-                acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
-                NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
+                loss += label_weight * label_loss
+            else:
+                entropy = torch.sum(c * torch.log(args.n_classes * c))
+                loss += entropy
+
+            pred_labels = logc.data.max(1)[1].long()             
+            acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
+            NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
@@ -158,7 +163,7 @@ def train(model, datasets, args):
         NLL_val_loss = NLL_val_loss / len(datasets.valid)
         KL_val_loss  = KL_val_loss / len(datasets.valid)
         NMI_val = NMI_val / len(datasets.valid)
-        acc_val = acc_val / len(datasets.valid)
+        
         print('Epoch {} : train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
         print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, acc_tr, NMI_tr))
         print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, acc_val, NMI_val))
@@ -182,32 +187,34 @@ if __name__ == '__main__':
     parser.add_argument('--benchmark', action='store_true')
 
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
-    parser.add_argument('--conditional', type=int, default=1)
+    parser.add_argument('--supervised', type=bool, default=True)
     parser.add_argument('--n_classes', type=int, default=7)
     parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
-    parser.add_argument('--max_sequence_length', type=int, default=10)
+    parser.add_argument('--max_sequence_length', type=int, default=8)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=64)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.0001)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.001)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
-    parser.add_argument('-hs', '--hidden_size', type=int, default=512)
+    parser.add_argument('-hs', '--hidden_size', type=int, default=64)
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
-    parser.add_argument('-wd', '--word_dropout', type=float, default=0.9)
+
+    parser.add_argument('-t', '--temperature', type=float, default=5.)
+    parser.add_argument('-wd', '--word_dropout', type=float, default=0.99)
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.2)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k1', '--k1', type=float, default=0.1)
-    parser.add_argument('-x1', '--x1', type=int, default=300)
+    parser.add_argument('-k1', '--k1', type=float, default=0.05)
+    parser.add_argument('-x1', '--x1', type=int, default=100)
     parser.add_argument('-k2', '--k2', type=float, default=0.1)
-    parser.add_argument('-x2', '--x2', type=int, default=100)
+    parser.add_argument('-x2', '--x2', type=int, default=300)
 
     run = {}
 
@@ -235,8 +242,7 @@ if __name__ == '__main__':
 
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
-    if args.conditional:
-        model = CVAE(
+    model = CVAE(
             vocab_size=len(i2w),
             max_sequence_length=args.max_sequence_length,
             sos_idx=sos_idx,
@@ -251,24 +257,8 @@ if __name__ == '__main__':
             z_size=args.latent_size,
             n_classes=args.n_classes,
             num_layers=args.num_layers,
-            bidirectional=args.bidirectional
-        )
-    else:
-        model = VAE(
-            vocab_size=len(i2w),
-            max_sequence_length=args.max_sequence_length,
-            sos_idx=sos_idx,
-            eos_idx=eos_idx,
-            pad_idx=pad_idx,
-            unk_idx=unk_idx,
-            embedding_size=args.emb_dim,
-            rnn_type=args.rnn_type,
-            hidden_size=args.hidden_size,
-            word_dropout=args.word_dropout,
-            embedding_dropout=args.embedding_dropout,
-            latent_size=args.latent_size,
-            num_layers=args.num_layers,
-            bidirectional=args.bidirectional
+            bidirectional=args.bidirectional,
+            temperature=args.temperature
         )
         
     model.embedding.weight.data.copy_(vocab.vectors)
@@ -287,16 +277,13 @@ if __name__ == '__main__':
 
         samples, z, y_onehot = model.inference(n=args.n_generated)
         intent = y_onehot.data.max(1)[1].cpu().numpy()
-        print('----------SAMPLES----------')
-        print(samples)
         delexicalised = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
-        print('----------DELEXICALISED----------')
-        print(*delexicalised, sep='\n')
         labelling, utterance = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
-        print('----------LEXICALISED----------')
-        print(*utterance, sep='\n')
-        print('----------INTENTS----------')
-        print(*[i2int[int] for int in intent], sep='\n')
+        for i in range(args.n_generated):
+            print('Intent : ', i2int[intent[i]])
+            # print('Samples : ', samples[i])
+            print('Delexicalised : ', delexicalised[i])
+            print('Lexicalised : ', utterance[i] + '\n')
 
         run['generated'] = utterance
         
