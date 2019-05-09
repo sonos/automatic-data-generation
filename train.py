@@ -10,13 +10,13 @@ from sklearn.metrics import normalized_mutual_info_score
 import csv
 from conversion import json2csv, csv2json
 
-def anneal_fn(anneal_function, step, k, x0):
+def anneal_fn(anneal_function, step, k, x, m):
     if anneal_function == 'logistic':
-        return float(1/(1+np.exp(-k*(step-x0))))
+        return m*float(1/(1+np.exp(-k*(step-x))))
     elif anneal_function == 'linear':
-        return min(1, step/x0)
+        return m*min(1, step/x)
     
-def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1):
+def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1, m1):
     
     target = target.view(-1)
     logp = logp.view(-1, logp.size(2))
@@ -30,11 +30,11 @@ def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1):
 
     return NLL_loss, KL_loss, KL_weight
 
-def loss_labels(logc, target, anneal_function, step, k2, x2):
+def loss_labels(logc, target, anneal_function, step, k2, x2, m2):
     
     # Negative Log Likelihood
     label_loss = NLL(logc, target)
-    label_weight = anneal_fn(anneal_function, step, k2, x2)
+    label_weight = anneal_fn(anneal_function, step, k2, x2, m2)
 
     return label_loss, label_weight
 
@@ -44,6 +44,7 @@ def train(model, datasets, args):
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
     opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    opt = torch.optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9)
 
     step = 0
 
@@ -87,7 +88,9 @@ def train(model, datasets, args):
                 print('\n')
             
             # loss calculation
-            NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
+            target = x
+            # target = closest_neighbors(x, n_neighbors = 10)
+            NLL_loss, KL_loss, KL_weight = loss_fn(logp, target,
                     mean, logv, args.anneal_function, step, args.k1, args.x1)
             NLL_hist.append(NLL_loss/args.batch_size)
             KL_hist.append(KL_loss/args.batch_size)
@@ -196,9 +199,9 @@ if __name__ == '__main__':
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
 
-    parser.add_argument('-ep', '--epochs', type=int, default=2)
+    parser.add_argument('-ep', '--epochs', type=int, default=3)
     parser.add_argument('-bs', '--batch_size', type=int, default=64)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.001)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.005)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
     parser.add_argument('-hs', '--hidden_size', type=int, default=64)
@@ -208,13 +211,15 @@ if __name__ == '__main__':
 
     parser.add_argument('-t', '--temperature', type=float, default=5.)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0.99)
-    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.2)
+    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
     parser.add_argument('-k1', '--k1', type=float, default=0.05)
     parser.add_argument('-x1', '--x1', type=int, default=100)
+    parser.add_argument('-m1', '--m1', type=float, default=0.1)
     parser.add_argument('-k2', '--k2', type=float, default=0.1)
     parser.add_argument('-x2', '--x2', type=int, default=300)
+    parser.add_argument('-m2', '--m2', type=float, default=1)
 
     run = {}
 

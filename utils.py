@@ -55,3 +55,10 @@ def surface_realisation(idx, i2w, pad_idx, slotdic_path='./data/train_slot_value
                 utterances[isent] += word + " "
 
     return labellings, utterances
+
+def closest_neighbors(indices, vectors, n_neighbors):
+    
+    distances = (vectors[x] - vectors).norm()
+    closest = torch.argsort(distances)
+
+    return closest[:n_neighbors]
