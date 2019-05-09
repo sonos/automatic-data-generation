@@ -26,7 +26,7 @@ def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1, m1):
 
     # KL Divergence
     KL_loss = -0.5 * torch.sum(1 + logv - mean.pow(2) - logv.exp())
-    KL_weight = anneal_fn(anneal_function, step, k1, x1)
+    KL_weight = anneal_fn(anneal_function, step, k1, x1, m1)
 
     return NLL_loss, KL_loss, KL_weight
 
@@ -91,13 +91,13 @@ def train(model, datasets, args):
             target = x
             # target = closest_neighbors(x, n_neighbors = 10)
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, target,
-                    mean, logv, args.anneal_function, step, args.k1, args.x1)
+                                                   mean, logv, args.anneal_function, step, args.k1, args.x1, args.m1)
             NLL_hist.append(NLL_loss/args.batch_size)
             KL_hist.append(KL_loss/args.batch_size)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.supervised:
-                label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2)
+                label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2, args.m2)
                 loss += label_weight * label_loss
             else:
                 entropy = torch.sum(c * torch.log(args.n_classes * c))
@@ -141,12 +141,12 @@ def train(model, datasets, args):
             
             # loss calculation
             NLL_loss, KL_loss, KL_weight = loss_fn(logp, x,
-                    mean, logv, args.anneal_function, step, args.k1, args.x1)
+                                                   mean, logv, args.anneal_function, step, args.k1, args.x1, args.m1)
 
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.supervised:
-                label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2)
+                label_loss, label_weight = loss_labels(logc, y, args.anneal_function, step, args.k2, args.x2, args.m2)
                 loss += label_weight * label_loss
             else:
                 entropy = torch.sum(c * torch.log(args.n_classes * c))
