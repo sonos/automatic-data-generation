@@ -162,16 +162,6 @@ class CVAE(nn.Module):
 
             input_sequence = to_device(input_sequence.unsqueeze(1))
 
-            if self.word_dropout_rate > 0:
-                # randomly replace decoder input with <unk>
-                prob = torch.rand(input_sequence.size())
-                prob = to_device(prob)
-                prob[(input_sequence.data - self.sos_idx) * (input_sequence.data - self.pad_idx) == 0] = 1
-                decoder_input_sequence = input_sequence.clone()
-                decoder_input_sequence[prob < self.word_dropout_rate] = self.unk_idx
-                input_embedding = self.embedding(decoder_input_sequence)
-            input_embedding = self.embedding_dropout(input_embedding)
-
             input_embedding = self.embedding(input_sequence).view(-1, batch_size, self.embedding_size)
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
