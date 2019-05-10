@@ -173,7 +173,7 @@ def csv2json(datadir, outdir, augmented):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--datadir', type=str, default='/Users/stephane/Dropbox/Work/Codes/data/2017-06-custom-intent-engines')
+    parser.add_argument('--datadir', type=str, default='./data/2017-06-custom-intent-engines')
     parser.add_argument('--outdir' , type=str, default='./data/')
     parser.add_argument('-spi', '--samples_per_intent' , type=int, default=100)
     parser.add_argument('--augmented' , type=int, default=1)
