@@ -185,6 +185,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default='model.pyT')
     parser.add_argument('--pickle', type=str, default='run.pyT')
+    parser.add_argument('-spi', '--samples_per_intent', type=int, default=1000)
     parser.add_argument('--n_generated', type=int, default=100)
     parser.add_argument('--benchmark', action='store_true')
 
@@ -226,8 +227,9 @@ if __name__ == '__main__':
     run['args'] = args
     print(args)
     
+    datadir = os.path.dirname(args.train_path)
     print('loading and embedding datasets')
-#    json2csv(args.datadir+'/2017-06-custom-intents-engine', args.)
+    json2csv(datadir+'/2017-06-custom-intent-engines', datadir, samples_per_intent=args.samples_per_intent)
     datasets = Datasets(train_path=os.path.join(args.train_path), valid_path=os.path.join(args.validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
 
     if args.input_type=='delexicalised':
@@ -314,7 +316,6 @@ if __name__ == '__main__':
             from snips_nlu import SnipsNLUEngine
             from snips_nlu_metrics import compute_train_test_metrics
 
-            datadir = os.path.dirname(args.train_path)
             csv2json(datadir, datadir, augmented=False)
             csv2json(datadir, datadir, augmented=True)
 

@@ -79,7 +79,7 @@ def json2csv(datadir, outdir, samples_per_intent):
                 delexfile.write(delexicalised+'\n')
                 csv_writer.writerow([utterance, labelling, delexicalised, intent])
                 
-        with open('{}/{}_slot_values'.format(outdir, split), 'wb') as f:
+        with open('{}/{}_slot_values.pkl'.format(outdir, split), 'wb') as f:
             print(slotdic.keys())
             pickle.dump(slotdic, f)
             print('Dumped slot dictionnary')
