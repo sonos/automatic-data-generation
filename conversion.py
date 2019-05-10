@@ -21,10 +21,10 @@ def json2csv(datadir, outdir, samples_per_intent):
                 
         slotdic = {}
 
-        intentfile = open('{}/{}_intents.txt'       .format(outdir, split), 'w')
-        utterfile  = open('{}/{}_utterances.txt'    .format(outdir, split), 'w')
-        labelfile  = open('{}/{}_labels.txt'        .format(outdir, split), 'w')
-        delexfile  = open('{}/{}_delexicalised.txt' .format(outdir, split), 'w')
+        # intentfile = open('{}/{}_intents.txt'       .format(outdir, split), 'w')
+        # utterfile  = open('{}/{}_utterances.txt'    .format(outdir, split), 'w')
+        # labelfile  = open('{}/{}_labels.txt'        .format(outdir, split), 'w')
+        # delexfile  = open('{}/{}_delexicalised.txt' .format(outdir, split), 'w')
         csvfile    = open('{}/{}.csv'               .format(outdir, split), 'w')
         csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow(['utterance', 'labels', 'delexicalised', 'intent'])
@@ -73,10 +73,10 @@ def json2csv(datadir, outdir, samples_per_intent):
                   
                 delexicalised += ' EOS'
                         
-                intentfile.write(intent+'\n')
-                utterfile.write(utterance+'\n')
-                labelfile.write(labelling+'\n')
-                delexfile.write(delexicalised+'\n')
+                # intentfile.write(intent+'\n')
+                # utterfile.write(utterance+'\n')
+                # labelfile.write(labelling+'\n')
+                # delexfile.write(delexicalised+'\n')
                 csv_writer.writerow([utterance, labelling, delexicalised, intent])
                 
         with open('{}/{}_slot_values.pkl'.format(outdir, split), 'wb') as f:
@@ -173,8 +173,8 @@ def csv2json(datadir, outdir, augmented):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--datadir', type=str, default='./data/2017-06-custom-intent-engines')
-    parser.add_argument('--outdir' , type=str, default='./data/')
+    parser.add_argument('--datadir', type=str, default='./data/snips_original')
+    parser.add_argument('--outdir' , type=str, default='./data/snips')
     parser.add_argument('-spi', '--samples_per_intent' , type=int, default=100)
     parser.add_argument('--augmented' , type=int, default=1)
     parser.add_argument('--convert_to' , type=str, default='csv')

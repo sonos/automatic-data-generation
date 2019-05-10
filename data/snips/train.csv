@@ -1,0 +1,723 @@
+utterance,labels,delexicalised,intent
+I need to hear the song Aspro Mavro from Bill Szymczyk on Youtube,O O O O O B-music_item B-track I-track O B-artist I-artist O B-service ,SOS I need to hear the _music_item_ _track_ from _artist_ on _service_ EOS,PlayMusic
+play Yo Ho from the new york pops on Youtube,O B-track I-track O B-artist I-artist I-artist I-artist O B-service ,SOS play _track_ from _artist_ on _service_ EOS,PlayMusic
+Play some seventies music by Janne Puurtinen on Youtube ,O O B-year O O B-artist I-artist O B-service ,SOS Play some _year_ music by _artist_ on _service_  EOS,PlayMusic
+play the MÃºsica Da SÃ©rie De Filmes O Hobbit album by Alex Otaola,O O B-album I-album I-album I-album I-album I-album I-album B-music_item O B-artist I-artist ,SOS play the _album_ _music_item_ by _artist_ EOS,PlayMusic
+Play Magic Sam from the thirties,O B-artist I-artist O O B-year ,SOS Play _artist_ from the _year_ EOS,PlayMusic
+Play The Soft Parade ,O B-track I-track I-track ,SOS Play _track_  EOS,PlayMusic
+Play music by blowfly from the seventies,O O O B-artist O O B-year ,SOS Play music by _artist_ from the _year_ EOS,PlayMusic
+play Jeff Pilson on Youtube,O B-artist I-artist O B-service ,SOS play _artist_ on _service_ EOS,PlayMusic
+play a tune by Syreeta Wright from twenties from the top,O O B-music_item O B-artist I-artist O B-year O O B-sort ,SOS play a _music_item_ by _artist_ from _year_ from the _sort_ EOS,PlayMusic
+Please play me Jerry Lee Lewis's If You Say So track ,O O O B-artist I-artist I-artist O B-track I-track I-track I-track B-music_item ,SOS Please play me _artist_'s _track_ _music_item_  EOS,PlayMusic
+play the newest by Exuma,O O B-sort O B-artist ,SOS play the _sort_ by _artist_ EOS,PlayMusic
+Play the album alas y raÃ­ces by Dave Pybus ,O O B-music_item B-album I-album I-album O B-artist I-artist ,SOS Play the _music_item_ _album_ by _artist_  EOS,PlayMusic
+play music by Helen Ward,O O O B-artist I-artist ,SOS play music by _artist_ EOS,PlayMusic
+Play some sixties music ,O O B-year O ,SOS Play some _year_ music  EOS,PlayMusic
+Plan an album by Roni Duani ,O O B-music_item O B-artist I-artist ,SOS Plan an _music_item_ by _artist_  EOS,PlayMusic
+I want to listen to Born On The Bayou on Iheart,O O O O O B-track I-track I-track I-track O B-service ,SOS I want to listen to _track_ on _service_ EOS,PlayMusic
+Play the best music by Arthur Johnston ,O O B-sort O O B-artist I-artist ,SOS Play the _sort_ music by _artist_  EOS,PlayMusic
+Play the song gangsta  by Siavash Ghomayshi,O O B-music_item B-track O B-artist I-artist ,SOS Play the _music_item_ _track_  by _artist_ EOS,PlayMusic
+Play Lukasz Gottwald album on Zvooq,O B-artist I-artist B-music_item O B-service ,SOS Play _artist_ _music_item_ on _service_ EOS,PlayMusic
+Play me some music by Prince Alla from the twenties,O O O O O B-artist I-artist O O B-year ,SOS Play me some music by _artist_ from the _year_ EOS,PlayMusic
+Play the newest 2016 ep from Boaz Mauda ,O O B-sort B-year B-music_item O B-artist I-artist ,SOS Play the _sort_ _year_ _music_item_ from _artist_  EOS,PlayMusic
+play Escapada,O B-playlist ,SOS play _playlist_ EOS,PlayMusic
+I'd like to hear music from 1951  preferably a soundtrack ,O O O O O O O B-year O O B-music_item ,SOS I'd like to hear music from _year_  preferably a _music_item_  EOS,PlayMusic
+Play 2003 Ben Burnley on Spotify,O B-year B-artist I-artist O B-service ,SOS Play _year_ _artist_ on _service_ EOS,PlayMusic
+Play Marche Lorraine by Rachael Lampa,O B-track I-track O B-artist I-artist ,SOS Play _track_ by _artist_ EOS,PlayMusic
+Play some soul music,O O B-genre O ,SOS Play some _genre_ music EOS,PlayMusic
+Play Robin Hood Rescuing Three Squires by Bhupinder Singh,O B-track I-track I-track I-track I-track O B-artist I-artist ,SOS Play _track_ by _artist_ EOS,PlayMusic
+Play the top-5 songs from Paddy Reilly on zvooq,O O B-sort O O B-artist I-artist O B-service ,SOS Play the _sort_ songs from _artist_ on _service_ EOS,PlayMusic
+Open Groove Shark and play native us,O B-service I-service O O B-genre I-genre ,SOS Open _service_ and play _genre_ EOS,PlayMusic
+play chant by Prurient,O B-music_item O B-artist ,SOS play _music_item_ by _artist_ EOS,PlayMusic
+play Shake Your Head,O B-track I-track I-track ,SOS play _track_ EOS,PlayMusic
+Play Justin Broadrick's music on Slacker ,O B-artist I-artist O O O B-service ,SOS Play _artist_'s music on _service_  EOS,PlayMusic
+Play some 1954 songs on my Itunes ,O O B-year O O O B-service ,SOS Play some _year_ songs on my _service_  EOS,PlayMusic
+Play a 2011 ballad by Evil Jared Hasselhoff on Lastfm ,O O B-year B-music_item O B-artist I-artist I-artist O B-service ,SOS Play a _year_ _music_item_ by _artist_ on _service_  EOS,PlayMusic
+play laura love songs from 1959,O B-artist I-artist O O B-year ,SOS play _artist_ songs from _year_ EOS,PlayMusic
+Play Inside The Eye by twinkie clark,O B-album I-album I-album O B-artist I-artist ,SOS Play _album_ by _artist_ EOS,PlayMusic
+Play Goa music on Google Music ,O B-genre O O B-service I-service ,SOS Play _genre_ music on _service_  EOS,PlayMusic
+Play The Way It Has To Be by Tom G Warrior on Zvooq,O B-album I-album I-album I-album I-album I-album O B-artist I-artist I-artist O B-service ,SOS Play _album_ by _artist_ on _service_ EOS,PlayMusic
+Play some nineties chant music from Nicoleta Nicola,O O B-year B-music_item O O B-artist I-artist ,SOS Play some _year_ _music_item_ music from _artist_ EOS,PlayMusic
+Play Alone  Again from Mike Viola,O B-album I-album O B-artist I-artist ,SOS Play _album_ from _artist_ EOS,PlayMusic
+open Spotify and play a couple of celtic songs,O B-service O O O O O B-genre O ,SOS open _service_ and play a couple of _genre_ songs EOS,PlayMusic
+Play a concerto by Thekra ,O O B-music_item O B-artist ,SOS Play a _music_item_ by _artist_  EOS,PlayMusic
+play The Trail Of The Lonesome Pine on Netflix,O B-track I-track I-track I-track I-track I-track O B-service ,SOS play _track_ on _service_ EOS,PlayMusic
+Please play the newest music by Evil Jared Hasselhoff,O O O B-sort O O B-artist I-artist I-artist ,SOS Please play the _sort_ music by _artist_ EOS,PlayMusic
+Play NoctÃ¡mbulo pl,O B-playlist O ,SOS Play _playlist_ pl EOS,PlayMusic
+Open up Lastfm and play some songs ,O O B-service O O O O ,SOS Open up _service_ and play some songs  EOS,PlayMusic
+Can you play a top 5 song by Manos Hadjidakis,O O O O B-sort I-sort B-music_item O B-artist I-artist ,SOS Can you play a _sort_ _music_item_ by _artist_ EOS,PlayMusic
+Play sixties on Spotify,O B-year O B-service ,SOS Play _year_ on _service_ EOS,PlayMusic
+Play music by Antonella Barba from the album Bath,O O O B-artist I-artist O O B-music_item B-album ,SOS Play music by _artist_ from the _music_item_ _album_ EOS,PlayMusic
+Play melody music from the fourties ,O B-music_item O O O B-year ,SOS Play _music_item_ music from the _year_  EOS,PlayMusic
+Play some Katiejane Garside on Vimeo ,O O B-artist I-artist O B-service ,SOS Play some _artist_ on _service_  EOS,PlayMusic
+Play me a top-ten song by Phil Ochs on Groove Shark,O O O B-sort B-music_item O B-artist I-artist O B-service I-service ,SOS Play me a _sort_ _music_item_ by _artist_ on _service_ EOS,PlayMusic
+Play Out From Under from Hurricane Chris,O B-track I-track I-track O B-artist I-artist ,SOS Play _track_ from _artist_ EOS,PlayMusic
+Play a sound track by Pee Wee Russell on Zvooq ,O O B-music_item I-music_item O B-artist I-artist I-artist O B-service ,SOS Play a _music_item_ by _artist_ on _service_  EOS,PlayMusic
+Play One Way Ticket by Ray Kennedy ,O B-track I-track I-track O B-artist I-artist ,SOS Play _track_ by _artist_  EOS,PlayMusic
+Play my entertaining playlist,O O B-playlist O ,SOS Play my _playlist_ playlist EOS,PlayMusic
+Will you pull up my Jueves de AntaÃ±o playlist,O O O O O B-playlist I-playlist I-playlist O ,SOS Will you pull up my _playlist_ playlist EOS,PlayMusic
+Play some eighties movement music,O O B-year B-music_item O ,SOS Play some _year_ _music_item_ music EOS,PlayMusic
+Use Spotify to play me music,O B-service O O O O ,SOS Use _service_ to play me music EOS,PlayMusic
+use Deezer to play top five Moya Brennan,O B-service O O B-sort I-sort B-artist I-artist ,SOS use _service_ to play _sort_ _artist_ EOS,PlayMusic
+I'd like to hear Nas's greatest ballad,O O O O O B-artist O B-sort B-music_item ,SOS I'd like to hear _artist_'s _sort_ _music_item_ EOS,PlayMusic
+Open Netflix and find a movie with the song heartful,O B-service O O O O O O B-music_item B-playlist ,SOS Open _service_ and find a movie with the _music_item_ _playlist_ EOS,PlayMusic
+PLay some fourties music from Erin Harkes,O O B-year O O B-artist I-artist ,SOS PLay some _year_ music from _artist_ EOS,PlayMusic
+Play dhafer youssef top-twenty on netflix,O B-artist I-artist B-sort O B-service ,SOS Play _artist_ _sort_ on _service_ EOS,PlayMusic
+I'd like to play the top ten Mickdeth on Google Music,O O O O O O B-sort I-sort B-artist O B-service I-service ,SOS I'd like to play the _sort_ _artist_ on _service_ EOS,PlayMusic
+play music by Don Reno,O O O B-artist I-artist ,SOS play music by _artist_ EOS,PlayMusic
+Play some Last Fm music like the 1992 ep from Peaches,O O B-service I-service O O O B-year B-music_item O B-artist ,SOS Play some _service_ music like the _year_ _music_item_ from _artist_ EOS,PlayMusic
+Play some indie music on spotify ,O O B-genre O O B-service ,SOS Play some _genre_ music on _service_  EOS,PlayMusic
+Play a cohesive playlist for me,O O B-playlist O O O ,SOS Play a _playlist_ playlist for me EOS,PlayMusic
+Play 1966 theme music on Slacker ,O B-year B-music_item O O B-service ,SOS Play _year_ _music_item_ music on _service_  EOS,PlayMusic
+Play some jpop on Google Music ,O O B-genre O B-service I-service ,SOS Play some _genre_ on _service_  EOS,PlayMusic
+Play music from 2002,O O O B-year ,SOS Play music from _year_ EOS,PlayMusic
+play Lastfm pop tunes,O B-service B-genre O ,SOS play _service_ _genre_ tunes EOS,PlayMusic
+play a concerto that was most popular in 1958 by mickey hart,O O B-music_item O O B-sort I-sort O B-year O B-artist I-artist ,SOS play a _music_item_ that was _sort_ in _year_ by _artist_ EOS,PlayMusic
+Let me listen to Rouhollah Khaleghi on deezer ,O O O O B-artist I-artist O B-service ,SOS Let me listen to _artist_ on _service_  EOS,PlayMusic
+Please play music from Itunes,O O O O B-service ,SOS Please play music from _service_ EOS,PlayMusic
+Play me the most popular Peja song on Slacker,O O O B-sort I-sort B-artist B-music_item O B-service ,SOS Play me the _sort_ _artist_ _music_item_ on _service_ EOS,PlayMusic
+Play my 70s Smash Hits playlist ,O O B-playlist I-playlist I-playlist O ,SOS Play my _playlist_ playlist  EOS,PlayMusic
+Play me a song from the fourties,O O O B-music_item O O B-year ,SOS Play me a _music_item_ from the _year_ EOS,PlayMusic
+Play celtic music,O B-genre O ,SOS Play _genre_ music EOS,PlayMusic
+play Moustapha Amar Make It Rain,O B-artist I-artist B-track I-track I-track ,SOS play _artist_ _track_ EOS,PlayMusic
+I want to hear a top ten soundtrack from 1984 by Shinehead,O O O O O B-sort I-sort B-music_item O B-year O B-artist ,SOS I want to hear a _sort_ _music_item_ from _year_ by _artist_ EOS,PlayMusic
+Play the 1951 ballad,O O B-year B-music_item ,SOS Play the _year_ _music_item_ EOS,PlayMusic
+I want to hear Dave Seaman's ep,O O O O B-artist I-artist O B-music_item ,SOS I want to hear _artist_'s _music_item_ EOS,PlayMusic
+Play music from artist Ashley,O O O O B-artist ,SOS Play music from artist _artist_ EOS,PlayMusic
+play Miguelito top charting album,O B-artist B-sort O B-music_item ,SOS play _artist_ _sort_ charting _music_item_ EOS,PlayMusic
+I want to hear Papa Mali's songs from the fifties,O O O O B-artist I-artist O O O O B-year ,SOS I want to hear _artist_'s songs from the _year_ EOS,PlayMusic
+play some tango on iheart,O O B-genre O B-service ,SOS play some _genre_ on _service_ EOS,PlayMusic
+Play jazz music by Zvooq,O B-genre O O B-service ,SOS Play _genre_ music by _service_ EOS,PlayMusic
+play songs by Wise,O O O B-artist ,SOS play songs by _artist_ EOS,PlayMusic
+Play music from the eighties on Slacker ,O O O O B-year O B-service ,SOS Play music from the _year_ on _service_  EOS,PlayMusic
+I want to hear Ready by Frankenstein Drag Queens From Planet 13,O O O O B-album O B-artist I-artist I-artist I-artist I-artist I-artist ,SOS I want to hear _album_ by _artist_ EOS,PlayMusic
+Play a song from the seventies by Pepe Aguilar,O O B-music_item O O B-year O B-artist I-artist ,SOS Play a _music_item_ from the _year_ by _artist_ EOS,PlayMusic
+Play something by Brian Chase ,O O O B-artist I-artist ,SOS Play something by _artist_  EOS,PlayMusic
+open Fadl Shaker on Spotify and play a melody starting with the newest,O B-artist I-artist O B-service O O O B-music_item O O O B-sort ,SOS open _artist_ on _service_ and play a _music_item_ starting with the _sort_ EOS,PlayMusic
+Play a Scott Lafaro soundtrack,O O B-artist I-artist B-music_item ,SOS Play a _artist_ _music_item_ EOS,PlayMusic
+play songs from the sixties,O O O O B-year ,SOS play songs from the _year_ EOS,PlayMusic
+Play a tune from Space Mandino ,O O B-music_item O B-artist I-artist ,SOS Play a _music_item_ from _artist_  EOS,PlayMusic
+Open Vimeo and paly every song released in 1986,O B-service O O B-track B-music_item O O B-year ,SOS Open _service_ and paly _track_ _music_item_ released in _year_ EOS,PlayMusic
+Find me music by Kaori Utatsuki off the album that has top-twenty hits,O O O O B-artist I-artist O O B-music_item O O B-sort O ,SOS Find me music by _artist_ off the _music_item_ that has _sort_ hits EOS,PlayMusic
+"rate The Lotus and the Storm zero of 6
+",O B-object_name I-object_name I-object_name I-object_name I-object_name B-rating_value O B-best_rating ,"SOS rate _object_name_ _rating_value_ of _best_rating_
+ EOS",RateBook
+Rate The Fall-Down Artist 5 stars ,O B-object_name I-object_name I-object_name B-rating_value B-rating_unit ,SOS Rate _object_name_ _rating_value_ _rating_unit_  EOS,RateBook
+Rate the current novel one points,O O B-object_select B-object_type B-rating_value B-rating_unit ,SOS Rate the _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+rate The Ape-Man Within 4,O B-object_name I-object_name I-object_name B-rating_value ,SOS rate _object_name_ _rating_value_ EOS,RateBook
+I give The Penalty three stars,O O B-object_name I-object_name B-rating_value B-rating_unit ,SOS I give _object_name_ _rating_value_ _rating_unit_ EOS,RateBook
+"rate this novel a 4
+",O B-object_select B-object_type O B-rating_value ,"SOS rate _object_select_ _object_type_ a _rating_value_
+ EOS",RateBook
+give 5 out of 6 points to Absolutely  Positively Not series,O B-rating_value O O B-best_rating B-rating_unit O B-object_name I-object_name I-object_name B-object_part_of_series_type ,SOS give _rating_value_ out of _best_rating_ _rating_unit_ to _object_name_ _object_part_of_series_type_ EOS,RateBook
+I give Emile  or On Education five points ,O O B-object_name I-object_name I-object_name I-object_name B-rating_value B-rating_unit ,SOS I give _object_name_ _rating_value_ _rating_unit_  EOS,RateBook
+rate Licence Renewed a 4,O B-object_name I-object_name O B-rating_value ,SOS rate _object_name_ a _rating_value_ EOS,RateBook
+Give this essay a 2 out of 6 ,O B-object_select B-object_type O B-rating_value O O B-best_rating ,SOS Give _object_select_ _object_type_ a _rating_value_ out of _best_rating_  EOS,RateBook
+A rating of 5 of 6 points goes to Dickson McCunn trilogy,O O O B-rating_value O B-best_rating B-rating_unit O O B-object_name I-object_name I-object_name ,SOS A rating of _rating_value_ of _best_rating_ _rating_unit_ goes to _object_name_ EOS,RateBook
+"rate Beyond the Shadows 3 of 6
+ stars",O B-object_name I-object_name I-object_name B-rating_value O B-best_rating B-rating_unit ,"SOS rate _object_name_ _rating_value_ of _best_rating_
+ _rating_unit_ EOS",RateBook
+Give 2 out of 6 points to the following textbook ,O B-rating_value O O B-best_rating B-rating_unit O O B-object_select B-object_type ,SOS Give _rating_value_ out of _best_rating_ _rating_unit_ to the _object_select_ _object_type_  EOS,RateBook
+the previous textbook is a 3,O B-object_select B-object_type O O B-rating_value ,SOS the _object_select_ _object_type_ is a _rating_value_ EOS,RateBook
+Rate this album zero of 6 ,O B-object_select B-object_type B-rating_value O B-best_rating ,SOS Rate _object_select_ _object_type_ _rating_value_ of _best_rating_  EOS,RateBook
+rate in stars as a 6 for Lord of the Shadows which gets a four,O O B-rating_unit O O B-best_rating O B-object_name I-object_name I-object_name I-object_name O O O B-rating_value ,SOS rate in _rating_unit_ as a _best_rating_ for _object_name_ which gets a _rating_value_ EOS,RateBook
+Rate Small Screen  Big Picture a 0 out of 6 ,O B-object_name I-object_name I-object_name I-object_name O B-rating_value O O B-best_rating ,SOS Rate _object_name_ a _rating_value_ out of _best_rating_  EOS,RateBook
+give 0 stars to this textbook,O B-rating_value B-rating_unit O B-object_select B-object_type ,SOS give _rating_value_ _rating_unit_ to _object_select_ _object_type_ EOS,RateBook
+Rate the current novel a 0 out of 6 points,O O B-object_select B-object_type O B-rating_value O O B-best_rating B-rating_unit ,SOS Rate the _object_select_ _object_type_ a _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+give this book a rating of 3 ,O B-object_select B-object_type O O O B-rating_value ,SOS give _object_select_ _object_type_ a rating of _rating_value_  EOS,RateBook
+Rate the Tropic of Cancer book a 2 out of 6,O O B-object_name I-object_name I-object_name B-object_type O B-rating_value O O B-best_rating ,SOS Rate the _object_name_ _object_type_ a _rating_value_ out of _best_rating_ EOS,RateBook
+I would give this current textbook five points or a rating of 6,O O O O B-object_select B-object_type B-rating_value B-rating_unit O O O O B-best_rating ,SOS I would give this _object_select_ _object_type_ _rating_value_ _rating_unit_ or a rating of _best_rating_ EOS,RateBook
+give The Judas Tree a zero,O B-object_name I-object_name I-object_name O B-rating_value ,SOS give _object_name_ a _rating_value_ EOS,RateBook
+I am rating this book titled The Billion Dollar Ransom 3 stars ,O O O O B-object_type O B-object_name I-object_name I-object_name I-object_name B-rating_value B-rating_unit ,SOS I am rating this _object_type_ titled _object_name_ _rating_value_ _rating_unit_  EOS,RateBook
+I would give Sixty Lights chronicle a rating of five and a best rating of 6,O O O B-object_name I-object_name B-object_part_of_series_type O O O B-rating_value O O O O O B-best_rating ,SOS I would give _object_name_ _object_part_of_series_type_ a rating of _rating_value_ and a best rating of _best_rating_ EOS,RateBook
+rate this book titled Cold two stars,O O B-object_type O B-object_name B-rating_value B-rating_unit ,SOS rate this _object_type_ titled _object_name_ _rating_value_ _rating_unit_ EOS,RateBook
+I want to rate this current series a value of five and a best rating of 6,O O O O O B-object_select B-object_part_of_series_type O O O B-rating_value O O O O O B-best_rating ,SOS I want to rate this _object_select_ _object_part_of_series_type_ a value of _rating_value_ and a best rating of _best_rating_ EOS,RateBook
+Rate the current book a zero of 6,O O B-object_select B-object_type O B-rating_value O B-best_rating ,SOS Rate the _object_select_ _object_type_ a _rating_value_ of _best_rating_ EOS,RateBook
+Rate this novel 1 of 6,O B-object_select B-object_type B-rating_value O B-best_rating ,SOS Rate _object_select_ _object_type_ _rating_value_ of _best_rating_ EOS,RateBook
+I would rate this chronicle 4 stars,O O O B-object_select B-object_part_of_series_type B-rating_value B-rating_unit ,SOS I would rate _object_select_ _object_part_of_series_type_ _rating_value_ _rating_unit_ EOS,RateBook
+Give A Human Being Died That Night 3 stars ,O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name B-rating_value B-rating_unit ,SOS Give _object_name_ _rating_value_ _rating_unit_  EOS,RateBook
+I'm rating The Skystone with three points,O O O B-object_name I-object_name O B-rating_value B-rating_unit ,SOS I'm rating _object_name_ with _rating_value_ _rating_unit_ EOS,RateBook
+rate this current saga 3 out of 6 points,O O B-object_select B-object_part_of_series_type B-rating_value O O B-best_rating B-rating_unit ,SOS rate this _object_select_ _object_part_of_series_type_ _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+Rate the Wild Boy series 3 out of 6 stars,O O B-object_name I-object_name B-object_part_of_series_type B-rating_value O O B-best_rating B-rating_unit ,SOS Rate the _object_name_ _object_part_of_series_type_ _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+Rate this album a one ,O B-object_select B-object_type O B-rating_value ,SOS Rate _object_select_ _object_type_ a _rating_value_  EOS,RateBook
+Rate the Glory Season three stars,O O B-object_name I-object_name B-rating_value B-rating_unit ,SOS Rate the _object_name_ _rating_value_ _rating_unit_ EOS,RateBook
+Give this textbook 5 points,O B-object_select B-object_type B-rating_value B-rating_unit ,SOS Give _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+give two stars to current album,O B-rating_value B-rating_unit O B-object_select B-object_type ,SOS give _rating_value_ _rating_unit_ to _object_select_ _object_type_ EOS,RateBook
+Rate the current saga a five,O O B-object_select B-object_part_of_series_type O B-rating_value ,SOS Rate the _object_select_ _object_part_of_series_type_ a _rating_value_ EOS,RateBook
+give 0 rating to She and Allan book,O B-rating_value O O B-object_name I-object_name I-object_name B-object_type ,SOS give _rating_value_ rating to _object_name_ _object_type_ EOS,RateBook
+Rate the current series a one,O O B-object_select B-object_part_of_series_type O B-rating_value ,SOS Rate the _object_select_ _object_part_of_series_type_ a _rating_value_ EOS,RateBook
+I want to give this album 3 points,O O O O B-object_select B-object_type B-rating_value B-rating_unit ,SOS I want to give _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+rate The Cry of the Owl a four,O B-object_name I-object_name I-object_name I-object_name I-object_name O B-rating_value ,SOS rate _object_name_ a _rating_value_ EOS,RateBook
+A novel of this quality deserves your rating of four points,O B-object_type O B-object_select O O B-object_name O O B-rating_value B-rating_unit ,SOS A _object_type_ of _object_select_ quality deserves _object_name_ rating of _rating_value_ _rating_unit_ EOS,RateBook
+I gave Joseph Andrews a 0 out of 6,O O B-object_name I-object_name O B-rating_value O O B-best_rating ,SOS I gave _object_name_ a _rating_value_ out of _best_rating_ EOS,RateBook
+Give zero / 6 stars to the current album,O B-rating_value O B-best_rating B-rating_unit O O B-object_select B-object_type ,SOS Give _rating_value_ / _best_rating_ _rating_unit_ to the _object_select_ _object_type_ EOS,RateBook
+I want to give this album zero out of 6 stars,O O O O B-object_select B-object_type B-rating_value O O B-best_rating B-rating_unit ,SOS I want to give _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+Swine Not  deserves four points,B-object_name I-object_name O B-rating_value B-rating_unit ,SOS _object_name_  deserves _rating_value_ _rating_unit_ EOS,RateBook
+I rate Naked in Death a 5,O O B-object_name I-object_name I-object_name O B-rating_value ,SOS I rate _object_name_ a _rating_value_ EOS,RateBook
+give the current series 3 points,O O B-object_select B-object_part_of_series_type B-rating_value B-rating_unit ,SOS give the _object_select_ _object_part_of_series_type_ _rating_value_ _rating_unit_ EOS,RateBook
+the next album is only one stars,O B-object_select B-object_type O O B-rating_value B-rating_unit ,SOS the _object_select_ _object_type_ is only _rating_value_ _rating_unit_ EOS,RateBook
+Rate this book three points,O B-object_select B-object_type B-rating_value B-rating_unit ,SOS Rate _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+"rate this novel a 3
+",O B-object_select B-object_type O B-rating_value ,"SOS rate _object_select_ _object_type_ a _rating_value_
+ EOS",RateBook
+Rate The Keys to the White House a zero,O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name O B-rating_value ,SOS Rate _object_name_ a _rating_value_ EOS,RateBook
+Rate An Act of Terror 2 stars ,O B-object_name I-object_name I-object_name I-object_name B-rating_value B-rating_unit ,SOS Rate _object_name_ _rating_value_ _rating_unit_  EOS,RateBook
+I'm rating The Skystone with three points,O O O B-object_name I-object_name O B-rating_value B-rating_unit ,SOS I'm rating _object_name_ with _rating_value_ _rating_unit_ EOS,RateBook
+rate Call for the Saint 1 out 6 points,O B-object_name I-object_name I-object_name I-object_name B-rating_value O B-best_rating B-rating_unit ,SOS rate _object_name_ _rating_value_ out _best_rating_ _rating_unit_ EOS,RateBook
+Rate Merlin Effect a 0 ,O B-object_name I-object_name O B-rating_value ,SOS Rate _object_name_ a _rating_value_  EOS,RateBook
+Give this album three out of 6 points,O B-object_select B-object_type B-rating_value O O B-best_rating B-rating_unit ,SOS Give _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+The Last Hawk gets a total of 3 out of 6 stars from me,B-object_name I-object_name I-object_name O O O O B-rating_value O O B-best_rating B-rating_unit O O ,SOS _object_name_ gets a total of _rating_value_ out of _best_rating_ _rating_unit_ from me EOS,RateBook
+0 stars for this textbook ,B-rating_value B-rating_unit O B-object_select B-object_type ,SOS _rating_value_ _rating_unit_ for _object_select_ _object_type_  EOS,RateBook
+Rate the current series a one ,O O B-object_select B-object_part_of_series_type O B-rating_value ,SOS Rate the _object_select_ _object_part_of_series_type_ a _rating_value_  EOS,RateBook
+"I rate American History  A Survey a 5
+",O O B-object_name I-object_name I-object_name I-object_name O B-rating_value ,"SOS I rate _object_name_ a _rating_value_
+ EOS",RateBook
+Give this current novel a 4 ,O O B-object_select B-object_type O B-rating_value ,SOS Give this _object_select_ _object_type_ a _rating_value_  EOS,RateBook
+give this current novel a three,O O B-object_select B-object_type O B-rating_value ,SOS give this _object_select_ _object_type_ a _rating_value_ EOS,RateBook
+the stars for this are 4 for a textbook,O B-rating_unit O B-object_select O B-rating_value O O B-object_type ,SOS the _rating_unit_ for _object_select_ are _rating_value_ for a _object_type_ EOS,RateBook
+rate the current chronicle book three points,O O B-object_select B-object_part_of_series_type B-object_type B-rating_value B-rating_unit ,SOS rate the _object_select_ _object_part_of_series_type_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+rate The Bunce 1 stars,O B-object_name I-object_name B-rating_value B-rating_unit ,SOS rate _object_name_ _rating_value_ _rating_unit_ EOS,RateBook
+give this textbook a rating of 3,O B-object_select B-object_type O O O B-rating_value ,SOS give _object_select_ _object_type_ a rating of _rating_value_ EOS,RateBook
+Another Girl  Another Planet gets only one of a possiable 6 rating,B-object_name I-object_name I-object_name I-object_name O O B-rating_value O O O B-best_rating O ,SOS _object_name_ gets only _rating_value_ of a possiable _best_rating_ rating EOS,RateBook
+Rate this  textbook 2 of 6 stars,O B-object_select B-object_type B-rating_value O B-best_rating B-rating_unit ,SOS Rate _object_select_  _object_type_ _rating_value_ of _best_rating_ _rating_unit_ EOS,RateBook
+I give The Spirit of St  Louis a 1,O O B-object_name I-object_name I-object_name I-object_name I-object_name O B-rating_value ,SOS I give _object_name_ a _rating_value_ EOS,RateBook
+Rate the book Post Office four points,O O B-object_type B-object_name I-object_name B-rating_value B-rating_unit ,SOS Rate the _object_type_ _object_name_ _rating_value_ _rating_unit_ EOS,RateBook
+give 5 rating for this textbook,O B-rating_value O O B-object_select B-object_type ,SOS give _rating_value_ rating for _object_select_ _object_type_ EOS,RateBook
+I give this next essay zero out of 6 points,O O O B-object_select B-object_type B-rating_value O O B-best_rating B-rating_unit ,SOS I give this _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+Rate the current novel 3 of 6 stars,O O B-object_select B-object_type B-rating_value O B-best_rating B-rating_unit ,SOS Rate the _object_select_ _object_type_ _rating_value_ of _best_rating_ _rating_unit_ EOS,RateBook
+Rate The Watsons four of 6 stars,O B-object_name I-object_name B-rating_value O B-best_rating B-rating_unit ,SOS Rate _object_name_ _rating_value_ of _best_rating_ _rating_unit_ EOS,RateBook
+this novel should get zero points for how intrepid it is ,B-object_select B-object_type O O B-rating_value B-rating_unit O B-object_name O O O ,SOS _object_select_ _object_type_ should get _rating_value_ _rating_unit_ for _object_name_ intrepid it is  EOS,RateBook
+I didn't like the book Nobody Lives For Ever  I give it a 2 ,O O O O O B-object_type B-object_name I-object_name I-object_name I-object_name O O O O B-rating_value ,SOS I didn't like the _object_type_ _object_name_  I give it a _rating_value_  EOS,RateBook
+rate this current book album four stars,O O B-object_select B-object_type I-object_type B-rating_value B-rating_unit ,SOS rate this _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+Give the current novel 5 points,O O B-object_select B-object_type B-rating_value B-rating_unit ,SOS Give the _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+give Death on the Nile a three,O B-object_name I-object_name I-object_name I-object_name O B-rating_value ,SOS give _object_name_ a _rating_value_ EOS,RateBook
+Rate The Gorilla Hunters 0 stars,O B-object_name I-object_name I-object_name B-rating_value B-rating_unit ,SOS Rate _object_name_ _rating_value_ _rating_unit_ EOS,RateBook
+Rate this current essay three out of 6 stars,O O B-object_select B-object_type B-rating_value O O B-best_rating B-rating_unit ,SOS Rate this _object_select_ _object_type_ _rating_value_ out of _best_rating_ _rating_unit_ EOS,RateBook
+this is rated 5 out of 6 for an essay,B-object_select O O B-rating_value O O B-best_rating O O B-object_type ,SOS _object_select_ is rated _rating_value_ out of _best_rating_ for an _object_type_ EOS,RateBook
+rate the current album one points,O O B-object_select B-object_type B-rating_value B-rating_unit ,SOS rate the _object_select_ _object_type_ _rating_value_ _rating_unit_ EOS,RateBook
+I give a zero rating for this essay,O O O B-rating_value O O B-object_select B-object_type ,SOS I give a _rating_value_ rating for _object_select_ _object_type_ EOS,RateBook
+Rate this book a zero,O B-object_select B-object_type O B-rating_value ,SOS Rate _object_select_ _object_type_ a _rating_value_ EOS,RateBook
+Rate the current album 3 of 6 stars,O O B-object_select B-object_type B-rating_value O B-best_rating B-rating_unit ,SOS Rate the _object_select_ _object_type_ _rating_value_ of _best_rating_ _rating_unit_ EOS,RateBook
+Rate The Secret of Dr  Honigberger 2 points out of 6,O B-object_name I-object_name I-object_name I-object_name I-object_name B-rating_value B-rating_unit O O B-best_rating ,SOS Rate _object_name_ _rating_value_ _rating_unit_ out of _best_rating_ EOS,RateBook
+Rate this chronicle three of 6 stars,O B-object_select B-object_part_of_series_type B-rating_value O B-best_rating B-rating_unit ,SOS Rate _object_select_ _object_part_of_series_type_ _rating_value_ of _best_rating_ _rating_unit_ EOS,RateBook
+I rate the chronicle  Son of the Tree with four of 6 points ,O O O B-object_part_of_series_type B-object_name I-object_name I-object_name I-object_name O B-rating_value O B-best_rating B-rating_unit ,SOS I rate the _object_part_of_series_type_  _object_name_ with _rating_value_ of _best_rating_ _rating_unit_  EOS,RateBook
+This current album deserve 0 points and a best rating of 6,O B-object_select B-object_type O B-rating_value B-rating_unit O O O O O B-best_rating ,SOS This _object_select_ _object_type_ deserve _rating_value_ _rating_unit_ and a best rating of _best_rating_ EOS,RateBook
+I rate The Variation of Animals and Plants under Domestication a value of 0,O O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name O O O B-rating_value ,SOS I rate _object_name_ a value of _rating_value_ EOS,RateBook
+Rate this textbook a zero,O B-object_select B-object_type O B-rating_value ,SOS Rate _object_select_ _object_type_ a _rating_value_ EOS,RateBook
+The current textbook Gets 3 stars,O B-object_select B-object_type O B-rating_value B-rating_unit ,SOS The _object_select_ _object_type_ Gets _rating_value_ _rating_unit_ EOS,RateBook
+Rate The Stars Shine Down 5  ,O B-object_name I-object_name I-object_name I-object_name B-rating_value ,SOS Rate _object_name_ _rating_value_   EOS,RateBook
+Give one / 6 points to Who Will Cry When You Die,O B-rating_value O B-best_rating B-rating_unit O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Give _rating_value_ / _best_rating_ _rating_unit_ to _object_name_ EOS,RateBook
+I think this essay should be given four points and a best rating of 6,O O B-object_select B-object_type O O O B-rating_value B-rating_unit O O O O O B-best_rating ,SOS I think _object_select_ _object_type_ should be given _rating_value_ _rating_unit_ and a best rating of _best_rating_ EOS,RateBook
+"For this current saga I give 5 out of 6 possiable points
+
+ 
+",O O B-object_select B-object_part_of_series_type O O B-rating_value O O B-best_rating O B-rating_unit ,"SOS For this _object_select_ _object_part_of_series_type_ I give _rating_value_ out of _best_rating_ possiable _rating_unit_
+
+ 
+ EOS",RateBook
+find the soundtrack titled This Side of Paradise,O O B-object_type O B-object_name I-object_name I-object_name I-object_name ,SOS find the _object_type_ titled _object_name_ EOS,SearchCreativeWork
+find a book called The Mad Magician,O O B-object_type O B-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+find the picture Louder Than Bombs,O O B-object_type B-object_name I-object_name I-object_name ,SOS find the _object_type_ _object_name_ EOS,SearchCreativeWork
+show creative work of Through the Back Door,O O O O B-object_name I-object_name I-object_name I-object_name ,SOS show creative work of _object_name_ EOS,SearchCreativeWork
+Where can I watch the television show You Make Me Hate Music,O O O O O B-object_type I-object_type B-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Where can I watch the _object_type_ _object_name_ EOS,SearchCreativeWork
+Play The News Virginian song,O B-object_name I-object_name I-object_name B-object_type ,SOS Play _object_name_ _object_type_ EOS,SearchCreativeWork
+find a photograph called Free the Universe,O O B-object_type O B-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+Find a television show called Servidor Apache ,O O B-object_type I-object_type O B-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Find a song called Be Quick or Be Dead ,O O B-object_type O B-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Can you find the painting The Crow  Original Motion Picture Soundtrack,O O O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Can you find the _object_type_ _object_name_ EOS,SearchCreativeWork
+I want to watch the movie Maxime,O O O O O B-object_type B-object_name ,SOS I want to watch the _object_type_ _object_name_ EOS,SearchCreativeWork
+Need to find the TV series called Administrative Behavior,O O O O B-object_type I-object_type O B-object_name I-object_name ,SOS Need to find the _object_type_ called _object_name_ EOS,SearchCreativeWork
+Play 30 Greatest Hits,O B-object_name I-object_name I-object_name ,SOS Play _object_name_ EOS,SearchCreativeWork
+find The Great Hydration  a TV series,O B-object_name I-object_name I-object_name O B-object_type I-object_type ,SOS find _object_name_  a _object_type_ EOS,SearchCreativeWork
+Find a television show called The High Chaparral ,O O B-object_type I-object_type O B-object_name I-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+show creativity in photograph of Grace Submerged,O O O B-object_type O B-object_name I-object_name ,SOS show creativity in _object_type_ of _object_name_ EOS,SearchCreativeWork
+I'd like to see the trailer for History and Theory,O O O O O O B-object_type O B-object_name I-object_name I-object_name ,SOS I'd like to see the _object_type_ for _object_name_ EOS,SearchCreativeWork
+Get me the soundtrack from Sensation Comics ,O O O B-object_type O B-object_name I-object_name ,SOS Get me the _object_type_ from _object_name_  EOS,SearchCreativeWork
+Show Family Plot,O B-object_name I-object_name ,SOS Show _object_name_ EOS,SearchCreativeWork
+Show me the movie Operetta for the Theatre Organ,O O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Show me the _object_type_ _object_name_ EOS,SearchCreativeWork
+find a soundtrack called Fast as You,O O B-object_type O B-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+I want to watch the movie Godslayer,O O O O O B-object_type B-object_name ,SOS I want to watch the _object_type_ _object_name_ EOS,SearchCreativeWork
+find the photograph Canaich,O O B-object_type B-object_name ,SOS find the _object_type_ _object_name_ EOS,SearchCreativeWork
+Please search for the Two Faces of My Girlfriend saga ,O O O O B-object_name I-object_name I-object_name I-object_name I-object_name B-object_type ,SOS Please search for the _object_name_ _object_type_  EOS,SearchCreativeWork
+What system is Bloodhounds of Broadway the game for ,O O O B-object_name I-object_name I-object_name O B-object_type O ,SOS What system is _object_name_ the _object_type_ for  EOS,SearchCreativeWork
+Show me The Lord of the Isles,O O B-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Show me _object_name_ EOS,SearchCreativeWork
+How to buy picture of Agent Hamilton  But Not If It Concerns Your Daughter,O O O B-object_type O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS How to buy _object_type_ of _object_name_ EOS,SearchCreativeWork
+Find the Ghostly Swim 2 book,O O B-object_name I-object_name I-object_name B-object_type ,SOS Find the _object_name_ _object_type_ EOS,SearchCreativeWork
+Find a show called Lipstick Vogue ,O O B-object_type O B-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+show me the painting Live – Very Live in Concert,O O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS show me the _object_type_ _object_name_ EOS,SearchCreativeWork
+find the So This Is Goodbye saga,O O B-object_name I-object_name I-object_name I-object_name B-object_type ,SOS find the _object_name_ _object_type_ EOS,SearchCreativeWork
+Find Five Came Back for me,O B-object_name I-object_name I-object_name O O ,SOS Find _object_name_ for me EOS,SearchCreativeWork
+Search for Live Forever  The Rise and Fall of Brit Pop TV show,O O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name B-object_type I-object_type ,SOS Search for _object_name_ _object_type_ EOS,SearchCreativeWork
+find a video game called IBM Program temporary fix,O O B-object_type I-object_type O B-object_name I-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+Show me the lowest price for the game Sinatra Reprise  The Very Good Years ,O O O O O O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Show me the lowest price for the _object_type_ _object_name_  EOS,SearchCreativeWork
+Please help me find the Short Program saga ,O O O O O B-object_name I-object_name B-object_type ,SOS Please help me find the _object_name_ _object_type_  EOS,SearchCreativeWork
+look for the creative work The Testament of Gideon Mack,O O O O O B-object_name I-object_name I-object_name I-object_name I-object_name ,SOS look for the creative work _object_name_ EOS,SearchCreativeWork
+Where can I find the TV show A Step Away,O O O O O B-object_type I-object_type B-object_name I-object_name I-object_name ,SOS Where can I find the _object_type_ _object_name_ EOS,SearchCreativeWork
+What is the price for the album Praise the Lord and Pass the Ammunition ,O O O O O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS What is the price for the _object_type_ _object_name_  EOS,SearchCreativeWork
+Find Once Upon a Time in the West,O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Find _object_name_ EOS,SearchCreativeWork
+Where did the painting Highs in the Mid-Sixties go ,O O O B-object_type B-object_name I-object_name I-object_name I-object_name O ,SOS Where did the _object_type_ _object_name_ go  EOS,SearchCreativeWork
+find a book called Tron  Legacy Reconfigured,O O B-object_type O B-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+Find The Sentimental Bloke novel,O B-object_name I-object_name I-object_name B-object_type ,SOS Find _object_name_ _object_type_ EOS,SearchCreativeWork
+find Jono and Ben,O B-object_name I-object_name I-object_name ,SOS find _object_name_ EOS,SearchCreativeWork
+Find a painting called Smash Crusher ,O O B-object_type O B-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+I'm looking for 1634  The Ram Rebellion ,O O O O B-object_name I-object_name I-object_name I-object_name ,SOS I'm looking for _object_name_  EOS,SearchCreativeWork
+Show me work of Truth and Tolerance,O O O O B-object_name I-object_name I-object_name ,SOS Show me work of _object_name_ EOS,SearchCreativeWork
+I want to read the novel Love Is in Control,O O O O O B-object_type B-object_name I-object_name I-object_name I-object_name ,SOS I want to read the _object_type_ _object_name_ EOS,SearchCreativeWork
+Find me the Extreme Ghostbusters game ,O O O B-object_name I-object_name B-object_type ,SOS Find me the _object_name_ _object_type_  EOS,SearchCreativeWork
+Find a painting called Chettathi ,O O B-object_type O B-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Find a soundtrack called The Alice Cooper Show ,O O B-object_type O B-object_name I-object_name I-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+find PlayStation官方杂志  a song,O B-object_name O B-object_type ,SOS find _object_name_  a _object_type_ EOS,SearchCreativeWork
+Look up Applied Linguistics,O O B-object_name I-object_name ,SOS Look up _object_name_ EOS,SearchCreativeWork
+Please search the Karobar Economic Daily picture ,O O O B-object_name I-object_name I-object_name B-object_type ,SOS Please search the _object_name_ _object_type_  EOS,SearchCreativeWork
+find Cut the Rope,O B-object_name I-object_name I-object_name ,SOS find _object_name_ EOS,SearchCreativeWork
+I need to find the So Nice soundtrack,O O O O O B-object_name I-object_name B-object_type ,SOS I need to find the _object_name_ _object_type_ EOS,SearchCreativeWork
+play the Baldur’s Gate II  Throne of Bhaal saga,O O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name I-object_name B-object_type ,SOS play the _object_name_ _object_type_ EOS,SearchCreativeWork
+Find a TV series called Cocktail Kings ,O O B-object_type I-object_type O B-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Find a movie called The Easy Way to Stop Smoking ,O O B-object_type O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Look for the Kiss the Girls game,O O O B-object_name I-object_name I-object_name B-object_type ,SOS Look for the _object_name_ _object_type_ EOS,SearchCreativeWork
+I'm looking for a picture titled Rock Painting,O O O O O B-object_type O B-object_name I-object_name ,SOS I'm looking for a _object_type_ titled _object_name_ EOS,SearchCreativeWork
+Where can I watch the trailer for Home Economics,O O O O O B-object_type O B-object_name I-object_name ,SOS Where can I watch the _object_type_ for _object_name_ EOS,SearchCreativeWork
+Find a video game called The Mysterious Castle in the Carpathians ,O O B-object_type I-object_type O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Find Conker  Live and Reloaded,O B-object_name I-object_name I-object_name I-object_name ,SOS Find _object_name_ EOS,SearchCreativeWork
+Find the game BlogBridge,O O B-object_type B-object_name ,SOS Find the _object_type_ _object_name_ EOS,SearchCreativeWork
+Please look up Amrithavaahini,O O O B-object_name ,SOS Please look up _object_name_ EOS,SearchCreativeWork
+find Seduced by Madness  a trailer,O B-object_name I-object_name I-object_name O B-object_type ,SOS find _object_name_  a _object_type_ EOS,SearchCreativeWork
+I want to watch the television show Champion,O O O O O B-object_type I-object_type B-object_name ,SOS I want to watch the _object_type_ _object_name_ EOS,SearchCreativeWork
+I want to listen to the song First Time for Everything,O O O O O O B-object_type B-object_name I-object_name I-object_name I-object_name ,SOS I want to listen to the _object_type_ _object_name_ EOS,SearchCreativeWork
+find TaskCracker for Outlook  a game,O B-object_name I-object_name I-object_name O B-object_type ,SOS find _object_name_  a _object_type_ EOS,SearchCreativeWork
+I'd like to see the novel An Inquiry into the Good,O O O O O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name ,SOS I'd like to see the _object_type_ _object_name_ EOS,SearchCreativeWork
+show Andy Williams Sings Steve Allen TV show,O B-object_name I-object_name I-object_name I-object_name I-object_name B-object_type I-object_type ,SOS show _object_name_ _object_type_ EOS,SearchCreativeWork
+find a movie called Single Collection  Hotchpotch,O O B-object_type O B-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+Where is the TV show Am Universum ,O O O B-object_type I-object_type B-object_name I-object_name ,SOS Where is the _object_type_ _object_name_  EOS,SearchCreativeWork
+find the book Time and Again,O O B-object_type B-object_name I-object_name I-object_name ,SOS find the _object_type_ _object_name_ EOS,SearchCreativeWork
+Find me the TV show The First Bite ,O O O B-object_type I-object_type B-object_name I-object_name I-object_name ,SOS Find me the _object_type_ _object_name_  EOS,SearchCreativeWork
+Where can I buy the Something Borrowed saga ,O O O O O B-object_name I-object_name B-object_type ,SOS Where can I buy the _object_name_ _object_type_  EOS,SearchCreativeWork
+Show me the Lights Out saga,O O O B-object_name I-object_name B-object_type ,SOS Show me the _object_name_ _object_type_ EOS,SearchCreativeWork
+Where to watch show Extremely Live,O O O B-object_type B-object_name I-object_name ,SOS Where to watch _object_type_ _object_name_ EOS,SearchCreativeWork
+find the show How to Meet the Lucky Stars,O O B-object_type B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name ,SOS find the _object_type_ _object_name_ EOS,SearchCreativeWork
+show creative song UFO Senshi Dai Apolon,O O B-object_type B-object_name I-object_name I-object_name I-object_name ,SOS show creative _object_type_ _object_name_ EOS,SearchCreativeWork
+Find My Only Wish in some form of creative work,O B-object_name I-object_name I-object_name O O O O O O ,SOS Find _object_name_ in some form of creative work EOS,SearchCreativeWork
+Find Half a Sixpence photograph,O B-object_name I-object_name I-object_name B-object_type ,SOS Find _object_name_ _object_type_ EOS,SearchCreativeWork
+Play me a trailer for The North-West Passage,O O O B-object_type O B-object_name I-object_name I-object_name ,SOS Play me a _object_type_ for _object_name_ EOS,SearchCreativeWork
+Find me Nights in Harlem,O O B-object_name I-object_name I-object_name ,SOS Find me _object_name_ EOS,SearchCreativeWork
+Find the show Manthan,O O B-object_type B-object_name ,SOS Find the _object_type_ _object_name_ EOS,SearchCreativeWork
+Play The Great Adventures of Slick Rick game,O B-object_name I-object_name I-object_name I-object_name I-object_name I-object_name B-object_type ,SOS Play _object_name_ _object_type_ EOS,SearchCreativeWork
+play the Discografia de The Pretty Reckless saga,O O B-object_name I-object_name I-object_name I-object_name I-object_name B-object_type ,SOS play the _object_name_ _object_type_ EOS,SearchCreativeWork
+play A Box of Birds trailer,O B-object_name I-object_name I-object_name I-object_name B-object_type ,SOS play _object_name_ _object_type_ EOS,SearchCreativeWork
+Please find me The Hanging Valley movie ,O O O B-object_name I-object_name I-object_name B-object_type ,SOS Please find me _object_name_ _object_type_  EOS,SearchCreativeWork
+I want to read the book The Minotaur,O O O O O B-object_type B-object_name I-object_name ,SOS I want to read the _object_type_ _object_name_ EOS,SearchCreativeWork
+Show me the photograph of King Charles,O O O B-object_type O B-object_name I-object_name ,SOS Show me the _object_type_ of _object_name_ EOS,SearchCreativeWork
+Where to buy book Bright Ambush,O O O B-object_type B-object_name I-object_name ,SOS Where to buy _object_type_ _object_name_ EOS,SearchCreativeWork
+find a TV show called Ride the Wind,O O B-object_type I-object_type O B-object_name I-object_name I-object_name ,SOS find a _object_type_ called _object_name_ EOS,SearchCreativeWork
+find the video game The Tomb,O O B-object_type I-object_type B-object_name I-object_name ,SOS find the _object_type_ _object_name_ EOS,SearchCreativeWork
+When is Spyforce playing ,O O B-object_name O ,SOS When is _object_name_ playing  EOS,SearchCreativeWork
+Find a soundtrack called The Dragon ,O O B-object_type O B-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Find a television show called Swing High ,O O B-object_type I-object_type O B-object_name I-object_name ,SOS Find a _object_type_ called _object_name_  EOS,SearchCreativeWork
+Show me the TV show Have a Nice Day,O O O B-object_type I-object_type B-object_name I-object_name I-object_name I-object_name ,SOS Show me the _object_type_ _object_name_ EOS,SearchCreativeWork
+Locate me the novel entitled Isthmus ,O O O B-object_type O B-object_name ,SOS Locate me the _object_type_ entitled _object_name_  EOS,SearchCreativeWork
+What will the weather be this year in Horseshoe Lake State Fish and Wildlife Area ,O O O O O B-timerange I-timerange O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS What will the weather be _timerange_ in _geographic_poi_  EOS,GetWeather
+Will it be sunny one hundred thirty five days from now in Monterey Bay National Marine Sanctuary,O O O B-condition_description B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange I-timerange O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS Will it be _condition_description_ _timerange_ in _geographic_poi_ EOS,GetWeather
+Is it supposed to rain nearby my current location at 0 o'clock ,O O O O B-condition_description B-spatial_relation O B-current_location I-current_location O B-timerange I-timerange ,SOS Is it supposed to _condition_description_ _spatial_relation_ my _current_location_ at _timerange_  EOS,GetWeather
+what is the forecast starting on september 1  2039 for chillier conditions in AK,O O O O O O B-timerange I-timerange I-timerange O B-condition_temperature O O B-state ,SOS what is the forecast starting on _timerange_ for _condition_temperature_ conditions in _state_ EOS,GetWeather
+how cold is it in Princeton Junction,O B-condition_temperature O O O B-city I-city ,SOS how _condition_temperature_ is it in _city_ EOS,GetWeather
+weather in Nationalpark Nevado Tres Cruces on mar  4th  2020,O O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi O B-timerange I-timerange I-timerange ,SOS weather in _geographic_poi_ on _timerange_ EOS,GetWeather
+What will be wind speed in Tiplersville  South Sudan ,O O O B-condition_description O O B-city B-country I-country ,SOS What will be _condition_description_ speed in _city_  _country_  EOS,GetWeather
+whats the weather in GA,O O O O B-state ,SOS whats the weather in _state_ EOS,GetWeather
+what is the weather at my current location,O O O O O O B-current_location I-current_location ,SOS what is the weather at my _current_location_ EOS,GetWeather
+Will it snow in Haigler Bosnia and Herzegovina,O O B-condition_description O B-city B-country I-country I-country ,SOS Will it _condition_description_ in _city_ _country_ EOS,GetWeather
+What is the weather in Ãland 4 seconds from now,O O O O O B-country I-country B-timerange I-timerange I-timerange I-timerange ,SOS What is the weather in _country_ _timerange_ EOS,GetWeather
+Will it snowstorm neighboring the Rio Grande Wild and Scenic River on feb  the second ,O O B-condition_description B-spatial_relation O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi O B-timerange I-timerange I-timerange ,SOS Will it _condition_description_ _spatial_relation_ the _geographic_poi_ on _timerange_  EOS,GetWeather
+what is the Sri Lanka forecast for snow,O O O B-country I-country O O B-condition_description ,SOS what is the _country_ forecast for _condition_description_ EOS,GetWeather
+How is the weather going to be in Pearblossom ,O O O O O O O O B-city ,SOS How is the weather going to be in _city_  EOS,GetWeather
+Can you tell me if it'll be freezing in Wrightstown in seven years  ,O O O O O O O O B-condition_temperature O B-city B-timerange I-timerange I-timerange ,SOS Can you tell me if it'll be _condition_temperature_ in _city_ _timerange_   EOS,GetWeather
+Is the weather going to be colder in GU in 11 years ,O O O O O O B-condition_temperature O B-state B-timerange I-timerange I-timerange ,SOS Is the weather going to be _condition_temperature_ in _state_ _timerange_  EOS,GetWeather
+Will there be a snowstorm at my current place ,O O O O B-condition_description O O B-current_location I-current_location ,SOS Will there be a _condition_description_ at my _current_location_  EOS,GetWeather
+Is it going to be warmer in Central Cebu Protected Landscape,O O O O O B-condition_temperature O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS Is it going to be _condition_temperature_ in _geographic_poi_ EOS,GetWeather
+What will the weather be in Federated States Of Micronesia at 00 17 am,O O O O O O B-state I-state I-state I-state O B-timerange I-timerange I-timerange ,SOS What will the weather be in _state_ at _timerange_ EOS,GetWeather
+Will it be chillier at 06 05 48 in Wagener RÃ©union,O O O B-condition_temperature O B-timerange I-timerange I-timerange O B-city B-country ,SOS Will it be _condition_temperature_ at _timerange_ in _city_ _country_ EOS,GetWeather
+will it be colder in Cut MA tomorrow,O O O B-condition_temperature O B-city B-state B-timerange ,SOS will it be _condition_temperature_ in _city_ _state_ _timerange_ EOS,GetWeather
+Is it going to be sunny on Oct  twenty-seventh  2031 within the same area of this current place,O O O O O B-condition_description O B-timerange I-timerange I-timerange B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation O O B-current_location I-current_location ,SOS Is it going to be _condition_description_ on _timerange_ _spatial_relation_ of this _current_location_ EOS,GetWeather
+Will it be chilly in Fiji at ten pm,O O O B-condition_temperature O B-country O B-timerange I-timerange ,SOS Will it be _condition_temperature_ in _country_ at _timerange_ EOS,GetWeather
+Will there be a blizzard here on dec  26  2027 ,O O O O B-condition_description B-current_location O B-timerange I-timerange I-timerange ,SOS Will there be a _condition_description_ _current_location_ on _timerange_  EOS,GetWeather
+On may the thirteenth  2037 what will it be like in Wilderville  Montenegro,O B-timerange I-timerange I-timerange I-timerange O O O O O O B-city B-country ,SOS On _timerange_ what will it be like in _city_  _country_ EOS,GetWeather
+Will it get warmer in the same area as Sandy Point National Wildlife Refuge,O O O B-condition_temperature B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS Will it get _condition_temperature_ _spatial_relation_ as _geographic_poi_ EOS,GetWeather
+What will the weather forecast be in Mount Victory  Delaware in 1 second ,O O O O O O O B-city I-city B-state B-timerange I-timerange I-timerange ,SOS What will the weather forecast be in _city_  _state_ _timerange_  EOS,GetWeather
+Tell me if it'll be overcast nearby Papua New Guinea,O O O O O O B-condition_description B-spatial_relation B-country I-country I-country ,SOS Tell me if it'll be _condition_description_ _spatial_relation_ _country_ EOS,GetWeather
+Is there rain in Nauru at 6 am,O O B-condition_description O B-country O B-timerange I-timerange ,SOS Is there _condition_description_ in _country_ at _timerange_ EOS,GetWeather
+What is the weather like in Hebbronville Venezuela,O O O O O O B-city B-country ,SOS What is the weather like in _city_ _country_ EOS,GetWeather
+What's the weather next week in Somis,O O O O B-timerange I-timerange O B-city ,SOS What's the weather _timerange_ in _city_ EOS,GetWeather
+Tell me if it'll be humid in GA one minute from now,O O O O O O B-condition_description O B-state B-timerange I-timerange I-timerange I-timerange ,SOS Tell me if it'll be _condition_description_ in _state_ _timerange_ EOS,GetWeather
+Is it foggy in Shelter Island,O O B-condition_description O B-city I-city ,SOS Is it _condition_description_ in _city_ EOS,GetWeather
+I need to know the weather for San Martin,O O O O O O O B-city I-city ,SOS I need to know the weather for _city_ EOS,GetWeather
+Check the forecast for Fernwood  MT ,O O O O B-city B-state ,SOS Check the forecast for _city_  _state_  EOS,GetWeather
+What is the predicted weather for Wells in Indiana ,O O O O O O B-city O B-state ,SOS What is the predicted weather for _city_ in _state_  EOS,GetWeather
+What's the weather looking like right now in Croatia ,O O O O O O O B-timerange O B-country ,SOS What's the weather looking like right _timerange_ in _country_  EOS,GetWeather
+what is the weather forecast for Kinbrae,O O O O O O B-city ,SOS what is the weather forecast for _city_ EOS,GetWeather
+Will it be snowy in Crouch  French Polynesia ,O O O B-condition_description O B-city B-country I-country ,SOS Will it be _condition_description_ in _city_  _country_  EOS,GetWeather
+Is it warm at seven AM in Greenland,O O B-condition_temperature O B-timerange I-timerange O B-country ,SOS Is it _condition_temperature_ at _timerange_ in _country_ EOS,GetWeather
+Tell me the forecast for Elderton  Indiana in 19 hours,O O O O O B-city B-state B-timerange I-timerange I-timerange ,SOS Tell me the forecast for _city_  _state_ _timerange_ EOS,GetWeather
+what is the weather of Sri Lanka,O O O O O B-country I-country ,SOS what is the weather of _country_ EOS,GetWeather
+What's the weather forecast in the same area as LA in 1 minute ,O O O O O B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation O B-state B-timerange I-timerange I-timerange ,SOS What's the weather forecast _spatial_relation_ as _state_ _timerange_  EOS,GetWeather
+what is the chilly forecast for Mustoe North Carolina,O O O B-condition_temperature O O B-city B-state I-state ,SOS what is the _condition_temperature_ forecast for _city_ _state_ EOS,GetWeather
+How is the weather in Birta ,O O O O O B-city ,SOS How is the weather in _city_  EOS,GetWeather
+What will the weather be next apr  in MT ,O O O O O B-timerange I-timerange O B-state ,SOS What will the weather be _timerange_  in _state_  EOS,GetWeather
+What is the temperate in Beltsville,O O O O O B-city ,SOS What is the temperate in _city_ EOS,GetWeather
+What will the weather be like here next week ,O O O O O O B-current_location B-timerange I-timerange ,SOS What will the weather be like _current_location_ _timerange_  EOS,GetWeather
+What will the weather be in Nationalpark Rila on Nov  25 ,O O O O O O B-geographic_poi I-geographic_poi O B-timerange I-timerange ,SOS What will the weather be in _geographic_poi_ on _timerange_  EOS,GetWeather
+Will there be a blizzard in neighboring Niobrara Valley Preserve,O O O O B-condition_description O B-spatial_relation B-geographic_poi I-geographic_poi I-geographic_poi ,SOS Will there be a _condition_description_ in _spatial_relation_ _geographic_poi_ EOS,GetWeather
+Is it freezing far from here on 12/5/2032,O O B-condition_temperature B-spatial_relation O B-current_location O B-timerange ,SOS Is it _condition_temperature_ _spatial_relation_ from _current_location_ on _timerange_ EOS,GetWeather
+what do the cloud indicate in East Aurora,O O O B-condition_description O O B-city I-city ,SOS what do the _condition_description_ indicate in _city_ EOS,GetWeather
+What will the weather be this month in Wesley Hills ,O O O O O B-timerange I-timerange O B-city I-city ,SOS What will the weather be _timerange_ in _city_  EOS,GetWeather
+What's the weather in Timbo ,O O O O O B-city ,SOS What's the weather in _city_  EOS,GetWeather
+show weather forcast here at 19,O O O B-current_location O B-timerange ,SOS show weather forcast _current_location_ at _timerange_ EOS,GetWeather
+Weather for my nearby current location,O O O B-spatial_relation B-current_location I-current_location ,SOS Weather for my _spatial_relation_ _current_location_ EOS,GetWeather
+Is there a blizzard coming tomorrow in Methuen Uganda,O O O B-condition_description O B-timerange O B-city B-country ,SOS Is there a _condition_description_ coming _timerange_ in _city_ _country_ EOS,GetWeather
+forecast for Laguna Heights Barbados,O O B-city I-city B-country ,SOS forecast for _city_ _country_ EOS,GetWeather
+what is the forecast starting on 5/17/2037 for Austria for warmer temps,O O O O O O B-timerange O B-country O B-condition_temperature O ,SOS what is the forecast starting on _timerange_ for _country_ for _condition_temperature_ temps EOS,GetWeather
+What will it be like feb  the twentieth in Colorado,O O O O O B-timerange I-timerange I-timerange O B-state ,SOS What will it be like _timerange_ in _state_ EOS,GetWeather
+Is the forecast colder in Idaho 1 second from now,O O O B-condition_temperature O B-state B-timerange I-timerange I-timerange I-timerange ,SOS Is the forecast _condition_temperature_ in _state_ _timerange_ EOS,GetWeather
+What's the weather in GU on Jul  the 4th  2024,O O O O O B-state O B-timerange I-timerange I-timerange I-timerange ,SOS What's the weather in _state_ on _timerange_ EOS,GetWeather
+What is the temperate in Uintah right now,O O O B-condition_temperature O B-city O B-timerange ,SOS What is the _condition_temperature_ in _city_ right _timerange_ EOS,GetWeather
+Tell me the weather forecast 1 hour from now in Big Thicket National Preserve,O O O O O B-timerange I-timerange I-timerange I-timerange O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS Tell me the weather forecast _timerange_ in _geographic_poi_ EOS,GetWeather
+I need a forecast for Jetmore  Massachusetts in 1 hour and 1 second from now,O O O O O B-city B-state O B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange I-timerange ,SOS I need a forecast for _city_  _state_ in _timerange_ EOS,GetWeather
+Will it be chillier in Portugal in one hour ,O O O B-condition_temperature O B-country B-timerange I-timerange I-timerange ,SOS Will it be _condition_temperature_ in _country_ _timerange_  EOS,GetWeather
+What are the weather conditions going to be like in Manhasset  Vermont on Dec  the 6th  2036 ,O O O O O O O O O O B-city B-state O B-timerange I-timerange I-timerange I-timerange ,SOS What are the weather conditions going to be like in _city_  _state_ on _timerange_  EOS,GetWeather
+What is the weather in CT,O O O O O B-state ,SOS What is the weather in _state_ EOS,GetWeather
+Check the weather forecast for Sappho,O O O O O B-city ,SOS Check the weather forecast for _city_ EOS,GetWeather
+What will the weather be like on September the eighteenth in Puerto Rico,O O O O O O O B-timerange I-timerange I-timerange O B-country I-country ,SOS What will the weather be like on _timerange_ in _country_ EOS,GetWeather
+Will it be overcast in my current location at twelve PM ,O O O B-condition_description O O B-current_location I-current_location O B-timerange I-timerange ,SOS Will it be _condition_description_ in my _current_location_ at _timerange_  EOS,GetWeather
+show weather forecast in West Wildwood South Carolina,O O O O B-city I-city B-state I-state ,SOS show weather forecast in _city_ _state_ EOS,GetWeather
+"What is the forecast in Heber
+",O O O O O B-city ,"SOS What is the forecast in _city_
+ EOS",GetWeather
+What's the weather this month in Mozambique,O O O O B-timerange I-timerange O B-country ,SOS What's the weather _timerange_ in _country_ EOS,GetWeather
+What's the weather close to Cambodia at 05 44 13,O O O O B-spatial_relation O B-country O B-timerange I-timerange I-timerange ,SOS What's the weather _spatial_relation_ to _country_ at _timerange_ EOS,GetWeather
+Weather for East Peru Bolivia 3 years and a half from now,O O B-city I-city B-country B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange I-timerange ,SOS Weather for _city_ _country_ _timerange_ EOS,GetWeather
+what is the weather like now in AK,O O O O O B-timerange O B-state ,SOS what is the weather like _timerange_ in _state_ EOS,GetWeather
+what is the forecast starting at 8 pm for Alaska,O O O O O O B-timerange I-timerange O B-state ,SOS what is the forecast starting at _timerange_ for _state_ EOS,GetWeather
+What will the weather be in Peru ,O O O O O O B-country ,SOS What will the weather be in _country_  EOS,GetWeather
+What will the weather be in the current place 1 minute from now ,O O O O O O O B-current_location I-current_location B-timerange I-timerange I-timerange I-timerange ,SOS What will the weather be in the _current_location_ _timerange_  EOS,GetWeather
+Is it warmer in Lothian Island Wildlife Sanctuary,O O B-condition_temperature O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS Is it _condition_temperature_ in _geographic_poi_ EOS,GetWeather
+will there be fog Tonight at Beamer Memorial Conservation Area,O O O B-condition_description B-timerange O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS will there be _condition_description_ _timerange_ at _geographic_poi_ EOS,GetWeather
+Tell me if it will be windy here,O O O O O O B-condition_description B-current_location ,SOS Tell me if it will be _condition_description_ _current_location_ EOS,GetWeather
+what is the forecast for 15 04 in Georgia for overcast conditions in Valley View,O O O O O B-timerange I-timerange O B-state O B-condition_description O O B-city I-city ,SOS what is the forecast for _timerange_ in _state_ for _condition_description_ conditions in _city_ EOS,GetWeather
+Will there be cloud action in Saint Bernard  Virgin Islands,O O O B-condition_description O O B-city I-city B-state I-state ,SOS Will there be _condition_description_ action in _city_  _state_ EOS,GetWeather
+What will the weather be like on feb  8  2034 in Cedar Mountain Wilderness,O O O O O O O B-timerange I-timerange I-timerange O B-geographic_poi I-geographic_poi I-geographic_poi ,SOS What will the weather be like on _timerange_ in _geographic_poi_ EOS,GetWeather
+Tell me the forecast in the same area here on Robert E Lee's Birthday,O O O O B-spatial_relation I-spatial_relation I-spatial_relation I-spatial_relation B-current_location O B-timerange I-timerange I-timerange I-timerange I-timerange ,SOS Tell me the forecast _spatial_relation_ _current_location_ on _timerange_ EOS,GetWeather
+Is there rain now in Maine,O O B-condition_description B-timerange O B-state ,SOS Is there _condition_description_ _timerange_ in _state_ EOS,GetWeather
+Will it get chillier in North Creek Forest ,O O O B-condition_temperature O B-geographic_poi I-geographic_poi I-geographic_poi ,SOS Will it get _condition_temperature_ in _geographic_poi_  EOS,GetWeather
+What's the weather forecast for Elida  Rhode Island ,O O O O O O B-city B-state I-state ,SOS What's the weather forecast for _city_  _state_  EOS,GetWeather
+Will it be colder in Ohio,O O O B-condition_temperature O B-state ,SOS Will it be _condition_temperature_ in _state_ EOS,GetWeather
+Is it forecast to be windy here in seven seconds ,O O O O O B-condition_description B-current_location B-timerange I-timerange I-timerange ,SOS Is it forecast to be _condition_description_ _current_location_ _timerange_  EOS,GetWeather
+Will it be cold close-by Iowa on september twenty-first  2025,O O O B-condition_temperature B-spatial_relation B-state O B-timerange I-timerange I-timerange ,SOS Will it be _condition_temperature_ _spatial_relation_ _state_ on _timerange_ EOS,GetWeather
+What will the weather be a nine in Willow River State Park ,O O O O O O B-timerange O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,SOS What will the weather be a _timerange_ in _geographic_poi_  EOS,GetWeather
+What will the weather be here ,O O O O O B-current_location ,SOS What will the weather be _current_location_  EOS,GetWeather
+in 257 days what will the weather be like in Cannon Ball,B-timerange I-timerange I-timerange O O O O O O O B-city I-city ,SOS _timerange_ what will the weather be like in _city_ EOS,GetWeather
+What will the weather be like 56 weeks from now  will there be sun in Tabor ,O O O O O O B-timerange I-timerange I-timerange I-timerange O O O B-condition_description O B-city ,SOS What will the weather be like _timerange_  will there be _condition_description_ in _city_  EOS,GetWeather
+What's the weather like in North Brunswick Township Virginia,O O O O O O B-city I-city I-city B-state ,SOS What's the weather like in _city_ _state_ EOS,GetWeather
+Is the forecast windy in Nigeria on Nov  the 6th,O O O B-condition_description O B-country O B-timerange I-timerange I-timerange ,SOS Is the forecast _condition_description_ in _country_ on _timerange_ EOS,GetWeather
+What's the wather in Coleville  Kenya,O O O O O B-city B-country ,SOS What's the wather in _city_  _country_ EOS,GetWeather
+book The Middle East restaurant in IN for noon,O B-restaurant_name I-restaurant_name I-restaurant_name B-restaurant_type O B-state O B-timerange ,SOS book _restaurant_name_ _restaurant_type_ in _state_ for _timerange_ EOS,BookRestaurant
+Book a table at T-Rex distant from Halsey St ,O O O O B-restaurant_name B-spatial_relation O B-poi I-poi ,SOS Book a table at _restaurant_name_ _spatial_relation_ from _poi_  EOS,BookRestaurant
+I'd like to eat at a taverna that serves chili con carne for a party of 10 ,O O O O O O O B-restaurant_type O O B-served_dish I-served_dish I-served_dish O O O O B-party_size_number ,SOS I'd like to eat at a _restaurant_type_ that serves _served_dish_ for a party of _party_size_number_  EOS,BookRestaurant
+I have a party of four in Japan and need a reservation at Rimsky-Korsakoffee House on Aug  the 3rd ,O O O O O B-party_size_number O B-country O O O O O B-restaurant_name I-restaurant_name O B-timerange I-timerange I-timerange ,SOS I have a party of _party_size_number_ in _country_ and need a reservation at _restaurant_name_ on _timerange_  EOS,BookRestaurant
+Please make a restaurant reservation for somewhere in Mondovi  Connecticut ,O O O B-restaurant_type O O O O B-city B-state ,SOS Please make a _restaurant_type_ reservation for somewhere in _city_  _state_  EOS,BookRestaurant
+book a spot far from Ãland,O O O B-spatial_relation O B-country I-country ,SOS book a spot _spatial_relation_ from _country_ EOS,BookRestaurant
+I'd like to eat at the best restaurant in Coalton,O O O O O O O B-sort B-restaurant_type O B-city ,SOS I'd like to eat at the _sort_ _restaurant_type_ in _city_ EOS,BookRestaurant
+book a taverna that serves vichyssoise within walking distance in OH,O O B-restaurant_type O O B-served_dish B-spatial_relation I-spatial_relation I-spatial_relation O B-state ,SOS book a _restaurant_type_ that serves _served_dish_ _spatial_relation_ in _state_ EOS,BookRestaurant
+I want to book a popular tyrolean steakhouse in Madison Park WA in 1 hour nine minutes and one second,O O O O O B-sort B-cuisine B-restaurant_type O B-city I-city B-state B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange I-timerange I-timerange ,SOS I want to book a _sort_ _cuisine_ _restaurant_type_ in _city_ _state_ _timerange_ EOS,BookRestaurant
+Find a table for 8 somewhere in Bonaire in 345 days,O O O O B-party_size_number O O B-country B-timerange I-timerange I-timerange ,SOS Find a table for _party_size_number_ somewhere in _country_ _timerange_ EOS,BookRestaurant
+Book a restaurant with parking facility for 3 ,O O B-restaurant_type O B-facility O O B-party_size_number ,SOS Book a _restaurant_type_ with _facility_ facility for _party_size_number_  EOS,BookRestaurant
+please book a room in Spaghetti Warehouse for catalina  delores and brandie mendoza at 12 AM,O O O O O B-restaurant_name I-restaurant_name O B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description O B-timerange I-timerange ,SOS please book a room in _restaurant_name_ for _party_size_description_ at _timerange_ EOS,BookRestaurant
+I need a table for 1 at a highly rated restaurant next autumn in Emmons  RI,O O O O O B-party_size_number O O B-sort I-sort B-restaurant_type B-timerange I-timerange O B-city B-state ,SOS I need a table for _party_size_number_ at a _sort_ _restaurant_type_ _timerange_ in _city_  _state_ EOS,BookRestaurant
+book a spot in 1 second that is neighboring robin's hotel,O O O B-timerange I-timerange I-timerange O O B-spatial_relation B-poi I-poi I-poi ,SOS book a spot _timerange_ that is _spatial_relation_ _poi_ EOS,BookRestaurant
+patty and I need a table booked at a highly rated restaurant in Sandstone ,B-party_size_description I-party_size_description I-party_size_description O O O O O O B-sort I-sort B-restaurant_type O B-city ,SOS _party_size_description_ need a table booked at a _sort_ _restaurant_type_ in _city_  EOS,BookRestaurant
+Make a reservation for four at a pub in Sugarville ,O O O O B-party_size_number O O B-restaurant_type O B-city ,SOS Make a reservation for _party_size_number_ at a _restaurant_type_ in _city_  EOS,BookRestaurant
+book a table for a Macedonia restaurant,O O O O O B-country B-restaurant_type ,SOS book a table for a _country_ _restaurant_type_ EOS,BookRestaurant
+I'd like to go to a halal restaurant in twenty minutes around the District Of Columbia and book seats for four,O O O O O O O B-cuisine B-restaurant_type B-timerange I-timerange I-timerange B-spatial_relation O B-state I-state I-state O O O O B-party_size_number ,SOS I'd like to go to a _cuisine_ _restaurant_type_ _timerange_ _spatial_relation_ the _state_ and book seats for _party_size_number_ EOS,BookRestaurant
+Book a table for 10 people at Dunbrody Country House Hotel in Strandburg ,O O O O B-party_size_number O O B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name O B-city ,SOS Book a table for _party_size_number_ people at _restaurant_name_ in _city_  EOS,BookRestaurant
+Book a table in a Haines Borough restaurant for nine that is within walking distance ,O O O O O B-poi I-poi B-restaurant_type O B-party_size_number O O B-spatial_relation I-spatial_relation I-spatial_relation ,SOS Book a table in a _poi_ _restaurant_type_ for _party_size_number_ that is _spatial_relation_  EOS,BookRestaurant
+book midday at a faraway cuban place for five at a top-rated bakery in Grainola,O B-timerange O O B-spatial_relation B-cuisine O O B-party_size_number O O B-sort B-restaurant_type O B-city ,SOS book _timerange_ at a _spatial_relation_ _cuisine_ place for _party_size_number_ at a _sort_ _restaurant_type_ in _city_ EOS,BookRestaurant
+Book a bakery with smoking room for nine in Niger ,O O B-restaurant_type O B-facility I-facility O B-party_size_number O B-country ,SOS Book a _restaurant_type_ with _facility_ for _party_size_number_ in _country_  EOS,BookRestaurant
+Book a restaurant for ten in OK ,O O B-restaurant_type O B-party_size_number O B-state ,SOS Book a _restaurant_type_ for _party_size_number_ in _state_  EOS,BookRestaurant
+Book the Gus Stevens Seafood Restaurant & Buccaneer Lounge in Papua New Guinea for one person ,O O B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name O B-country I-country I-country O B-party_size_number O ,SOS Book the _restaurant_name_ in _country_ for _party_size_number_ person  EOS,BookRestaurant
+book a Boon Brick Store for my grandkid and I at Evans Mills,O O B-restaurant_name I-restaurant_name I-restaurant_name O B-party_size_description I-party_size_description I-party_size_description I-party_size_description O B-city I-city ,SOS book a _restaurant_name_ for _party_size_description_ at _city_ EOS,BookRestaurant
+Book a pub with fisn'n chips in Timberville ,O O B-restaurant_type O B-served_dish I-served_dish I-served_dish I-served_dish O B-city ,SOS Book a _restaurant_type_ with _served_dish_ in _city_  EOS,BookRestaurant
+Restaurant near in town uses in two years ,B-restaurant_type B-spatial_relation B-poi I-poi O B-timerange I-timerange I-timerange ,SOS _restaurant_type_ _spatial_relation_ _poi_ uses _timerange_  EOS,BookRestaurant
+Book seating at a restaurant in Topton,O O O O B-restaurant_type O B-city ,SOS Book seating at a _restaurant_type_ in _city_ EOS,BookRestaurant
+I need a table for four at a pub in Heard Island and McDonald Islands,O O O O O B-party_size_number O O B-restaurant_type O B-country I-country I-country I-country I-country ,SOS I need a table for _party_size_number_ at a _restaurant_type_ in _country_ EOS,BookRestaurant
+I want to go to Antigua and Barbuda and eat at a table for 4 ,O O O O O B-country I-country I-country O O O O O O B-party_size_number ,SOS I want to go to _country_ and eat at a table for _party_size_number_  EOS,BookRestaurant
+I want to eat at a scandinavian restaurant that is highly rated in Bonita Texas,O O O O O O B-cuisine B-restaurant_type O O B-sort I-sort O B-city B-state ,SOS I want to eat at a _cuisine_ _restaurant_type_ that is _sort_ in _city_ _state_ EOS,BookRestaurant
+I want to eat for two at a brasserie in Gwynedd Valley TN with pickled cucumber in one second ,O O O O O B-party_size_number O O B-restaurant_type O B-city I-city B-state O B-served_dish I-served_dish B-timerange I-timerange I-timerange ,SOS I want to eat for _party_size_number_ at a _restaurant_type_ in _city_ _state_ with _served_dish_ _timerange_  EOS,BookRestaurant
+book on feb  the twenty-sixth  2026 in Tracyton for two at a cafe,O O B-timerange I-timerange I-timerange I-timerange O B-city O B-party_size_number O O B-restaurant_type ,SOS book on _timerange_ in _city_ for _party_size_number_ at a _restaurant_type_ EOS,BookRestaurant
+I'd like to eat in Iran with a party of 9 on sep  the 12th,O O O O O O B-country O O O O B-party_size_number O B-timerange I-timerange I-timerange ,SOS I'd like to eat in _country_ with a party of _party_size_number_ on _timerange_ EOS,BookRestaurant
+Book The Oriel in Allison for a party of four ,O B-restaurant_name I-restaurant_name O B-city O O O O B-party_size_number ,SOS Book _restaurant_name_ in _city_ for a party of _party_size_number_  EOS,BookRestaurant
+book a table on 6/14/2035 at a bakery within walking distance of Equatorial Guinea that serves paella,O O O O B-timerange O O B-restaurant_type B-spatial_relation I-spatial_relation I-spatial_relation O B-country I-country O O B-served_dish ,SOS book a table on _timerange_ at a _restaurant_type_ _spatial_relation_ of _country_ that serves _served_dish_ EOS,BookRestaurant
+book me top-rated restaurant for 9 members for midnight at Fair Bluff RI,O O B-sort B-restaurant_type O B-party_size_number O O B-timerange O B-city I-city B-state ,SOS book me _sort_ _restaurant_type_ for _party_size_number_ members for _timerange_ at _city_ _state_ EOS,BookRestaurant
+book a Ukraine pub serves mineiro,O O B-country B-restaurant_type O B-cuisine ,SOS book a _country_ _restaurant_type_ serves _cuisine_ EOS,BookRestaurant
+Book a restaurant in Mauritania for 1 person ,O O B-restaurant_type O B-country O B-party_size_number O ,SOS Book a _restaurant_type_ in _country_ for _party_size_number_ person  EOS,BookRestaurant
+me and my niece want to eat somewhere close by Hopatcong,B-party_size_description I-party_size_description I-party_size_description I-party_size_description O O O O B-spatial_relation I-spatial_relation B-poi ,SOS _party_size_description_ want to eat somewhere _spatial_relation_ _poi_ EOS,BookRestaurant
+Can you book me a table for 9 in DE ,O O O O O O O B-party_size_number O B-state ,SOS Can you book me a table for _party_size_number_ in _state_  EOS,BookRestaurant
+I need a reservation for a pizzeria nearby Vigus,O O O O O O B-restaurant_type B-spatial_relation B-city ,SOS I need a reservation for a _restaurant_type_ _spatial_relation_ _city_ EOS,BookRestaurant
+I want to book a restaurant neighboring Livonia Av,O O O O O B-restaurant_type B-spatial_relation B-poi I-poi ,SOS I want to book a _restaurant_type_ _spatial_relation_ _poi_ EOS,BookRestaurant
+Book me a table for seven people at a bar with a pool ,O O O O O B-party_size_number O O O B-restaurant_type O O B-facility ,SOS Book me a table for _party_size_number_ people at a _restaurant_type_ with a _facility_  EOS,BookRestaurant
+Book a spot for kelli  jean and I at a pub at elevenses,O O O O B-party_size_description I-party_size_description I-party_size_description I-party_size_description O O B-restaurant_type O B-timerange ,SOS Book a spot for _party_size_description_ at a _restaurant_type_ at _timerange_ EOS,BookRestaurant
+book a gastropub serves waffle for 8,O O B-restaurant_type O B-served_dish O B-party_size_number ,SOS book a _restaurant_type_ serves _served_dish_ for _party_size_number_ EOS,BookRestaurant
+I need a reservation for 7 people at a bar in Chile that serves bio ,O O O O O B-party_size_number O O O B-restaurant_type O B-country O O B-served_dish ,SOS I need a reservation for _party_size_number_ people at a _restaurant_type_ in _country_ that serves _served_dish_  EOS,BookRestaurant
+I need to book a table at a food court in NH that serves smelt,O O O O O O O O B-restaurant_type I-restaurant_type O B-state O O B-served_dish ,SOS I need to book a table at a _restaurant_type_ in _state_ that serves _served_dish_ EOS,BookRestaurant
+Book a restaurant in MP at 3 pm with pigs in blankets,O O B-restaurant_type O B-state O B-timerange I-timerange O B-served_dish I-served_dish I-served_dish ,SOS Book a _restaurant_type_ in _state_ at _timerange_ with _served_dish_ EOS,BookRestaurant
+Book an australian restaurant in Jacksboro three weeks from now for my step father and I ,O O B-cuisine B-restaurant_type O B-city B-timerange I-timerange I-timerange I-timerange O B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description ,SOS Book an _cuisine_ _restaurant_type_ in _city_ _timerange_ for _party_size_description_  EOS,BookRestaurant
+Please book reservations at a restaurant that serves empanada  party for three with betty and dolly ,O O O O O B-restaurant_type O O B-served_dish O O O O B-party_size_description I-party_size_description I-party_size_description ,SOS Please book reservations at a _restaurant_type_ that serves _served_dish_  party for three with _party_size_description_  EOS,BookRestaurant
+I need a table at The Ledbury at 18 o'clock,O O O O O B-restaurant_name I-restaurant_name O B-timerange I-timerange ,SOS I need a table at _restaurant_name_ at _timerange_ EOS,BookRestaurant
+At four pm  I need a table for 8 at a restaurant in Guernsey that serves salade ,O B-timerange I-timerange O O O O O B-party_size_number O O B-restaurant_type O B-country O O B-served_dish ,SOS At _timerange_  I need a table for _party_size_number_ at a _restaurant_type_ in _country_ that serves _served_dish_  EOS,BookRestaurant
+book a table 1 year from now for corinne  tisha and I at a restaurant in Guernsey that is top-rated,O O O B-timerange I-timerange I-timerange I-timerange O B-party_size_description I-party_size_description I-party_size_description I-party_size_description O O B-restaurant_type O B-country O O B-sort ,SOS book a table _timerange_ for _party_size_description_ at a _restaurant_type_ in _country_ that is _sort_ EOS,BookRestaurant
+I'm looking to reserve a table at a pasta restaurant in Serbia ,O O O O O O O O O B-served_dish B-restaurant_type O B-country ,SOS I'm looking to reserve a table at a _served_dish_ _restaurant_type_ in _country_  EOS,BookRestaurant
+Book me a reservation for Ad Hoc in Brazil for a party of 7,O O O O O B-restaurant_name I-restaurant_name O B-country O O O O B-party_size_number ,SOS Book me a reservation for _restaurant_name_ in _country_ for a party of _party_size_number_ EOS,BookRestaurant
+Lets go eat in Friday 43 days from now,O O O O B-city B-timerange I-timerange I-timerange I-timerange ,SOS Lets go eat in _city_ _timerange_ EOS,BookRestaurant
+I need a reservation for a brasserie that serves ankimo in PW,O O O O O O B-restaurant_type O O B-served_dish O B-state ,SOS I need a reservation for a _restaurant_type_ that serves _served_dish_ in _state_ EOS,BookRestaurant
+Please book reservations for 3 people at a restaurant in Alderwood Manor,O O O O B-party_size_number O O O B-restaurant_type O B-city I-city ,SOS Please book reservations for _party_size_number_ people at a _restaurant_type_ in _city_ EOS,BookRestaurant
+book a table in MT for 3 for now at a pub that serves south indian,O O O O B-state O B-party_size_number O B-timerange O O B-restaurant_type O O B-cuisine I-cuisine ,SOS book a table in _state_ for _party_size_number_ for _timerange_ at a _restaurant_type_ that serves _cuisine_ EOS,BookRestaurant
+Book a table in Belhaven for a party of seven at the Great House at Sonning,O O O O B-city O O O O B-party_size_number O O B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name ,SOS Book a table in _city_ for a party of _party_size_number_ at the _restaurant_name_ EOS,BookRestaurant
+I want to book a restaurant near Wyoming for 5 people ,O O O O O B-restaurant_type B-spatial_relation B-state O B-party_size_number O ,SOS I want to book a _restaurant_type_ _spatial_relation_ _state_ for _party_size_number_ people  EOS,BookRestaurant
+Get me a table at Eighth Step Coffee House in Germania for 7,O O O O O B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name O B-city O B-party_size_number ,SOS Get me a table at _restaurant_name_ in _city_ for _party_size_number_ EOS,BookRestaurant
+Locate the best pub in Apache Junction,O O B-sort B-restaurant_type O B-city I-city ,SOS Locate the _sort_ _restaurant_type_ in _city_ EOS,BookRestaurant
+book a restaurant in McMurray on august seventeenth for marjorie vasquez  edith and martina,O O B-restaurant_type O B-city O B-timerange I-timerange O B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description ,SOS book a _restaurant_type_ in _city_ on _timerange_ for _party_size_description_ EOS,BookRestaurant
+Book a table for mindy and angelita at a restaurant which serves cafÃ© liÃ©geois ,O O O O B-party_size_description I-party_size_description I-party_size_description O O B-restaurant_type O O B-served_dish I-served_dish ,SOS Book a table for _party_size_description_ at a _restaurant_type_ which serves _served_dish_  EOS,BookRestaurant
+I need a table for ten on april the eighteenth  2030,O O O O O B-party_size_number O B-timerange I-timerange I-timerange I-timerange ,SOS I need a table for _party_size_number_ on _timerange_ EOS,BookRestaurant
+"book a popular restaurant of thai cuisine
+",O O B-sort B-restaurant_type O B-cuisine O ,"SOS book a _sort_ _restaurant_type_ of _cuisine_ cuisine
+ EOS",BookRestaurant
+I want to book a pastelaria cafe in Alabama for me and my great grandfather ,O O O O O B-cuisine B-restaurant_type O B-state O B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description ,SOS I want to book a _cuisine_ _restaurant_type_ in _state_ for _party_size_description_  EOS,BookRestaurant
+I need a reservation for apr  the sixteenth  2027 in Cazenovia  CA,O O O O O B-timerange I-timerange I-timerange I-timerange O B-city B-state ,SOS I need a reservation for _timerange_ in _city_  _state_ EOS,BookRestaurant
+Book a table at a bar in Moody for deloris  ester and petra alvarez ,O O O O O B-restaurant_type O B-city O B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description ,SOS Book a table at a _restaurant_type_ in _city_ for _party_size_description_  EOS,BookRestaurant
+Can you find me reservations for this morning at a restaurant that serves stracciatella ,O O O O O O O B-timerange O O B-restaurant_type O O B-served_dish ,SOS Can you find me reservations for this _timerange_ at a _restaurant_type_ that serves _served_dish_  EOS,BookRestaurant
+Book the best joint for 3 people ,O O B-sort B-restaurant_type O B-party_size_number O ,SOS Book the _sort_ _restaurant_type_ for _party_size_number_ people  EOS,BookRestaurant
+book a spot for me  tiffany and sondra at a top-rated restaurant in MS with udupi,O O O O B-party_size_description I-party_size_description I-party_size_description I-party_size_description O O B-sort B-restaurant_type O B-state O B-cuisine ,SOS book a spot for _party_size_description_ at a _sort_ _restaurant_type_ in _state_ with _cuisine_ EOS,BookRestaurant
+Please book a restaurant room which serves hangtown fry dish in Jagual ,O O O B-restaurant_type O O O B-served_dish I-served_dish O O B-city ,SOS Please book a _restaurant_type_ room which serves _served_dish_ dish in _city_  EOS,BookRestaurant
+I need a reservation for the best asian joint on Jan  3 in Bradford Alabama for a party of 9,O O O O O O B-sort B-cuisine B-restaurant_type O B-timerange I-timerange O B-city B-state O O O O B-party_size_number ,SOS I need a reservation for the _sort_ _cuisine_ _restaurant_type_ on _timerange_ in _city_ _state_ for a party of _party_size_number_ EOS,BookRestaurant
+Book a gastropub that has balinese food in twenty hours in Comunas for my nephew and I,O O B-restaurant_type O O B-cuisine O B-timerange I-timerange I-timerange O B-city O B-party_size_description I-party_size_description I-party_size_description I-party_size_description ,SOS Book a _restaurant_type_ that has _cuisine_ food _timerange_ in _city_ for _party_size_description_ EOS,BookRestaurant
+I need to book a Theme restaurant this month in Chile,O O O O O B-restaurant_name I-restaurant_name B-timerange I-timerange O B-country ,SOS I need to book a _restaurant_name_ _timerange_ in _country_ EOS,BookRestaurant
+Book a table for ten people at a restaurant which serves snack ,O O O O B-party_size_number O O O B-restaurant_type O O B-served_dish ,SOS Book a table for _party_size_number_ people at a _restaurant_type_ which serves _served_dish_  EOS,BookRestaurant
+I would like to book a restaurant in Lebanon,O O O O O O B-restaurant_type O B-country ,SOS I would like to book a _restaurant_type_ in _country_ EOS,BookRestaurant
+Book the Fashion CafÃ© for elevenses ,O O B-restaurant_name I-restaurant_name O B-timerange ,SOS Book the _restaurant_name_ for _timerange_  EOS,BookRestaurant
+book a spot for me and my great grandfather at a brasserie with a pool at 7 am,O O O O B-party_size_description I-party_size_description I-party_size_description I-party_size_description I-party_size_description O O B-restaurant_type O O B-facility O B-timerange I-timerange ,SOS book a spot for _party_size_description_ at a _restaurant_type_ with a _facility_ at _timerange_ EOS,BookRestaurant
+I need a table at T-Rex for nine in Brunei,O O O O O B-restaurant_name O B-party_size_number O B-country ,SOS I need a table at _restaurant_name_ for _party_size_number_ in _country_ EOS,BookRestaurant
+Book a table for two for this autumn,O O O O B-party_size_number O B-timerange I-timerange ,SOS Book a table for _party_size_number_ for _timerange_ EOS,BookRestaurant
+book a spot at a restaurant with wifi that is neighboring Suriname,O O O O O B-restaurant_type O B-facility O O B-spatial_relation B-country ,SOS book a spot at a _restaurant_type_ with _facility_ that is _spatial_relation_ _country_ EOS,BookRestaurant
+Book a restaurant in Papua New Guinea for me and my daughters,O O B-restaurant_type O B-country I-country I-country O B-party_size_description I-party_size_description I-party_size_description I-party_size_description ,SOS Book a _restaurant_type_ in _country_ for _party_size_description_ EOS,BookRestaurant
+book a spot at a highly rated tavern in Colombia,O O O O O B-sort I-sort B-restaurant_type O B-country ,SOS book a spot at a _sort_ _restaurant_type_ in _country_ EOS,BookRestaurant
+Make a reservation at a tavern which serves clam cake for a party of 8 in Western Sahara ,O O O O O B-restaurant_type O O B-served_dish I-served_dish O O O O B-party_size_number O B-country I-country ,SOS Make a reservation at a _restaurant_type_ which serves _served_dish_ for a party of _party_size_number_ in _country_  EOS,BookRestaurant
+Make me a reservation in South Carolina,O O O O O B-state I-state ,SOS Make me a reservation in _state_ EOS,BookRestaurant
+Book a table for 2 at a restaurant in Follett,O O O O B-party_size_number O O B-restaurant_type O B-city ,SOS Book a table for _party_size_number_ at a _restaurant_type_ in _city_ EOS,BookRestaurant
+book a sushis serving restaurant in Uzbekistan,O O B-served_dish O B-restaurant_type O B-country ,SOS book a _served_dish_ serving _restaurant_type_ in _country_ EOS,BookRestaurant
+I need a table for 8 during midday in Montana,O O O O O B-party_size_number O B-timerange O B-state ,SOS I need a table for _party_size_number_ during _timerange_ in _state_ EOS,BookRestaurant
+book a table in California for rita and brenda at Hurley Mountain Inn on january the 11th,O O O O B-state O B-party_size_description I-party_size_description I-party_size_description O B-restaurant_name I-restaurant_name I-restaurant_name O B-timerange I-timerange I-timerange ,SOS book a table in _state_ for _party_size_description_ at _restaurant_name_ on _timerange_ EOS,BookRestaurant
+me and my grandmother want to eat umbrian food on January the 7th at a brasserie ,B-party_size_description I-party_size_description I-party_size_description I-party_size_description O O O B-cuisine O O B-timerange I-timerange I-timerange O O B-restaurant_type ,SOS _party_size_description_ want to eat _cuisine_ food on _timerange_ at a _restaurant_type_  EOS,BookRestaurant
+book a restaurant for 4 that's not far from CA,O O B-restaurant_type O B-party_size_number O O B-spatial_relation I-spatial_relation O B-state ,SOS book a _restaurant_type_ for _party_size_number_ that's _spatial_relation_ from _state_ EOS,BookRestaurant
+Book me a restaurant please ,O O O B-restaurant_type O ,SOS Book me a _restaurant_type_ please  EOS,BookRestaurant
+book for five in Georgia at The Coffee Bean & Tea Leaf,O O B-party_size_number O B-state O B-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name I-restaurant_name ,SOS book for _party_size_number_ in _state_ at _restaurant_name_ EOS,BookRestaurant
+Book a table for 6 in New Hampshire for next week ,O O O O B-party_size_number O B-state I-state O B-timerange I-timerange ,SOS Book a table for _party_size_number_ in _state_ for _timerange_  EOS,BookRestaurant
+book a table at SkyCity in Salado for me and hannah,O O O O B-restaurant_name O B-city O B-party_size_description I-party_size_description I-party_size_description ,SOS book a table at _restaurant_name_ in _city_ for _party_size_description_ EOS,BookRestaurant
+"book a eastern european cuisine restaurant in midday for four in Meers MP
+",O O B-cuisine I-cuisine O B-restaurant_type O B-timerange O B-party_size_number O B-city B-state ,"SOS book a _cuisine_ cuisine _restaurant_type_ in _timerange_ for _party_size_number_ in _city_ _state_
+ EOS",BookRestaurant
+Add another song to the Cita RomÃ¡ntica playlist  ,O O B-music_item O O B-playlist I-playlist O ,SOS Add another _music_item_ to the _playlist_ playlist   EOS,AddToPlaylist
+add clem burke in my playlist Pre-Party R&B Jams,O B-artist I-artist O B-playlist_owner O B-playlist I-playlist I-playlist I-playlist I-playlist ,SOS add _artist_ in _playlist_owner_ playlist _playlist_ EOS,AddToPlaylist
+Add Live from Aragon Ballroom to Trapeo,O B-entity_name I-entity_name I-entity_name I-entity_name O B-playlist ,SOS Add _entity_name_ to _playlist_ EOS,AddToPlaylist
+add Unite and Win to my night out,O B-entity_name I-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist ,SOS add _entity_name_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+Add track to my Digster Future Hits,O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist ,SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+add the piano bar to my Cindy Wilson,O B-playlist I-playlist I-playlist O B-playlist_owner B-artist I-artist ,SOS add _playlist_ to _playlist_owner_ _artist_ EOS,AddToPlaylist
+Add Spanish Harlem Incident to cleaning the house,O B-entity_name I-entity_name I-entity_name O B-playlist I-playlist I-playlist ,SOS Add _entity_name_ to _playlist_ EOS,AddToPlaylist
+add The Greyest of Blue Skies in Indie EspaÃ±ol my playlist,O B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name O B-playlist I-playlist B-playlist_owner O ,SOS add _entity_name_ in _playlist_ _playlist_owner_ playlist EOS,AddToPlaylist
+Add the name kids in the street to the plylist New Indie Mix,O O O B-entity_name I-entity_name I-entity_name I-entity_name O O O B-playlist I-playlist I-playlist ,SOS Add the name _entity_name_ to the plylist _playlist_ EOS,AddToPlaylist
+add album radar latino,O B-music_item B-playlist I-playlist ,SOS add _music_item_ _playlist_ EOS,AddToPlaylist
+Add Tranquility to the Latin Pop Rising playlist  ,O B-entity_name O O B-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to the _playlist_ playlist   EOS,AddToPlaylist
+Add d flame to the Dcode2016 playlist ,O B-artist I-artist O O B-playlist O ,SOS Add _artist_ to the _playlist_ playlist  EOS,AddToPlaylist
+Add album to my fairy tales,O B-music_item O B-playlist_owner B-playlist I-playlist ,SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+I need another artist in the New Indie Mix playlist  ,O O O B-music_item O O B-playlist I-playlist I-playlist O ,SOS I need another _music_item_ in the _playlist_ playlist   EOS,AddToPlaylist
+Add to playlist i love my neo soul the name national treasure book of secrets,O O O B-playlist I-playlist I-playlist I-playlist I-playlist O O B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name ,SOS Add to playlist _playlist_ the name _entity_name_ EOS,AddToPlaylist
+Add the fire and the wind to my Digster Future Hits playlist ,O B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist  EOS,AddToPlaylist
+add Caleigh Peters to my women of country list,O B-artist I-artist O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS add _artist_ to _playlist_owner_ _playlist_ list EOS,AddToPlaylist
+add children of telepathic experiences to the playlist named baladas romÃ¡nticas,O B-entity_name I-entity_name I-entity_name I-entity_name O O O O B-playlist I-playlist ,SOS add _entity_name_ to the playlist named _playlist_ EOS,AddToPlaylist
+add 9th Inning to my bossa nova dinner playlist,O B-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+I need another tune in my legendary guitar solos playlist  ,O O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS I need another _music_item_ in _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+Add Slimm Cutta Calhoun to my this is prince playlist  ,O B-artist I-artist I-artist O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add _artist_ to _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+Add Always to dena's Baroque 50 Spotify Picks playlist  ,O B-entity_name O B-playlist_owner I-playlist_owner B-playlist I-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+add song to Sleepytime,O B-music_item O B-playlist ,SOS add _music_item_ to _playlist_ EOS,AddToPlaylist
+Add an album to my list La Mejor MÃºsica Dance 2017,O O B-music_item O B-playlist_owner O B-playlist I-playlist I-playlist I-playlist I-playlist ,SOS Add an _music_item_ to _playlist_owner_ list _playlist_ EOS,AddToPlaylist
+add Hey  Johnnie Cope  Are Ye Waking Yet to year in metal 2016 playlist,O B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name I-entity_name O B-playlist I-playlist I-playlist I-playlist O ,SOS add _entity_name_ to _playlist_ playlist EOS,AddToPlaylist
+Add the album to the psychedelic rock playlist ,O O B-music_item O O B-playlist I-playlist O ,SOS Add the _music_item_ to the _playlist_ playlist  EOS,AddToPlaylist
+Can you add Esquivando charcos to my playlist entitled the piano bar,O O O B-entity_name I-entity_name O B-playlist_owner O O B-playlist I-playlist I-playlist ,SOS Can you add _entity_name_ to _playlist_owner_ playlist entitled _playlist_ EOS,AddToPlaylist
+Add wiktor coj to the Sleep playlist ,O B-artist I-artist O O B-playlist O ,SOS Add _artist_ to the _playlist_ playlist  EOS,AddToPlaylist
+Incorporate time warp into my fairy tales playlist  ,O B-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist O ,SOS Incorporate _entity_name_ into _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+add this MakSim tune to Trad Folk,O O B-artist B-music_item O B-playlist I-playlist ,SOS add this _artist_ _music_item_ to _playlist_ EOS,AddToPlaylist
+add tune to my playlist eletro br,O B-music_item O B-playlist_owner O B-playlist I-playlist ,SOS add _music_item_ to _playlist_owner_ playlist _playlist_ EOS,AddToPlaylist
+Add this tune to my Dinnertime Acoustics list,O O B-music_item O B-playlist_owner B-playlist I-playlist O ,SOS Add this _music_item_ to _playlist_owner_ _playlist_ list EOS,AddToPlaylist
+add monsters this is prince playlist,O B-entity_name B-playlist I-playlist I-playlist O ,SOS add _entity_name_ _playlist_ playlist EOS,AddToPlaylist
+add a tune in Chill Vibes,O O B-music_item O B-playlist I-playlist ,SOS add a _music_item_ in _playlist_ EOS,AddToPlaylist
+Can you add a track to my Spain Top 50 playlist,O O O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Can you add a _music_item_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+put this album by Mike Tramp on Deathcore,O O B-music_item O B-artist I-artist O B-playlist ,SOS put this _music_item_ by _artist_ on _playlist_ EOS,AddToPlaylist
+Add ross the boss to laurie's listas de Ã©xitos list,O B-artist I-artist I-artist O B-playlist_owner I-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add _artist_ to _playlist_owner_ _playlist_ list EOS,AddToPlaylist
+Add some Beatmaster V to the This Is Nicky Jam playlist  ,O O B-artist I-artist O O B-playlist I-playlist I-playlist I-playlist O ,SOS Add some _artist_ to the _playlist_ playlist   EOS,AddToPlaylist
+add paulinho da viola to my Radio Rock song list,O B-artist I-artist I-artist O B-playlist_owner B-playlist I-playlist O O ,SOS add _artist_ to _playlist_owner_ _playlist_ song list EOS,AddToPlaylist
+add Eef Barzelay to my Country Coffeehouse,O B-artist I-artist O B-playlist_owner B-playlist I-playlist ,SOS add _artist_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+Add this artist to queen playlist,O O B-music_item O B-playlist O ,SOS Add this _music_item_ to _playlist_ playlist EOS,AddToPlaylist
+add Olga Souza to virginia's femme fatale playlist,O B-artist I-artist O B-playlist_owner I-playlist_owner B-playlist I-playlist O ,SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+Add an album by m g sreekumar to my laidback acoustic playlist ,O O B-music_item O B-artist I-artist I-artist O B-playlist_owner B-playlist I-playlist O ,SOS Add an _music_item_ by _artist_ to _playlist_owner_ _playlist_ playlist  EOS,AddToPlaylist
+Add this album to my spotify orchestra cello playlist,O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+I want to put goldy mcjohn on my Rock Party playlist,O O O O B-artist I-artist O B-playlist_owner B-playlist I-playlist O ,SOS I want to put _artist_ on _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+Add this song to noreen's fresh finds six strings,O O B-music_item O B-playlist_owner I-playlist_owner B-playlist I-playlist I-playlist I-playlist ,SOS Add this _music_item_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+A Shawnna to the Warm Hearts Feel Good playlist ,O B-artist O O B-playlist I-playlist I-playlist I-playlist O ,SOS A _artist_ to the _playlist_ playlist  EOS,AddToPlaylist
+Add this tune to Rock Save The Queen,O O B-music_item O B-playlist I-playlist I-playlist I-playlist ,SOS Add this _music_item_ to _playlist_ EOS,AddToPlaylist
+Add Firehouse to my acoustic soul list ,O B-entity_name O B-playlist_owner B-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ list  EOS,AddToPlaylist
+add this david cole track to my Totally Stress Free,O O B-artist I-artist B-music_item O B-playlist_owner B-playlist I-playlist I-playlist ,SOS add this _artist_ _music_item_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+Add Progress to my clÃ¡sica para todos playlist  ,O B-entity_name O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+Add the artist  tony thompson to my canta en la ducha playlist,O O B-music_item B-artist I-artist O B-playlist_owner B-playlist I-playlist I-playlist I-playlist O ,SOS Add the _music_item_  _artist_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+Add the artist to my This Is Mozart playlist ,O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add the _music_item_ to _playlist_owner_ _playlist_ playlist  EOS,AddToPlaylist
+Add this track to downtempo beats,O O B-music_item O B-playlist I-playlist ,SOS Add this _music_item_ to _playlist_ EOS,AddToPlaylist
+Add Quicksand to my valentine's day love playlist,O B-entity_name O B-playlist_owner B-playlist I-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+Add feel the passion to my this is kudai playlist  ,O B-entity_name I-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+add this song to my us latin top 50 playlist,O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist I-playlist O ,SOS add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+Put this artist in Pachangueo Total,O O B-music_item O B-playlist I-playlist ,SOS Put this _music_item_ in _playlist_ EOS,AddToPlaylist
+add vl mike to my Dcode2016 playlist,O B-artist I-artist O B-playlist_owner B-playlist O ,SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+add how to my week end playlist,O B-entity_name O B-playlist_owner B-playlist I-playlist O ,SOS add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+Add Norma Jean to my pure rock & roll playlist ,O B-artist I-artist O B-playlist_owner B-playlist I-playlist I-playlist I-playlist O ,SOS Add _artist_ to _playlist_owner_ _playlist_ playlist  EOS,AddToPlaylist
+Add Kirk Hammett to Calm Down,O B-artist I-artist O B-playlist I-playlist ,SOS Add _artist_ to _playlist_ EOS,AddToPlaylist
+Add On with the Show to my Beast Mode playlist,O B-entity_name I-entity_name I-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+add kjetil vidar haraldstad to listas de Ã©xitos,O B-artist I-artist I-artist O B-playlist I-playlist I-playlist ,SOS add _artist_ to _playlist_ EOS,AddToPlaylist
+can you add xanadu to Latin Alternative Music,O O O B-entity_name O B-playlist I-playlist I-playlist ,SOS can you add _entity_name_ to _playlist_ EOS,AddToPlaylist
+add this track to krystal's piano 100,O O B-music_item O B-playlist_owner I-playlist_owner B-playlist I-playlist ,SOS add this _music_item_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+Can you put this track onto the playlist the selektor ,O O O O B-music_item O O O B-playlist I-playlist ,SOS Can you put this _music_item_ onto the playlist _playlist_  EOS,AddToPlaylist
+my jazz for loving couples needs more push the button,B-playlist_owner B-playlist I-playlist I-playlist I-playlist O O B-entity_name I-entity_name I-entity_name ,SOS _playlist_owner_ _playlist_ needs more _entity_name_ EOS,AddToPlaylist
+add the album the martin garrix show to my playlist,O O B-music_item B-playlist I-playlist I-playlist I-playlist O B-playlist_owner O ,SOS add the _music_item_ _playlist_ to _playlist_owner_ playlist EOS,AddToPlaylist
+add gina schock to workout twerkout,O B-artist I-artist O B-playlist I-playlist ,SOS add _artist_ to _playlist_ EOS,AddToPlaylist
+Add this tune to cristina's endorphin rush playlist,O O B-music_item O B-playlist_owner I-playlist_owner B-playlist I-playlist O ,SOS Add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+add this tune to my It's a Southern Thing playlist,O O B-music_item O B-playlist_owner B-playlist I-playlist I-playlist I-playlist I-playlist O ,SOS add this _music_item_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+add Ik Tara to laundry playlst,O B-entity_name I-entity_name O B-playlist O ,SOS add _entity_name_ to _playlist_ playlst EOS,AddToPlaylist
+Add this tune to This Is Nicky Jam,O O B-music_item O B-playlist I-playlist I-playlist I-playlist ,SOS Add this _music_item_ to _playlist_ EOS,AddToPlaylist
+Can you add something by the artist Paul Cargnello to my Chill Tracks playlist,O O O O O O B-music_item B-artist I-artist O B-playlist_owner B-playlist I-playlist O ,SOS Can you add something by the _music_item_ _artist_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+add Runaljod gap var Ginnunga to ashlee's playlist titled forever country,O B-entity_name I-entity_name I-entity_name I-entity_name O B-playlist_owner I-playlist_owner O O B-playlist I-playlist ,SOS add _entity_name_ to _playlist_owner_ playlist titled _playlist_ EOS,AddToPlaylist
+Put The Orange and the Green on Los 40 Radio Ãxitos,O B-entity_name I-entity_name I-entity_name I-entity_name I-entity_name O B-playlist I-playlist I-playlist I-playlist ,SOS Put _entity_name_ on _playlist_ EOS,AddToPlaylist
+Add an album by Liza Oumarova to the Steampunk playlist ,O O B-music_item O B-artist I-artist O O B-playlist O ,SOS Add an _music_item_ by _artist_ to the _playlist_ playlist  EOS,AddToPlaylist
+Please add a song to ines's playlist called Metal Party,O O O B-music_item O B-playlist_owner I-playlist_owner O O B-playlist I-playlist ,SOS Please add a _music_item_ to _playlist_owner_ playlist called _playlist_ EOS,AddToPlaylist
+For playlist todo latino add Absolutely Sweet Marie,O O B-playlist I-playlist O B-entity_name I-entity_name I-entity_name ,SOS For playlist _playlist_ add _entity_name_ EOS,AddToPlaylist
+add gn to night vibes,O B-entity_name O B-playlist I-playlist ,SOS add _entity_name_ to _playlist_ EOS,AddToPlaylist
+Can you add Blood On The Face to the playlist called Heartland Country,O O O B-entity_name I-entity_name I-entity_name I-entity_name O O O O B-playlist I-playlist ,SOS Can you add _entity_name_ to the playlist called _playlist_ EOS,AddToPlaylist
+The spring classical playlist needs Partners in Crime added to it  ,O B-playlist I-playlist O O B-entity_name I-entity_name I-entity_name O O O ,SOS The _playlist_ playlist needs _entity_name_ added to it   EOS,AddToPlaylist
+add the artist Tomohisa Yamashita to the conexiones playlist,O O B-music_item B-artist I-artist O O B-playlist O ,SOS add the _music_item_ _artist_ to the _playlist_ playlist EOS,AddToPlaylist
+Add Written in Red to my cleaning the house playlist  ,O B-entity_name I-entity_name I-entity_name O B-playlist_owner B-playlist I-playlist I-playlist O ,SOS Add _entity_name_ to _playlist_owner_ _playlist_ playlist   EOS,AddToPlaylist
+Add cordell mosson to my i love my neo soul list,O B-artist I-artist O B-playlist_owner B-playlist I-playlist I-playlist I-playlist I-playlist O ,SOS Add _artist_ to _playlist_owner_ _playlist_ list EOS,AddToPlaylist
+add album to Feeling Blue,O B-music_item O B-playlist I-playlist ,SOS add _music_item_ to _playlist_ EOS,AddToPlaylist
+I want to put another album into the a peaceful rush hour playlist  ,O O O O O B-music_item O O B-playlist I-playlist I-playlist I-playlist O ,SOS I want to put another _music_item_ into the _playlist_ playlist   EOS,AddToPlaylist
+Open my acoustic concentration playlist and play an entire album,O B-playlist_owner B-playlist I-playlist O O O O O B-music_item ,SOS Open _playlist_owner_ _playlist_ playlist and play an entire _music_item_ EOS,AddToPlaylist
+add sonntag to my Assassin's Creed,O B-entity_name O B-playlist_owner B-playlist I-playlist I-playlist ,SOS add _entity_name_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+I want more francis healy in the Rockin' Vibes playlist  ,O O O B-artist I-artist O O B-playlist I-playlist I-playlist O ,SOS I want more _artist_ in the _playlist_ playlist   EOS,AddToPlaylist
+add gareth gates to my autumn playlist,O B-artist I-artist O B-playlist_owner B-playlist O ,SOS add _artist_ to _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+add tune to sxsw fresh playlist,O B-music_item O B-playlist I-playlist O ,SOS add _music_item_ to _playlist_ playlist EOS,AddToPlaylist
+add track to todo latino,O B-music_item O B-playlist I-playlist ,SOS add _music_item_ to _playlist_ EOS,AddToPlaylist
+Add to my verano list a song by andy lee,O O B-playlist_owner B-playlist O O B-music_item O B-artist I-artist ,SOS Add to _playlist_owner_ _playlist_ list a _music_item_ by _artist_ EOS,AddToPlaylist
+Add song to my Club Hits,O B-music_item O B-playlist_owner B-playlist I-playlist ,SOS Add _music_item_ to _playlist_owner_ _playlist_ EOS,AddToPlaylist
+add this tune to my playlist titled uncharted 4 nathan drake,O O B-music_item O B-playlist_owner O O B-playlist I-playlist I-playlist I-playlist ,SOS add this _music_item_ to _playlist_owner_ playlist titled _playlist_ EOS,AddToPlaylist
+Add 100% te ljubam to the Hit Remix playlist,O B-entity_name I-entity_name I-entity_name I-entity_name O O B-playlist I-playlist O ,SOS Add _entity_name_ to the _playlist_ playlist EOS,AddToPlaylist
+Put this album on totally alternative,O O B-music_item O B-playlist I-playlist ,SOS Put this _music_item_ on _playlist_ EOS,AddToPlaylist
+put this album into becky's infinite indie folk playlist,O O B-music_item O B-playlist_owner I-playlist_owner B-playlist I-playlist I-playlist O ,SOS put this _music_item_ into _playlist_owner_ _playlist_ playlist EOS,AddToPlaylist
+What are the movie schedule at Malco Theatres,O O O B-object_type I-object_type O B-location_name I-location_name ,SOS What are the _object_type_ at _location_name_ EOS,SearchScreeningEvent
+I want to get the movie schedule,O O O O O B-object_type I-object_type ,SOS I want to get the _object_type_ EOS,SearchScreeningEvent
+Show me movie time for I Am Sorry  at my movie house,O O O O O B-movie_name I-movie_name I-movie_name O O B-object_location_type I-object_location_type ,SOS Show me movie time for _movie_name_  at my _object_location_type_ EOS,SearchScreeningEvent
+Find time for Trouble for Two in one minute at Landmark Theatres,O O O B-movie_name I-movie_name I-movie_name B-timerange I-timerange I-timerange O B-location_name I-location_name ,SOS Find time for _movie_name_ _timerange_ at _location_name_ EOS,SearchScreeningEvent
+Please show me the movie schedule for movies playing in the neighborhood ,O O O O B-object_type I-object_type O B-movie_type O B-spatial_relation I-spatial_relation I-spatial_relation ,SOS Please show me the _object_type_ for _movie_type_ playing _spatial_relation_  EOS,SearchScreeningEvent
+What are the time for movies playing at Star Theatres ,O O O O O B-movie_type O O B-location_name I-location_name ,SOS What are the time for _movie_type_ playing at _location_name_  EOS,SearchScreeningEvent
+What time are the animated movies playing at Mann Theatres ,O O O O B-movie_type I-movie_type O O B-location_name I-location_name ,SOS What time are the _movie_type_ playing at _location_name_  EOS,SearchScreeningEvent
+I'm wondering what cinema is playing Peters baby ,O O O O B-object_location_type O O B-movie_name I-movie_name ,SOS I'm wondering what _object_location_type_ is playing _movie_name_  EOS,SearchScreeningEvent
+i want the movie schedules for movies around here,O O O B-object_type I-object_type O B-movie_type B-spatial_relation I-spatial_relation ,SOS i want the _object_type_ for _movie_type_ _spatial_relation_ EOS,SearchScreeningEvent
+What movies are playing at the nearest movie house,O B-movie_type O O O O B-spatial_relation B-object_location_type I-object_location_type ,SOS What _movie_type_ are playing at the _spatial_relation_ _object_location_type_ EOS,SearchScreeningEvent
+find Wild at Heart,O B-movie_name I-movie_name I-movie_name ,SOS find _movie_name_ EOS,SearchScreeningEvent
+She me the movie times,O O O B-object_type I-object_type ,SOS She me the _object_type_ EOS,SearchScreeningEvent
+What movie theatre is playing Sherlock Holmes and Dr  Watson fifteen hours and one minute from now,O B-object_location_type I-object_location_type O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name B-timerange I-timerange I-timerange I-timerange I-timerange I-timerange I-timerange ,SOS What _object_location_type_ is playing _movie_name_ _timerange_ EOS,SearchScreeningEvent
+What is the local movie times,O O O O B-object_type I-object_type ,SOS What is the local _object_type_ EOS,SearchScreeningEvent
+find a movie house showing Cage Without a Key,O O B-object_location_type I-object_location_type O B-movie_name I-movie_name I-movie_name I-movie_name ,SOS find a _object_location_type_ showing _movie_name_ EOS,SearchScreeningEvent
+What time is are movies at the closest movie theatre,O O O O B-movie_type O O B-spatial_relation B-object_location_type I-object_location_type ,SOS What time is are _movie_type_ at the _spatial_relation_ _object_location_type_ EOS,SearchScreeningEvent
+Find the nearest movie house that's showing movies,O O B-spatial_relation B-object_location_type I-object_location_type O O O B-movie_type ,SOS Find the _spatial_relation_ _object_location_type_ that's showing _movie_type_ EOS,SearchScreeningEvent
+find some close by movies,O O B-spatial_relation I-spatial_relation B-movie_type ,SOS find some _spatial_relation_ _movie_type_ EOS,SearchScreeningEvent
+where is Wild America showing at zero P M ,O O B-movie_name I-movie_name O O B-timerange I-timerange I-timerange ,SOS where is _movie_name_ showing at _timerange_ EOS,SearchScreeningEvent
+I'd like to see Snowball Express,O O O O O B-movie_name I-movie_name ,SOS I'd like to see _movie_name_ EOS,SearchScreeningEvent
+find movie schedules at Goodrich Quality Theaters,O B-object_type I-object_type O B-location_name I-location_name I-location_name ,SOS find _object_type_ at _location_name_ EOS,SearchScreeningEvent
+When is Beyond My Reach scheduled at the nearest cinema ,O O B-movie_name I-movie_name I-movie_name O O O B-spatial_relation B-object_location_type ,SOS When is _movie_name_ scheduled at the _spatial_relation_ _object_location_type_  EOS,SearchScreeningEvent
+Find the schedule for films at Cobb Theatres ,O O B-object_type O B-movie_type O B-location_name I-location_name ,SOS Find the _object_type_ for _movie_type_ at _location_name_  EOS,SearchScreeningEvent
+find 16 starting time for Heavenly Body,O B-timerange O O O B-movie_name I-movie_name ,SOS find _timerange_ starting time for _movie_name_ EOS,SearchScreeningEvent
+What animated movies are playing close by at four o'clock ,O B-movie_type I-movie_type O O B-spatial_relation I-spatial_relation O B-timerange I-timerange ,SOS What _movie_type_ are playing _spatial_relation_ at _timerange_  EOS,SearchScreeningEvent
+Find the movie schedule for films in the area ,O O B-object_type I-object_type O B-movie_type B-spatial_relation I-spatial_relation I-spatial_relation ,SOS Find the _object_type_ for _movie_type_ _spatial_relation_  EOS,SearchScreeningEvent
+What AMC Theaters is The Red Dance playing at ,O B-location_name I-location_name O B-movie_name I-movie_name I-movie_name O O ,SOS What _location_name_ is _movie_name_ playing at  EOS,SearchScreeningEvent
+show movie times at Megaplex Theatres,O B-object_type I-object_type O B-location_name I-location_name ,SOS show _object_type_ at _location_name_ EOS,SearchScreeningEvent
+What is the movie schedule at the Fox Theatres,O O O B-object_type I-object_type O O B-location_name I-location_name ,SOS What is the _object_type_ at the _location_name_ EOS,SearchScreeningEvent
+find movie times,O B-object_type I-object_type ,SOS find _object_type_ EOS,SearchScreeningEvent
+give me the movie schedule,O O O B-object_type I-object_type ,SOS give me the _object_type_ EOS,SearchScreeningEvent
+Find me Third Man on the Mountain at a cinema,O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O O B-object_location_type ,SOS Find me _movie_name_ at a _object_location_type_ EOS,SearchScreeningEvent
+I'd like to watch The Utopian Society,O O O O O B-movie_name I-movie_name I-movie_name ,SOS I'd like to watch _movie_name_ EOS,SearchScreeningEvent
+can you give me the movie times,O O O O O B-object_type I-object_type ,SOS can you give me the _object_type_ EOS,SearchScreeningEvent
+What time is A Ball at the Anjo House playing,O O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O ,SOS What time is _movie_name_ playing EOS,SearchScreeningEvent
+What is the closest movie theatre that is playing animated movies,O O O B-spatial_relation B-object_location_type I-object_location_type O O O B-movie_type I-movie_type ,SOS What is the _spatial_relation_ _object_location_type_ that is playing _movie_type_ EOS,SearchScreeningEvent
+Check movie schedules and find which animated movies are being aired in the neighborhood movie halls ,O B-object_type I-object_type O O O B-movie_type I-movie_type O O O B-spatial_relation I-spatial_relation I-spatial_relation O O ,SOS Check _object_type_ and find which _movie_type_ are being aired _spatial_relation_ movie halls  EOS,SearchScreeningEvent
+Find the schedule for The Voice in the Fog at night at the closest movie house ,O O B-object_type O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O B-timerange O O B-spatial_relation B-object_location_type I-object_location_type ,SOS Find the _object_type_ for _movie_name_ at _timerange_ at the _spatial_relation_ _object_location_type_  EOS,SearchScreeningEvent
+When is Barbary Coast playing ,O O B-movie_name I-movie_name O ,SOS When is _movie_name_ playing  EOS,SearchScreeningEvent
+is Terminal Station at Cinemark Theatres,O B-movie_name I-movie_name O B-location_name I-location_name ,SOS is _movie_name_ at _location_name_ EOS,SearchScreeningEvent
+I'd like to watch Sherlock Holmes à New York at KB Theatres,O O O O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O B-location_name I-location_name ,SOS I'd like to watch _movie_name_ at _location_name_ EOS,SearchScreeningEvent
+What time is movies playing around here,O O O B-movie_type O B-spatial_relation I-spatial_relation ,SOS What time is _movie_type_ playing _spatial_relation_ EOS,SearchScreeningEvent
+Show me the movie schedule for Caribbean Cinemas,O O O B-object_type I-object_type O B-location_name I-location_name ,SOS Show me the _object_type_ for _location_name_ EOS,SearchScreeningEvent
+Show me the movie schedules for Santikos Theatres ,O O O B-object_type I-object_type O B-location_name I-location_name ,SOS Show me the _object_type_ for _location_name_  EOS,SearchScreeningEvent
+Is Live Forever  The Rise and Fall of Brit Pop playing at the closest cinema in 1 minute,O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O O O B-spatial_relation B-object_location_type B-timerange I-timerange I-timerange ,SOS Is _movie_name_ playing at the _spatial_relation_ _object_location_type_ _timerange_ EOS,SearchScreeningEvent
+Check which cinema currently runs When the Last Sword is Drawn ,O O B-object_location_type O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name ,SOS Check which _object_location_type_ currently runs _movie_name_  EOS,SearchScreeningEvent
+find a movie house with Colic  The Movie that is nearest,O O B-object_location_type I-object_location_type O B-movie_name I-movie_name I-movie_name O O B-spatial_relation ,SOS find a _object_location_type_ with _movie_name_ that is _spatial_relation_ EOS,SearchScreeningEvent
+Tell me what films are currently playing at AMC Theaters,O O O B-movie_type O O O O B-location_name I-location_name ,SOS Tell me what _movie_type_ are currently playing at _location_name_ EOS,SearchScreeningEvent
+find movies with movie schedules in the neighborhood,O B-movie_type O B-object_type I-object_type B-spatial_relation I-spatial_relation I-spatial_relation ,SOS find _movie_type_ with _object_type_ _spatial_relation_ EOS,SearchScreeningEvent
+what movie theatre is showing If the Huns Came to Melbourne,O B-object_location_type I-object_location_type O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name ,SOS what _object_location_type_ is showing _movie_name_ EOS,SearchScreeningEvent
+What films and movie times are close by,O B-movie_type O B-object_type I-object_type O B-spatial_relation I-spatial_relation ,SOS What _movie_type_ and _object_type_ are _spatial_relation_ EOS,SearchScreeningEvent
+find National Amusements showing The Sea Is Behind,O B-location_name I-location_name O B-movie_name I-movie_name I-movie_name I-movie_name ,SOS find _location_name_ showing _movie_name_ EOS,SearchScreeningEvent
+show movie times,O B-object_type I-object_type ,SOS show _object_type_ EOS,SearchScreeningEvent
+Is The Swan available to watch at the movie house now ,O B-movie_name I-movie_name O O O O O B-object_location_type I-object_location_type B-timerange ,SOS Is _movie_name_ available to watch at the _object_location_type_ _timerange_  EOS,SearchScreeningEvent
+is Traffic at the movie theatre,O B-movie_name O O B-object_location_type I-object_location_type ,SOS is _movie_name_ at the _object_location_type_ EOS,SearchScreeningEvent
+Find time for the movie schedule at Cineplex Odeon Corporation,O O O O B-object_type I-object_type O B-location_name I-location_name I-location_name ,SOS Find time for the _object_type_ at _location_name_ EOS,SearchScreeningEvent
+What time is Kerasotes Theatres playing animated movies,O O O B-location_name I-location_name O B-movie_type I-movie_type ,SOS What time is _location_name_ playing _movie_type_ EOS,SearchScreeningEvent
+find The Flying Ace,O B-movie_name I-movie_name I-movie_name ,SOS find _movie_name_ EOS,SearchScreeningEvent
+is Transcending Fear at Malco Theatres,O B-movie_name I-movie_name O B-location_name I-location_name ,SOS is _movie_name_ at _location_name_ EOS,SearchScreeningEvent
+Can you give me a local and current movie schedule ,O O O O O O O O B-object_type I-object_type ,SOS Can you give me a local and current _object_type_  EOS,SearchScreeningEvent
+Where is the nearest movie house that is playing Teaching to See,O O O B-spatial_relation B-object_location_type I-object_location_type O O O B-movie_name I-movie_name I-movie_name ,SOS Where is the _spatial_relation_ _object_location_type_ that is playing _movie_name_ EOS,SearchScreeningEvent
+closest movie theatre with No Time for Sergeants,B-spatial_relation B-object_location_type I-object_location_type O B-movie_name I-movie_name I-movie_name I-movie_name ,SOS _spatial_relation_ _object_location_type_ with _movie_name_ EOS,SearchScreeningEvent
+where is Beyblade  Fierce Battle playing,O O B-movie_name I-movie_name I-movie_name O ,SOS where is _movie_name_ playing EOS,SearchScreeningEvent
+when is Hefner  Unauthorized showing at Magic Johnson Theatres,O O B-movie_name I-movie_name O O B-location_name I-location_name I-location_name ,SOS when is _movie_name_ showing at _location_name_ EOS,SearchScreeningEvent
+what's the closest movie house showing animated movies,O O O B-spatial_relation B-object_location_type I-object_location_type O B-movie_type I-movie_type ,SOS what's the _spatial_relation_ _object_location_type_ showing _movie_type_ EOS,SearchScreeningEvent
+find a nearby movie schedule for movies,O O B-spatial_relation B-object_type I-object_type O B-movie_type ,SOS find a _spatial_relation_ _object_type_ for _movie_type_ EOS,SearchScreeningEvent
+Showtimes for Medal for the General,O O B-movie_name I-movie_name I-movie_name I-movie_name ,SOS Showtimes for _movie_name_ EOS,SearchScreeningEvent
+When is His English Wife showing at the Neighborhood Cinema Group ,O O B-movie_name I-movie_name I-movie_name O O O B-location_name I-location_name I-location_name ,SOS When is _movie_name_ showing at the _location_name_  EOS,SearchScreeningEvent
+What time is The Count playing,O O O B-movie_name I-movie_name O ,SOS What time is _movie_name_ playing EOS,SearchScreeningEvent
+find animated movies in the neighborhood,O B-movie_type I-movie_type B-spatial_relation I-spatial_relation I-spatial_relation ,SOS find _movie_type_ _spatial_relation_ EOS,SearchScreeningEvent
+Can you tell me what time The Fickle is playing at the closest cinema,O O O O O O B-movie_name I-movie_name O O O O B-spatial_relation B-object_location_type ,SOS Can you tell me what time _movie_name_ is playing at the _spatial_relation_ _object_location_type_ EOS,SearchScreeningEvent
+show movie schedules at Megaplex Theatres,O B-object_type I-object_type O B-location_name I-location_name ,SOS show _object_type_ at _location_name_ EOS,SearchScreeningEvent
+what's the nearest movie theatre showing movies,O O O B-spatial_relation B-object_location_type I-object_location_type O B-movie_type ,SOS what's the _spatial_relation_ _object_location_type_ showing _movie_type_ EOS,SearchScreeningEvent
+please give me the movie schedule,O O O O B-object_type I-object_type ,SOS please give me the _object_type_ EOS,SearchScreeningEvent
+i want to watch animated movies at Showcase Cinemas,O O O O B-movie_type I-movie_type O B-location_name I-location_name ,SOS i want to watch _movie_type_ at _location_name_ EOS,SearchScreeningEvent
+find The Broken,O B-movie_name I-movie_name ,SOS find _movie_name_ EOS,SearchScreeningEvent
+where is the nearest movie theatre showing movies,O O O B-spatial_relation B-object_location_type I-object_location_type O B-movie_type ,SOS where is the _spatial_relation_ _object_location_type_ showing _movie_type_ EOS,SearchScreeningEvent
+find Three in the Attic,O B-movie_name I-movie_name I-movie_name I-movie_name ,SOS find _movie_name_ EOS,SearchScreeningEvent
+What is the movie schedule for animated movies in the area,O O O B-object_type I-object_type O B-movie_type I-movie_type B-spatial_relation I-spatial_relation I-spatial_relation ,SOS What is the _object_type_ for _movie_type_ _spatial_relation_ EOS,SearchScreeningEvent
+Can you give me the movie schedules at Mann Theatres ,O O O O O B-object_type I-object_type O B-location_name I-location_name ,SOS Can you give me the _object_type_ at _location_name_  EOS,SearchScreeningEvent
+give me the movie schedule for animated movies showing in the neighborhood,O O O B-object_type I-object_type O B-movie_type I-movie_type O B-spatial_relation I-spatial_relation I-spatial_relation ,SOS give me the _object_type_ for _movie_type_ showing _spatial_relation_ EOS,SearchScreeningEvent
+When is Longwave going to be playing ,O O B-movie_name O O O O ,SOS When is _movie_name_ going to be playing  EOS,SearchScreeningEvent
+Find the movie schedules for me,O O B-object_type I-object_type O O ,SOS Find the _object_type_ for me EOS,SearchScreeningEvent
+find Vegucated starting at zero pm,O B-movie_name O O B-timerange I-timerange ,SOS find _movie_name_ starting at _timerange_ EOS,SearchScreeningEvent
+What time will Where the Breakers Roar be playing ,O O O B-movie_name I-movie_name I-movie_name I-movie_name O O ,SOS What time will _movie_name_ be playing  EOS,SearchScreeningEvent
+I'd like to watch Dirty Laundry at the movie house ,O O O O O B-movie_name I-movie_name O O B-object_location_type I-object_location_type ,SOS I'd like to watch _movie_name_ at the _object_location_type_  EOS,SearchScreeningEvent
+I want the movie schedule for animated movies in the area ,O O O B-object_type I-object_type O B-movie_type I-movie_type B-spatial_relation I-spatial_relation I-spatial_relation ,SOS I want the _object_type_ for _movie_type_ _spatial_relation_  EOS,SearchScreeningEvent
+Is The Tender Years at the nearest movie theatre,O B-movie_name I-movie_name I-movie_name O O B-spatial_relation B-object_location_type I-object_location_type ,SOS Is _movie_name_ at the _spatial_relation_ _object_location_type_ EOS,SearchScreeningEvent
+Find the schedule for The Band of Honest Men at the nearest movie theatre ,O O B-object_type O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O O B-spatial_relation B-object_location_type I-object_location_type ,SOS Find the _object_type_ for _movie_name_ at the _spatial_relation_ _object_location_type_  EOS,SearchScreeningEvent
+Show me the movie schedule,O O O B-object_type I-object_type ,SOS Show me the _object_type_ EOS,SearchScreeningEvent
+I'd like to watch films at the nearest cinema at 8 am,O O O O O B-movie_type O O B-spatial_relation B-object_location_type O B-timerange I-timerange ,SOS I'd like to watch _movie_type_ at the _spatial_relation_ _object_location_type_ at _timerange_ EOS,SearchScreeningEvent
+Find the movie times for animated movies around here ,O O B-object_type I-object_type O B-movie_type I-movie_type B-spatial_relation I-spatial_relation ,SOS Find the _object_type_ for _movie_type_ _spatial_relation_  EOS,SearchScreeningEvent
+showtimes for movies currently playing at Speakeasy Theaters,O O B-movie_type O O O B-location_name I-location_name ,SOS showtimes for _movie_type_ currently playing at _location_name_ EOS,SearchScreeningEvent
+can you find me a showing for Before the Music Dies in one second  ,O O O O O O O B-movie_name I-movie_name I-movie_name I-movie_name B-timerange I-timerange I-timerange ,SOS can you find me a showing for _movie_name_ _timerange_   EOS,SearchScreeningEvent
+Find the movie schedules for Cobb Theatres ,O O B-object_type I-object_type O B-location_name I-location_name ,SOS Find the _object_type_ for _location_name_  EOS,SearchScreeningEvent
+What is the movie schedules for the Harkins Theatres,O O O B-object_type I-object_type O O B-location_name I-location_name ,SOS What is the _object_type_ for the _location_name_ EOS,SearchScreeningEvent
+find movie times,O B-object_type I-object_type ,SOS find _object_type_ EOS,SearchScreeningEvent
+what theaters are showing A Lonely Place to Die – Todesfalle Highlands starting at 14 40,O B-location_name O O B-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name I-movie_name O O B-timerange I-timerange ,SOS what _location_name_ are showing _movie_name_ starting at _timerange_ EOS,SearchScreeningEvent
+find a cinema closest with animated movies,O O B-object_location_type B-spatial_relation O B-movie_type I-movie_type ,SOS find a _object_location_type_ _spatial_relation_ with _movie_type_ EOS,SearchScreeningEvent
+Show me movie times at Cooper Foundation ,O O B-object_type I-object_type O B-location_name I-location_name ,SOS Show me _object_type_ at _location_name_  EOS,SearchScreeningEvent

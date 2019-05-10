@@ -25,14 +25,23 @@ class Datasets():
         TEXT   = torchtext.data.Field(lower=True, tokenize=self.tokenize, sequential=True, batch_first=False)
         DELEX  = torchtext.data.Field(lower=True, tokenize=self.tokenize, sequential=True, batch_first=False)
         INTENT = torchtext.data.Field(sequential=False, batch_first=True, unk_token=None)
-        datafields = [("utterance", TEXT), ("labels", None), ("delexicalised", DELEX), ("intent", INTENT)]
 
+        if 'snips' in train_path:
+            datafields = [("utterance", TEXT), ("labels", None), ("delexicalised", DELEX), ("intent", INTENT)]
+        elif 'atis' in train_path:
+            datafields = [(" ", None), ("utterance", TEXT), (" ", None), ("intent",  INTENT)]
+        elif 'sentiment' in train_path:
+            datafields = [("intent", INTENT), ("", None), ("", None), ("", None), ("", None), ("utterance", TEXT)]
+        elif 'spam' in train_path:
+            datafields = [("utterance", TEXT), ("intent", INTENT)]
+
+            
         train, valid = torchtext.data.TabularDataset.splits(
                        path='.', # the root directory where the data lies
                        train=train_path, validation=valid_path,
                        format='csv',
                        skip_header=True, # if your csv header has a header, make sure to pass this to ensure it doesn't get proceesed as data!
-                       fields=datafields)
+                       fields=datafields,)
 
         TEXT.build_vocab(train,  vectors="glove.6B.{}d".format(emb_dim))
         DELEX.build_vocab(train, vectors="glove.6B.{}d".format(emb_dim))

@@ -52,7 +52,7 @@ def train(model, datasets, args):
     NMI_hist = []
     acc_hist = []
     
-    latent_rep={i:[] for i in range(args.n_classes)}
+    latent_rep={i:[] for i in range(model.n_classes)}
     
     for epoch in range(1, args.epochs + 1):
         tr_loss = 0.0
@@ -67,7 +67,7 @@ def train(model, datasets, args):
             opt.zero_grad()
 
             x = getattr(batch, args.input_type)
-            y = batch.intent
+            y = batch.intent.squeeze()
             x, y = to_device(x), to_device(y)
             
             logp, mean, logv, logc, z = model(x)
@@ -98,7 +98,7 @@ def train(model, datasets, args):
                                                        args.anneal_function, step, args.k2, args.x2, args.m2)
                 loss += label_weight * label_loss
             else:
-                entropy = torch.sum(c * torch.log(args.n_classes * c))
+                entropy = torch.sum(c * torch.log(model.n_classes * c))
                 loss += entropy
 
             pred_labels = logc.data.max(1)[1].long()
@@ -113,7 +113,7 @@ def train(model, datasets, args):
             tr_loss += loss.item()
             NLL_tr_loss += NLL_loss.item()
             KL_tr_loss += KL_loss.item()
-            NMI_tr += NMI.item()
+            NMI_tr += NMI
             acc_tr += acc.item()
 
         tr_loss     = tr_loss / len(datasets.train)
@@ -148,7 +148,7 @@ def train(model, datasets, args):
                                                        args.anneal_function, step, args.k2, args.x2, args.m2)
                 loss += label_weight * label_loss
             else:
-                entropy = torch.sum(c * torch.log(args.n_classes * c))
+                entropy = torch.sum(c * torch.log(model.n_classes * c))
                 loss += entropy
 
             pred_labels = logc.data.max(1)[1].long()             
@@ -158,7 +158,7 @@ def train(model, datasets, args):
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
             KL_val_loss += KL_loss.item()
-            NMI_val += NMI.item()
+            NMI_val += NMI
             acc_val += acc.item()
             
         val_loss     = val_loss / len(datasets.valid)
@@ -180,8 +180,9 @@ def train(model, datasets, args):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_path', type=str, default='./data/train.csv')
-    parser.add_argument('--validate_path', type=str, default='./data/validate.csv')
+    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'atis', 'sentiment', 'spam'])
+    # parser.add_argument('--train_path', type=str, default='./data/snips/train.csv')
+    # parser.add_argument('--validate_path', type=str, default='./data/snips/validate.csv')
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--save_model', type=str, default='model.pyT')
     parser.add_argument('--pickle', type=str, default='run.pyT')
@@ -191,7 +192,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--supervised', type=bool, default=True)
-    parser.add_argument('--n_classes', type=int, default=7)
     parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
     parser.add_argument('--max_sequence_length', type=int, default=8)
@@ -227,10 +227,14 @@ if __name__ == '__main__':
     run['args'] = args
     print(args)
     
-    datadir = os.path.dirname(args.train_path)
+    # datadir = os.path.dirname(args.train_path)
+    #json2csv(datadir+'/2017-06-custom-intent-engines', datadir, samples_per_intent=args.samples_per_intent)
+
     print('loading and embedding datasets')
-    json2csv(datadir+'/2017-06-custom-intent-engines', datadir, samples_per_intent=args.samples_per_intent)
-    datasets = Datasets(train_path=os.path.join(args.train_path), valid_path=os.path.join(args.validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
+    datadir = os.path.join('./data', args.dataset)
+    train_path = os.path.join(datadir, 'train.csv')
+    validate_path = os.path.join(datadir, 'validate.csv')
+    datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
 
     if args.input_type=='delexicalised':
         print('embedding the slots with %s averaging' %args.slot_averaging)
@@ -241,11 +245,13 @@ if __name__ == '__main__':
     w2i = vocab.stoi
     i2int = datasets.INTENT.vocab.itos
     int2i = datasets.INTENT.vocab.stoi
+    n_classes = len(i2int)
     sos_idx = w2i['SOS']
     eos_idx = w2i['EOS']
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
-
+    
+    
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
     model = CVAE(
@@ -261,7 +267,7 @@ if __name__ == '__main__':
             word_dropout=args.word_dropout,
             embedding_dropout=args.embedding_dropout,
             z_size=args.latent_size,
-            n_classes=args.n_classes,
+            n_classes=n_classes,
             num_layers=args.num_layers,
             bidirectional=args.bidirectional,
             temperature=args.temperature
@@ -294,19 +300,22 @@ if __name__ == '__main__':
         samples, z, y_onehot = model.inference(n=args.n_generated)
         intent = y_onehot.data.max(1)[1].cpu().numpy()
         delexicalised = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
-        labelling, utterance = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
+        if args.input_type == 'delexicalised':
+            labelling, utterance = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
+        print('----------GENERATED----------')
         for i in range(args.n_generated):
             print('Intent : ', i2int[intent[i]])
-            # print('Samples : ', samples[i])
             print('Delexicalised : ', delexicalised[i])
-            print('Lexicalised : ', utterance[i] + '\n')
+        if args.input_type == 'delexicalised':
+            for i in range(args.n_generated):
+                print('Lexicalised : ', utterance[i] + '\n')
 
         run['generated'] = utterance
         
-        augmented_path = args.train_path.replace('.csv', '_augmented.csv')
+        augmented_path = train_path.replace('.csv', '_augmented.csv')
         print('Dumping augmented dataset at %s' %augmented_path)
         from shutil import copyfile
-        copyfile(args.train_path, augmented_path)
+        copyfile(train_path, augmented_path)
         csvfile    = open(augmented_path, 'a')
         csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
