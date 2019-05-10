@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=64)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.001)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
     parser.add_argument('-hs', '--hidden_size', type=int, default=64)
@@ -206,15 +206,15 @@ if __name__ == '__main__':
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
 
-    parser.add_argument('-t', '--temperature', type=float, default=5.)
+    parser.add_argument('-t', '--temperature', type=float, default=10)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0.99)
-    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.2)
+    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k1', '--k1', type=float, default=0.05)
+    parser.add_argument('-k1', '--k1', type=float, default=0.005)
     parser.add_argument('-x1', '--x1', type=int, default=100)
-    parser.add_argument('-k2', '--k2', type=float, default=0.1)
-    parser.add_argument('-x2', '--x2', type=int, default=300)
+    parser.add_argument('-k2', '--k2', type=float, default=0.005)
+    parser.add_argument('-x2', '--x2', type=int, default=50)
 
     run = {}
 
@@ -261,12 +261,22 @@ if __name__ == '__main__':
             temperature=args.temperature
         )
         
-    model.embedding.weight.data.copy_(vocab.vectors)
+    if args.load_model is not None:
+        state_dict = torch.load(args.load_model)
+        print(state_dict['embedding.weight'].size(), model.embedding.weight.size())
+        if state_dict['embedding.weight'].size(0) != model.embedding.weight.size(0): # vocab changed
+            state_dict['embedding.weight'] = vocab.vectors
+            state_dict['outputs2vocab.weight'] = torch.randn(len(i2w), args.hidden_size*model.hidden_factor)
+            state_dict['outputs2vocab.bias'] = torch.randn(len(i2w))
+            
+            print(state_dict['embedding.weight'].size(), model.embedding.weight.size())
+        model.load_state_dict(state_dict)
+    else:
+        model.embedding.weight.data.copy_(vocab.vectors)
+
     model = to_device(model)
     print(model)
     
-    if args.load_model is not None:
-        model.load_state_dict(torch.load(args.load_model))
     train(model, datasets, args)
     if args.save_model is not None:
         torch.save(model.state_dict(), args.save_model)
@@ -300,7 +310,7 @@ if __name__ == '__main__':
             from snips_nlu import SnipsNLUEngine
             from snips_nlu_metrics import compute_train_test_metrics
 
-            datadir = os.path.join(*args.train_path.split('/')[:-1])
+            datadir = os.path.dirname(args.train_path)
             csv2json(datadir, datadir, augmented=False)
             csv2json(datadir, datadir, augmented=True)
 

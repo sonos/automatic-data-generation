@@ -7,7 +7,7 @@ from nltk import word_tokenize
 
 remove_punctuation = True
 
-def json2csv(datadir, outdir, samples_per_class):
+def json2csv(datadir, outdir, samples_per_intent):
     
     print('Starting json2csv conversion...')
     punctuation = [',', '.', ':', ';', '?', '!']
@@ -31,7 +31,7 @@ def json2csv(datadir, outdir, samples_per_class):
 
         for intent, data in datadic.items():
             for isent, sentence in enumerate(data):
-                if isent >= samples_per_class:
+                if isent >= samples_per_intent:
                     break
                 utterance = ''
                 labelling = ''
@@ -175,7 +175,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str, default='/Users/stephane/Dropbox/Work/Codes/data/2017-06-custom-intent-engines')
     parser.add_argument('--outdir' , type=str, default='./data/')
-    parser.add_argument('--samples_per_class' , type=int, default=100)
+    parser.add_argument('-spi', '--samples_per_intent' , type=int, default=100)
     parser.add_argument('--augmented' , type=int, default=1)
     parser.add_argument('--convert_to' , type=str, default='csv')
     parser.add_argument('--remove_punctuation' , type=int, default=1)
@@ -186,7 +186,7 @@ if __name__ == '__main__':
         os.mkdir(args.outdir)
 
     if args.convert_to == 'csv':
-        json2csv(args.datadir, args.outdir, args.samples_per_class)
+        json2csv(args.datadir, args.outdir, args.samples_per_intent)
     if args.convert_to == 'json':
         csv2json(args.datadir, args.outdir, args.augmented)
     
