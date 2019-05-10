@@ -26,7 +26,7 @@ def idx2word(idx, i2w, pad_idx):
 
     return sent_str
 
-def surface_realisation(idx, i2w, pad_idx, slotdic_path='./data/train_slot_values'):
+def surface_realisation(idx, i2w, pad_idx, slotdic_path='./data/snips/train_slot_values.pkl'):
 
     with open(slotdic_path, 'rb') as f:
         slotdic = pickle.load(f)

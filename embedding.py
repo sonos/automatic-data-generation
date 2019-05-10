@@ -53,7 +53,7 @@ class Datasets():
         self.DELEX = DELEX
         self.INTENT = INTENT
     
-    def embed_slots(self, averaging='micro', slotdic_path='./data/train_slot_values.pkl'):
+    def embed_slots(self, averaging='micro', slotdic_path='./data/snips/train_slot_values.pkl'):
         '''
         Create embeddings for the slots
         '''
