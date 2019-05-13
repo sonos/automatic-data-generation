@@ -57,3 +57,13 @@ def surface_realisation(idx, i2w, pad_idx, slotdic_path='./data/snips/train_slot
                 utterances[isent] += word + " "
 
     return labellings, utterances
+
+
+def interpolate(start, end, steps):
+
+    interpolation = np.zeros((start.shape[0], steps + 2))
+
+    for dim, (s,e) in enumerate(zip(start,end)):
+        interpolation[dim] = np.linspace(s,e,steps+2)
+
+    return interpolation.T

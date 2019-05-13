@@ -7,6 +7,18 @@ from nltk import word_tokenize
 
 remove_punctuation = True
 
+def iso2utf(datadir, outdir):
+
+    for split in ['train', 'validate']:
+        csvname = os.path.join(datadir, split)
+        output_csv = open(csvname+'_converted.csv', 'w', encoding='utf-8')
+        csv_writer = csv.writer(output_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        with open(csvname+'.csv', 'r', encoding='ISO-8859-1') as input_csv:
+            reader = csv.reader(input_csv)
+            for irow, row in enumerate(reader):
+                csv_writer.writerow(row)
+            
+
 def json2csv(datadir, outdir, samples_per_intent):
     
     print('Starting json2csv conversion...')
@@ -189,4 +201,6 @@ if __name__ == '__main__':
         json2csv(args.datadir, args.outdir, args.samples_per_intent)
     if args.convert_to == 'json':
         csv2json(args.datadir, args.outdir, args.augmented)
+    if args.convert_to == 'utf':
+        iso2utf(args.datadir, args.outdir)
     

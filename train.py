@@ -25,10 +25,10 @@ def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1, m1):
     NLL_loss = NLL(logp, target)
 
     # KL Divergence
-    KL_loss = -0.5 * torch.sum(1 + logv - mean.pow(2) - logv.exp())
+    KL_losses = -0.5 * torch.sum((1 + logv - mean.pow(2) - logv.exp()), dim=0)
     KL_weight = anneal_fn(anneal_function, step, k1, x1, m1)
 
-    return NLL_loss, KL_loss, KL_weight
+    return NLL_loss, KL_losses, KL_weight
 
 def loss_labels(logc, target, anneal_function, step, k2, x2, m2):
     
@@ -59,6 +59,7 @@ def train(model, datasets, args):
         NLL_tr_loss = 0.0
         KL_tr_loss = 0.0
         NMI_tr = 0.0
+        n_correct_tr = 0.0
         acc_tr = 0.0
         
         model.train() # turn on training mode
@@ -67,7 +68,7 @@ def train(model, datasets, args):
             opt.zero_grad()
 
             x = getattr(batch, args.input_type)
-            y = batch.intent.squeeze()
+            y = batch.intent.squeeze() #torch.ones_like(batch.intent) #
             x, y = to_device(x), to_device(y)
             
             logp, mean, logv, logc, z = model(x)
@@ -87,10 +88,11 @@ def train(model, datasets, args):
                 print('\n')
             
             # loss calculation
-            NLL_loss, KL_loss, KL_weight = loss_fn(logp, x, mean, logv,
+            NLL_loss, KL_losses, KL_weight = loss_fn(logp, x, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
-            NLL_hist.append(NLL_loss/args.batch_size)
-            KL_hist.append(KL_loss/args.batch_size)
+            KL_loss = torch.sum(KL_losses)
+            NLL_hist.append(NLL_loss.detach().numpy()/args.batch_size)
+            KL_hist.append(KL_losses.detach().numpy()/args.batch_size)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.supervised:
@@ -102,8 +104,8 @@ def train(model, datasets, args):
                 loss += entropy
 
             pred_labels = logc.data.max(1)[1].long()
-            acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
-            acc_hist.append(acc)
+            n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
+            acc_hist.append(n_correct/args.batch_size)
             NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
             NMI_hist.append(NMI)                
                 
@@ -114,18 +116,20 @@ def train(model, datasets, args):
             NLL_tr_loss += NLL_loss.item()
             KL_tr_loss += KL_loss.item()
             NMI_tr += NMI
-            acc_tr += acc.item()
+            n_correct_tr += n_correct
 
         tr_loss     = tr_loss / len(datasets.train)
         NLL_tr_loss = NLL_tr_loss / len(datasets.train)
         KL_tr_loss  = KL_tr_loss / len(datasets.train)
         NMI_tr = NMI_tr / len(datasets.train)
-
+        acc_tr = n_correct_tr / len(datasets.train)
+        
         # calculate the validation loss for this epoch
         val_loss = 0.0
         NLL_val_loss = 0.0
         KL_val_loss = 0.0
         NMI_val = 0.0
+        n_correct_val = 0.0
         acc_val = 0.0
         
         model.eval() # turn on evaluation mode
@@ -138,9 +142,10 @@ def train(model, datasets, args):
             c = torch.exp(logc)
             
             # loss calculation
-            NLL_loss, KL_loss, KL_weight = loss_fn(logp, x, mean, logv,
+            NLL_loss, KL_losses, KL_weight = loss_fn(logp, x, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
 
+            KL_loss = torch.sum(KL_losses)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.supervised:
@@ -149,22 +154,23 @@ def train(model, datasets, args):
                 loss += label_weight * label_loss
             else:
                 entropy = torch.sum(c * torch.log(model.n_classes * c))
-                loss += entropy
+                #loss += entropy
 
             pred_labels = logc.data.max(1)[1].long()             
-            acc = pred_labels.eq(y.data).cpu().sum().float()/args.batch_size
+            n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
             NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), c.cpu().max(1)[1].numpy())
 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
             KL_val_loss += KL_loss.item()
             NMI_val += NMI
-            acc_val += acc.item()
+            n_correct_val += n_correct
             
         val_loss     = val_loss / len(datasets.valid)
         NLL_val_loss = NLL_val_loss / len(datasets.valid)
         KL_val_loss  = KL_val_loss / len(datasets.valid)
         NMI_val = NMI_val / len(datasets.valid)
+        acc_val = n_correct_val / len(datasets.valid)
         
         print('Epoch {} : train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
         print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, acc_tr, NMI_tr))
@@ -275,13 +281,10 @@ if __name__ == '__main__':
         
     if args.load_model is not None:
         state_dict = torch.load(args.load_model)
-        print(state_dict['embedding.weight'].size(), model.embedding.weight.size())
         if state_dict['embedding.weight'].size(0) != model.embedding.weight.size(0): # vocab changed
             state_dict['embedding.weight'] = vocab.vectors
             state_dict['outputs2vocab.weight'] = torch.randn(len(i2w), args.hidden_size*model.hidden_factor)
             state_dict['outputs2vocab.bias'] = torch.randn(len(i2w))
-            
-            print(state_dict['embedding.weight'].size(), model.embedding.weight.size())
         model.load_state_dict(state_dict)
     else:
         model.embedding.weight.data.copy_(vocab.vectors)
@@ -306,8 +309,7 @@ if __name__ == '__main__':
         for i in range(args.n_generated):
             print('Intent : ', i2int[intent[i]])
             print('Delexicalised : ', delexicalised[i])
-        if args.input_type == 'delexicalised':
-            for i in range(args.n_generated):
+            if args.input_type == 'delexicalised':
                 print('Lexicalised : ', utterance[i] + '\n')
 
         run['generated'] = utterance
