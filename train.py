@@ -9,6 +9,8 @@ from utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from conversion import json2csv, csv2json
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+import copy
 
 def anneal_fn(anneal_function, step, k, x, m):
     if anneal_function == 'logistic':
@@ -91,8 +93,8 @@ def train(model, datasets, args):
             NLL_loss, KL_losses, KL_weight = loss_fn(logp, x, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
             KL_loss = torch.sum(KL_losses)
-            NLL_hist.append(NLL_loss.detach().numpy()/args.batch_size)
-            KL_hist.append(KL_losses.detach().numpy()/args.batch_size)
+            NLL_hist.append(NLL_loss.detach().cpu().numpy()/args.batch_size)
+            KL_hist.append(KL_losses.detach().cpu().numpy()/args.batch_size)
             loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.supervised:
@@ -301,18 +303,37 @@ if __name__ == '__main__':
         model.eval()
 
         samples, z, y_onehot = model.inference(n=args.n_generated)
-        intent = y_onehot.data.max(1)[1].cpu().numpy()
-        delexicalised = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
+        intents = y_onehot.data.max(1)[1].cpu().numpy()
+        sentences = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
+
+        generated = {'samples':samples, 'intents':[i2int[intent] for intent in intents], 'sentences':sentences}
         if args.input_type == 'delexicalised':
-            labelling, utterance = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
+            delexicalised = copy.deepcopy(sentences)
+            labellings, sentences = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
+            generated['delexicalised']=delexicalised
+
         print('----------GENERATED----------')
         for i in range(args.n_generated):
-            print('Intent : ', i2int[intent[i]])
-            print('Delexicalised : ', delexicalised[i])
+            print('Intents   : ', i2int[intents[i]])
             if args.input_type == 'delexicalised':
-                print('Lexicalised : ', utterance[i] + '\n')
+                print('Delexicalised : ', delexicalised[i])
+            print('Sentences : ', sentences[i]+'\n')
 
-        run['generated'] = utterance
+        bleu_scores = {}
+        cc =SmoothingFunction()
+        references = {intent:[] for intent in range(model.n_classes)}
+        candidates = {intent:[] for intent in range(model.n_classes)}
+        for example in datasets.train:
+            references[int2i[example.intent]].append(example.utterance)
+        for i, example in enumerate(sentences):
+            candidates[intents[i]].append(datasets.tokenize(example))
+            
+        for intent in range(model.n_classes):
+            bleu_scores[i2int[intent]] = np.mean([sentence_bleu(references[intent], candidate, weights=[1, 0, 0, 0], smoothing_function=cc.method1) for candidate in candidates[intent]])
+        print(bleu_scores)
+        
+        run['generated'] = generated
+        run['bleu_scores'] = bleu_scores
         
         augmented_path = train_path.replace('.csv', '_augmented.csv')
         print('Dumping augmented dataset at %s' %augmented_path)
@@ -320,8 +341,8 @@ if __name__ == '__main__':
         copyfile(train_path, augmented_path)
         csvfile    = open(augmented_path, 'a')
         csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for u, l, d, i in zip(utterance, labelling, delexicalised, intent):
-            csv_writer.writerow([u, l, d, i2int[i]])
+        for s, l, d, i in zip(sentences, labellings, delexicalised, intents):
+            csv_writer.writerow([s, l, d, i2int[i]])
 
         if args.benchmark:
             from snips_nlu import SnipsNLUEngine
@@ -360,6 +381,7 @@ if __name__ == '__main__':
             print('Improvement metrics : intent {:.4f} slot {:.4f} total {:.4f}'.format(intent_improvement, slot_improvement, score))
 
             run['metrics'] = {'raw':raw_metrics['average_metrics'], 'augmented':augmented_metrics['average_metrics'], 'improvement':{'intent':intent_improvement, 'slot':slot_improvement, 'score':score}}
+
 
     run['i2w'] = i2w
     run['w2i'] = w2i
