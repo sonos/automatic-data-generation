@@ -1,22 +1,37 @@
+# import spacy
+import nltk
 from nltk import word_tokenize
+from nltk.stem import WordNetLemmatizer, PorterStemmer
 import torchtext
 from torchtext.data import Iterator, BucketIterator
 import pickle
 import torch
-import spacy
+
+
 
 class Datasets():
     
-    def __init__(self, train_path='train.csv', valid_path='validate.csv', emb_dim=100, tokenizer='split'):
+    def __init__(self, train_path='train.csv', valid_path='validate.csv', emb_dim=100, tokenizer='split', preprocess='stem'):
     
         if tokenizer == 'spacy':
             from spacy.symbols import ORTH
             my_tok = spacy.load('en')
             my_tok.tokenizer.add_sp
             def tokenize(x):
-                return [tok.text for tok in my_tok.tokenizer(x)]
+            #     return [tok.text for tok in my_tok.tokenizer(x)]
+                return [tok.lemma_ for tok in my_tok.tokenizer(x)]
+
         elif tokenizer=='nltk':
-            tokenize = word_tokenize
+            def tokenize(x):
+                if preprocess == 'stem':
+                    stemmer = PorterStemmer()
+                    return [stemmer.stem(tok) for tok in word_tokenize(x)]
+                elif preprecess == 'lemmatize':
+                    lemmatizer = WordNetLemmatizer()
+                    return [lemmatizer.lemmatize(tok) for tok in word_tokenize(x)]
+                elif preprocess == 'none':
+                    return word_tokenize(x)
+
         elif tokenizer=='split':
             tokenize = lambda s : s.split(" ")
 
@@ -102,3 +117,21 @@ class Datasets():
         )
 
         return train_iter, valid_iter
+
+    def embed_unks(self, vocab, init="randn", num_special_toks=2):
+        emb_vectors = vocab.vectors
+        sweep_range = len(vocab)
+        running_norm = 0.
+        num_non_zero = 0
+        total_words = 0
+        for i in range(num_special_toks, sweep_range):
+            if len(emb_vectors[i].nonzero()) == 0:
+                # std = 0.05 is based on the norm of average GloVE 100-dim word vectors
+                if init == "randn":
+                    torch.nn.init.normal_(emb_vectors[i], mean=0, std=0.05)
+            else:
+                num_non_zero += 1
+                running_norm += torch.norm(emb_vectors[i])
+            total_words += 1
+        print("average GloVE norm is {}, number of known words are {}, total number of words are {}"
+              .format(running_norm / num_non_zero, num_non_zero, total_words))

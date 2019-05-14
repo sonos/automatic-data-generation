@@ -243,10 +243,6 @@ if __name__ == '__main__':
     train_path = os.path.join(datadir, 'train.csv')
     validate_path = os.path.join(datadir, 'validate.csv')
     datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
-
-    if args.input_type=='delexicalised':
-        print('embedding the slots with %s averaging' %args.slot_averaging)
-        datasets.embed_slots(args.slot_averaging)
     
     vocab = datasets.TEXT.vocab if args.input_type=='utterance' else datasets.DELEX.vocab
     i2w = vocab.itos
@@ -259,6 +255,11 @@ if __name__ == '__main__':
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
     
+    # if args.input_type=='delexicalised':
+    #     print('embedding the slots with %s averaging' %args.slot_averaging)
+    #     datasets.embed_slots(args.slot_averaging)
+    print('embedding unknown words with random initialization')
+    datasets.embed_unks(vocab, num_special_toks=4)
     
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 
@@ -327,27 +328,34 @@ if __name__ == '__main__':
             references[int2i[example.intent]].append(example.utterance)
         for i, example in enumerate(sentences):
             candidates[intents[i]].append(datasets.tokenize(example))
-            
         for intent in range(model.n_classes):
             bleu_scores[i2int[intent]] = np.mean([sentence_bleu(references[intent], candidate, weights=[1, 0, 0, 0], smoothing_function=cc.method1) for candidate in candidates[intent]])
-        print(bleu_scores)
+        avg_bleu_score = np.mean([bleu_score for bleu_score in bleu_scores.values()])
+        print('BLEU scores : ', bleu_scores)
+        print('Average BLEU : ', avg_bleu_score)
+        bleu_scores['average'] = avg_bleu_score
+
+        tokens = np.concatenate([datasets.tokenize(sentence) for sentence in sentences])
+        diversity = len(set(tokens))/float(len(tokens))
+        print('Diversity : ', diversity)
         
         run['generated'] = generated
         run['bleu_scores'] = bleu_scores
-        
-        augmented_path = train_path.replace('.csv', '_augmented.csv')
-        print('Dumping augmented dataset at %s' %augmented_path)
-        from shutil import copyfile
-        copyfile(train_path, augmented_path)
-        csvfile    = open(augmented_path, 'a')
-        csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for s, l, d, i in zip(sentences, labellings, delexicalised, intents):
-            csv_writer.writerow([s, l, d, i2int[i]])
+        run['diversity'] = diversity
 
         if args.benchmark:
             from snips_nlu import SnipsNLUEngine
             from snips_nlu_metrics import compute_train_test_metrics
 
+            augmented_path = train_path.replace('.csv', '_augmented.csv')
+            print('Dumping augmented dataset at %s' %augmented_path)
+            from shutil import copyfile
+            copyfile(train_path, augmented_path)
+            csvfile    = open(augmented_path, 'a')
+            csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            for s, l, d, i in zip(sentences, labellings, delexicalised, intents):
+                csv_writer.writerow([s, l, d, i2int[i]])
+            
             csv2json(datadir, datadir, augmented=False)
             csv2json(datadir, datadir, augmented=True)
 
