@@ -18,7 +18,16 @@ def anneal_fn(anneal_function, step, k, x, m):
     elif anneal_function == 'linear':
         return m*min(1, step/x)
     
-def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1, m1):
+def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
+
+    batch_size = target.size(1)
+
+    # Bag of words
+    bow.view(batch_size,-1)
+    target.view(batch_size,-1)
+    BOW_loss = 0
+    for b,t in zip(bow,target):
+        BOW_loss -= torch.sum(b[t])
     
     target = target.view(-1)
     logp = logp.view(-1, logp.size(2))
@@ -29,8 +38,8 @@ def loss_fn(logp, target, mean, logv, anneal_function, step, k1, x1, m1):
     # KL Divergence
     KL_losses = -0.5 * torch.sum((1 + logv - mean.pow(2) - logv.exp()), dim=0)
     KL_weight = anneal_fn(anneal_function, step, k1, x1, m1)
-
-    return NLL_loss, KL_losses, KL_weight
+    
+    return NLL_loss, KL_losses, KL_weight, BOW_loss
 
 def loss_labels(logc, target, anneal_function, step, k2, x2, m2):
     
@@ -45,12 +54,19 @@ def train(model, datasets, args):
     
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
-    opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    opt = torch.optim.Adam([
+        {"params": model.encoder_rnn.parameters(), "lr": args.learning_rate},
+        {"params": model.hidden2mean.parameters(), "lr": args.learning_rate},
+        {"params": model.hidden2logv.parameters(), "lr": args.learning_rate},
+        {"params": model.hidden2cat.parameters(),  "lr": args.learning_rate},
+        {"params": model.latent2hidden.parameters(), "lr": args.learning_rate},
+        {"params": model.outputs2vocab.parameters(), "lr": args.learning_rate}])
 
     step = 0
 
     NLL_hist = []
     KL_hist = []
+    BOW_hist = []
     NMI_hist = []
     acc_hist = []
     
@@ -60,6 +76,7 @@ def train(model, datasets, args):
         tr_loss = 0.0
         NLL_tr_loss = 0.0
         KL_tr_loss = 0.0
+        BOW_tr_loss = 0.0
         NMI_tr = 0.0
         n_correct_tr = 0.0
         acc_tr = 0.0
@@ -68,14 +85,16 @@ def train(model, datasets, args):
         for batch in tqdm(train_iter): 
             step += 1
             opt.zero_grad()
+            # model.word_dropout_rate =  anneal_fn(args.anneal_function, step, args.k3, args.x3, args.m3)
 
             x = getattr(batch, args.input_type)
             y = batch.intent.squeeze() #torch.ones_like(batch.intent) #
             x, y = to_device(x), to_device(y)
             
-            logp, mean, logv, logc, z = model(x)
-            for i,intent in enumerate(y):
-                latent_rep[int(intent)].append(z[i].cpu().detach().numpy())
+            logp, mean, logv, logc, z, bow = model(x)
+            if epoch == args.epochs:
+                for i,intent in enumerate(y):
+                    latent_rep[int(intent)].append(z[i].cpu().detach().numpy())
             c = torch.exp(logc)
 
             # to inspect input and output
@@ -90,12 +109,13 @@ def train(model, datasets, args):
                 print('\n')
             
             # loss calculation
-            NLL_loss, KL_losses, KL_weight = loss_fn(logp, x, mean, logv,
+            NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
             KL_loss = torch.sum(KL_losses)
             NLL_hist.append(NLL_loss.detach().cpu().numpy()/args.batch_size)
             KL_hist.append(KL_losses.detach().cpu().numpy()/args.batch_size)
-            loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
+            BOW_hist.append(BOW_loss.detach().cpu().numpy()/args.batch_size)
+            loss = (NLL_loss + KL_weight * KL_loss + BOW_loss) #/args.batch_size
 
             if args.supervised:
                 label_loss, label_weight = loss_labels(logc, y,
@@ -117,12 +137,14 @@ def train(model, datasets, args):
             tr_loss += loss.item()
             NLL_tr_loss += NLL_loss.item()
             KL_tr_loss += KL_loss.item()
+            BOW_tr_loss += BOW_loss.item()
             NMI_tr += NMI
             n_correct_tr += n_correct
 
         tr_loss     = tr_loss / len(datasets.train)
         NLL_tr_loss = NLL_tr_loss / len(datasets.train)
         KL_tr_loss  = KL_tr_loss / len(datasets.train)
+        BOW_tr_loss  = BOW_tr_loss / len(datasets.train)
         NMI_tr = NMI_tr / len(datasets.train)
         acc_tr = n_correct_tr / len(datasets.train)
         
@@ -130,6 +152,7 @@ def train(model, datasets, args):
         val_loss = 0.0
         NLL_val_loss = 0.0
         KL_val_loss = 0.0
+        BOW_val_loss = 0.0
         NMI_val = 0.0
         n_correct_val = 0.0
         acc_val = 0.0
@@ -140,15 +163,15 @@ def train(model, datasets, args):
             y = batch.intent
             x, y = to_device(x), to_device(y) 
             
-            logp, mean, logv, logc, z = model(x)
+            logp, mean, logv, logc, z, bow = model(x)
             c = torch.exp(logc)
             
             # loss calculation
-            NLL_loss, KL_losses, KL_weight = loss_fn(logp, x, mean, logv,
+            NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
-
+            
             KL_loss = torch.sum(KL_losses)
-            loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
+            loss = (NLL_loss + KL_weight * KL_loss + BOW_loss) #/args.batch_size
 
             if args.supervised:
                 label_loss, label_weight = loss_labels(logc, y,
@@ -165,24 +188,28 @@ def train(model, datasets, args):
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
             KL_val_loss += KL_loss.item()
+            BOW_val_loss += BOW_loss.item()
             NMI_val += NMI
             n_correct_val += n_correct
             
         val_loss     = val_loss / len(datasets.valid)
         NLL_val_loss = NLL_val_loss / len(datasets.valid)
         KL_val_loss  = KL_val_loss / len(datasets.valid)
+        BOW_val_loss  = BOW_val_loss / len(datasets.valid)
         NMI_val = NMI_val / len(datasets.valid)
         acc_val = n_correct_val / len(datasets.valid)
         
         print('Epoch {} : train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
-        print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, acc_tr, NMI_tr))
-        print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, acc : {:.6f}, NMI : {:.6f}'.format(NLL_val_loss, KL_val_loss, acc_val, NMI_val))
+        print('Training   :  NLL loss : {:.6f}, KL loss : {:.6f}, BOW : {:.6f}, acc : {:.6f}'.format(NLL_tr_loss, KL_tr_loss, BOW_tr_loss, acc_tr))
+        print('Validation :  NLL loss : {:.6f}, KL loss : {:.6f}, BOW : {:.6f}, acc : {:.6f}'.format(NLL_val_loss, KL_val_loss, BOW_val_loss, acc_val))
 
     run['NLL_hist'] = NLL_hist
     run['KL_hist'] = KL_hist
     run['NMI_hist'] = NMI_hist
     run['acc_hist'] = acc_hist
     run['latent'] = latent_rep
+    run['mean'] = mean
+    run['logv'] = logv
 
     return
     
@@ -195,14 +222,14 @@ if __name__ == '__main__':
     parser.add_argument('--save_model', type=str, default='model.pyT')
     parser.add_argument('--pickle', type=str, default='run.pyT')
     parser.add_argument('-spi', '--samples_per_intent', type=int, default=1000)
-    parser.add_argument('--n_generated', type=int, default=100)
+    parser.add_argument('-ng', '--n_generated', type=int, default=100)
     parser.add_argument('--benchmark', action='store_true')
 
-    parser.add_argument('--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
+    parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--supervised', type=bool, default=True)
     parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
-    parser.add_argument('--max_sequence_length', type=int, default=8)
+    parser.add_argument('-msl', '--max_sequence_length', type=int, default=8)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
@@ -222,12 +249,15 @@ if __name__ == '__main__':
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k1', '--k1', type=float, default=0.005)
-    parser.add_argument('-x1', '--x1', type=int, default=100)
-    parser.add_argument('-k2', '--k2', type=float, default=0.005)
-    parser.add_argument('-x2', '--x2', type=int, default=50)
-    parser.add_argument('-m1', '--m1', type=float, default=1.)
-    parser.add_argument('-m2', '--m2', type=float, default=1.)
+    parser.add_argument('-k1', '--k1', type=float, default=0.005, help='anneal time for KL weight')
+    parser.add_argument('-x1', '--x1', type=int, default=100,     help='anneal rate for KL weight')
+    parser.add_argument('-m1', '--m1', type=float, default=1.,    help='final value for KL weight')
+    parser.add_argument('-k2', '--k2', type=float, default=0.005, help='anneal time for label weight')
+    parser.add_argument('-x2', '--x2', type=int, default=50,      help='anneal rate for label weight')
+    parser.add_argument('-m2', '--m2', type=float, default=1.,    help='final value for label weight')
+    # parser.add_argument('-k3', '--k3', type=float, default=0.005, help='anneal time for word dropout')
+    # parser.add_argument('-x3', '--x3', type=int, default=50,      help='anneal rate for word dropout')
+    # parser.add_argument('-m3', '--m3', type=float, default=1.,    help='final value for word dropout')
 
     run = {}
 
@@ -258,8 +288,8 @@ if __name__ == '__main__':
     # if args.input_type=='delexicalised':
     #     print('embedding the slots with %s averaging' %args.slot_averaging)
     #     datasets.embed_slots(args.slot_averaging)
-    print('embedding unknown words with random initialization')
-    datasets.embed_unks(vocab, num_special_toks=4)
+    #print('embedding unknown words with random initialization')
+    #datasets.embed_unks(vocab, num_special_toks=4)
     
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 

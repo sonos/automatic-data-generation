@@ -43,16 +43,18 @@ class CVAE(nn.Module):
             raise ValueError()
 
         self.encoder_rnn = rnn(embedding_size, hidden_size, num_layers=num_layers, bidirectional=self.bidirectional, batch_first=False)
-        self.decoder_rnn = rnn(embedding_size, hidden_size, num_layers=num_layers, bidirectional=self.bidirectional, batch_first=False)
+        # self.decoder_rnn = rnn(embedding_size, hidden_size, num_layers=num_layers, bidirectional=self.bidirectional, batch_first=False)
+        self.decoder_rnn = rnn(embedding_size, hidden_size, num_layers=num_layers, bidirectional=False, batch_first=False) # decoder should be unidirectional
 
         self.hidden_factor = (2 if bidirectional else 1) * num_layers
 
         self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, z_size)
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, z_size)
         self.hidden2cat  = nn.Linear(hidden_size * self.hidden_factor, n_classes)
-        self.latent2hidden = nn.Linear(self.latent_size, hidden_size * self.hidden_factor)
-        self.outputs2vocab = nn.Linear(hidden_size * (2 if bidirectional else 1), vocab_size)
-
+        self.latent2hidden = nn.Linear(self.latent_size, hidden_size * self.num_layers)# * self.hidden_factor)
+        self.latent2bow = nn.Linear(self.latent_size, vocab_size)
+        self.outputs2vocab = nn.Linear(hidden_size, vocab_size) # * (2 if bidirectional else 1), vocab_size)
+        
     def forward(self, input_sequence):
 
         batch_size = input_sequence.size(1)
@@ -85,7 +87,8 @@ class CVAE(nn.Module):
 
         if self.bidirectional or self.num_layers > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
+            hidden = hidden.view(self.num_layers, batch_size, self.hidden_size)
+            # hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
         else:
             hidden = hidden.unsqueeze(0)
 
@@ -117,7 +120,9 @@ class CVAE(nn.Module):
         logp = nn.functional.log_softmax(logits/self.temperature, dim=0)
         logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
-        return logp, mean, logv, logc, z
+        bow = nn.functional.log_softmax(self.latent2bow(latent), dim=0)
+        
+        return logp, mean, logv, logc, z, bow
 
 
     def inference(self, n=10, z=None, y_onehot=None, temperature=0):
@@ -140,7 +145,8 @@ class CVAE(nn.Module):
 
         if self.bidirectional or self.num_layers > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
+            hidden = hidden.view(self.num_layers, batch_size, self.hidden_size)
+            # hidden = hidden.view(self.hidden_factor, batch_size, self.hidden_size)
         else:
             hidden = hidden.unsqueeze(0)
 
