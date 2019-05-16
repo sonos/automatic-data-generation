@@ -45,6 +45,8 @@ class Datasets():
             datafields = [(" ", None), ("utterance", TEXT), (" ", None), ("intent",  INTENT)]
         elif 'sentiment' in train_path:
             datafields = [("intent", INTENT), ("", None), ("", None), ("", None), ("", None), ("utterance", TEXT)]
+        elif 'yelp' in train_path:
+            datafields = [("", None), ("", None), ("", None), ("intent", INTENT), ("", None), ("utterance", TEXT), ("", None), ("", None), ("", None)]
         elif 'spam' in train_path:
             datafields = [("utterance", TEXT), ("intent", INTENT)]
 

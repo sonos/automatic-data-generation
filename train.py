@@ -223,7 +223,7 @@ def train(model, datasets, args):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'atis', 'sentiment', 'spam'])
+    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'atis', 'sentiment', 'spam', 'yelp'])
     # parser.add_argument('--train_path', type=str, default='./data/snips/train.csv')
     # parser.add_argument('--validate_path', type=str, default='./data/snips/validate.csv')
     parser.add_argument('--load_model', type=str, default=None)
