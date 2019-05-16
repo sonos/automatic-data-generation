@@ -1,18 +1,15 @@
 # import spacy
-from nltk import word_tokenize
-from nltk.stem import WordNetLemmatizer, PorterStemmer
 import torchtext
 from torchtext.data import Iterator, BucketIterator
 import pickle
 import torch
-
-
 
 class Datasets():
     
     def __init__(self, train_path='train.csv', valid_path='validate.csv', emb_dim=100, tokenizer='split', preprocess='none'):
     
         if tokenizer == 'spacy':
+            import spacy
             from spacy.symbols import ORTH
             my_tok = spacy.load('en')
             my_tok.tokenizer.add_sp
@@ -21,6 +18,8 @@ class Datasets():
                 return [tok.lemma_ for tok in my_tok.tokenizer(x)]
 
         elif tokenizer=='nltk':
+            from nltk import word_tokenize
+            from nltk.stem import WordNetLemmatizer, PorterStemmer
             def tokenize(x):
                 if preprocess == 'stem':
                     stemmer = PorterStemmer()
@@ -57,8 +56,8 @@ class Datasets():
                        skip_header=True, # if your csv header has a header, make sure to pass this to ensure it doesn't get proceesed as data!
                        fields=datafields,)
 
-        TEXT.build_vocab(train, max_size=5000, vectors="glove.6B.{}d".format(emb_dim))
-        DELEX.build_vocab(train, max_size=5000, vectors="glove.6B.{}d".format(emb_dim))
+        TEXT.build_vocab(train, max_size=10000, vectors="glove.6B.{}d".format(emb_dim))
+        DELEX.build_vocab(train, max_size=10000, vectors="glove.6B.{}d".format(emb_dim))
         INTENT.build_vocab(train)
         
         self.train = train

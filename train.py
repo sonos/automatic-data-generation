@@ -24,11 +24,9 @@ def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
 
     # Bag of words
     bow.view(batch_size,-1)
-    target.view(batch_size,-1)
-    BOW_loss = 0
-    for b,t in zip(bow,target):
-        BOW_loss -= torch.sum(b[t])
-    
+    target = target.view(batch_size,-1)
+    BOW_loss = - torch.einsum('iik->', bow[:,target])
+
     target = target.view(-1)
     logp = logp.view(-1, logp.size(2))
     
@@ -54,13 +52,15 @@ def train(model, datasets, args):
     
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
     
-    opt = torch.optim.Adam([
-        {"params": model.encoder_rnn.parameters(), "lr": args.learning_rate},
-        {"params": model.hidden2mean.parameters(), "lr": args.learning_rate},
-        {"params": model.hidden2logv.parameters(), "lr": args.learning_rate},
-        {"params": model.hidden2cat.parameters(),  "lr": args.learning_rate},
-        {"params": model.latent2hidden.parameters(), "lr": args.learning_rate},
-        {"params": model.outputs2vocab.parameters(), "lr": args.learning_rate}])
+    opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    # opt = torch.optim.Adam([
+    #     {"params": model.encoder_rnn.parameters(), "lr": args.learning_rate},
+    #     {"params": model.hidden2mean.parameters(), "lr": args.learning_rate},
+    #     {"params": model.hidden2logv.parameters(), "lr": args.learning_rate},
+    #     {"params": model.hidden2cat.parameters(),  "lr": args.learning_rate},
+    #     {"params": model.latent2hidden.parameters(), "lr": args.learning_rate},
+    #     {"params": model.latent2bow.parameters(), "lr": args.learning_rate},
+    #     {"params": model.outputs2vocab.parameters(), "lr": args.learning_rate}])
 
     step = 0
 
@@ -132,6 +132,10 @@ def train(model, datasets, args):
             NMI_hist.append(NMI)                
                 
             loss.backward()
+            # for p in model.parameters():
+            #     p.register_hook(lambda grad: torch.clamp(grad, -1, 1))
+            # torch.nn.utils.clip_grad_value_(model.parameters(), clip_value=1)
+            # torch.nn.utils.clip_grad_norm(model.parameters(), clipping_value=1)
             opt.step()
 
             tr_loss += loss.item()
@@ -288,8 +292,8 @@ if __name__ == '__main__':
     # if args.input_type=='delexicalised':
     #     print('embedding the slots with %s averaging' %args.slot_averaging)
     #     datasets.embed_slots(args.slot_averaging)
-    #print('embedding unknown words with random initialization')
-    #datasets.embed_unks(vocab, num_special_toks=4)
+    print('embedding unknown words with random initialization')
+    datasets.embed_unks(vocab, num_special_toks=4)
     
     NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
 

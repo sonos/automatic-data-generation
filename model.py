@@ -52,7 +52,11 @@ class CVAE(nn.Module):
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, z_size)
         self.hidden2cat  = nn.Linear(hidden_size * self.hidden_factor, n_classes)
         self.latent2hidden = nn.Linear(self.latent_size, hidden_size * self.num_layers)# * self.hidden_factor)
-        self.latent2bow = nn.Linear(self.latent_size, vocab_size)
+        self.latent2bow = nn.Sequential(
+            nn.Linear(self.latent_size, int((self.latent_size+vocab_size)/2)),
+            nn.Tanh(),
+            nn.Linear(int((self.latent_size+vocab_size)/2), vocab_size)
+            )
         self.outputs2vocab = nn.Linear(hidden_size, vocab_size) # * (2 if bidirectional else 1), vocab_size)
         
     def forward(self, input_sequence):
