@@ -115,7 +115,9 @@ def train(model, datasets, args):
             NLL_hist.append(NLL_loss.detach().cpu().numpy()/args.batch_size)
             KL_hist.append(KL_losses.detach().cpu().numpy()/args.batch_size)
             BOW_hist.append(BOW_loss.detach().cpu().numpy()/args.batch_size)
-            loss = (NLL_loss + KL_weight * KL_loss + BOW_loss) #/args.batch_size
+            loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
+            if args.bow_loss:
+                loss+BOW_loss
 
             if args.supervised:
                 label_loss, label_weight = loss_labels(logc, y,
@@ -175,7 +177,9 @@ def train(model, datasets, args):
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
             
             KL_loss = torch.sum(KL_losses)
-            loss = (NLL_loss + KL_weight * KL_loss + BOW_loss) #/args.batch_size
+            loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
+            if args.bow_loss:
+                loss+BOW_loss
 
             if args.supervised:
                 label_loss, label_weight = loss_labels(logc, y,
@@ -237,7 +241,8 @@ if __name__ == '__main__':
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
-
+    parser.add_argument('--bow_loss', type=bool, default=False)
+    
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=64)
     parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
