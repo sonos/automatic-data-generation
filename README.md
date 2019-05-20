@@ -1,6 +1,6 @@
 # automatic-data-generation
 
-Automatic data generation implemented by Stéphane during internship at Snips
+Automatic data generation implemented by Stéphane during his internship at Snips
 
 To converts Snips JSON formatted data to various formats useful to us:
 `python conversion.py`
