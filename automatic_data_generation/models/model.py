@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.nn.utils.rnn as rnn_utils
-from utils import to_device
+from automatic_data_generation.utils.utils import to_device
 
 
 class CVAE(nn.Module):

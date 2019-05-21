@@ -1,9 +1,12 @@
+import argparse
+
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from embedding import Datasets
 from tqdm import tqdm
-import argparse
+
+from automatic_data_generation.models.embedding import Datasets
+
 
 def intent_classification(emb_dim=100, rnn_type='GRU'):
 

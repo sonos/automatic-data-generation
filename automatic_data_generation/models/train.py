@@ -1,14 +1,14 @@
 import numpy as np
-from embedding import Datasets
-from model import CVAE
+from automatic_data_generation.models.embedding import Datasets
+from automatic_data_generation.models.model import CVAE
 from tqdm import tqdm
 import argparse
 import os
 import torch
-from utils import to_device, idx2word, surface_realisation
+from automatic_data_generation.utils.utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
 import csv
-from conversion import json2csv, csv2json
+from automatic_data_generation.utils.conversion import csv2json
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 import copy
 

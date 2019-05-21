@@ -4,10 +4,10 @@ from torchtext.data import Iterator, BucketIterator
 import pickle
 import torch
 
+
 class Datasets():
-    
     def __init__(self, train_path='train.csv', valid_path='validate.csv', emb_dim=100, tokenizer='split', preprocess='none'):
-    
+
         if tokenizer == 'spacy':
             import spacy
             from spacy.symbols import ORTH
@@ -50,7 +50,7 @@ class Datasets():
         elif 'spam' in train_path:
             datafields = [("utterance", TEXT), ("intent", INTENT)]
 
-            
+
         train, valid = torchtext.data.TabularDataset.splits(
                        path='.', # the root directory where the data lies
                        train=train_path, validation=valid_path,
@@ -61,13 +61,13 @@ class Datasets():
         TEXT.build_vocab(train, max_size=10000, vectors="glove.6B.{}d".format(emb_dim))
         DELEX.build_vocab(train, max_size=10000, vectors="glove.6B.{}d".format(emb_dim))
         INTENT.build_vocab(train)
-        
+
         self.train = train
         self.valid = valid
         self.TEXT = TEXT
         self.DELEX = DELEX
         self.INTENT = INTENT
-    
+
     def embed_slots(self, averaging='micro', slotdic_path='./data/snips/train_slot_values.pkl'):
         '''
         Create embeddings for the slots
@@ -91,7 +91,7 @@ class Datasets():
                         for word in self.tokenize(slot_value):
                             if self.TEXT.vocab.stoi[word] != '<unk>' :
                                 new_vectors.append(self.TEXT.vocab.vectors[self.TEXT.vocab.stoi[word]])
-                    new_vector = torch.mean(torch.stack(new_vectors))   
+                    new_vector = torch.mean(torch.stack(new_vectors))
 
                 elif averaging == 'macro':
                     for slot_value in slot_values:
@@ -105,7 +105,7 @@ class Datasets():
                 self.DELEX.vocab.vectors[self.DELEX.vocab.stoi[token]] = new_vector
 
     def get_iterators(self, batch_size=64):
-    
+
         # make iterator for splits
         train_iter, valid_iter = BucketIterator.splits(
             (self.train, self.valid), # we pass in the datasets we want the iterator to draw data from
