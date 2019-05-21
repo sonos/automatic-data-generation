@@ -3,10 +3,12 @@ import numpy as np
 import random
 import pickle
 
+
 def to_device(x, volatile=False):
     if torch.cuda.is_available():
         x = x.cuda()
     return x
+
 
 def idx2word(idx, i2w, pad_idx):
 
@@ -26,7 +28,9 @@ def idx2word(idx, i2w, pad_idx):
 
     return sent_str
 
-def surface_realisation(idx, i2w, pad_idx, slotdic_path='./data/snips/train_slot_values.pkl'):
+
+def surface_realisation(idx, i2w, pad_idx,
+                        slotdic_path='./data/snips/train_slot_values.pkl'):
 
     with open(slotdic_path, 'rb') as f:
         slotdic = pickle.load(f)

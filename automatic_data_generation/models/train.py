@@ -12,12 +12,14 @@ from automatic_data_generation.utils.conversion import csv2json
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 import copy
 
+
 def anneal_fn(anneal_function, step, k, x, m):
     if anneal_function == 'logistic':
         return m*float(1/(1+np.exp(-k*(step-x))))
     elif anneal_function == 'linear':
         return m*min(1, step/x)
-    
+
+
 def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
 
     batch_size = target.size(1)
@@ -38,6 +40,7 @@ def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
     KL_weight = anneal_fn(anneal_function, step, k1, x1, m1)
     
     return NLL_loss, KL_losses, KL_weight, BOW_loss
+
 
 def loss_labels(logc, target, anneal_function, step, k2, x2, m2):
     
