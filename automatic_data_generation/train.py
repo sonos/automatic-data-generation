@@ -1,6 +1,6 @@
 import numpy as np
 from automatic_data_generation.models.embedding import Datasets
-from automatic_data_generation.models.model import CVAE
+from automatic_data_generation.models.cvae import CVAE
 from tqdm import tqdm
 import argparse
 import os
