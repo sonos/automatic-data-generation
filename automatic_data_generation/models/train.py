@@ -1,23 +1,25 @@
 import numpy as np
-from embedding import Datasets
-from model import CVAE
+from automatic_data_generation.models.embedding import Datasets
+from automatic_data_generation.models.model import CVAE
 from tqdm import tqdm
 import argparse
 import os
 import torch
-from utils import to_device, idx2word, surface_realisation
+from automatic_data_generation.utils.utils import to_device, idx2word, surface_realisation
 from sklearn.metrics import normalized_mutual_info_score
 import csv
-from conversion import json2csv, csv2json
+from automatic_data_generation.utils.conversion import csv2json
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 import copy
+
 
 def anneal_fn(anneal_function, step, k, x, m):
     if anneal_function == 'logistic':
         return m*float(1/(1+np.exp(-k*(step-x))))
     elif anneal_function == 'linear':
         return m*min(1, step/x)
-    
+
+
 def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
 
     batch_size = target.size(1)
@@ -38,6 +40,7 @@ def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
     KL_weight = anneal_fn(anneal_function, step, k1, x1, m1)
     
     return NLL_loss, KL_losses, KL_weight, BOW_loss
+
 
 def loss_labels(logc, target, anneal_function, step, k2, x2, m2):
     

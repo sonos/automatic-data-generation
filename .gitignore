@@ -1,3 +1,6 @@
 .ipynb_checkpoints
 *.txt
 *.json
+.idea/*
+venv*
+*egg-info/*
