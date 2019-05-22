@@ -175,8 +175,10 @@ def train(model, datasets, args):
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
             x = getattr(batch, args.input_type)
-            y = batch.intent
-            x, y = to_device(x), to_device(y) 
+            x = to_device(x)
+            if args.conditional != 'none':
+                y = batch.intent.squeeze()
+                y = to_device(x)
             
             logp, mean, logv, logc, z, bow = model(x)
             
@@ -237,7 +239,7 @@ def train(model, datasets, args):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'atis', 'sentiment', 'spam', 'yelp'])
+    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'atis', 'sentiment', 'spam', 'yelp', 'penn-tree-bank'])
     # parser.add_argument('--train_path', type=str, default='./data/snips/train.csv')
     # parser.add_argument('--validate_path', type=str, default='./data/snips/validate.csv')
     parser.add_argument('--load_model', type=str, default=None)
