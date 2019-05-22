@@ -50,6 +50,7 @@ class Datasets():
         INTENT = torchtext.data.Field(sequential=False, batch_first=True,
                                       unk_token=None)
 
+        skip_header = True
         if 'snips' in train_path:
             datafields = [("utterance", TEXT), ("labels", None),
                           ("delexicalised", DELEX), ("intent", INTENT)]
@@ -65,6 +66,9 @@ class Datasets():
                           ("", None), ("", None), ("", None)]
         elif 'spam' in train_path:
             datafields = [("utterance", TEXT), ("intent", INTENT)]
+        elif 'bank' in train_path:
+            datafields = [("utterance", TEXT)]
+            skip_header = False
         else:
             raise ValueError("Unkown dataset")
 
@@ -73,7 +77,7 @@ class Datasets():
             train=train_path,
             validation=valid_path,
             format='csv',
-            skip_header=True,
+            skip_header=skip_header,
             # if your csv header has a header, make sure to pass this to
             # ensure it doesn't get proceesed as data!
             fields=datafields
