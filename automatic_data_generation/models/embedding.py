@@ -44,7 +44,7 @@ class Datasets():
 
         TEXT = torchtext.data.Field(lower=True, tokenize=self.tokenize,
                                     sequential=True, batch_first=False,
-                                    fix_length=100)
+                                    fix_length=20)
         DELEX = torchtext.data.Field(lower=True, tokenize=self.tokenize,
                                      sequential=True, batch_first=False)
         INTENT = torchtext.data.Field(sequential=False, batch_first=True,

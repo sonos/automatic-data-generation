@@ -6,7 +6,7 @@ from automatic_data_generation.utils.utils import to_device
 
 class CVAE(nn.Module):
 
-    def __init__(self, vocab_size, embedding_size, rnn_type, hidden_size,
+    def __init__(self, conditional, vocab_size, embedding_size, rnn_type, hidden_size,
                  word_dropout=0, embedding_dropout=0, z_size=100, n_classes=10,
                  sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
                  max_sequence_length=30, num_layers=1, bidirectional=False,
@@ -16,6 +16,7 @@ class CVAE(nn.Module):
         self.tensor = torch.cuda.FloatTensor if torch.cuda.is_available() \
             else torch.Tensor
 
+        self.conditional = conditional
         self.max_sequence_length = max_sequence_length
         self.sos_idx = sos_idx
         self.eos_idx = eos_idx
@@ -24,7 +25,7 @@ class CVAE(nn.Module):
 
         self.z_size = z_size
         self.n_classes = n_classes
-        self.latent_size = z_size + n_classes
+        self.latent_size = z_size + n_classes if conditional else z_size
 
         self.rnn_type = rnn_type
         self.bidirectional = bidirectional
@@ -69,7 +70,8 @@ class CVAE(nn.Module):
 
         self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, z_size)
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, z_size)
-        self.hidden2cat = nn.Linear(hidden_size * self.hidden_factor,
+
+        if conditional : self.hidden2cat = nn.Linear(hidden_size * self.hidden_factor,
                                     n_classes)
         self.latent2hidden = nn.Linear(self.latent_size,
                                        hidden_size * self.num_layers)  # *
@@ -107,10 +109,13 @@ class CVAE(nn.Module):
         z = to_device(torch.randn(batch_size, self.z_size))
         z = z * std + mean
 
-        logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=1)
-        y_onehot = nn.functional.gumbel_softmax(logc)
-
-        latent = torch.cat((z, y_onehot), dim=1)
+        if self.conditional:
+            logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=1)
+            y_onehot = nn.functional.gumbel_softmax(logc)
+            latent = torch.cat((z, y_onehot), dim=1)
+        else:
+            logc = None
+            latent = z
 
         # DECODER
         hidden = self.latent2hidden(latent)
@@ -135,19 +140,9 @@ class CVAE(nn.Module):
                 prob < self.word_dropout_rate] = self.unk_idx
             input_embedding = self.embedding(decoder_input_sequence)
         input_embedding = self.embedding_dropout(input_embedding)
-        # packed_input = rnn_utils.pack_padded_sequence(input_embedding,
-        # sorted_lengths.data.tolist(), batch_first=True)
 
         # decoder forward pass
         outputs, _ = self.decoder_rnn(input_embedding, hidden)
-        # process outputs
-        # padded_outputs = rnn_utils.pad_packed_sequence(outputs,
-        # batch_first=True)[0]
-        # padded_outputs = padded_outputs.contiguous()
-        # _,reversed_idx = torch.sort(sorted_idx)
-        # padded_outputs = padded_outputs[reversed_idx]
-        # padded_outputs = outputs
-
         seqlen, bs, hs = outputs.size()
 
         # project outputs to vocab
@@ -167,14 +162,17 @@ class CVAE(nn.Module):
         else:
             batch_size = z.size(0)
 
-        if y_onehot is None:
-            y = torch.LongTensor(batch_size, 1).random_() % self.n_classes
-            y_onehot = torch.FloatTensor(batch_size, self.n_classes)
-            y_onehot.zero_()
-            y_onehot.scatter_(1, y, 1)
-
-        latent = to_device(torch.cat((z, y_onehot), dim=1))
-
+        if self.conditional:
+            if y_onehot is None:
+                y = torch.LongTensor(batch_size, 1).random_() % self.n_classes
+                y_onehot = torch.FloatTensor(batch_size, self.n_classes)
+                y_onehot.zero_()
+                y_onehot.scatter_(1, y, 1)
+                latent = to_device(torch.cat((z, y_onehot), dim=1))
+        else:
+            latent = to_device(z)
+            y_onehot = None
+            
         hidden = self.latent2hidden(latent)
 
         if self.bidirectional or self.num_layers > 1:
