@@ -7,7 +7,7 @@ from torchtext.data import BucketIterator
 
 class Datasets():
     def __init__(self, train_path='train.csv', valid_path='validate.csv',
-                 emb_dim=100, tokenizer='split', preprocess='none'):
+                 emb_dim=100, emb_type='glove', tokenizer='split', preprocess='none'):
         if tokenizer == 'spacy':
             import spacy
             my_tok = spacy.load('en')
@@ -85,10 +85,13 @@ class Datasets():
             fields=datafields
         )
 
-        TEXT.build_vocab(train, max_size=10000,
-                         vectors="glove.6B.{}d".format(emb_dim))
-        DELEX.build_vocab(train, max_size=10000,
-                          vectors="glove.6B.{}d".format(emb_dim))
+        if emb_type == 'glove':
+            emb_vectors = "glove.6B.{}d".format(emb_dim))
+        else:
+            raise NotImplementedError
+        
+        TEXT.build_vocab(train, max_size=10000, vectors=emb_vectors)
+        DELEX.build_vocab(train, max_size=10000, vectors=emb_vectors)
         INTENT.build_vocab(train)
 
         self.train = train

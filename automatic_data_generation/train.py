@@ -22,19 +22,16 @@ def anneal_fn(anneal_function, step, k, x, m):
 
 def loss_fn(logp, bow, target, length, mean, logv, anneal_function, step, k1, x1, m1):
 
-
     seqlen, batch_size, vocab_size = logp.size()
-    # cut-off unnecessary padding from target, and flatten
-    #target = target[:, :torch.max(length).item()].contiguous().view(-1)
 
     # Bag of words
     bow.view(batch_size,-1)
-    target = target.view(batch_size,-1)
+    target = target.view(batch_size, -1)
     BOW_loss = - torch.einsum('iik->', bow[:,target])
 
-    target = target.view(-1)
+    # cut-off unnecessary padding from target, and flatten
+    target = target[:, :torch.max(length).item()].contiguous().view(-1)
     logp = logp.view(-1, vocab_size)
-    
     # Negative Log Likelihood
     NLL_loss = NLL(logp, target)
 
@@ -184,7 +181,6 @@ def train(model, datasets, args):
                 y = to_device(y)
             
             logp, mean, logv, logc, z, bow = model(x, lengths)
-            
             # loss calculation
             NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, lengths, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
@@ -256,7 +252,7 @@ if __name__ == '__main__':
     parser.add_argument('--conditional', type=str, default='supervised', choices=['supervised', 'unsupervised', 'none'])
     parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
-    parser.add_argument('-msl', '--max_sequence_length', type=int, default=8)
+    parser.add_argument('-msl', '--max_sequence_length', type=int, default=16)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
@@ -264,7 +260,7 @@ if __name__ == '__main__':
     
     parser.add_argument('-ep', '--epochs', type=int, default=2)
     parser.add_argument('-bs', '--batch_size', type=int, default=64)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.001)
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
     parser.add_argument('-hs', '--hidden_size', type=int, default=64)
@@ -272,16 +268,16 @@ if __name__ == '__main__':
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
 
-    parser.add_argument('-t', '--temperature', type=float, default=10)
-    parser.add_argument('-wd', '--word_dropout', type=float, default=0.99)
-    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.)
+    parser.add_argument('-t', '--temperature', type=float, default=5)
+    parser.add_argument('-wd', '--word_dropout', type=float, default=0.1)
+    parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
     parser.add_argument('-k1', '--k1', type=float, default=0.005, help='anneal time for KL weight')
-    parser.add_argument('-x1', '--x1', type=int, default=100,     help='anneal rate for KL weight')
+    parser.add_argument('-x1', '--x1', type=int, default=300,     help='anneal rate for KL weight')
     parser.add_argument('-m1', '--m1', type=float, default=1.,    help='final value for KL weight')
-    parser.add_argument('-k2', '--k2', type=float, default=0.005, help='anneal time for label weight')
-    parser.add_argument('-x2', '--x2', type=int, default=50,      help='anneal rate for label weight')
+    parser.add_argument('-k2', '--k2', type=float, default=0.01, help='anneal time for label weight')
+    parser.add_argument('-x2', '--x2', type=int, default=100,      help='anneal rate for label weight')
     parser.add_argument('-m2', '--m2', type=float, default=1.,    help='final value for label weight')
     # parser.add_argument('-k3', '--k3', type=float, default=0.005, help='anneal time for word dropout')
     # parser.add_argument('-x3', '--x3', type=int, default=50,      help='anneal rate for word dropout')
