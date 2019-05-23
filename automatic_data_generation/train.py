@@ -97,7 +97,7 @@ def train(model, datasets, args):
                 y = to_device(x)
             
             logp, mean, logv, logc, z, bow = model(x)
-            if epoch == args.epochs:
+            if epoch == args.epochs and args.conditional != 'none':
                 for i,intent in enumerate(y):
                     latent_rep[int(intent)].append(z[i].cpu().detach().numpy())
 
