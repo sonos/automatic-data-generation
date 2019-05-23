@@ -91,10 +91,11 @@ class CVAE(nn.Module):
     def forward(self, input_sequence, lengths):
 
         batch_size = input_sequence.size(1)
-
+        sorted_lengths, sorted_idx = torch.sort(lengths, descending=True)
+        input_sequence = input_sequence[:,sorted_idx]
+        
         # ENCODER
         input_embedding = self.embedding(input_sequence)
-        sorted_lengths, sorted_idx = torch.sort(lengths, descending=True)
         packed_input = rnn_utils.pack_padded_sequence(input_embedding, sorted_lengths.data.tolist(), batch_first=False)
         _, hidden = self.encoder_rnn(packed_input)
 

@@ -254,6 +254,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-msl', '--max_sequence_length', type=int, default=16)
     parser.add_argument('--emb_dim' , type=int, default=100)
+    parser.add_argument('--emb_type' , type=str, default='glove', choices=['glove','none'])
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
     parser.add_argument('--bow_loss', type=bool, default=False)
@@ -296,7 +297,7 @@ if __name__ == '__main__':
     datadir = os.path.join('./data', args.dataset)
     train_path = os.path.join(datadir, 'train.csv')
     validate_path = os.path.join(datadir, 'validate.csv')
-    datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path), emb_dim=args.emb_dim, tokenizer=args.tokenizer)
+    datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path), emb_dim=args.emb_dim, emb_type=args.emb_type, tokenizer=args.tokenizer)
     
     vocab = datasets.TEXT.vocab if args.input_type=='utterance' else datasets.DELEX.vocab
     i2w = vocab.itos

@@ -86,12 +86,15 @@ class Datasets():
         )
 
         if emb_type == 'glove':
-            emb_vectors = "glove.6B.{}d".format(emb_dim))
+            emb_vectors = "glove.6B.{}d".format(emb_dim)
+            TEXT.build_vocab(train, max_size=10000, vectors=emb_vectors)
+            DELEX.build_vocab(train, max_size=10000, vectors=emb_vectors)
+        elif emb_type == 'none':
+            TEXT.build_vocab(train, max_size=10000)
+            DELEX.build_vocab(train, max_size=10000)
         else:
             raise NotImplementedError
         
-        TEXT.build_vocab(train, max_size=10000, vectors=emb_vectors)
-        DELEX.build_vocab(train, max_size=10000, vectors=emb_vectors)
         INTENT.build_vocab(train)
 
         self.train = train
