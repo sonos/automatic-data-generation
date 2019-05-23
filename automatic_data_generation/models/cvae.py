@@ -1,7 +1,9 @@
 import torch
 import torch.nn as nn
-
+import torch.nn.utils.rnn as rnn_utils
 from automatic_data_generation.utils.utils import to_device
+import ipdb
+
 
 
 class CVAE(nn.Module):
@@ -86,14 +88,15 @@ class CVAE(nn.Module):
                                        vocab_size)  # * (2 if bidirectional
         # else 1), vocab_size)
 
-    def forward(self, input_sequence):
+    def forward(self, input_sequence, lengths):
 
         batch_size = input_sequence.size(1)
 
         # ENCODER
         input_embedding = self.embedding(input_sequence)
-
-        _, hidden = self.encoder_rnn(input_embedding)
+        sorted_lengths, sorted_idx = torch.sort(lengths, descending=True)
+        packed_input = rnn_utils.pack_padded_sequence(input_embedding, sorted_lengths.data.tolist(), batch_first=False)
+        _, hidden = self.encoder_rnn(packed_input)
 
         if self.bidirectional or self.num_layers > 1:
             # flatten hidden state
@@ -141,14 +144,32 @@ class CVAE(nn.Module):
             input_embedding = self.embedding(decoder_input_sequence)
         input_embedding = self.embedding_dropout(input_embedding)
 
-        # decoder forward pass
-        outputs, _ = self.decoder_rnn(input_embedding, hidden)
-        seqlen, bs, hs = outputs.size()
+        packed_input = rnn_utils.pack_padded_sequence(input_embedding, sorted_lengths.data.tolist(), batch_first=False)
+        outputs, _ = self.decoder_rnn(packed_input, hidden)
 
-        # project outputs to vocab
-        logits = self.outputs2vocab(outputs.view(-1, hs))
+
+        # process outputs
+        padded_outputs = rnn_utils.pad_packed_sequence(outputs, batch_first=False)[0]
+        #ipdb.set_trace()
+        padded_outputs = padded_outputs.contiguous()
+        _,reversed_idx = torch.sort(sorted_idx)
+        padded_outputs = padded_outputs[:,reversed_idx,:]
+        seqlen, bs, hs = padded_outputs.size()
+
+        logits = self.outputs2vocab(padded_outputs.view(-1, hs))
         logp = nn.functional.log_softmax(logits / self.temperature, dim=0)
         logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
+
+
+        # project outputs to vocab
+        #logp = nn.functional.log_softmax(self.outputs2vocab(padded_outputs.view(-1, padded_outputs.size(2))), dim=-1)
+        #logp = logp.view(b, s, self.embedding.num_embeddings)
+
+        # seqlen, bs, hs = outputs.size()
+        # # project outputs to vocab
+        # logits = self.outputs2vocab(outputs.view(-1, hs))
+        # logp = nn.functional.log_softmax(logits / self.temperature, dim=0)
+        # logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
         bow = nn.functional.log_softmax(self.latent2bow(latent), dim=0)
 

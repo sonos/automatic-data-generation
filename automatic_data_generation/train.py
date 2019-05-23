@@ -10,7 +10,7 @@ from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-import copy
+import ipdb
 
 
 def anneal_fn(anneal_function, step, k, x, m):
@@ -20,9 +20,12 @@ def anneal_fn(anneal_function, step, k, x, m):
         return m*min(1, step/x)
 
 
-def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
+def loss_fn(logp, bow, target, length, mean, logv, anneal_function, step, k1, x1, m1):
 
-    batch_size = target.size(1)
+
+    seqlen, batch_size, vocab_size = logp.size()
+    # cut-off unnecessary padding from target, and flatten
+    #target = target[:, :torch.max(length).item()].contiguous().view(-1)
 
     # Bag of words
     bow.view(batch_size,-1)
@@ -30,7 +33,7 @@ def loss_fn(logp, bow, target, mean, logv, anneal_function, step, k1, x1, m1):
     BOW_loss = - torch.einsum('iik->', bow[:,target])
 
     target = target.view(-1)
-    logp = logp.view(-1, logp.size(2))
+    logp = logp.view(-1, vocab_size)
     
     # Negative Log Likelihood
     NLL_loss = NLL(logp, target)
@@ -90,13 +93,13 @@ def train(model, datasets, args):
             opt.zero_grad()
             # model.word_dropout_rate =  anneal_fn(args.anneal_function, step, args.k3, args.x3, args.m3)
 
-            x = getattr(batch, args.input_type)
+            x, lengths = getattr(batch, args.input_type)
             x = to_device(x)
             if args.conditional != 'none':
                 y = batch.intent.squeeze()
-                y = to_device(x)
-            
-            logp, mean, logv, logc, z, bow = model(x)
+                y = to_device(y)
+
+            logp, mean, logv, logc, z, bow = model(x, lengths)
             if epoch == args.epochs and args.conditional != 'none':
                 for i,intent in enumerate(y):
                     latent_rep[int(intent)].append(z[i].cpu().detach().numpy())
@@ -113,7 +116,7 @@ def train(model, datasets, args):
                 print('\n')
             
             # loss calculation
-            NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, mean, logv,
+            NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, lengths, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
             KL_loss = torch.sum(KL_losses)
             NLL_hist.append(NLL_loss.detach().cpu().numpy()/args.batch_size)
@@ -174,16 +177,16 @@ def train(model, datasets, args):
         
         model.eval() # turn on evaluation mode
         for batch in tqdm(val_iter): 
-            x = getattr(batch, args.input_type)
+            x, lengths = getattr(batch, args.input_type)
             x = to_device(x)
             if args.conditional != 'none':
                 y = batch.intent.squeeze()
-                y = to_device(x)
+                y = to_device(y)
             
-            logp, mean, logv, logc, z, bow = model(x)
+            logp, mean, logv, logc, z, bow = model(x, lengths)
             
             # loss calculation
-            NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, mean, logv,
+            NLL_loss, KL_losses, KL_weight, BOW_loss = loss_fn(logp, bow, x, lengths, mean, logv,
                                                    args.anneal_function, step, args.k1, args.x1, args.m1)
             
             KL_loss = torch.sum(KL_losses)
