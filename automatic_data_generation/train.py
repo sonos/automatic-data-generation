@@ -220,9 +220,7 @@ def train(model, datasets, args):
                     loss += entropy                
                 pred_labels = logc.data.max(1)[1].long()
                 n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
-                acc_hist.append(n_correct/args.batch_size)
                 NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), torch.exp(logc).cpu().max(1)[1].numpy())
-                NMI_hist.append(NMI)                
                 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()

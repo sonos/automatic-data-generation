@@ -1,4 +1,4 @@
-<import torch
+import torch
 import torch.nn as nn
 import torch.nn.utils.rnn as rnn_utils
 from automatic_data_generation.utils.utils import to_device
