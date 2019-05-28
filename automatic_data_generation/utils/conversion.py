@@ -58,7 +58,7 @@ def json2csv(datadir, outdir, samples_per_intent):
                 utterance = ''
                 labelling = ''
                 # delexicalised = ''
-                delexicalised = 'SOS '
+                delexicalised = ''
 
                 for group in sentence['data']:
                     words = group['text']
@@ -93,8 +93,6 @@ def json2csv(datadir, outdir, samples_per_intent):
                         delexicalised += words
                         labelling += 'O ' * len(word_tokenize(words))
 
-                delexicalised += ' EOS'
-
                 # intentfile.write(intent+'\n')
                 # utterfile.write(utterance+'\n')
                 # labelfile.write(labelling+'\n')
@@ -112,7 +110,7 @@ def json2csv(datadir, outdir, samples_per_intent):
     print('Labelled : ', labelling)
     print('Delexicalised : ', delexicalised)
 
-    print('Successfully converted csv2json !')
+    print('Successfully converted json2csv !')
 
 
 def get_groups(zipped):
@@ -137,69 +135,66 @@ def get_groups(zipped):
     return groups
 
 
-def csv2json(datadir, outdir, augmented):
+def csv2json(csv_path):
     print('Starting csv2json conversion...')
 
     jsondic = {'language': 'en'}
     intents = {}
     entities = {}
 
-    for split in ['train' if not augmented else 'train_augmented', 'validate']:
+    encountered_slot_values = {}
 
-        encountered_slot_values = {}
+    csv_file = open(csv_path, 'r')
+    reader = csv.reader(csv_file)
 
-        csvname = '{}/{}.csv'.format(datadir, split)
-        csvfile = open(csvname, 'r')
-        reader = csv.reader(csvfile)
+    for irow, row in enumerate(reader):
 
-        for irow, row in enumerate(reader):
+        if irow == 0:  # ignore header
+            continue
 
-            if irow == 0:  # ignore header
-                continue
+        utterance, labelling, delexicalised, intent = row
+        if intent not in intents.keys():
+            intents[intent] = {'utterances': []}
+        zipped = zip(word_tokenize(utterance), word_tokenize(labelling))
+        groups = get_groups(zipped)
+        intents[intent]['utterances'].append({'data': groups})
+        for group in groups:
+            if 'slot_name' in group.keys():
+                slot_name = group['slot_name']
+                slot_value = group['text']
+                if slot_name not in encountered_slot_values.keys():
+                    encountered_slot_values[slot_name] = []
 
-            utterance, labelling, delexicalised, intent = row
-            if intent not in intents.keys():
-                intents[intent] = {'utterances': []}
-            zipped = zip(word_tokenize(utterance), word_tokenize(labelling))
-            groups = get_groups(zipped)
-            intents[intent]['utterances'].append({'data': groups})
-            for group in groups:
-                if 'slot_name' in group.keys():
-                    slot_name = group['slot_name']
-                    slot_value = group['text']
-                    if slot_name not in encountered_slot_values.keys():
-                        encountered_slot_values[slot_name] = []
+                if slot_name not in entities.keys():
+                    entities[slot_name] = {"data": [],
+                                           "use_synonyms": True,
+                                           "automatically_extensible": True,
+                                           "matching_strictness": 1.0
+                                           }
+                if slot_value not in encountered_slot_values[slot_name]:
+                    entities[slot_name]['data'].append(
+                        {'value': slot_value,
+                         'synonyms': []})
+                if slot_value == 'added ':
+                    print(groups, utterance, labelling)
 
-                    if slot_name not in entities.keys():
-                        entities[slot_name] = {"data": [],
-                                               "use_synonyms": True,
-                                               "automatically_extensible": True,
-                                               "matching_strictness": 1.0
-                                               }
-                    if slot_value not in encountered_slot_values[slot_name]:
-                        entities[slot_name]['data'].append(
-                            {'value': slot_value,
-                             'synonyms': []})
-                    if slot_value == 'added ':
-                        print(groups, utterance, labelling)
+                encountered_slot_values[slot_name].append(slot_value)
 
-                    encountered_slot_values[slot_name].append(slot_value)
+    jsondic['intents'] = intents
+    jsondic['entities'] = entities
 
-        jsondic['intents'] = intents
-        jsondic['entities'] = entities
-
-        jsonname = '{}/{}.json'.format(outdir, split)
-        with open(jsonname, 'w') as jsonfile:
-            json.dump(jsondic, jsonfile)
+    json_path = csv_path.replace('.csv', '.json')
+    with open(json_path, 'w') as jsonfile:
+        json.dump(jsondic, jsonfile)
 
     print('Successfully converted csv2json !')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--datadir', type=str, default='./data/snips_original')
-    parser.add_argument('--outdir', type=str, default='./data/snips')
-    parser.add_argument('-spi', '--samples_per_intent', type=int, default=100)
+    parser.add_argument('--datadir', type=str, default='data/snips_original')
+    parser.add_argument('--outdir', type=str, default='data/snips')
+    parser.add_argument('-spi', '--samples_per_intent', type=int, default=10000)
     parser.add_argument('--augmented', type=int, default=1)
     parser.add_argument('--convert_to', type=str, default='csv')
     parser.add_argument('--remove_punctuation', type=int, default=1)

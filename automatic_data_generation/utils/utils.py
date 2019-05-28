@@ -3,9 +3,10 @@ import numpy as np
 import random
 import pickle
 
+force_cpu = False
 
 def to_device(x, volatile=False):
-    if torch.cuda.is_available():
+    if torch.cuda.is_available() and not force_cpu :
         x = x.cuda()
     return x
 

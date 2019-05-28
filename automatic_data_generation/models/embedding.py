@@ -7,7 +7,8 @@ from torchtext.data import BucketIterator
 
 class Datasets():
     def __init__(self, train_path='train.csv', valid_path='validate.csv',
-                 emb_dim=100, emb_type='glove', tokenizer='split', preprocess='none'):
+                 emb_dim=100, emb_type='glove', max_vocab_size=10000, max_sequence_length=16,
+                 tokenizer='split', preprocess='none'):
         if tokenizer == 'spacy':
             import spacy
             my_tok = spacy.load('en')
@@ -43,12 +44,15 @@ class Datasets():
         self.tokenize = tokenize
 
         TEXT = torchtext.data.Field(lower=True, tokenize=self.tokenize,
-                                    sequential=True, batch_first=False,
+                                    sequential=True, batch_first=True,
                                     include_lengths=True,
-                                    fix_length=20)
+                                    fix_length=max_sequence_length,
+                                    init_token='<sos>', eos_token='<eos>')
         DELEX = torchtext.data.Field(lower=True, tokenize=self.tokenize,
+                                     sequential=True, batch_first=True,
                                      include_lengths=True,
-                                     sequential=True, batch_first=False)
+                                     fix_length=max_sequence_length,
+                                     init_token='<sos>', eos_token='<eos>')
         INTENT = torchtext.data.Field(sequential=False, batch_first=True,
                                       unk_token=None)
 
@@ -87,14 +91,16 @@ class Datasets():
 
         if emb_type == 'glove':
             emb_vectors = "glove.6B.{}d".format(emb_dim)
-            TEXT.build_vocab(train, max_size=10000, vectors=emb_vectors)
-            DELEX.build_vocab(train, max_size=10000, vectors=emb_vectors)
+            TEXT.build_vocab(train, max_size=max_vocab_size, vectors=emb_vectors)
+            DELEX.build_vocab(train, max_size=max_vocab_size, vectors=emb_vectors)
         elif emb_type == 'none':
-            TEXT.build_vocab(train, max_size=10000)
-            DELEX.build_vocab(train, max_size=10000)
+            TEXT.build_vocab(train, max_size=max_vocab_size)
+            DELEX.build_vocab(train, max_size=max_vocab_size)
+            TEXT.vocab.vectors = torch.randn(len(TEXT.vocab.itos), emb_dim)
+            DELEX.vocab.vectors = torch.randn(len(DELEX.vocab.itos), emb_dim)
         else:
             raise NotImplementedError
-        
+
         INTENT.build_vocab(train)
 
         self.train = train
