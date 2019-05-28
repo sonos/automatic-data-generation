@@ -1,4 +1,4 @@
-import torch
+<import torch
 import torch.nn as nn
 import torch.nn.utils.rnn as rnn_utils
 from automatic_data_generation.utils.utils import to_device
@@ -187,10 +187,10 @@ class CVAE(nn.Module):
                 y_onehot = torch.FloatTensor(batch_size, self.n_classes)
                 y_onehot.fill_(0.001)
                 y_onehot.scatter_(dim=1, index=y, value=1)
-                latent = to_device(torch.cat((z, y_onehot), dim=1))
+            latent = to_device(torch.cat((z, y_onehot), dim=1))                
         else:
-            latent = to_device(z)
             y_onehot = None
+            latent = to_device(z)
             
         hidden = self.latent2hidden(latent)
 
