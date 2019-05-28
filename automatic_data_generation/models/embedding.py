@@ -9,6 +9,7 @@ class Datasets():
     def __init__(self, train_path='train.csv', valid_path='validate.csv',
                  emb_dim=100, emb_type='glove', max_vocab_size=10000, max_sequence_length=16,
                  tokenizer='split', preprocess='none'):
+        
         if tokenizer == 'spacy':
             import spacy
             my_tok = spacy.load('en')

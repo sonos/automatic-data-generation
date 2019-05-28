@@ -285,7 +285,7 @@ if __name__ == '__main__':
     parser.add_argument('-bi', '--bidirectional', action='store_true')
     parser.add_argument('-ls', '--latent_size', type=int, default=16)
 
-    parser.add_argument('-t', '--temperature', type=float, default=5)
+    parser.add_argument('-t', '--temperature', type=float, default=1)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0.)
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
 
@@ -299,31 +299,41 @@ if __name__ == '__main__':
     # parser.add_argument('-k3', '--k3', type=float, default=0.005, help='anneal time for word dropout')
     # parser.add_argument('-x3', '--x3', type=int, default=50,      help='anneal rate for word dropout')
     # parser.add_argument('-m3', '--m3', type=float, default=1.,    help='final value for word dropout')
-
-    run = {}
-
+    
     args = parser.parse_args()
+
+    run = {} 
     run['args'] = args
     print(args)
+
     if args.dataset!='snips':
         args.input_type = 'utterance'
+    args.pickle = args.pickle.rstrip('.pkl')
 
     datadir = os.path.join(args.dataroot, args.dataset)
     print('loading and embedding datasets')
     train_path = os.path.join(datadir, 'train.csv')
     validate_path = os.path.join(datadir, 'validate.csv')
 
+    # Make a smaller dataset
     if args.datasize is not None:
         raw_path = train_path.replace('.csv', '_raw{}.csv'.format(args.datasize))
-        train_csv = open(train_path, 'r')
-        train_reader = csv.reader(train_csv)
-        raw_csv = open(raw_path, 'w')
-        raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        for i, row in enumerate(train_reader):
-            if i < args.datasize:
+        if os.path.exists(raw_path):
+            pass
+        else:
+            train_csv = open(train_path, 'r')
+            train_reader = list(csv.reader(train_csv))
+            raw_csv = open(raw_path, 'w')
+            raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+            counter = 0
+            import random
+            while counter < args.datasize:
+                row = random.choice(train_reader)
+                counter += 1
                 raw_writer.writerow(row)
-        train_csv.close()
-        raw_csv.close()
+            train_csv.close()
+            raw_csv.close()
         train_path = raw_path
         
     datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path),
@@ -446,17 +456,17 @@ if __name__ == '__main__':
             from snips_nlu import SnipsNLUEngine
             from snips_nlu_metrics import compute_train_test_metrics
 
-            augmented_path = raw_path.replace('.csv', '_aug{}.csv'.format(args.datasize, args.n_generated))
+            augmented_path = train_path.replace('.csv', '_aug{}.csv'.format(args.datasize, args.n_generated))
             print('Dumping augmented dataset at %s' %augmented_path)
             from shutil import copyfile
             
-            copyfile(raw_path, augmented_path)
+            copyfile(train_path, augmented_path)
             augmented_csv = open(augmented_path, 'a')
             augmented_writer = csv.writer(augmented_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for s, l, d, i in zip(sentences, labellings, delexicalised, intents):
                 augmented_writer.writerow([s, l, d, i2int[i]])
             
-            csv2json(raw_path)
+            csv2json(train_path)
             csv2json(augmented_path)
 
             print('Starting benchmarking...')
