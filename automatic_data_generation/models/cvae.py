@@ -109,9 +109,9 @@ class CVAE(nn.Module):
         z = z * std + mean
 
         if self.conditional:
-            logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=1)
+            logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=-1)
             y_onehot = nn.functional.gumbel_softmax(logc)
-            latent = torch.cat((z, y_onehot), dim=1)
+            latent = torch.cat((z, y_onehot), dim=-1)
         else:
             logc = None
             latent = z
@@ -152,18 +152,8 @@ class CVAE(nn.Module):
         bs, seqlen, hs = padded_outputs.size()
 
         logits = self.outputs2vocab(padded_outputs.view(-1, hs))
-        logp = nn.functional.log_softmax(logits / self.temperature, dim=0)
+        logp = nn.functional.log_softmax(logits / self.temperature, dim=-1)
         logp = logp.view(bs, seqlen, self.embedding.num_embeddings)
-
-        # project outputs to vocab
-        #logp = nn.functional.log_softmax(self.outputs2vocab(padded_outputs.view(-1, padded_outputs.size(2))), dim=-1)
-        #logp = logp.view(b, s, self.embedding.num_embeddings)
-
-        # seqlen, bs, hs = outputs.size()
-        # # project outputs to vocab
-        # logits = self.outputs2vocab(outputs.view(-1, hs))
-        # logp = nn.functional.log_softmax(logits / self.temperature, dim=0)
-        # logp = logp.view(seqlen, bs, self.embedding.num_embeddings)
 
         if self.bow:
             bow = nn.functional.log_softmax(self.z2bow(z), dim=0)

@@ -55,7 +55,7 @@ class Datasets():
                                      fix_length=max_sequence_length,
                                      init_token='<sos>', eos_token='<eos>')
         INTENT = torchtext.data.Field(sequential=False, batch_first=True,
-                                      unk_token=None)
+                                      unk_token=None, pad_token=None)
 
         skip_header = True
         if 'snips' in train_path:
