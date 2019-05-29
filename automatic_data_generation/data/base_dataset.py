@@ -1,31 +1,36 @@
-import pickle
+import os
+from abc import ABCMeta, abstractmethod
 
 import torch
 import torchtext
 from torchtext.data import BucketIterator
 
-from automatic_data_generation.data.utils import get_fields, get_datafields, \
-    make_tokenizer
+from automatic_data_generation.data.utils import get_fields, make_tokenizer
 
 
-class MultiTypeDataset(object):
+class BaseDataset(object):
     """
-
+        Abstract class setting the API for using the package with a custom data
+        set. Inherit from this class to implement training with a new data set.
+        See 'handlers' for examples with open Snips data set.
     """
+    __metaclass__ = ABCMeta
 
-    def __init__(self, dataset_type, train_path, valid_path,
-                 tokenizer_type, preprocessing_type, max_sequence_length,
-                 emb_dim, emb_type, max_vocab_size, input_type):
-        if dataset_type not in ["snips", "atis", "yelp", "ptb", "spam"]:
-            raise TypeError("Unknown dataset type")
-        self.dataset_type = dataset_type
+    def __init__(self,
+                 dataset_path,
+                 input_type,
+                 tokenizer_type,
+                 preprocessing_type,
+                 max_sequence_length,
+                 emb_dim,
+                 emb_type,
+                 max_vocab_size):
         self.input_type = input_type
-
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
         text, delex, intent = get_fields(self.tokenize, max_sequence_length)
+        skip_header, datafields = self.get_datafields(text, delex, intent)
 
-        datafields, skip_header = get_datafields(dataset_type, text, delex,
-                                                 intent)
+        train_path, valid_path = self.get_dataset_paths(dataset_path)
 
         train, valid = torchtext.data.TabularDataset.splits(
             path='.',  # the root directory where the data lies
@@ -44,7 +49,7 @@ class MultiTypeDataset(object):
                              vectors=emb_vectors)
             delex.build_vocab(train, max_size=max_vocab_size,
                               vectors=emb_vectors)
-        elif emb_type == 'none':
+        elif emb_type is None:
             text.build_vocab(train, max_size=max_vocab_size)
             delex.build_vocab(train, max_size=max_vocab_size)
             text.vocab.vectors = torch.randn(len(text.vocab.itos), emb_dim)
@@ -65,6 +70,30 @@ class MultiTypeDataset(object):
         self.text = text
         self.delex = delex
         self.intent = intent
+
+    @staticmethod
+    @abstractmethod
+    def get_datafields(text, delex, intent):
+        """
+        Get metadata relating to sample with index `item`.
+        Args:
+            text (torchtext.data.Field): field for the text entries
+            delex (torchtext.data.Field): field for the delexicalized entries
+            intent (torchtext.data.Field): field for the intent labels
+
+        Returns:
+            skip_header (bool): whether or not skip the csv header
+                datafields list(tuple(str, torchtext.data.Field)): the fields
+                should be in the same order as the columns in the CSV or TSV
+                file, while tuples of (name, None) represent columns that
+                will be ignored.
+        """
+        raise NotImplementedError
+
+    @staticmethod
+    def get_dataset_paths(dataset_path):
+        return os.path.join(dataset_path, 'train.csv'), os.path.join(
+            dataset_path, 'validate.csv')
 
     @property
     def len_train(self):
@@ -129,54 +158,9 @@ class MultiTypeDataset(object):
             total_words += 1
         print(
             "average GloVE norm is {}, number of known words are {}, "
-            "total number of words are {}"
-                .format(running_norm / num_non_zero, num_non_zero, total_words)
+            "total number of words are {}".format(
+                running_norm / num_non_zero,
+                num_non_zero,
+                total_words
+            )
         )
-
-    def embed_slots(self, averaging='micro',
-                    slotdic_path='./data/snips/train_slot_values.pkl'):
-        """
-        Create embeddings for the slots in the Snips dataset
-        """
-        if self.dataset_type != "snips" or self.input_type == "utterance":
-            raise TypeError("Slot embedding only available for Snips dataset "
-                            "in delexicalized mode")
-
-        if averaging == 'none':
-            return
-
-        with open(slotdic_path, 'rb') as f:
-            slotdic = pickle.load(f)
-
-        for i, token in enumerate(self.i2w):
-            if token.startswith("_") and token.endswith("_"):
-                slot = token.lstrip('_').rstrip('_')
-                new_vectors = []
-
-                slot_values = slotdic[slot]
-
-                if averaging == 'micro':
-                    for slot_value in slot_values:
-                        for word in self.tokenize(slot_value):
-                            if self.w2i[word] != '<unk>':
-                                new_vectors.append(
-                                    self.text.vocab.vectors[self.w2i[word]]
-                                )
-                    new_vector = torch.mean(torch.stack(new_vectors))
-
-                elif averaging == 'macro':
-                    for slot_value in slot_values:
-                        tmp = []
-                        for word in self.tokenize(slot_value):
-                            if self.w2i[word] != '<unk>':
-                                tmp.append(
-                                    self.text.vocab.vectors[self.w2i[word]]
-                                )
-                        new_vectors.append(torch.mean(torch.stack(tmp)))
-                    new_vector = torch.mean(torch.stack(new_vectors))
-
-                else:
-                    raise ValueError("Unknwon averaging strategy")
-
-                self.delex.vocab.vectors[
-                    self.delex.vocab.stoi[token]] = new_vector

@@ -21,7 +21,7 @@ def make_tokenizer(tokenizer_type, preprocessing_type):
                 lemmatizer = WordNetLemmatizer()
                 return [lemmatizer.lemmatize(tok) for tok in
                         word_tokenize(x)]
-            elif preprocessing_type == 'none':
+            elif preprocessing_type is None:
                 return word_tokenize(x)
 
     elif tokenizer_type == 'split':
@@ -51,26 +51,17 @@ def get_fields(tokenize, max_sequence_length):
     return text, delex, intent
 
 
-def get_datafields(dataset_type, text, delex, intent):
-    skip_header = True
-    if dataset_type == 'snips':
-        datafields = [("utterance", text), ("labels", None),
-                      ("delexicalised", delex), ("intent", intent)]
-    elif dataset_type == 'atis':
-        datafields = [(" ", None), ("utterance", text), (" ", None),
-                      ("intent", intent)]
-    elif dataset_type == 'sentiment':
-        datafields = [("intent", intent), ("", None), ("", None),
-                      ("", None), ("", None), ("utterance", text)]
-    elif dataset_type == 'yelp':
-        datafields = [("", None), ("", None), ("", None),
-                      ("intent", intent), ("", None), ("utterance", text),
-                      ("", None), ("", None), ("", None)]
-    elif dataset_type == 'spam':
-        datafields = [("utterance", text), ("intent", intent)]
-    elif dataset_type == 'ptb':
-        datafields = [("utterance", text)]
-        skip_header = False
-    else:
-        raise TypeError("Unknown dataset type")
-    return datafields, skip_header
+def idx2word(idx, i2w, pad_idx):
+    sent_str = [str()] * len(idx)
+
+    for i, sent in enumerate(idx):
+
+        for word_id in sent:
+            if word_id == pad_idx:
+                sent_str[i] += "<pad>"
+                break
+            sent_str[i] += i2w[word_id] + " "
+
+        sent_str[i] = sent_str[i].strip()
+
+    return sent_str
