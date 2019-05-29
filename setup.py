@@ -25,7 +25,8 @@ setup(
         "torch",
         "torchvision",
         "torchtext",
-        "nltk"
+        "nltk",
+        "spacy"
     ],
     extras_require=extras_require,
     classifiers=[
