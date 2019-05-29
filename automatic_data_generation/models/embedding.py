@@ -9,6 +9,7 @@ class Datasets():
     def __init__(self, train_path='train.csv', valid_path='validate.csv',
                  emb_dim=100, emb_type='glove', max_vocab_size=10000, max_sequence_length=16,
                  tokenizer='split', preprocess='none'):
+        
         if tokenizer == 'spacy':
             import spacy
             my_tok = spacy.load('en')
@@ -54,7 +55,7 @@ class Datasets():
                                      fix_length=max_sequence_length,
                                      init_token='<sos>', eos_token='<eos>')
         INTENT = torchtext.data.Field(sequential=False, batch_first=True,
-                                      unk_token=None)
+                                      unk_token=None, pad_token=None)
 
         skip_header = True
         if 'snips' in train_path:
