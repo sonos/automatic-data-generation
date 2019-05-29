@@ -35,7 +35,7 @@ def loss_fn(logp, bow, target, length, mean, logv, anneal_function, step, k1, x1
     target = target[:, :torch.max(length).item()].contiguous().view(-1)
     logp = logp.view(-1, vocab_size)
     # Negative Log Likelihood
-    NLL_loss = NLL(logp, target)
+    NLL_loss = NLL_recon(logp, target)
 
     # KL Divergence
     KL_losses = -0.5 * torch.sum((1 + logv - mean.pow(2) - logv.exp()), dim=0)
@@ -47,7 +47,7 @@ def loss_fn(logp, bow, target, length, mean, logv, anneal_function, step, k1, x1
 def loss_labels(logc, target, anneal_function, step, k2, x2, m2):
     
     # Negative Log Likelihood
-    label_loss = NLL(logc, target)
+    label_loss = NLL_label(logc, target)
     label_weight = anneal_fn(anneal_function, step, k2, x2, m2)
 
     return label_loss, label_weight
@@ -120,7 +120,7 @@ def train(model, datasets, args):
             loss = (NLL_loss + KL_weight * KL_loss + label_weight * label_loss) #/args.batch_size
 
             if args.bow_loss:
-                loss+BOW_loss
+                loss += BOW_loss
                 
             if args.conditional=='none':
                 pred_labels = 0
@@ -390,7 +390,8 @@ if __name__ == '__main__':
     model = to_device(model)
     print(model)
 
-    NLL = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
+    NLL_recon = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
+    NLL_label = torch.nn.NLLLoss(reduction='sum')
 
     train(model, datasets, args)
     
