@@ -12,7 +12,7 @@ class BaseDataset(object):
     """
         Abstract class setting the API for using the package with a custom data
         set. Inherit from this class to implement training with a new data set.
-        See 'handlers' for examples with open Snips data set.
+        See 'handlers' for examples.
     """
     __metaclass__ = ABCMeta
 
