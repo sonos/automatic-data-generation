@@ -40,12 +40,11 @@ def calc_bleu(sentences, intents, datasets):
 
 
 
-def calc_perplexity(logp):
-    # logp is of size (batch_size, seqlen, vocab_size)
-    vocab_size = logp.size(2)
-    entropy = - float(1/vocab_size) * torch.sum(logp.view(-1))
-    perplexity = torch.exp(entropy).item()
-    return perplexity
+def calc_entropy(logp):
+    normalization = 1./logp.numel()
+    entropy = - normalization * torch.sum(logp.view(-1))
+    # perplexity = torch.exp(entropy).item()
+    return entropy.item()
 
 def calc_diversity(sentences, datasets):
     tokens = np.concatenate([datasets.tokenize(sentence) for sentence in sentences])

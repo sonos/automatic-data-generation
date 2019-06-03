@@ -6,7 +6,7 @@ import argparse
 import os
 import torch
 from automatic_data_generation.utils.utils import to_device, idx2word, surface_realisation
-from automatic_data_generation.utils.metrics import calc_bleu, calc_perplexity, calc_diversity
+from automatic_data_generation.utils.metrics import calc_bleu, calc_entropy, calc_diversity
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
@@ -323,7 +323,7 @@ if __name__ == '__main__':
         counter = 0
         import random
         while counter < args.datasize:
-            row = random.choice(train_reader)
+            row = random.choice(train_reader[1:]) # skip the header
             counter += 1
             raw_writer.writerow(row)
         train_csv.close()
@@ -400,7 +400,7 @@ if __name__ == '__main__':
         model.eval()
 
         samples, z, y_onehot, logp = model.inference(n=args.n_generated)
-        samples = samples.cpu().numpy() #remove the eos
+        samples = samples.cpu().numpy() 
         
         generated['samples'] = samples
         if args.conditional != 'none':
@@ -431,13 +431,13 @@ if __name__ == '__main__':
         diversity = calc_diversity(sentences, datasets)
         print('Diversity : ', diversity)
 
-        perplexity = calc_perplexity(logp)
-        print('Perplexity : ', perplexity)
+        entropy = calc_entropy(logp)
+        print('Entropy : ', entropy)
         
         run['generated'] = generated
         run['bleu_scores'] = bleu_scores
         run['diversity'] = diversity
-        run['perplexity'] = perplexity
+        run['entropy'] = entropy
 
         if args.benchmark:
             from snips_nlu import SnipsNLUEngine

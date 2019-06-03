@@ -130,7 +130,6 @@ def get_groups(zipped):
         else:
             group['text'] += (word + ' ')
         prev_label = label
-    groups.append(group)
 
     return groups
 
