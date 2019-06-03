@@ -11,19 +11,18 @@ def to_device(x, volatile=False):
     return x
 
 
-def idx2word(idx, i2w, pad_idx):
+def idx2word(idx, i2w, eos_idx):
 
     sent_str = [str()]*len(idx)
 
     for i, sent in enumerate(idx):
 
         for word_id in sent:
-            if word_id == pad_idx:
-                sent_str[i] += "<pad>"                
+            if word_id == eos_idx:
+                #sent_str[i] += "<eos>"
                 break
-            # if word_id in [sos_idx, eos_idx]:
-            #     continue
-            sent_str[i] += i2w[word_id] + " "
+            else:
+                sent_str[i] += i2w[word_id] + " "
 
         sent_str[i] = sent_str[i].strip()
 
