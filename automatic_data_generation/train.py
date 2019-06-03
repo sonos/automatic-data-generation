@@ -263,7 +263,6 @@ if __name__ == '__main__':
 
     parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=str, default='supervised', choices=['supervised', 'unsupervised', 'none'])
-    parser.add_argument('-pr', '--print_reconstruction', type=int, default=-1, help='Print the reconstruction at a given epoch')
 
     parser.add_argument('-msl', '--max_sequence_length', type=int, default=60)
     parser.add_argument('-mvs', '--max_vocab_size', type=int, default=10000)
@@ -289,7 +288,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
     parser.add_argument('-k1', '--k1', type=float, default=0.005, help='anneal time for KL weight')
-    parser.add_argument('-x1', '--x1', type=int, default=1000,     help='anneal rate for KL weight')
+    parser.add_argument('-x1', '--x1', type=int, default=500,     help='anneal rate for KL weight')
     parser.add_argument('-m1', '--m1', type=float, default=1.,    help='final value for KL weight')
     parser.add_argument('-k2', '--k2', type=float, default=0.01, help='anneal time for label weight')
     parser.add_argument('-x2', '--x2', type=int, default=100,      help='anneal rate for label weight')
