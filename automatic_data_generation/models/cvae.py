@@ -249,7 +249,7 @@ class CVAE(nn.Module):
 
             t += 1
 
-        return generations, z, y_onehot
+        return generations, z, y_onehot, logits
 
     def _sample(self, dist, mode='greedy'):
 

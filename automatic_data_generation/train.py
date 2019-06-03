@@ -6,10 +6,10 @@ import argparse
 import os
 import torch
 from automatic_data_generation.utils.utils import to_device, idx2word, surface_realisation
+from automatic_data_generation.utils.metrics import calc_bleu, calc_perplexity, calc_diversity
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
-from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 import ipdb
 
 def anneal_fn(anneal_function, step, k, x, m):
@@ -160,11 +160,11 @@ def train(model, datasets, args):
             #               %(loss.data, NLL_loss.item()/args.batch_size, KL_loss.item()/args.batch_size, KL_weight))
             #     x_sentences = input[:3].cpu().numpy()
             #     print('\nInput sentences :')
-            #     print(*idx2word(x_sentences, i2w=i2w, pad_idx=pad_idx), sep='\n')
+            #     print(*idx2word(x_sentences, i2w=i2w, eos_idx=eos_idx), sep='\n')
             #     _, y_sentences = torch.topk(logp, 1, dim=-1)
             #     y_sentences = y_sentences[:3].squeeze().cpu().numpy()
             #     print('\nOutput sentences : ')
-            #     print(*idx2word(y_sentences, i2w=i2w, pad_idx=pad_idx), sep='\n')
+            #     print(*idx2word(y_sentences, i2w=i2w, eos_idx=eos_idx), sep='\n')
             #     print('\n')
 
         tr_loss     = tr_loss / len(datasets.train)
@@ -315,22 +315,19 @@ if __name__ == '__main__':
     # Make a smaller dataset
     if args.datasize is not None:
         raw_path = train_path.replace('.csv', '_raw{}.csv'.format(args.datasize))
-        if os.path.exists(raw_path):
-            pass
-        else:
-            train_csv = open(train_path, 'r')
-            train_reader = list(csv.reader(train_csv))
-            raw_csv = open(raw_path, 'w')
-            raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        train_csv = open(train_path, 'r')
+        train_reader = list(csv.reader(train_csv))
+        raw_csv = open(raw_path, 'w')
+        raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-            counter = 0
-            import random
-            while counter < args.datasize:
-                row = random.choice(train_reader)
-                counter += 1
-                raw_writer.writerow(row)
-            train_csv.close()
-            raw_csv.close()
+        counter = 0
+        import random
+        while counter < args.datasize:
+            row = random.choice(train_reader)
+            counter += 1
+            raw_writer.writerow(row)
+        train_csv.close()
+        raw_csv.close()
         train_path = raw_path
         
     datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path),
@@ -402,8 +399,8 @@ if __name__ == '__main__':
         
         model.eval()
 
-        samples, z, y_onehot = model.inference(n=args.n_generated)
-        samples = samples.cpu().numpy()
+        samples, z, y_onehot, logp = model.inference(n=args.n_generated)
+        samples = samples.cpu().numpy() #remove the eos
         
         generated['samples'] = samples
         if args.conditional != 'none':
@@ -411,12 +408,12 @@ if __name__ == '__main__':
             generated['intents'] = [i2int[intent] for intent in intents]
 
         if args.input_type == 'delexicalised':
-            delexicalised =  idx2word(samples, i2w=i2w, pad_idx=pad_idx)
-            labellings, sentences = surface_realisation(samples, i2w=i2w, pad_idx=pad_idx)
+            delexicalised =  idx2word(samples, i2w=i2w, eos_idx=eos_idx)
+            labellings, sentences = surface_realisation(samples, i2w=i2w, pad_idx=eos_idx)
             generated['delexicalised']=delexicalised
             generated['sentences']=sentences
         else:
-            sentences = idx2word(samples, i2w=i2w, pad_idx=pad_idx)
+            sentences = idx2word(samples, i2w=i2w, eos_idx=eos_idx)
             generated['sentences']=sentences
 
         print('----------GENERATED----------')
@@ -427,28 +424,20 @@ if __name__ == '__main__':
                 print('Delexicalised : ', delexicalised[i])
             print('Sentences : ', sentences[i]+'\n')
 
-        bleu_scores = {}
-        cc =SmoothingFunction()
-        references = {intent:[] for intent in range(model.n_classes)}
-        candidates = {intent:[] for intent in range(model.n_classes)}
-        for example in datasets.train:
-            references[int2i[example.intent]].append(example.utterance)
-        for i, example in enumerate(sentences):
-            candidates[intents[i]].append(datasets.tokenize(example))
-        for intent in range(model.n_classes):
-            bleu_scores[i2int[intent]] = np.mean([sentence_bleu(references[intent], candidate, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1) for candidate in candidates[intent]])
-        avg_bleu_score = np.mean([bleu_score for bleu_score in bleu_scores.values()])
-        print('BLEU scores : ', bleu_scores)
-        print('Average BLEU : ', avg_bleu_score)
-        bleu_scores['average'] = avg_bleu_score
+        bleu_scores = calc_bleu(sentences, intents, datasets)
+        print('BLEU quality : ', bleu_scores['quality'])
+        print('BLEU diversity : ', bleu_scores['diversity'])
 
-        tokens = np.concatenate([datasets.tokenize(sentence) for sentence in sentences])
-        diversity = len(set(tokens))/float(len(tokens))
+        diversity = calc_diversity(sentences, datasets)
         print('Diversity : ', diversity)
+
+        perplexity = calc_perplexity(logp)
+        print('Perplexity : ', perplexity)
         
         run['generated'] = generated
         run['bleu_scores'] = bleu_scores
         run['diversity'] = diversity
+        run['perplexity'] = perplexity
 
         if args.benchmark:
             from snips_nlu import SnipsNLUEngine
