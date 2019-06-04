@@ -242,6 +242,8 @@ def train(model, datasets, args):
 
     run['NLL_hist'] = NLL_hist
     run['KL_hist'] = KL_hist
+    run['NLL_val'] = NLL_val
+    run['KL_val'] = KL_val
     run['NMI_hist'] = NMI_hist
     run['acc_hist'] = acc_hist
     run['latent'] = latent_rep
@@ -404,8 +406,9 @@ if __name__ == '__main__':
         
         generated['samples'] = samples
         if args.conditional != 'none':
-            intents = y_onehot.data.max(1)[1].cpu().numpy()
-            generated['intents'] = [i2int[intent] for intent in intents]
+            preds = y_onehot.data.max(1)[1].cpu().numpy()
+            intents = [i2int[pred] for pred in preds]
+            generated['intents'] = intents
 
         if args.input_type == 'delexicalised':
             delexicalised =  idx2word(samples, i2w=i2w, eos_idx=eos_idx)
@@ -419,7 +422,7 @@ if __name__ == '__main__':
         print('----------GENERATED----------')
         for i in range(args.n_generated):
             if args.conditional != 'none':
-                print('Intents   : ', i2int[intents[i]])
+                print('Intents   : ', intents[i])
             if args.input_type == 'delexicalised':
                 print('Delexicalised : ', delexicalised[i])
             print('Sentences : ', sentences[i]+'\n')
@@ -427,15 +430,17 @@ if __name__ == '__main__':
         bleu_scores = calc_bleu(sentences, intents, datasets)
         diversity = calc_diversity(sentences, datasets)
         entropy = calc_entropy(logp)
-        intent_accuracy = intent_classification(samples, intents)
+        intent_accuracy = intent_classification(sentences, intents, train_path = os.path.join(datadir, 'train.csv'))
         print('BLEU quality : ', bleu_scores['quality'])
         print('BLEU diversity : ', bleu_scores['diversity'])
         print('Diversity : ', diversity)
         print('Entropy : ', entropy)        
+        print('Intent accuracy : ', intent_accuracy)        
         run['generated'] = generated
         run['bleu_scores'] = bleu_scores
         run['diversity'] = diversity
         run['entropy'] = entropy
+        run['intent_accuracy'] = intent_accuracy
 
         if args.benchmark:
             from snips_nlu import SnipsNLUEngine

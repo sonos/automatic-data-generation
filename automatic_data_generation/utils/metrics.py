@@ -1,8 +1,10 @@
+import os
 import torch
 import numpy as np
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from automatic_data_generation.models.intent_classification import RNN_classifier
+import pickle
 
 def my_remove(list, elt):
     list.remove(elt)
@@ -21,7 +23,7 @@ def calc_bleu(sentences, intents, datasets):
     for example in datasets.train: # REFERENCES
         references[example.intent].append(example.utterance)
     for i, example in enumerate(sentences): # CANDIDATES
-        candidates[i2int[intents[i]]].append(datasets.tokenize(example))
+        candidates[intents[i]].append(datasets.tokenize(example))
 
     for intent in i2int:
 
@@ -53,19 +55,57 @@ def calc_diversity(sentences, datasets):
     diversity = len(set(tokens)) / float(len(tokens))
     return diversity
 
-def intent_classification(sentences, intents, datasets):
-    state_dict = torch.load('intent_classifier.pyT')
+def intent_classification(sentences, intents, train_path):
+    '''This only works for snips dataset for now...'''
 
-    model = RNN_classifier()
-    model.load_state_dict(state_dict)
-    model.eval()  # turn on evaluation mode
-    input = datasets.tokenize(sentences)
-    preds = model()
-    preds = F.log_softmax(preds, dim=1)
-    loss = loss_func(preds, intents)
+    # if not os.path.exists('clf.pkl'):
+    print('Training intent classifier')
+    intent_classifier = train_intent_classifier(train_path)
 
-    pred_labels = preds.data.max(1)[1].long()
-    val_corrects = pred_labels.eq(y.data).cpu().sum()
-    accuracy = val_corrects/samples.size(0)
+    # else:
+    # with open('clf.pkl', 'rb') as f:
+    #     intent_classifier = pickle.load(f)
 
-    return accuracy.item()
+    preds = intent_classifier.predict(sentences)
+
+    accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents)]) / len(intents))    
+
+    return accuracy
+
+def train_intent_classifier(train_path):
+
+    import pandas as pd
+    from sklearn.preprocessing import LabelEncoder
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.pipeline import Pipeline
+    from sklearn.feature_extraction.text import TfidfTransformer
+    from sklearn.linear_model import LogisticRegression, SGDClassifier
+    
+    data = pd.read_csv(train_path)
+    X = data.utterance
+    y = data.intent
+    label_encoder = LabelEncoder()
+    y = label_encoder.fit_transform(y)
+    model = Pipeline([
+                    ('vect',CountVectorizer()),
+                    ('tfidf', TfidfTransformer()),
+                    ('model', SGDClassifier())
+    ])
+    model.fit(X, y)
+
+    class IntentClassifier():
+        def __init__(self, label_encoder, model):
+            self.label_encoder = label_encoder
+            self.classifier = model
+
+        def predict(self,sentences):
+            labels = model.predict(sentences)
+            intents = list(label_encoder.inverse_transform(labels))
+            return intents
+
+    intent_classifier = IntentClassifier(model, label_encoder)
+
+    # with open('clf.pkl', 'wb') as f:
+    #         pickle.dump(intent_classifier, f)
+
+    return intent_classifier
