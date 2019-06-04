@@ -125,9 +125,9 @@ class CVAE(nn.Module):
         z = z * std + mean
 
         if self.conditional:
-            logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=1)
+            logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=-1)
             y_onehot = nn.functional.gumbel_softmax(logc)
-            latent = torch.cat((z, y_onehot), dim=1)
+            latent = torch.cat((z, y_onehot), dim=-1)
         else:
             logc = None
             latent = z
@@ -170,7 +170,7 @@ class CVAE(nn.Module):
         bs, seqlen, hs = padded_outputs.size()
 
         logits = self.outputs2vocab(padded_outputs.view(-1, hs))
-        logp = nn.functional.log_softmax(logits / self.temperature, dim=0)
+        logp = nn.functional.log_softmax(logits / self.temperature, dim=-1)
         logp = logp.view(bs, seqlen, self.embedding.num_embeddings)
 
         if self.bow:
@@ -195,10 +195,10 @@ class CVAE(nn.Module):
                 y_onehot = torch.FloatTensor(batch_size, self.n_classes)
                 y_onehot.fill_(0.001)
                 y_onehot.scatter_(dim=1, index=y, value=1)
-                latent = to_device(torch.cat((z, y_onehot), dim=1))
+            latent = to_device(torch.cat((z, y_onehot), dim=1))
         else:
-            latent = to_device(z)
             y_onehot = None
+            latent = to_device(z)
 
         hidden = self.latent2hidden(latent)
 
@@ -264,7 +264,7 @@ class CVAE(nn.Module):
                                             out=self.tensor()).long()
             t += 1
 
-        return generations, z, y_onehot
+        return generations, z, y_onehot, logits
 
     def _sample(self, dist, mode='greedy'):
 
