@@ -6,7 +6,7 @@ import argparse
 import os
 import torch
 from automatic_data_generation.utils.utils import to_device, idx2word, surface_realisation
-from automatic_data_generation.utils.metrics import calc_bleu, calc_entropy, calc_diversity
+from automatic_data_generation.utils.metrics import calc_bleu, calc_entropy, calc_diversity, intent_classification
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
@@ -425,15 +425,13 @@ if __name__ == '__main__':
             print('Sentences : ', sentences[i]+'\n')
 
         bleu_scores = calc_bleu(sentences, intents, datasets)
+        diversity = calc_diversity(sentences, datasets)
+        entropy = calc_entropy(logp)
+        intent_accuracy = intent_classification(samples, intents)
         print('BLEU quality : ', bleu_scores['quality'])
         print('BLEU diversity : ', bleu_scores['diversity'])
-
-        diversity = calc_diversity(sentences, datasets)
         print('Diversity : ', diversity)
-
-        entropy = calc_entropy(logp)
-        print('Entropy : ', entropy)
-        
+        print('Entropy : ', entropy)        
         run['generated'] = generated
         run['bleu_scores'] = bleu_scores
         run['diversity'] = diversity

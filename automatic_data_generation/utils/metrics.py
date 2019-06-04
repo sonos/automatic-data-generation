@@ -1,6 +1,8 @@
 import torch
 import numpy as np
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+from automatic_data_generation.models.intent_classification import RNN_classifier
 
 def my_remove(list, elt):
     list.remove(elt)
@@ -51,3 +53,19 @@ def calc_diversity(sentences, datasets):
     diversity = len(set(tokens)) / float(len(tokens))
     return diversity
 
+def intent_classification(sentences, intents, datasets):
+    state_dict = torch.load('intent_classifier.pyT')
+
+    model = RNN_classifier()
+    model.load_state_dict(state_dict)
+    model.eval()  # turn on evaluation mode
+    input = datasets.tokenize(sentences)
+    preds = model()
+    preds = F.log_softmax(preds, dim=1)
+    loss = loss_func(preds, intents)
+
+    pred_labels = preds.data.max(1)[1].long()
+    val_corrects = pred_labels.eq(y.data).cpu().sum()
+    accuracy = val_corrects/samples.size(0)
+
+    return accuracy.item()

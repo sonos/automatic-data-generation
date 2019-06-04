@@ -104,6 +104,7 @@ class Datasets():
 
         INTENT.build_vocab(train)
 
+        self.emb_dim = emb_dim
         self.train = train
         self.valid = valid
         self.TEXT = TEXT
