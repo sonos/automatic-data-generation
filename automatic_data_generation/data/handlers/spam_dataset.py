@@ -12,21 +12,23 @@ class SpamDataset(BaseDataset):
     """
 
     def __init__(self,
-                 dataset_path,
+                 dataset_folder,
                  input_type,
+                 dataset_size,
                  tokenizer_type,
                  preprocessing_type,
                  max_sequence_length,
-                 emb_dim,
-                 emb_type,
+                 embedding_type,
+                 embedding_dimension,
                  max_vocab_size):
-        super(SpamDataset, self).__init__(dataset_path,
+        super(SpamDataset, self).__init__(dataset_folder,
                                           input_type,
+                                          dataset_size,
                                           tokenizer_type,
                                           preprocessing_type,
                                           max_sequence_length,
-                                          emb_dim,
-                                          emb_type,
+                                          embedding_type,
+                                          embedding_dimension,
                                           max_vocab_size)
 
     @staticmethod

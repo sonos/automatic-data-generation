@@ -1,4 +1,4 @@
-import os
+import random
 from abc import ABCMeta, abstractmethod
 
 import torch
@@ -6,6 +6,7 @@ import torchtext
 from torchtext.data import BucketIterator
 
 from automatic_data_generation.data.utils import get_fields, make_tokenizer
+from automatic_data_generation.utils.io import read_csv, write_csv
 
 
 class BaseDataset(object):
@@ -17,20 +18,23 @@ class BaseDataset(object):
     __metaclass__ = ABCMeta
 
     def __init__(self,
-                 dataset_path,
+                 dataset_folder,
                  input_type,
+                 dataset_size,
                  tokenizer_type,
                  preprocessing_type,
                  max_sequence_length,
-                 emb_dim,
-                 emb_type,
+                 embedding_type,
+                 embedding_dimension,
                  max_vocab_size):
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
+
         text, delex, intent = get_fields(self.tokenize, max_sequence_length)
         skip_header, datafields = self.get_datafields(text, delex, intent)
 
-        train_path, valid_path = self.get_dataset_paths(dataset_path)
+        train_path, valid_path = self.get_dataset_paths(dataset_folder,
+                                                        dataset_size, skip_header)
 
         train, valid = torchtext.data.TabularDataset.splits(
             path='.',  # the root directory where the data lies
@@ -43,17 +47,19 @@ class BaseDataset(object):
             fields=datafields
         )
 
-        if emb_type == 'glove':
-            emb_vectors = "glove.6B.{}d".format(emb_dim)
+        if embedding_type == 'glove':
+            emb_vectors = "glove.6B.{}d".format(embedding_dimension)
             text.build_vocab(train, max_size=max_vocab_size,
                              vectors=emb_vectors)
             delex.build_vocab(train, max_size=max_vocab_size,
                               vectors=emb_vectors)
-        elif emb_type is None:
+        elif embedding_type is None:
             text.build_vocab(train, max_size=max_vocab_size)
             delex.build_vocab(train, max_size=max_vocab_size)
-            text.vocab.vectors = torch.randn(len(text.vocab.itos), emb_dim)
-            delex.vocab.vectors = torch.randn(len(delex.vocab.itos), emb_dim)
+            text.vocab.vectors = torch.randn(len(text.vocab.itos),
+                                             embedding_dimension)
+            delex.vocab.vectors = torch.randn(len(delex.vocab.itos),
+                                              embedding_dimension)
         else:
             raise NotImplementedError
 
@@ -83,7 +89,7 @@ class BaseDataset(object):
 
         Returns:
             skip_header (bool): whether or not skip the csv header
-                datafields list(tuple(str, torchtext.data.Field)): the fields
+            datafields list(tuple(str, torchtext.data.Field)): the fields
                 should be in the same order as the columns in the CSV or TSV
                 file, while tuples of (name, None) represent columns that
                 will be ignored.
@@ -91,9 +97,22 @@ class BaseDataset(object):
         raise NotImplementedError
 
     @staticmethod
-    def get_dataset_paths(dataset_path):
-        return os.path.join(dataset_path, 'train.csv'), os.path.join(
-            dataset_path, 'validate.csv')
+    def get_dataset_paths(dataset_folder, dataset_size=None,
+                          skip_header=True):
+        # TODO: stratified shuffle split
+        if dataset_size is None:
+            return dataset_folder / 'train.csv', \
+                   dataset_folder / 'validate.csv'
+        else:
+            original_train_path = dataset_folder / 'train.csv'
+            new_train_path = dataset_folder / 'train_{}.csv'.format(
+                dataset_size)
+            original_train = read_csv(original_train_path)
+            trimmed_train = random.sample(original_train, dataset_size)
+            if skip_header:
+                trimmed_train = [original_train[0]] + trimmed_train
+            write_csv(trimmed_train, new_train_path)
+            return new_train_path, dataset_folder / 'validate.csv'
 
     @property
     def len_train(self):
@@ -102,6 +121,10 @@ class BaseDataset(object):
     @property
     def len_valid(self):
         return len(self.valid)
+
+    @property
+    def vocab_size(self):
+        return len(self.i2w)
 
     @property
     def unk_idx(self):

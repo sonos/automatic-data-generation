@@ -3,6 +3,10 @@
 
 from __future__ import unicode_literals
 
+import pickle
+
+import torch
+
 from automatic_data_generation.data.base_dataset import BaseDataset
 
 
@@ -12,22 +16,24 @@ class SnipsDataset(BaseDataset):
     """
 
     def __init__(self,
-                 dataset_path,
+                 dataset_folder,
                  input_type,
+                 dataset_size,
                  tokenizer_type,
                  preprocessing_type,
                  max_sequence_length,
-                 emb_dim,
-                 emb_type,
+                 embedding_type,
+                 embedding_dimension,
                  max_vocab_size):
-
-        super(SnipsDataset, self).__init__(dataset_path,
+        self.skip_header = True
+        super(SnipsDataset, self).__init__(dataset_folder,
                                            input_type,
+                                           dataset_size,
                                            tokenizer_type,
                                            preprocessing_type,
                                            max_sequence_length,
-                                           emb_dim,
-                                           emb_type,
+                                           embedding_type,
+                                           embedding_dimension,
                                            max_vocab_size)
 
     @staticmethod
