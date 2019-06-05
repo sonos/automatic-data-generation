@@ -1,7 +1,10 @@
+from pathlib import Path
+
 import torch
 import torch.nn as nn
 import torch.nn.utils.rnn as rnn_utils
 
+from automatic_data_generation.utils.io import dump_json, load_json
 from automatic_data_generation.utils.utils import to_device
 
 
@@ -10,9 +13,10 @@ class CVAE(nn.Module):
         Implementation from https://github.com/timbmg/Sentence-VAE adapted
         to the conditional case
     """
-    def __init__(self, conditional, bow, vocab_size, embedding_size, rnn_type,
-                 hidden_size,
-                 word_dropout=0, embedding_dropout=0, z_size=100, n_classes=10,
+    def __init__(self, conditional=None, compute_bow=False, vocab_size=None,
+                 embedding_size=100, rnn_type='gru',
+                 hidden_size=128, word_dropout_rate=0,
+                 embedding_dropout_rate=0, z_size=100, n_classes=10,
                  sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
                  max_sequence_length=30, num_layers=1, bidirectional=False,
                  temperature=1):
@@ -22,7 +26,7 @@ class CVAE(nn.Module):
             else torch.Tensor
 
         self.conditional = conditional
-        self.bow = bow
+        self.bow = compute_bow
         self.max_sequence_length = max_sequence_length
         self.sos_idx = sos_idx
         self.eos_idx = eos_idx
@@ -31,7 +35,8 @@ class CVAE(nn.Module):
 
         self.z_size = z_size
         self.n_classes = n_classes
-        self.latent_size = z_size + n_classes if conditional else z_size
+        self.latent_size = z_size + n_classes if conditional is not None else \
+            z_size
 
         self.rnn_type = rnn_type
         self.bidirectional = bidirectional
@@ -39,11 +44,14 @@ class CVAE(nn.Module):
         self.hidden_size = hidden_size
         self.temperature = temperature
 
+        if vocab_size is None:
+            raise ValueError("vocab_size should be defined")
         self.vocab_size = vocab_size
         self.embedding_size = embedding_size
         self.embedding = nn.Embedding(vocab_size, embedding_size)
-        self.word_dropout_rate = word_dropout
-        self.embedding_dropout = nn.Dropout(p=embedding_dropout)
+        self.word_dropout_rate = word_dropout_rate
+        self.embedding_dropout_rate = embedding_dropout_rate
+        self.embedding_dropout = nn.Dropout(p=embedding_dropout_rate)
 
         if rnn_type == 'rnn':
             rnn = nn.RNN
@@ -124,7 +132,7 @@ class CVAE(nn.Module):
         z = to_device(torch.randn(batch_size, self.z_size))
         z = z * std + mean
 
-        if self.conditional:
+        if self.conditional is not None:
             logc = nn.functional.log_softmax(self.hidden2cat(hidden), dim=-1)
             y_onehot = nn.functional.gumbel_softmax(logc)
             latent = torch.cat((z, y_onehot), dim=-1)
@@ -189,7 +197,7 @@ class CVAE(nn.Module):
         else:
             batch_size = z.size(0)
 
-        if self.conditional:
+        if self.conditional is not None:
             if y_onehot is None:
                 y = torch.LongTensor(batch_size, 1).random_() % self.n_classes
                 y_onehot = torch.FloatTensor(batch_size, self.n_classes)
@@ -283,3 +291,41 @@ class CVAE(nn.Module):
         save_to[running_seqs] = running_latest
 
         return save_to
+
+    def save(self, folder):
+        folder = Path(folder)
+        if folder.exists():
+            raise OSError("folder already exists, refusing to overwrite")
+        folder.mkdir()
+
+        config = {
+            "conditional": self.conditional,
+            "bow": self.bow,
+            "vocab_size": self.vocab_size,
+            "embedding_size": self.embedding_size,
+            "rnn_type": self.rnn_type,
+            "hidden_size": self.hidden_size,
+            "word_dropout_rate": self.word_dropout_rate,
+            "embedding_dropout_rate": self.embedding_dropout_rate,
+            "z_size": self.z_size,
+            "n_classes": self.n_classes,
+            "sos_idx": self.sos_idx,
+            "eos_idx": self.eos_idx,
+            "pad_idx": self.pad_idx,
+            "unk_idx": self.unk_idx,
+            "max_sequence_length": self.max_sequence_length,
+            "num_layers": self.num_layers,
+            "bidirectional": self.bidirectional,
+            "temperature": self.temperature,
+        }
+
+        dump_json(config, folder / "config.json")
+        torch.save(self.state_dict(), folder / "model.pth")
+
+    @classmethod
+    def from_folder(cls, folder):
+        folder = Path(folder)
+        config = load_json(folder / "config.json")
+        model = cls(**config)
+        model.load_state_dict(torch.load(str(folder / "model.pth")))
+        return model
