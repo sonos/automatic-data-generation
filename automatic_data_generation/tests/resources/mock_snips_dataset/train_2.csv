@@ -1,0 +1,2 @@
+Will there be fog on March 3  2038 in Bonaire,O O O B-condition_description O B-timerange I-timerange I-timerange O B-country ,Will there be _condition_description_ on _timerange_ in _country_,GetWeather
+What is the forecast for Lesotho for starting this Fall,O O O O O B-country O O B-timerange I-timerange ,What is the forecast for _country_ for starting _timerange_,GetWeather

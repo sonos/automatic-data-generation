@@ -1,0 +1,4 @@
+utterance,labels,delexicalised,intent
+Will there be fog on March 3  2038 in Bonaire,O O O B-condition_description O B-timerange I-timerange I-timerange O B-country ,Will there be _condition_description_ on _timerange_ in _country_,GetWeather
+utterance,labels,delexicalised,intent
+What's the weather forecast close by Sligo ,O O O O O B-spatial_relation I-spatial_relation B-city ,What's the weather forecast _spatial_relation_ _city_ ,GetWeather
