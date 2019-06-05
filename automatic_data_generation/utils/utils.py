@@ -2,14 +2,26 @@ import torch
 import numpy as np
 import random
 import pickle
+import csv
 
 force_cpu = False
 
 def to_device(x, volatile=False):
     if torch.cuda.is_available() and not force_cpu :
         x = x.cuda()
-    return x
 
+        return x
+
+def create_augmented_dataset(args, raw_path, generated):
+    augmented_path = raw_path.replace('.csv', '_aug{}.csv'.format(args.datasize, args.n_generated))
+    print('Dumping augmented dataset at %s' %augmented_path)
+    from shutil import copyfile            
+    copyfile(raw_path, augmented_path)
+    augmented_csv = open(augmented_path, 'a')
+    augmented_writer = csv.writer(augmented_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    for s, l, d, i in zip(generated['sentences'], generated['labellings'], generated['delexicalised'], generated['intents']):
+        augmented_writer.writerow([s, l, d, i])
+    return augmented_path
 
 def idx2word(idx, i2w, eos_idx):
 
@@ -29,7 +41,19 @@ def idx2word(idx, i2w, eos_idx):
     return sent_str
 
 
-def surface_realisation(idx, i2w, pad_idx,
+def word2idx(sentences, w2i):
+
+    idx = [[] for i in range(len(sentences))]
+
+    for i, sent in enumerate(sentences):
+
+        for token in sent:
+            idx[i].append(w2i[token])
+
+    return idx
+
+
+def surface_realisation(idx, i2w, eos_idx,
                         slotdic_path='./data/snips/train_slot_values.pkl'):
 
     with open(slotdic_path, 'rb') as f:
@@ -42,7 +66,7 @@ def surface_realisation(idx, i2w, pad_idx,
 
         for word_id in sent:
             word = i2w[word_id]
-            if word_id == pad_idx:
+            if word_id == eos_idx:
                 break
             if word.startswith('_') and word.endswith('_'):
                 slot = word.lstrip('_').rstrip('_')
