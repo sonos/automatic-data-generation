@@ -30,7 +30,8 @@ class TestModel(unittest.TestCase):
             max_sequence_length=30,
             num_layers=1,
             bidirectional=False,
-            temperature=1
+            temperature=1,
+            force_cpu=False
         )
 
         with tempfile.TemporaryDirectory() as t_dir:

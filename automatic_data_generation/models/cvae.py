@@ -19,7 +19,7 @@ class CVAE(nn.Module):
                  embedding_dropout_rate=0, z_size=100, n_classes=10,
                  sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
                  max_sequence_length=30, num_layers=1, bidirectional=False,
-                 temperature=1):
+                 temperature=1, force_cpu=False):
 
         super().__init__()
         self.tensor = torch.cuda.FloatTensor if torch.cuda.is_available() \
@@ -61,6 +61,8 @@ class CVAE(nn.Module):
         #     rnn = nn.LSTM
         else:
             raise ValueError()
+
+        self.force_cpu = force_cpu
 
         self.encoder_rnn = rnn(
             embedding_size,
@@ -129,7 +131,7 @@ class CVAE(nn.Module):
         mean = self.hidden2mean(hidden)
         logv = self.hidden2logv(hidden)
         std = torch.exp(0.5 * logv)
-        z = to_device(torch.randn(batch_size, self.z_size))
+        z = to_device(torch.randn(batch_size, self.z_size), self.force_cpu)
         z = z * std + mean
 
         if self.conditional is not None:
@@ -203,10 +205,10 @@ class CVAE(nn.Module):
                 y_onehot = torch.FloatTensor(batch_size, self.n_classes)
                 y_onehot.fill_(0.001)
                 y_onehot.scatter_(dim=1, index=y, value=1)
-            latent = to_device(torch.cat((z, y_onehot), dim=1))
+            latent = to_device(torch.cat((z, y_onehot), dim=1), self.force_cpu)
         else:
             y_onehot = None
-            latent = to_device(z)
+            latent = to_device(z, self.force_cpu)
 
         hidden = self.latent2hidden(latent)
 
@@ -239,7 +241,8 @@ class CVAE(nn.Module):
                 # input_sequence = torch.randint(0, self.vocab_size,
                 # (batch_size,))
 
-            input_sequence = to_device(input_sequence.unsqueeze(1))
+            input_sequence = to_device(input_sequence.unsqueeze(1),
+                                       self.force_cpu)
 
             input_embedding = self.embedding(input_sequence)
             output, hidden = self.decoder_rnn(input_embedding, hidden)
@@ -300,7 +303,7 @@ class CVAE(nn.Module):
 
         config = {
             "conditional": self.conditional,
-            "bow": self.bow,
+            "compute_bow": self.bow,
             "vocab_size": self.vocab_size,
             "embedding_size": self.embedding_size,
             "rnn_type": self.rnn_type,
