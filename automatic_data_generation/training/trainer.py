@@ -68,11 +68,11 @@ class Trainer(object):
             train_loss, train_recon_loss, train_kl_loss = self.do_one_sweep(
                 train_iter, is_last_epoch, "train")
             LOGGER.info('Training loss after epoch %d: %f', self.epoch,
-                        train_loss)
+                        train_loss.item())
             LOGGER.info('Training reconstruction loss after epoch %d: %f',
-                        self.epoch, train_recon_loss)
+                        self.epoch, train_recon_loss.item())
             LOGGER.info('Training KL loss after epoch %d: %f',
-                        self.epoch, train_kl_loss)
+                        self.epoch, train_kl_loss.item())
 
             if (idx + 1) % dev_step_every_n_epochs == 0:
                 dev_loss, dev_recon_loss, dev_kl_loss = self.do_one_sweep(
@@ -190,7 +190,7 @@ class Trainer(object):
         for i in range(self.model.z_size):
             self.summary_writer.add_scalars(
                 train_or_dev + '/kl-losses',
-                {i: kl_losses[i].detach().cpu().numpy() / batch_size},
+                {str(i): kl_losses[i].detach().cpu().numpy() / batch_size},
                 self.step
             )
         if self.model.conditional is not None:
