@@ -25,6 +25,7 @@ setup(
         "torch",
         "torchvision",
         "torchtext",
+        "tensorboardX==1.4",
         "nltk",
         "spacy"
     ],
