@@ -3,6 +3,7 @@ import csv
 import json
 import os
 import pickle
+from automatic_data_generation.utils.utils import get_groups
 
 from nltk import word_tokenize
 
@@ -113,28 +114,6 @@ def json2csv(datadir, outdir, samples_per_intent):
     print('Successfully converted json2csv !')
 
 
-def get_groups(zipped):
-    prev_label = None
-    groups = []
-
-    for i, (word, label) in enumerate(zipped):
-        if label.startswith('B-'):  # start slot group
-            if i != 0:
-                groups.append(group)  # dump previous group
-            slot = label.lstrip('B-')
-            group = {'text': (word + ' '), 'entity': slot, 'slot_name': slot}
-        elif (label == 'O' and prev_label != 'O'):  # start context group
-            if i != 0:
-                groups.append(group)  # dump previous group
-            group = {'text': (word + ' ')}
-        else:
-            group['text'] += (word + ' ')
-        prev_label = label
-    groups.append(group)
-
-    return groups
-
-
 def csv2json(csv_path):
     print('Starting csv2json conversion...')
 
@@ -155,8 +134,7 @@ def csv2json(csv_path):
         utterance, labelling, delexicalised, intent = row
         if intent not in intents.keys():
             intents[intent] = {'utterances': []}
-        zipped = zip(word_tokenize(utterance), word_tokenize(labelling))
-        groups = get_groups(zipped)
+        groups = get_groups(word_tokenize(utterance), word_tokenize(labelling))
         intents[intent]['utterances'].append({'data': groups})
         for group in groups:
             if 'slot_name' in group.keys():
