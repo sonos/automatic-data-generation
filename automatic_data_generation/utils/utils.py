@@ -115,4 +115,5 @@ def get_groups(words, labels):
             group['text'] += (word + ' ')
         prev_label = label
 
+    groups.append(group)  # dump previous group
     return groups

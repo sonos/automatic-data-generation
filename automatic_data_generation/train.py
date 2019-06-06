@@ -324,6 +324,7 @@ if __name__ == '__main__':
         raw_writer.writerow(train_reader[0]) # write the header
         counter = 0
         import random
+        random.seed(0)
         while counter < args.datasize:
             row = random.choice(train_reader[1:]) # don't take the header
             counter += 1

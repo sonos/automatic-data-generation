@@ -207,7 +207,7 @@ class Datasets():
         encountered_slot_values = {}
     
         for example in list(self.train):
-        
+
             utterance, labelling, delexicalised, intent = example.utterance, example.labels, example.delexicalised, example.intent
             groups = get_groups(utterance, labelling)
             for group in groups:
