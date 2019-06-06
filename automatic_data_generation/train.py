@@ -5,8 +5,8 @@ from tqdm import tqdm
 import argparse
 import os
 import torch
-from automatic_data_generation.utils.utils import to_device, idx2word, surface_realisation
-from automatic_data_generation.utils.metrics import calc_bleu, calc_perplexity, calc_diversity
+from automatic_data_generation.utils.utils import to_device, idx2word, word2idx, surface_realisation, create_augmented_dataset
+from automatic_data_generation.utils.metrics import calc_bleu, calc_entropy, calc_diversity, intent_classification
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
@@ -242,6 +242,8 @@ def train(model, datasets, args):
 
     run['NLL_hist'] = NLL_hist
     run['KL_hist'] = KL_hist
+    run['NLL_val'] = NLL_val_loss
+    run['KL_val'] = KL_val_loss
     run['NMI_hist'] = NMI_hist
     run['acc_hist'] = acc_hist
     run['latent'] = latent_rep
@@ -258,7 +260,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--pickle', type=str, default='run')
-    parser.add_argument('-ng', '--n_generated', type=int, default=100)
+    parser.add_argument('-ng', '--n_generated', type=float, default=1) # as fraction of datasize 
     parser.add_argument('--benchmark', action='store_true')
 
     parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
@@ -309,28 +311,30 @@ if __name__ == '__main__':
 
     datadir = os.path.join(args.dataroot, args.dataset)
     print('loading and embedding datasets')
-    train_path = os.path.join(datadir, 'train.csv')
+    original_train_path = os.path.join(datadir, 'train.csv')
     validate_path = os.path.join(datadir, 'validate.csv')
 
     # Make a smaller dataset
     if args.datasize is not None:
-        raw_path = train_path.replace('.csv', '_raw{}.csv'.format(args.datasize))
-        train_csv = open(train_path, 'r')
+        train_path = original_train_path.replace('.csv', '_raw{}.csv'.format(args.datasize))
+        train_csv = open(original_train_path, 'r')
         train_reader = list(csv.reader(train_csv))
-        raw_csv = open(raw_path, 'w')
+        raw_csv = open(train_path, 'w')
         raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-
+        raw_writer.writerow(train_reader[0]) # write the header
         counter = 0
         import random
+        random.seed(0)
         while counter < args.datasize:
-            row = random.choice(train_reader)
+            row = random.choice(train_reader[1:]) # don't take the header
             counter += 1
             raw_writer.writerow(row)
         train_csv.close()
         raw_csv.close()
-        train_path = raw_path
+    else:
+        train_path = original_train_path
         
-    datasets = Datasets(train_path=os.path.join(train_path), valid_path=os.path.join(validate_path),
+    datasets = Datasets(train_path=train_path, valid_path=validate_path,
                         emb_dim=args.emb_dim, emb_type=args.emb_type,
                         max_vocab_size=args.max_vocab_size, max_sequence_length=args.max_sequence_length,
                         tokenizer=args.tokenizer)
@@ -344,8 +348,8 @@ if __name__ == '__main__':
     sos_idx = w2i['<sos>']
     eos_idx = w2i['<eos>']
     pad_idx = w2i['<pad>']
-    unk_idx = w2i['<unk>']    
-
+    unk_idx = w2i['<unk>']
+    slotdic = datasets.get_slotdic()
     if args.input_type=='delexicalised':
         print('embedding the slots with %s averaging' %args.slot_averaging)
         datasets.embed_slots(args.slot_averaging)
@@ -392,7 +396,9 @@ if __name__ == '__main__':
     train(model, datasets, args)
     
     torch.save(model.state_dict(), args.pickle+'.pyT')
-    
+
+    if args.datasize is None: args.datasize = len(datasets.train)
+    args.n_generated = int(args.datasize*args.n_generated)
     if args.n_generated>0:
 
         generated = {}
@@ -400,92 +406,121 @@ if __name__ == '__main__':
         model.eval()
 
         samples, z, y_onehot, logp = model.inference(n=args.n_generated)
-        samples = samples.cpu().numpy() #remove the eos
+        samples = samples.cpu().numpy() 
         
         generated['samples'] = samples
         if args.conditional != 'none':
-            intents = y_onehot.data.max(1)[1].cpu().numpy()
-            generated['intents'] = [i2int[intent] for intent in intents]
+            preds = y_onehot.data.max(1)[1].cpu().numpy()
+            intents = [i2int[pred] for pred in preds]
+            generated['intents'] = intents
 
         if args.input_type == 'delexicalised':
             delexicalised =  idx2word(samples, i2w=i2w, eos_idx=eos_idx)
-            labellings, sentences = surface_realisation(samples, i2w=i2w, pad_idx=eos_idx)
+            labellings, utterances = surface_realisation(samples, i2w=i2w, eos_idx=eos_idx, slotdic=slotdic)
+            generated['labellings']=labellings
             generated['delexicalised']=delexicalised
-            generated['sentences']=sentences
+            generated['utterances']=utterances
+            # slot expansion for comparison
+            slot_expansion = {}
+            slot_expansion_delexicalised = list(datasets.train.delexicalised)[:args.n_generated]
+            slot_expansion_intents = list(datasets.train.intent)[:args.n_generated]
+            slot_expansion_samples = word2idx(slot_expansion_delexicalised, w2i=w2i)
+            slot_expansion_labellings, slot_expansion_utterances = surface_realisation(slot_expansion_samples, i2w=i2w, eos_idx=eos_idx, slotdic=slotdic)
+            slot_expansion['samples'] = slot_expansion_samples
+            slot_expansion['intents'] = slot_expansion_intents
+            slot_expansion['labellings'] = slot_expansion_labellings
+            slot_expansion['delexicalised'] = slot_expansion_delexicalised
+            slot_expansion['utterances'] = slot_expansion_utterances
         else:
-            sentences = idx2word(samples, i2w=i2w, eos_idx=eos_idx)
-            generated['sentences']=sentences
+            utterances = idx2word(samples, i2w=i2w, eos_idx=eos_idx)
+            generated['utterances']=utterances
 
         print('----------GENERATED----------')
         for i in range(args.n_generated):
             if args.conditional != 'none':
-                print('Intents   : ', i2int[intents[i]])
+                print('Intents   : ', intents[i])
             if args.input_type == 'delexicalised':
                 print('Delexicalised : ', delexicalised[i])
-            print('Sentences : ', sentences[i]+'\n')
-
-        bleu_scores = calc_bleu(sentences, intents, datasets)
-        print('BLEU quality : ', bleu_scores['quality'])
-        print('BLEU diversity : ', bleu_scores['diversity'])
-
-        diversity = calc_diversity(sentences, datasets)
-        print('Diversity : ', diversity)
-
-        perplexity = calc_perplexity(logp)
-        print('Perplexity : ', perplexity)
-        
+            print('Utterances : ', utterances[i]+'\n')
         run['generated'] = generated
-        run['bleu_scores'] = bleu_scores
-        run['diversity'] = diversity
-        run['perplexity'] = perplexity
+            
+        print('----------METRICS----------')
+        bleu_scores = calc_bleu(utterances, intents, datasets)
+        diversity = calc_diversity(utterances, datasets)
+        intent_accuracy = intent_classification(utterances, intents, train_path = original_train_path)
+        entropy = calc_entropy(logp)
+        metrics = {'bleu_scores':bleu_scores, 'diversity':diversity, 'intent_accuracy':intent_accuracy, 'entropy':entropy}
+        print(metrics)
+        run['metrics'] = metrics
+        
+        if args.input_type == 'delexicalised':
+            print('----------DELEXICALISED METRICS----------')
+            bleu_scores = calc_bleu(delexicalised, intents, datasets, type='delexicalised')
+            diversity = calc_diversity(delexicalised, datasets)
+            intent_accuracy = intent_classification(delexicalised, intents, train_path = original_train_path, type='delexicalised')
+            delexicalised_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
+            print(delexicalised_metrics)
+            run['delexicalised_metrics'] = delexicalised_metrics
 
+            print('----------SLOT EXPANSION METRICS----------')
+            bleu_scores = calc_bleu(slot_expansion_utterances, slot_expansion_intents, datasets)
+            diversity = calc_diversity(slot_expansion_utterances, datasets)
+            intent_accuracy = intent_classification(slot_expansion_utterances, slot_expansion_intents, train_path = original_train_path)
+            slot_expansion_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
+            print(slot_expansion_metrics)
+            run['slot_expansion_metrics'] = slot_expansion_metrics
+            
         if args.benchmark:
-            from snips_nlu import SnipsNLUEngine
-            from snips_nlu_metrics import compute_train_test_metrics
+            print('----------IMPROVEMENT METRICS----------')
 
-            augmented_path = train_path.replace('.csv', '_aug{}.csv'.format(args.datasize, args.n_generated))
-            print('Dumping augmented dataset at %s' %augmented_path)
-            from shutil import copyfile
-            
-            copyfile(train_path, augmented_path)
-            augmented_csv = open(augmented_path, 'a')
-            augmented_writer = csv.writer(augmented_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            for s, l, d, i in zip(sentences, labellings, delexicalised, intents):
-                augmented_writer.writerow([s, l, d, i2int[i]])
-            
-            csv2json(train_path)
-            csv2json(augmented_path)
+            augmented_path = create_augmented_dataset(args, train_path, generated)
+            val_utterances = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
+            val_intents = list(datasets.valid.intent)
+            raw_acc = intent_classification(val_utterances, val_intents, train_path = train_path)
+            aug_acc = intent_classification(val_utterances, val_intents, train_path = augmented_path)
+            print(raw_acc,aug_acc)            
+            run['metrics']['improvement'] = {'raw_acc':raw_acc, 'aug_acc':aug_acc}
 
-            print('Starting benchmarking...')
+            augmented_path = create_augmented_dataset(args, train_path, slot_expansion)
+            val_utterances = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
+            val_intents = list(datasets.valid.intent)
+            raw_acc = intent_classification(val_utterances, val_intents, train_path = train_path)
+            aug_acc = intent_classification(val_utterances, val_intents, train_path = augmented_path)
+            print(raw_acc,aug_acc)            
+            run['slot_expansion_metrics']['improvement'] = {'raw_acc':raw_acc, 'aug_acc':aug_acc}
 
-            def my_matching_lambda(lhs_slot, rhs_slot):
-                return lhs_slot['text'].strip() == rhs_slot["rawValue"].strip()
+            # from snips_nlu import SnipsNLUEngine
+            # from snips_nlu_metrics import compute_train_test_metrics
+            # def my_matching_lambda(lhs_slot, rhs_slot):
+            #     return lhs_slot['text'].strip() == rhs_slot["rawValue"].strip()
+            # csv2json(train_path)
+            # csv2json(augmented_path)
 
-            raw_metrics = compute_train_test_metrics(train_dataset=os.path.join(datadir, 'train.json'),
-                                                    test_dataset=os.path.join(datadir, 'validate.json'),
-                                                    engine_class=SnipsNLUEngine,
-                                                    slot_matching_lambda = my_matching_lambda
-                                                    )
-            augmented_metrics = compute_train_test_metrics(train_dataset=os.path.join(datadir, 'train_augmented.json'),
-                                                    test_dataset=os.path.join(datadir, 'validate.json'),
-                                                    engine_class=SnipsNLUEngine,
-                                                    slot_matching_lambda = my_matching_lambda
-                                                    )
+            # raw_metrics = compute_train_test_metrics(train_dataset=os.path.join(datadir, 'train.json'),
+            #                                         test_dataset=os.path.join(datadir, 'validate.json'),
+            #                                         engine_class=SnipsNLUEngine,
+            #                                         slot_matching_lambda = my_matching_lambda
+            #                                         )
+            # augmented_metrics = compute_train_test_metrics(train_dataset=os.path.join(datadir, 'train_augmented.json'),
+            #                                         test_dataset=os.path.join(datadir, 'validate.json'),
+            #                                         engine_class=SnipsNLUEngine,
+            #                                         slot_matching_lambda = my_matching_lambda
+            #                                         )
 
-            print('----------METRICS----------')
-            print('Without augmentation : ')
-            print(raw_metrics['average_metrics'])
-            print('With augmentation : ')
-            print(augmented_metrics['average_metrics'])
-            intent_improvement = 100 * ((augmented_metrics['average_metrics']['intent']['f1'] - raw_metrics['average_metrics']['intent']['f1'])
-                                        / raw_metrics['average_metrics']['intent']['f1'])
-            slot_improvement = 100 * ((augmented_metrics['average_metrics']['slot']['f1'] - raw_metrics['average_metrics']['slot']['f1'])
-                                        / raw_metrics['average_metrics']['slot']['f1'])
-            score = intent_improvement + slot_improvement
+            # print('----------METRICS----------')
+            # print('Without augmentation : ')
+            # print(raw_metrics['average_metrics'])
+            # print('With augmentation : ')
+            # print(augmented_metrics['average_metrics'])
+            # intent_improvement = 100 * ((augmented_metrics['average_metrics']['intent']['f1'] - raw_metrics['average_metrics']['intent']['f1'])
+            #                             / raw_metrics['average_metrics']['intent']['f1'])
+            # slot_improvement = 100 * ((augmented_metrics['average_metrics']['slot']['f1'] - raw_metrics['average_metrics']['slot']['f1'])
+            #                             / raw_metrics['average_metrics']['slot']['f1'])
+            # score = intent_improvement + slot_improvement
 
-            print('Improvement metrics : intent {:.4f} slot {:.4f} total {:.4f}'.format(intent_improvement, slot_improvement, score))
+            # print('Improvement metrics : intent {:.4f} slot {:.4f} total {:.4f}'.format(intent_improvement, slot_improvement, score))
 
-            run['metrics'] = {'raw':raw_metrics['average_metrics'], 'augmented':augmented_metrics['average_metrics'], 'improvement':{'intent':intent_improvement, 'slot':slot_improvement, 'score':score}}
+            # run['metrics']['improvement'] = {'raw':raw_metrics['average_metrics'], 'augmented':augmented_metrics['average_metrics'], 'improvement':{'intent':intent_improvement, 'slot':slot_improvement, 'score':score}}
 
 
     run['i2w'] = i2w

@@ -248,6 +248,10 @@ class CVAE(nn.Module):
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
             logits = self.outputs2vocab(output)
+            if t == 0: # prevent from generating empty sentence
+                logits[:,:,self.eos_idx] = torch.min(logits, dim=-1)[0]
+            logp = nn.functional.log_softmax(logits / self.temperature, dim=-1)
+
             input_sequence = self._sample(logits)
 
             # save next input
@@ -275,7 +279,7 @@ class CVAE(nn.Module):
                                             out=self.tensor()).long()
             t += 1
 
-        return generations, z, y_onehot, logits
+        return generations, z, y_onehot, logp
 
     def _sample(self, dist, mode='greedy'):
 
