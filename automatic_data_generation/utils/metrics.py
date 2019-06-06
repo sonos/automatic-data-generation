@@ -10,7 +10,7 @@ def my_remove(list, elt):
     list.remove(elt)
     return list
 
-def calc_bleu(sentences, intents, datasets):
+def calc_bleu(sentences, intents, datasets, type='utterance'):
 
     bleu_scores = {'quality':{}, 'diversity':{}}
 
@@ -21,7 +21,7 @@ def calc_bleu(sentences, intents, datasets):
     candidates = {intent: [] for intent in i2int}
 
     for example in datasets.train: # REFERENCES
-        references[example.intent].append(example.utterance)
+        references[example.intent].append(getattr(example, type))
     for i, example in enumerate(sentences): # CANDIDATES
         candidates[intents[i]].append(datasets.tokenize(example))
 
@@ -55,12 +55,12 @@ def calc_diversity(sentences, datasets):
     diversity = len(set(tokens)) / float(len(tokens))
     return diversity
 
-def intent_classification(sentences, intents, train_path):
+def intent_classification(sentences, intents, train_path, type='utterance'):
     '''This only works for snips dataset for now...'''
 
     # if not os.path.exists('clf.pkl'):
     print('Training intent classifier')
-    intent_classifier = train_intent_classifier(train_path)
+    intent_classifier = train_intent_classifier(train_path, type)
 
     # else:
     # with open('clf.pkl', 'rb') as f:
@@ -72,7 +72,7 @@ def intent_classification(sentences, intents, train_path):
 
     return accuracy
 
-def train_intent_classifier(train_path):
+def train_intent_classifier(train_path, type='utterance'):
 
     import pandas as pd
     from sklearn.preprocessing import LabelEncoder
@@ -82,7 +82,7 @@ def train_intent_classifier(train_path):
     from sklearn.linear_model import LogisticRegression, SGDClassifier
     
     data = pd.read_csv(train_path)
-    X = data.utterance
+    X = getattr(data, type)
     y = data.intent
     label_encoder = LabelEncoder()
     y = label_encoder.fit_transform(y)
@@ -94,7 +94,7 @@ def train_intent_classifier(train_path):
     model.fit(X, y)
 
     class IntentClassifier():
-        def __init__(self, label_encoder, model):
+        def __init__(self, model, label_encoder):
             self.label_encoder = label_encoder
             self.classifier = model
 

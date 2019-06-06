@@ -3,7 +3,7 @@ import pickle
 import torch
 import torchtext
 from torchtext.data import BucketIterator
-
+from automatic_data_generation.utils.utils import get_groups
 
 class Datasets():
     def __init__(self, train_path='train.csv', valid_path='validate.csv',
@@ -49,6 +49,11 @@ class Datasets():
                                     include_lengths=True,
                                     fix_length=max_sequence_length,
                                     init_token='<sos>', eos_token='<eos>')
+        LABEL = torchtext.data.Field(lower=False, tokenize=self.tokenize,
+                                    sequential=True, batch_first=True,
+                                    include_lengths=True,
+                                    fix_length=max_sequence_length,
+                                    init_token='<sos>', eos_token='<eos>')
         DELEX = torchtext.data.Field(lower=True, tokenize=self.tokenize,
                                      sequential=True, batch_first=True,
                                      include_lengths=True,
@@ -59,7 +64,7 @@ class Datasets():
 
         skip_header = True
         if 'snips' in train_path:
-            datafields = [("utterance", TEXT), ("labels", None),
+            datafields = [("utterance", TEXT), ("labels", LABEL),
                           ("delexicalised", DELEX), ("intent", INTENT)]
         elif 'atis' in train_path:
             datafields = [(" ", None), ("utterance", TEXT), (" ", None),
@@ -102,6 +107,7 @@ class Datasets():
         else:
             raise NotImplementedError
 
+        LABEL.build_vocab(train)
         INTENT.build_vocab(train)
 
         self.emb_dim = emb_dim
@@ -194,3 +200,26 @@ class Datasets():
             "total number of words are {}"
             .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
+
+    def get_slotdic(self):
+
+        slotdic = {}
+        encountered_slot_values = {}
+    
+        for example in list(self.train):
+        
+            utterance, labelling, delexicalised, intent = example.utterance, example.labels, example.delexicalised, example.intent
+            groups = get_groups(utterance, labelling)
+            for group in groups:
+                if 'slot_name' in group.keys():
+                    slot_name = group['slot_name']
+                    slot_value = group['text']
+                    if slot_name not in encountered_slot_values.keys():
+                        encountered_slot_values[slot_name] = []
+                    if slot_name not in slotdic.keys():
+                        slotdic[slot_name] = []
+                    if slot_value not in encountered_slot_values[slot_name]:
+                        slotdic[slot_name].append(slot_value)
+                    encountered_slot_values[slot_name].append(slot_value)
+
+        return slotdic

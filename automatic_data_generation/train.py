@@ -260,7 +260,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--pickle', type=str, default='run')
-    parser.add_argument('-ng', '--n_generated', type=int, default=100)
+    parser.add_argument('-ng', '--n_generated', type=float, default=1) # as fraction of datasize 
     parser.add_argument('--benchmark', action='store_true')
 
     parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
@@ -347,8 +347,9 @@ if __name__ == '__main__':
     sos_idx = w2i['<sos>']
     eos_idx = w2i['<eos>']
     pad_idx = w2i['<pad>']
-    unk_idx = w2i['<unk>']    
-
+    unk_idx = w2i['<unk>']
+    slotdic = datasets.get_slotdic()
+    print(slotdic)
     if args.input_type=='delexicalised':
         print('embedding the slots with %s averaging' %args.slot_averaging)
         datasets.embed_slots(args.slot_averaging)
@@ -395,7 +396,9 @@ if __name__ == '__main__':
     train(model, datasets, args)
     
     torch.save(model.state_dict(), args.pickle+'.pyT')
-    
+
+    if args.datasize is None: args.datasize = len(datasets.train)
+    args.n_generated = int(args.datasize*args.n_generated)
     if args.n_generated>0:
 
         generated = {}
@@ -413,24 +416,24 @@ if __name__ == '__main__':
 
         if args.input_type == 'delexicalised':
             delexicalised =  idx2word(samples, i2w=i2w, eos_idx=eos_idx)
-            labellings, sentences = surface_realisation(samples, i2w=i2w, eos_idx=eos_idx)
+            labellings, utterances = surface_realisation(samples, i2w=i2w, eos_idx=eos_idx, slotdic=slotdic)
             generated['labellings']=labellings
             generated['delexicalised']=delexicalised
-            generated['sentences']=sentences
+            generated['utterances']=utterances
             # slot expansion for comparison
             slot_expansion = {}
             slot_expansion_delexicalised = list(datasets.train.delexicalised)[:args.n_generated]
             slot_expansion_intents = list(datasets.train.intent)[:args.n_generated]
             slot_expansion_samples = word2idx(slot_expansion_delexicalised, w2i=w2i)
-            slot_expansion_labellings, slot_expansion_sentences = surface_realisation(slot_expansion_samples, i2w=i2w, eos_idx=eos_idx)
+            slot_expansion_labellings, slot_expansion_utterances = surface_realisation(slot_expansion_samples, i2w=i2w, eos_idx=eos_idx, slotdic=slotdic)
             slot_expansion['samples'] = slot_expansion_samples
             slot_expansion['intents'] = slot_expansion_intents
             slot_expansion['labellings'] = slot_expansion_labellings
             slot_expansion['delexicalised'] = slot_expansion_delexicalised
-            slot_expansion['sentences'] = slot_expansion_sentences
+            slot_expansion['utterances'] = slot_expansion_utterances
         else:
-            sentences = idx2word(samples, i2w=i2w, eos_idx=eos_idx)
-            generated['sentences']=sentences
+            utterances = idx2word(samples, i2w=i2w, eos_idx=eos_idx)
+            generated['utterances']=utterances
 
         print('----------GENERATED----------')
         for i in range(args.n_generated):
@@ -438,23 +441,31 @@ if __name__ == '__main__':
                 print('Intents   : ', intents[i])
             if args.input_type == 'delexicalised':
                 print('Delexicalised : ', delexicalised[i])
-            print('Sentences : ', sentences[i]+'\n')
+            print('Utterances : ', utterances[i]+'\n')
         run['generated'] = generated
             
         print('----------METRICS----------')
-        bleu_scores = calc_bleu(sentences, intents, datasets)
-        diversity = calc_diversity(sentences, datasets)
-        intent_accuracy = intent_classification(sentences, intents, train_path = original_train_path)
+        bleu_scores = calc_bleu(utterances, intents, datasets)
+        diversity = calc_diversity(utterances, datasets)
+        intent_accuracy = intent_classification(utterances, intents, train_path = original_train_path)
         entropy = calc_entropy(logp)
         metrics = {'bleu_scores':bleu_scores, 'diversity':diversity, 'intent_accuracy':intent_accuracy, 'entropy':entropy}
         print(metrics)
         run['metrics'] = metrics
         
         if args.input_type == 'delexicalised':
+            print('----------DELEXICALISED METRICS----------')
+            bleu_scores = calc_bleu(delexicalised, intents, datasets, type='delexicalised')
+            diversity = calc_diversity(delexicalised, datasets)
+            intent_accuracy = intent_classification(delexicalised, intents, train_path = original_train_path, type='delexicalised')
+            delexicalised_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
+            print(delexicalised_metrics)
+            run['delexicalised_metrics'] = delexicalised_metrics
+
             print('----------SLOT EXPANSION METRICS----------')
-            bleu_scores = calc_bleu(slot_expansion_sentences, slot_expansion_intents, datasets)
-            diversity = calc_diversity(slot_expansion_sentences, datasets)
-            intent_accuracy = intent_classification(slot_expansion_sentences, slot_expansion_intents, train_path = original_train_path)
+            bleu_scores = calc_bleu(slot_expansion_utterances, slot_expansion_intents, datasets)
+            diversity = calc_diversity(slot_expansion_utterances, datasets)
+            intent_accuracy = intent_classification(slot_expansion_utterances, slot_expansion_intents, train_path = original_train_path)
             slot_expansion_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
             print(slot_expansion_metrics)
             run['slot_expansion_metrics'] = slot_expansion_metrics
@@ -463,18 +474,18 @@ if __name__ == '__main__':
             print('----------IMPROVEMENT METRICS----------')
 
             augmented_path = create_augmented_dataset(args, train_path, generated)
-            val_sentences = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
+            val_utterances = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
             val_intents = list(datasets.valid.intent)
-            raw_acc = intent_classification(val_sentences, val_intents, train_path = train_path)
-            aug_acc = intent_classification(val_sentences, val_intents, train_path = augmented_path)
+            raw_acc = intent_classification(val_utterances, val_intents, train_path = train_path)
+            aug_acc = intent_classification(val_utterances, val_intents, train_path = augmented_path)
             print(raw_acc,aug_acc)            
             run['metrics']['improvement'] = {'raw_acc':raw_acc, 'aug_acc':aug_acc}
 
             augmented_path = create_augmented_dataset(args, train_path, slot_expansion)
-            val_sentences = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
+            val_utterances = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
             val_intents = list(datasets.valid.intent)
-            raw_acc = intent_classification(val_sentences, val_intents, train_path = train_path)
-            aug_acc = intent_classification(val_sentences, val_intents, train_path = augmented_path)
+            raw_acc = intent_classification(val_utterances, val_intents, train_path = train_path)
+            aug_acc = intent_classification(val_utterances, val_intents, train_path = augmented_path)
             print(raw_acc,aug_acc)            
             run['slot_expansion_metrics']['improvement'] = {'raw_acc':raw_acc, 'aug_acc':aug_acc}
 
