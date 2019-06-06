@@ -349,7 +349,6 @@ if __name__ == '__main__':
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
     slotdic = datasets.get_slotdic()
-    print(slotdic)
     if args.input_type=='delexicalised':
         print('embedding the slots with %s averaging' %args.slot_averaging)
         datasets.embed_slots(args.slot_averaging)

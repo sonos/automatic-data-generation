@@ -12,7 +12,7 @@ def my_remove(list, elt):
 
 def calc_bleu(sentences, intents, datasets, type='utterance'):
 
-    bleu_scores = {'quality':{}, 'diversity':{}}
+    bleu_scores = {'quality':{}, 'diversity':{}, 'original_diversity':{}}
 
     i2int = datasets.INTENT.vocab.itos
     int2i = datasets.INTENT.vocab.stoi
@@ -32,13 +32,19 @@ def calc_bleu(sentences, intents, datasets, type='utterance'):
             [sentence_bleu(references[intent], candidate, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1) for
              candidate in candidates[intent]])
 
-        #DIVERSITY
+        # DIVERSITY
         bleu_scores['diversity'][intent] = np.mean(
             [1-sentence_bleu(my_remove(candidates[intent],candidate), candidate, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1)
              for candidate in candidates[intent]])
 
+        # ORIGINAL DIVERSITY
+        bleu_scores['original_diversity'][intent] = np.mean(
+            [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1)
+             for reference in references[intent]])
+
     bleu_scores['quality']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['quality'].values()])
     bleu_scores['diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['diversity'].values()])
+    bleu_scores['original_diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['original_diversity'].values()])
 
     return bleu_scores
 
