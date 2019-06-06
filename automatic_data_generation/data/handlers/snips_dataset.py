@@ -50,10 +50,10 @@ class SnipsDataset(BaseDataset):
         """
         if self.input_type == "utterance":
             raise TypeError(
-                "Slot embedding only available for delexicalized utterances"
+                "Slot embedding only available for delexicalised utterances"
             )
 
-        if averaging == 'none':
+        if averaging is None:
             return
 
         with open(slotdic_path, 'rb') as f:
@@ -69,9 +69,9 @@ class SnipsDataset(BaseDataset):
                 if averaging == 'micro':
                     for slot_value in slot_values:
                         for word in self.tokenize(slot_value):
-                            if self.w2i[word] != '<unk>':
+                            if self.text.vocab.stoi[word] != '<unk>':
                                 new_vectors.append(
-                                    self.text.vocab.vectors[self.w2i[word]]
+                                    self.text.vocab.vectors[self.text.vocab.stoi[word]]
                                 )
                     new_vector = torch.mean(torch.stack(new_vectors))
 
@@ -79,15 +79,15 @@ class SnipsDataset(BaseDataset):
                     for slot_value in slot_values:
                         tmp = []
                         for word in self.tokenize(slot_value):
-                            if self.w2i[word] != '<unk>':
+                            if self.text.vocab.stoi[word] != '<unk>':
                                 tmp.append(
-                                    self.text.vocab.vectors[self.w2i[word]]
+                                    self.text.vocab.vectors[self.text.vocab.stoi[word]]
                                 )
                         new_vectors.append(torch.mean(torch.stack(tmp)))
                     new_vector = torch.mean(torch.stack(new_vectors))
 
                 else:
-                    raise ValueError("Unknwon averaging strategy")
+                    raise ValueError("Unknown averaging strategy")
 
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector

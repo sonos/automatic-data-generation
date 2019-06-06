@@ -33,8 +33,8 @@ class BaseDataset(object):
         text, delex, intent = get_fields(self.tokenize, max_sequence_length)
         skip_header, datafields = self.get_datafields(text, delex, intent)
 
-        train_path, valid_path = self.get_dataset_paths(dataset_folder,
-                                                        dataset_size, skip_header)
+        train_path, valid_path = self.get_dataset_paths(
+            dataset_folder, dataset_size, skip_header)
 
         train, valid = torchtext.data.TabularDataset.splits(
             path='.',  # the root directory where the data lies
@@ -181,9 +181,6 @@ class BaseDataset(object):
             total_words += 1
         print(
             "average GloVE norm is {}, number of known words are {}, "
-            "total number of words are {}".format(
-                running_norm / num_non_zero,
-                num_non_zero,
-                total_words
-            )
+            "total number of words are {}"
+            .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
