@@ -386,8 +386,7 @@ if __name__ == '__main__':
         model.load_state_dict(state_dict)
     else:
         model.embedding.weight.data.copy_(vocab.vectors)
-    
-    model = to_device(model)
+
     print(model)
 
     NLL_recon = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)

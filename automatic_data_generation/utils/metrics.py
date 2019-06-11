@@ -3,7 +3,6 @@ import torch
 import numpy as np
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-from automatic_data_generation.models.intent_classification import RNN_classifier
 import pickle
 
 def my_remove(list, elt):

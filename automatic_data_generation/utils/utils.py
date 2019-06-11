@@ -9,8 +9,7 @@ force_cpu = False
 def to_device(x, volatile=False):
     if torch.cuda.is_available() and not force_cpu :
         x = x.cuda()
-
-        return x
+    return x
 
 def create_augmented_dataset(args, raw_path, generated):
     augmented_path = raw_path.replace('.csv', '_aug{}.csv'.format(args.datasize, args.n_generated))
