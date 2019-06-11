@@ -57,7 +57,7 @@ def train(model, datasets, args):
     
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
 
-    opt = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+    opt = getattr(torch.optim, args.optimizer)(model.parameters(), lr=args.learning_rate)
     # opt = torch.optim.Adam([
     #     {"params": model.encoder_rnn.parameters(), "lr": args.learning_rate},
     #     {"params": model.hidden2mean.parameters(), "lr": args.learning_rate},
@@ -274,26 +274,27 @@ if __name__ == '__main__':
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
     parser.add_argument('--bow_loss', type=bool, default=False)
     
-    parser.add_argument('-ep', '--epochs', type=int, default=2)
+    parser.add_argument('-ep', '--epochs', type=int, default=5)
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
-    parser.add_argument('-lr', '--learning_rate', type=float, default=0.001)
+    parser.add_argument('-lr', '--learning_rate', type=float, default=0.01)
+    parser.add_argument('-opt', '--optimizer', type=str, default='Adam', choices=['Adam', 'SGD'])
 
     parser.add_argument('-rnn', '--rnn_type', type=str, default='gru', choices=['rnn', 'gru', 'lstm'])
-    parser.add_argument('-hs', '--hidden_size', type=int, default=128)
+    parser.add_argument('-hs', '--hidden_size', type=int, default=256)
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
-    parser.add_argument('-bi', '--bidirectional', action='store_true')
-    parser.add_argument('-ls', '--latent_size', type=int, default=16)
+    parser.add_argument('-bi', '--bidirectional', type=bool, default=False)
+    parser.add_argument('-ls', '--latent_size', type=int, default=8)
 
     parser.add_argument('-t', '--temperature', type=float, default=1)
     parser.add_argument('-wd', '--word_dropout', type=float, default=0.)
     parser.add_argument('-ed', '--embedding_dropout', type=float, default=0.5)
 
     parser.add_argument('-af', '--anneal_function', type=str, default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k1', '--k1', type=float, default=0.005, help='anneal time for KL weight')
-    parser.add_argument('-x1', '--x1', type=int, default=500,     help='anneal rate for KL weight')
+    parser.add_argument('-k1', '--k1', type=float, default=0.01, help='anneal time for KL weight')
+    parser.add_argument('-x1', '--x1', type=int, default=300,     help='anneal rate for KL weight')
     parser.add_argument('-m1', '--m1', type=float, default=1.,    help='final value for KL weight')
     parser.add_argument('-k2', '--k2', type=float, default=0.01, help='anneal time for label weight')
-    parser.add_argument('-x2', '--x2', type=int, default=100,      help='anneal rate for label weight')
+    parser.add_argument('-x2', '--x2', type=int, default=300,      help='anneal rate for label weight')
     parser.add_argument('-m2', '--m2', type=float, default=1.,    help='final value for label weight')
     # parser.add_argument('-k3', '--k3', type=float, default=0.005, help='anneal time for word dropout')
     # parser.add_argument('-x3', '--x3', type=int, default=50,      help='anneal rate for word dropout')
@@ -473,6 +474,8 @@ if __name__ == '__main__':
             print('----------IMPROVEMENT METRICS----------')
 
             augmented_path = create_augmented_dataset(args, train_path, generated)
+
+            # AUGMENTATION
             val_utterances = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
             val_intents = list(datasets.valid.intent)
             raw_acc = intent_classification(val_utterances, val_intents, train_path = train_path)
@@ -480,6 +483,7 @@ if __name__ == '__main__':
             print(raw_acc,aug_acc)            
             run['metrics']['improvement'] = {'raw_acc':raw_acc, 'aug_acc':aug_acc}
 
+            # SLOT EXPANSION
             augmented_path = create_augmented_dataset(args, train_path, slot_expansion)
             val_utterances = [' '.join(sent) for sent in list(datasets.valid.utterance)] # untokenize
             val_intents = list(datasets.valid.intent)
@@ -490,8 +494,10 @@ if __name__ == '__main__':
 
             # from snips_nlu import SnipsNLUEngine
             # from snips_nlu_metrics import compute_train_test_metrics
+
             # def my_matching_lambda(lhs_slot, rhs_slot):
             #     return lhs_slot['text'].strip() == rhs_slot["rawValue"].strip()
+
             # csv2json(train_path)
             # csv2json(augmented_path)
 
