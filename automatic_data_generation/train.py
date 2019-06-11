@@ -254,7 +254,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--dataroot', type=str, default='data')
-    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'atis', 'sentiment', 'spam', 'yelp', 'penn-tree-bank'])
+    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'snips_ptb', 'atis', 'sentiment', 'spam', 'yelp', 'penn-tree-bank'])
     parser.add_argument('--datasize', type=int, default=None)
     parser.add_argument('--model', type=str, default='CVAE')
     parser.add_argument('--load_model', type=str, default=None)
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     run['args'] = args
     print(args)
 
-    if args.dataset!='snips':
+    if 'snips' not in args.dataset:
         args.input_type = 'utterance'
     args.pickle = args.pickle.rstrip('.pkl')
 
