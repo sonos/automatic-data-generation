@@ -254,7 +254,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--dataroot', type=str, default='data')
-    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'snips_ptb', 'snips_yelp', 'atis', 'sentiment', 'spam', 'yelp', 'penn-tree-bank'])
+    parser.add_argument('--dataset', type=str, default='snips')
     parser.add_argument('--datasize', type=int, default=None)
     parser.add_argument('--num_nones', type=int, default=0)
     parser.add_argument('--model', type=str, default='CVAE')
