@@ -254,8 +254,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--dataroot', type=str, default='data')
-    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'snips_ptb', 'atis', 'sentiment', 'spam', 'yelp', 'penn-tree-bank'])
+    parser.add_argument('--dataset', type=str, default='snips', choices=['snips', 'snips_ptb', 'snips_yelp', 'atis', 'sentiment', 'spam', 'yelp', 'penn-tree-bank'])
     parser.add_argument('--datasize', type=int, default=None)
+    parser.add_argument('--num_nones', type=int, default=0)
     parser.add_argument('--model', type=str, default='CVAE')
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--device', type=str, default='cuda')
@@ -324,11 +325,18 @@ if __name__ == '__main__':
         raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         raw_writer.writerow(train_reader[0]) # write the header
         counter = 0
+        none_counter = 0
         import random
         random.seed(0)
         while counter < args.datasize:
             row = random.choice(train_reader[1:]) # don't take the header
-            counter += 1
+            if row[3] == 'None':
+                if none_counter >= args.num_nones:
+                    continue
+                else:
+                    none_counter += 1
+            else:
+                counter += 1
             raw_writer.writerow(row)
         train_csv.close()
         raw_csv.close()
@@ -463,13 +471,13 @@ if __name__ == '__main__':
             print(delexicalised_metrics)
             run['delexicalised_metrics'] = delexicalised_metrics
 
-            print('----------SLOT EXPANSION METRICS----------')
-            bleu_scores = calc_bleu(slot_expansion_utterances, slot_expansion_intents, datasets)
-            diversity = calc_diversity(slot_expansion_utterances, datasets)
-            intent_accuracy = intent_classification(slot_expansion_utterances, slot_expansion_intents, train_path = original_train_path)
-            slot_expansion_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
-            print(slot_expansion_metrics)
-            run['slot_expansion_metrics'] = slot_expansion_metrics
+            # print('----------SLOT EXPANSION METRICS----------')
+            # bleu_scores = calc_bleu(slot_expansion_utterances, slot_expansion_intents, datasets)
+            # diversity = calc_diversity(slot_expansion_utterances, datasets)
+            # intent_accuracy = intent_classification(slot_expansion_utterances, slot_expansion_intents, train_path = original_train_path)
+            # slot_expansion_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
+            # print(slot_expansion_metrics)
+            # run['slot_expansion_metrics'] = slot_expansion_metrics
             
         if args.benchmark:
             print('----------IMPROVEMENT METRICS----------')
