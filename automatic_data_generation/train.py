@@ -6,7 +6,7 @@ import argparse
 import os
 import torch
 from automatic_data_generation.utils.utils import to_device, idx2word, word2idx, surface_realisation, create_augmented_dataset
-from automatic_data_generation.utils.metrics import calc_bleu, calc_entropy, calc_diversity, intent_classification
+from automatic_data_generation.utils.metrics import calc_bleu, calc_transfer, calc_entropy, calc_diversity, intent_classification
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--pickle', type=str, default='run')
-    parser.add_argument('-ng', '--n_generated', type=float, default=1) # as fraction of datasize 
+    parser.add_argument('-ng', '--n_generated', type=int, default=1000) # as fraction of datasize or total number ?
     parser.add_argument('--benchmark', action='store_true')
 
     parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
@@ -324,19 +324,25 @@ if __name__ == '__main__':
         raw_csv = open(train_path, 'w')
         raw_writer = csv.writer(raw_csv, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         raw_writer.writerow(train_reader[0]) # write the header
-        counter = 0
-        none_counter = 0
         import random
         random.seed(0)
-        while counter < args.datasize:
+
+        counter = 0
+        none_counter = 0
+        # args.epochs = int(args.epochs/(1+args.num_nones/args.datasize))
+        while counter < args.datasize or none_counter < args.num_nones:
             row = random.choice(train_reader[1:]) # don't take the header
-            if row[3] == 'None':
+            intent = row[3]
+            if intent == 'None':
                 if none_counter >= args.num_nones:
                     continue
                 else:
                     none_counter += 1
             else:
-                counter += 1
+                if counter >= args.datasize:
+                    continue
+                else:
+                    counter += 1
             raw_writer.writerow(row)
         train_csv.close()
         raw_csv.close()
@@ -407,7 +413,7 @@ if __name__ == '__main__':
     torch.save(model.state_dict(), args.pickle+'.pyT')
 
     if args.datasize is None: args.datasize = len(datasets.train)
-    args.n_generated = int(args.datasize*args.n_generated)
+    # args.n_generated = int(args.datasize*args.n_generated)
     if args.n_generated>0:
 
         generated = {}
@@ -455,20 +461,22 @@ if __name__ == '__main__':
             
         print('----------METRICS----------')
         bleu_scores = calc_bleu(utterances, intents, datasets)
+        transfer = calc_transfer(utterances, intents, datasets)
         diversity = calc_diversity(utterances, datasets)
         intent_accuracy = intent_classification(utterances, intents, train_path = original_train_path)
         entropy = calc_entropy(logp)
-        metrics = {'bleu_scores':bleu_scores, 'diversity':diversity, 'intent_accuracy':intent_accuracy, 'entropy':entropy}
-        print(metrics)
+        metrics = {'bleu_scores':bleu_scores, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy, 'entropy':entropy}
+        print(*[{k:v} for (k,v) in metrics.items()], sep='\n')
         run['metrics'] = metrics
         
         if args.input_type == 'delexicalised':
             print('----------DELEXICALISED METRICS----------')
             bleu_scores = calc_bleu(delexicalised, intents, datasets, type='delexicalised')
+            transfer = calc_transfer(delexicalised, intents, datasets)
             diversity = calc_diversity(delexicalised, datasets)
             intent_accuracy = intent_classification(delexicalised, intents, train_path = original_train_path, type='delexicalised')
-            delexicalised_metrics = {'bleu_scores' : bleu_scores,'diversity':diversity, 'intent_accuracy':intent_accuracy}
-            print(delexicalised_metrics)
+            delexicalised_metrics = {'bleu_scores':bleu_scores, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy}
+            print(*[{k:v} for (k,v) in delexicalised_metrics.items()], sep='\n')
             run['delexicalised_metrics'] = delexicalised_metrics
 
             # print('----------SLOT EXPANSION METRICS----------')

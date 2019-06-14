@@ -28,17 +28,17 @@ def calc_bleu(sentences, intents, datasets, type='utterance'):
 
         # QUALITY
         bleu_scores['quality'][intent] = np.mean(
-            [sentence_bleu(references[intent], candidate, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1) for
+            [sentence_bleu(references[intent], candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1) for
              candidate in candidates[intent]])
 
         # DIVERSITY
         bleu_scores['diversity'][intent] = np.mean(
-            [1-sentence_bleu(my_remove(candidates[intent],candidate), candidate, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1)
+            [1-sentence_bleu(my_remove(candidates[intent],candidate), candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
              for candidate in candidates[intent]])
 
         # ORIGINAL DIVERSITY
         bleu_scores['original_diversity'][intent] = np.mean(
-            [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.5, 0.5, 0, 0], smoothing_function=cc.method1)
+            [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
              for reference in references[intent]])
 
         # ORIGINALITY
@@ -51,6 +51,29 @@ def calc_bleu(sentences, intents, datasets, type='utterance'):
 
     return bleu_scores
 
+
+def calc_transfer(sentences, intents, datasets, type='utterance'):
+
+    i2int = datasets.INTENT.vocab.itos
+    int2i = datasets.INTENT.vocab.stoi
+    references = {intent: [] for intent in i2int}
+    candidates = {intent: [] for intent in i2int}
+
+    for example in datasets.valid: # REFERENCES
+        references[example.intent].append(getattr(example, type))
+    for i, example in enumerate(sentences): # CANDIDATES
+        candidates[intents[i]].append(datasets.tokenize(example))
+
+    from sklearn.feature_extraction.text import CountVectorizer
+    ref_vocabs  = {intent: CountVectorizer().fit(list(map(' '.join, references[intent]))).vocabulary_ for intent in i2int}
+    cand_vocabs = {intent: CountVectorizer().fit(list(map(' '.join, candidates[intent]))).vocabulary_ for intent in i2int}
+
+    transfer = {}
+    for intent in i2int:
+        transfer[intent] = 1 - len([token for token in cand_vocabs[intent] if token in ref_vocabs[intent]])/len(cand_vocabs[intent])
+    transfer['avg'] = np.mean([x for x in transfer.values()])
+
+    return transfer
 
 
 def calc_entropy(logp):
@@ -77,7 +100,8 @@ def intent_classification(sentences, intents, train_path, type='utterance'):
 
     preds = intent_classifier.predict(sentences)
 
-    accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents)]) / len(intents))    
+    accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents) if intent != 'None'])
+                     / len([intent for intent in intents if intent != 'None']))    
 
     return accuracy
 
