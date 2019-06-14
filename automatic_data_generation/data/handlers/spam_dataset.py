@@ -32,7 +32,7 @@ class SpamDataset(BaseDataset):
                                           max_vocab_size)
 
     @staticmethod
-    def get_datafields(text, delex, intent):
+    def get_datafields(text, delex, label, intent):
         skip_header = True
         datafields = [("utterance", text), ("intent", intent)]
         return skip_header, datafields

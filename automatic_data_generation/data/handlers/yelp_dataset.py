@@ -32,7 +32,7 @@ class YelpDataset(BaseDataset):
                                           max_vocab_size)
 
     @staticmethod
-    def get_datafields(text, delex, intent):
+    def get_datafields(text, delex, label, intent):
         skip_header = True
         datafields = [("", None), ("", None), ("", None),
                       ("intent", intent), ("", None), ("utterance", text),

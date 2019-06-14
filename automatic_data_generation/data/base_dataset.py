@@ -30,8 +30,10 @@ class BaseDataset(object):
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
 
-        text, delex, intent = get_fields(self.tokenize, max_sequence_length)
-        skip_header, datafields = self.get_datafields(text, delex, intent)
+        text, delex, label, intent = get_fields(self.tokenize,
+                                                max_sequence_length)
+        skip_header, datafields = self.get_datafields(text, delex, label,
+                                                      intent)
 
         train_path, valid_path = self.get_dataset_paths(
             dataset_folder, dataset_size, skip_header)
@@ -63,6 +65,7 @@ class BaseDataset(object):
         else:
             raise NotImplementedError
 
+        label.build_vocab(train)
         intent.build_vocab(train)
 
         self.vocab = text.vocab if input_type == 'utterance' else delex.vocab
@@ -79,12 +82,13 @@ class BaseDataset(object):
 
     @staticmethod
     @abstractmethod
-    def get_datafields(text, delex, intent):
+    def get_datafields(text, delex, label, intent):
         """
         Get metadata relating to sample with index `item`.
         Args:
             text (torchtext.data.Field): field for the text entries
             delex (torchtext.data.Field): field for the delexicalized entries
+            label (torchtext.data.Field): field for the slot label entries
             intent (torchtext.data.Field): field for the intent labels
 
         Returns:
