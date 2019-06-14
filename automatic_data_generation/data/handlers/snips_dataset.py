@@ -8,6 +8,7 @@ import pickle
 import torch
 
 from automatic_data_generation.data.base_dataset import BaseDataset
+from automatic_data_generation.data.utils import get_groups
 
 
 class SnipsDataset(BaseDataset):
@@ -37,11 +38,32 @@ class SnipsDataset(BaseDataset):
                                            max_vocab_size)
 
     @staticmethod
-    def get_datafields(text, delex, intent):
+    def get_datafields(text, delex, label, intent):
         skip_header = True
-        datafields = [("utterance", text), ("labels", None),
+        datafields = [("utterance", text), ("labels", label),
                       ("delexicalised", delex), ("intent", intent)]
         return skip_header, datafields
+
+    def get_slotdic(self):
+        slotdic = {}
+        encountered_slot_values = {}
+        for example in list(self.train):
+            utterance, labelling, delexicalised, intent = \
+                example.utterance, example.labels, example.delexicalised, \
+                example.intent
+            groups = get_groups(utterance, labelling)
+            for group in groups:
+                if 'slot_name' in group.keys():
+                    slot_name = group['slot_name']
+                    slot_value = group['text']
+                    if slot_name not in encountered_slot_values.keys():
+                        encountered_slot_values[slot_name] = []
+                    if slot_name not in slotdic.keys():
+                        slotdic[slot_name] = []
+                    if slot_value not in encountered_slot_values[slot_name]:
+                        slotdic[slot_name].append(slot_value)
+                    encountered_slot_values[slot_name].append(slot_value)
+        return slotdic
 
     def embed_slots(self, averaging='micro',
                     slotdic_path='./data/snips/train_slot_values.pkl'):
