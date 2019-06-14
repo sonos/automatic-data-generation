@@ -4,5 +4,7 @@
 .idea/*
 venv*
 *egg-info/*
+runs/*
+test*
 __pycache__/
 .vector_cache/
