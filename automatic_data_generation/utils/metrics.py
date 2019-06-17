@@ -11,7 +11,7 @@ def my_remove(list, elt):
 
 def calc_bleu(sentences, intents, datasets, type='utterance'):
 
-    bleu_scores = {'quality':{}, 'diversity':{}, 'original_diversity':{}, 'originality':{}}
+    bleu_scores = {'quality':{}, 'diversity':{}, 'original_diversity':{}}
 
     i2int = datasets.INTENT.vocab.itos
     int2i = datasets.INTENT.vocab.stoi
@@ -19,9 +19,10 @@ def calc_bleu(sentences, intents, datasets, type='utterance'):
     references = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
 
-    for example in datasets.valid: # REFERENCES
-        references[example.intent].append(getattr(example, type))
-    for i, example in enumerate(sentences): # CANDIDATES
+    for example in list(datasets.valid): # VALIDATION SET
+        if example.intent in i2int:
+            references[example.intent].append(getattr(example, type))
+    for i, example in enumerate(sentences):
         candidates[intents[i]].append(datasets.tokenize(example))
 
     for intent in i2int:
@@ -41,39 +42,45 @@ def calc_bleu(sentences, intents, datasets, type='utterance'):
             [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
              for reference in references[intent]])
 
-        # ORIGINALITY
-        bleu_scores['originality'][intent] = 1 - float(len([candidate for candidate in candidates[intent] if candidate in references[intent]]) / len(candidates[intent]))
-        
     bleu_scores['quality']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['quality'].values()])
     bleu_scores['diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['diversity'].values()])
     bleu_scores['original_diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['original_diversity'].values()])
-    bleu_scores['originality']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['originality'].values()])
 
     return bleu_scores
 
 
-def calc_transfer(sentences, intents, datasets, type='utterance'):
+def calc_originality_and_transfer(sentences, intents, datasets, type='utterance'):
+
+    originality = {}
+    transfer = {}
 
     i2int = datasets.INTENT.vocab.itos
     int2i = datasets.INTENT.vocab.stoi
     references = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
 
-    for example in datasets.valid: # REFERENCES
+    for example in datasets.train: # TRAINING SET
         references[example.intent].append(getattr(example, type))
-    for i, example in enumerate(sentences): # CANDIDATES
+    for i, example in enumerate(sentences): 
         candidates[intents[i]].append(datasets.tokenize(example))
 
+    # ORIGINALITY
+    for intent in i2int:
+        originality[intent] = 1 - float(len([candidate for candidate in candidates[intent] if candidate in references[intent]]) / len(candidates[intent]))
+    originality['avg'] = np.mean([x for x in originality.values()])
+
+    # TRANSFER
     from sklearn.feature_extraction.text import CountVectorizer
     ref_vocabs  = {intent: CountVectorizer().fit(list(map(' '.join, references[intent]))).vocabulary_ for intent in i2int}
     cand_vocabs = {intent: CountVectorizer().fit(list(map(' '.join, candidates[intent]))).vocabulary_ for intent in i2int}
 
-    transfer = {}
     for intent in i2int:
-        transfer[intent] = 1 - len([token for token in cand_vocabs[intent] if token in ref_vocabs[intent]])/len(cand_vocabs[intent])
+        transferred = [token for token in cand_vocabs[intent] if token not in ref_vocabs[intent]]
+        transfer[intent] = len(transferred)/len(cand_vocabs[intent])
+        print('Transferred to intent {} : '.format(intent), transferred)
     transfer['avg'] = np.mean([x for x in transfer.values()])
 
-    return transfer
+    return originality, transfer
 
 
 def calc_entropy(logp):

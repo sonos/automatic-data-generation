@@ -6,7 +6,7 @@ import argparse
 import os
 import torch
 from automatic_data_generation.utils.utils import to_device, idx2word, word2idx, surface_realisation, create_augmented_dataset
-from automatic_data_generation.utils.metrics import calc_bleu, calc_transfer, calc_entropy, calc_diversity, intent_classification
+from automatic_data_generation.utils.metrics import calc_bleu, calc_originality_and_transfer, calc_entropy, calc_diversity, intent_classification
 from sklearn.metrics import normalized_mutual_info_score
 import csv
 from automatic_data_generation.utils.conversion import csv2json
@@ -257,6 +257,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='snips')
     parser.add_argument('--datasize', type=int, default=None)
     parser.add_argument('--num_nones', type=int, default=0)
+    parser.add_argument('--restrict_to_intent', type=str, default=None)
     parser.add_argument('--model', type=str, default='CVAE')
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--device', type=str, default='cuda')
@@ -309,8 +310,9 @@ if __name__ == '__main__':
 
     if 'snips' not in args.dataset:
         args.input_type = 'utterance'
-    args.pickle = args.pickle.rstrip('.pkl')
-
+    args.pickle = args.pickle.split('.')[0]
+    print('saving to ', args.pickle+'.pkl')
+        
     datadir = os.path.join(args.dataroot, args.dataset)
     print('loading and embedding datasets')
     original_train_path = os.path.join(datadir, 'train.csv')
@@ -339,6 +341,9 @@ if __name__ == '__main__':
                 else:
                     none_counter += 1
             else:
+                if args.restrict_to_intent is not None:
+                    if intent != args.restrict_to_intent:
+                        continue
                 if counter >= args.datasize:
                     continue
                 else:
@@ -461,21 +466,21 @@ if __name__ == '__main__':
             
         print('----------METRICS----------')
         bleu_scores = calc_bleu(utterances, intents, datasets)
-        transfer = calc_transfer(utterances, intents, datasets)
+        originality, transfer = calc_originality_and_transfer(utterances, intents, datasets)
         diversity = calc_diversity(utterances, datasets)
         intent_accuracy = intent_classification(utterances, intents, train_path = original_train_path)
-        entropy = calc_entropy(logp)
-        metrics = {'bleu_scores':bleu_scores, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy, 'entropy':entropy}
+        metrics = {'bleu_scores':bleu_scores, 'originality':originality, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy}
         print(*[{k:v} for (k,v) in metrics.items()], sep='\n')
         run['metrics'] = metrics
         
         if args.input_type == 'delexicalised':
             print('----------DELEXICALISED METRICS----------')
             bleu_scores = calc_bleu(delexicalised, intents, datasets, type='delexicalised')
-            transfer = calc_transfer(delexicalised, intents, datasets)
+            originality, transfer = calc_originality_and_transfer(delexicalised, intents, datasets, type='delexicalised')
             diversity = calc_diversity(delexicalised, datasets)
             intent_accuracy = intent_classification(delexicalised, intents, train_path = original_train_path, type='delexicalised')
-            delexicalised_metrics = {'bleu_scores':bleu_scores, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy}
+            entropy = calc_entropy(logp)
+            delexicalised_metrics = {'bleu_scores':bleu_scores, 'originality':originality, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy, 'entropy':entropy}
             print(*[{k:v} for (k,v) in delexicalised_metrics.items()], sep='\n')
             run['delexicalised_metrics'] = delexicalised_metrics
 
