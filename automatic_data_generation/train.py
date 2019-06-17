@@ -267,7 +267,7 @@ if __name__ == '__main__':
     parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=str, default='supervised', choices=['supervised', 'unsupervised', 'none'])
 
-    parser.add_argument('-msl', '--max_sequence_length', type=int, default=60)
+    parser.add_argument('-msl', '--max_sequence_length', type=int, default=20)
     parser.add_argument('-mvs', '--max_vocab_size', type=int, default=10000)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--emb_type' , type=str, default='glove', choices=['glove','none'])
