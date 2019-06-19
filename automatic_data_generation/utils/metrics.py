@@ -65,8 +65,11 @@ def calc_originality_and_transfer(sentences, intents, datasets, type='utterance'
         candidates[intents[i]].append(datasets.tokenize(example))
 
     # ORIGINALITY
+    original_sentences = []
     for intent in i2int:
-        originality[intent] = 1 - float(len([candidate for candidate in candidates[intent] if candidate in references[intent]]) / len(candidates[intent]))
+        original = [candidate for candidate in candidates[intent] if candidate not in references[intent]]
+        original_sentences += original
+        originality[intent] = float(len(original) / len(candidates[intent]))
     originality['avg'] = np.mean([x for x in originality.values()])
 
     # TRANSFER
@@ -80,7 +83,7 @@ def calc_originality_and_transfer(sentences, intents, datasets, type='utterance'
         print('Transferred to intent {} : '.format(intent), transferred)
     transfer['avg'] = np.mean([x for x in transfer.values()])
 
-    return originality, transfer
+    return originality, transfer, original_sentences
 
 
 def calc_entropy(logp):

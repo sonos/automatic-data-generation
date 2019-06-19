@@ -57,7 +57,8 @@ def train(model, datasets, args):
     
     train_iter, val_iter = datasets.get_iterators(batch_size=args.batch_size)
 
-    opt = getattr(torch.optim, args.optimizer)(model.parameters(), lr=args.learning_rate)
+    parameters = filter(lambda p: p.requires_grad, model.parameters())
+    opt = getattr(torch.optim, args.optimizer)(parameters, lr=args.learning_rate)
     # opt = torch.optim.Adam([
     #     {"params": model.encoder_rnn.parameters(), "lr": args.learning_rate},
     #     {"params": model.hidden2mean.parameters(), "lr": args.learning_rate},
@@ -72,7 +73,6 @@ def train(model, datasets, args):
     NLL_hist = []
     KL_hist = []
     BOW_hist = []
-    NMI_hist = []
     acc_hist = []
     
     latent_rep={i:[] for i in range(model.n_classes)}
@@ -82,7 +82,6 @@ def train(model, datasets, args):
         NLL_tr_loss = 0.0
         KL_tr_loss = 0.0
         BOW_tr_loss = 0.0
-        NMI_tr = 0.0
         n_correct_tr = 0.0
         acc_tr = 0.0
         
@@ -125,7 +124,6 @@ def train(model, datasets, args):
             if args.conditional=='none':
                 pred_labels = 0
                 n_correct = 0
-                NMI = 0
             else:
                 if args.conditional=='supervised':
                     label_loss, label_weight = loss_labels(logc, y,
@@ -137,8 +135,6 @@ def train(model, datasets, args):
                 pred_labels = logc.data.max(1)[1].long()
                 n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
                 acc_hist.append(n_correct/args.batch_size)
-                NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), torch.exp(logc).cpu().max(1)[1].numpy())
-                NMI_hist.append(NMI)                
                 
             loss.backward()
             # CLIPPING
@@ -152,7 +148,6 @@ def train(model, datasets, args):
             NLL_tr_loss += NLL_loss.item()
             KL_tr_loss += KL_loss.item()
             BOW_tr_loss += BOW_loss.item()
-            NMI_tr += NMI
             n_correct_tr += n_correct
 
             # if iteration % 100 == 0:
@@ -171,7 +166,6 @@ def train(model, datasets, args):
         NLL_tr_loss = NLL_tr_loss / len(datasets.train)
         KL_tr_loss  = KL_tr_loss / len(datasets.train)
         BOW_tr_loss  = BOW_tr_loss / len(datasets.train)
-        NMI_tr = NMI_tr / len(datasets.train)
         acc_tr = n_correct_tr / len(datasets.train)
         
         # calculate the validation loss for this epoch
@@ -179,7 +173,6 @@ def train(model, datasets, args):
         NLL_val_loss = 0.0
         KL_val_loss = 0.0
         BOW_val_loss = 0.0
-        NMI_val = 0.0
         n_correct_val = 0.0
         acc_val = 0.0
         
@@ -209,7 +202,6 @@ def train(model, datasets, args):
             if args.conditional=='none':
                 pred_labels = 0
                 n_correct = 0
-                NMI = 0
             else:
                 if args.conditional=='supervised':
                     label_loss, label_weight = loss_labels(logc, y,
@@ -220,20 +212,17 @@ def train(model, datasets, args):
                     loss += entropy                
                 pred_labels = logc.data.max(1)[1].long()
                 n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
-                NMI = normalized_mutual_info_score(y.cpu().detach().numpy(), torch.exp(logc).cpu().max(1)[1].numpy())
                 
             val_loss += loss.item()
             NLL_val_loss += NLL_loss.item()
             KL_val_loss += KL_loss.item()
             BOW_val_loss += BOW_loss.item()
-            NMI_val += NMI
             n_correct_val += n_correct
             
         val_loss     = val_loss / len(datasets.valid)
         NLL_val_loss = NLL_val_loss / len(datasets.valid)
         KL_val_loss  = KL_val_loss / len(datasets.valid)
         BOW_val_loss  = BOW_val_loss / len(datasets.valid)
-        NMI_val = NMI_val / len(datasets.valid)
         acc_val = n_correct_val / len(datasets.valid)
         
         print('Epoch {} : train {:.6f} valid {:.6f}'.format(epoch, tr_loss, val_loss))
@@ -242,10 +231,10 @@ def train(model, datasets, args):
 
     run['NLL_hist'] = NLL_hist
     run['KL_hist'] = KL_hist
+    run['acc_hist'] = acc_hist
     run['NLL_val'] = NLL_val_loss
     run['KL_val'] = KL_val_loss
-    run['NMI_hist'] = NMI_hist
-    run['acc_hist'] = acc_hist
+    run['acc_val'] = acc_val
     run['latent'] = latent_rep
 
     return
@@ -257,13 +246,12 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='snips')
     parser.add_argument('--datasize', type=int, default=None)
     parser.add_argument('--num_nones', type=int, default=0)
-    parser.add_argument('--restrict_to_intent', type=str, default=None)
+    parser.add_argument('--restrict_to_intent', nargs='+', type=str, default=None)
     parser.add_argument('--model', type=str, default='CVAE')
     parser.add_argument('--load_model', type=str, default=None)
-    parser.add_argument('--device', type=str, default='cuda')
     parser.add_argument('--pickle', type=str, default='run')
     parser.add_argument('-ng', '--n_generated', type=int, default=1000) # as fraction of datasize or total number ?
-    parser.add_argument('--benchmark', action='store_true')
+    parser.add_argument('-bm', '--benchmark', action='store_true', default=False)
 
     parser.add_argument('-it', '--input_type', type=str, default='delexicalised', choices=['delexicalised', 'utterance'])
     parser.add_argument('--conditional', type=str, default='supervised', choices=['supervised', 'unsupervised', 'none'])
@@ -272,6 +260,7 @@ if __name__ == '__main__':
     parser.add_argument('-mvs', '--max_vocab_size', type=int, default=10000)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--emb_type' , type=str, default='glove', choices=['glove','none'])
+    parser.add_argument('--freeze_embeddings' , type=bool, default=True)
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
     parser.add_argument('--bow_loss', type=bool, default=False)
@@ -342,7 +331,7 @@ if __name__ == '__main__':
                     none_counter += 1
             else:
                 if args.restrict_to_intent is not None:
-                    if intent != args.restrict_to_intent:
+                    if intent not in args.restrict_to_intent:
                         continue
                 if counter >= args.datasize:
                     continue
@@ -369,8 +358,9 @@ if __name__ == '__main__':
     eos_idx = w2i['<eos>']
     pad_idx = w2i['<pad>']
     unk_idx = w2i['<unk>']
-    slotdic = datasets.get_slotdic()
     if args.input_type=='delexicalised':
+        print('making a slotdic')
+        slotdic = datasets.get_slotdic()
         print('embedding the slots with %s averaging' %args.slot_averaging)
         datasets.embed_slots(args.slot_averaging)
     print('embedding unknown words with random initialization')
@@ -398,6 +388,7 @@ if __name__ == '__main__':
         )
 
     if args.load_model is not None:
+        print('Loading model from {}'.format(args.load_model))
         state_dict = torch.load(args.load_model)
         if state_dict['embedding.weight'].size(0) != model.embedding.weight.size(0): # vocab changed
             state_dict['embedding.weight'] = vocab.vectors
@@ -406,12 +397,17 @@ if __name__ == '__main__':
         model.load_state_dict(state_dict)
     else:
         model.embedding.weight.data.copy_(vocab.vectors)
-    
+
+    if args.freeze_embeddings:
+        model.embedding.weight.requires_grad=False
+        
     model = to_device(model)
     print(model)
 
     NLL_recon = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
     NLL_label = torch.nn.NLLLoss(reduction='sum')
+    if 'None' in i2int:
+        NLL_label.ignore_index = int2i['None']
 
     train(model, datasets, args)
     
@@ -425,7 +421,7 @@ if __name__ == '__main__':
         
         model.eval()
 
-        samples, z, y_onehot, logp = model.inference(n=args.n_generated)
+        samples, z, y_onehot, logp = model.inference(n=args.n_generated, n_classes_generated=n_classes)
         samples = samples.cpu().numpy() 
         
         generated['samples'] = samples
@@ -466,7 +462,7 @@ if __name__ == '__main__':
             
         print('----------METRICS----------')
         bleu_scores = calc_bleu(utterances, intents, datasets)
-        originality, transfer = calc_originality_and_transfer(utterances, intents, datasets)
+        originality, transfer, original_utterances = calc_originality_and_transfer(utterances, intents, datasets)
         diversity = calc_diversity(utterances, datasets)
         intent_accuracy = intent_classification(utterances, intents, train_path = original_train_path)
         metrics = {'bleu_scores':bleu_scores, 'originality':originality, 'transfer':transfer, 'diversity':diversity, 'intent_accuracy':intent_accuracy}
@@ -476,7 +472,7 @@ if __name__ == '__main__':
         if args.input_type == 'delexicalised':
             print('----------DELEXICALISED METRICS----------')
             bleu_scores = calc_bleu(delexicalised, intents, datasets, type='delexicalised')
-            originality, transfer = calc_originality_and_transfer(delexicalised, intents, datasets, type='delexicalised')
+            originality, transfer, indices = calc_originality_and_transfer(delexicalised, intents, datasets, type='delexicalised')
             diversity = calc_diversity(delexicalised, datasets)
             intent_accuracy = intent_classification(delexicalised, intents, train_path = original_train_path, type='delexicalised')
             entropy = calc_entropy(logp)
@@ -552,6 +548,8 @@ if __name__ == '__main__':
 
     run['i2w'] = i2w
     run['w2i'] = w2i
+    run['i2int'] = i2int
+    run['int2i'] = int2i
     run['vectors'] = {'before':vocab.vectors, 'after':model.embedding.weight.data}
     
     torch.save(run, args.pickle+'.pkl')

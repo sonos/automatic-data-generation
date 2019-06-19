@@ -163,7 +163,7 @@ class CVAE(nn.Module):
             
         return logp, mean, logv, logc, z, bow
 
-    def inference(self, n=10, z=None, y_onehot=None, temperature=0):
+    def inference(self, n=10, n_classes_generated=None, z=None, y_onehot=None, temperature=0):
 
         if z is None:
             batch_size = n
@@ -172,8 +172,10 @@ class CVAE(nn.Module):
             batch_size = z.size(0)
 
         if self.conditional:
+            if n_classes_generated is None:
+                n_classes_generated = self.n_classes
             if y_onehot is None:
-                y = torch.LongTensor(batch_size, 1).random_() % self.n_classes
+                y = torch.LongTensor(batch_size, 1).random_() % n_classes_generated
                 y_onehot = torch.FloatTensor(batch_size, self.n_classes)
                 y_onehot.fill_(0.001)
                 y_onehot.scatter_(dim=1, index=y, value=1)
