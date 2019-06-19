@@ -72,6 +72,7 @@ def train_and_eval_cvae(data_folder,
     output_dir = Path(output_folder)
     current_time = datetime.now().strftime('%b%d_%H-%M-%S')
     run_dir = output_dir / current_time
+    run_dir.mkdir()
 
     # data handling
     data_folder = Path(data_folder)
@@ -87,7 +88,8 @@ def train_and_eval_cvae(data_folder,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size
+            max_vocab_size=max_vocab_size,
+            output_folder=run_dir
         )
         if input_type == "delexicalised":
             dataset.embed_slots(slot_averaging)
@@ -102,7 +104,8 @@ def train_and_eval_cvae(data_folder,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size
+            max_vocab_size=max_vocab_size,
+            output_folder=run_dir
         )
     elif dataset_type == "spam":
         dataset = SpamDataset(
@@ -114,7 +117,8 @@ def train_and_eval_cvae(data_folder,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size
+            max_vocab_size=max_vocab_size,
+            output_folder=run_dir
         )
     elif dataset_type == "yelp":
         dataset = YelpDataset(
@@ -126,7 +130,8 @@ def train_and_eval_cvae(data_folder,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size
+            max_vocab_size=max_vocab_size,
+            output_folder=run_dir
         )
     elif dataset_type == "penn-tree-bank":
         dataset = PTBDataset(
@@ -138,7 +143,8 @@ def train_and_eval_cvae(data_folder,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size
+            max_vocab_size=max_vocab_size,
+            output_folder=run_dir
         )
     else:
         raise TypeError("Unknown dataset type")
@@ -187,8 +193,6 @@ def train_and_eval_cvae(data_folder,
         label_anneal_rate=label_anneal_rate,
         label_anneal_target=label_anneal_target,
         add_bow_loss=bow_loss,
-        print_loss_every=50,
-        record_loss_every=5,
         force_cpu=force_cpu,
         run_dir=run_dir / "tensorboard"
     )
@@ -259,9 +263,6 @@ def train_and_eval_cvae(data_folder,
     run_path = str(run_dir / "run.pkl")
     torch.save(run_dict, run_path)
 
-    import ipdb;
-    ipdb.set_trace()
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -289,7 +290,7 @@ def main():
     parser.add_argument('--slot-averaging', type=str, default=None,
                         choices=['micro', 'macro'])
     # model
-    parser.add_argument('--conditioning', type=str, default='supervised',
+    parser.add_argument('--conditioning', type=str, default=None,
                         choices=['supervised', 'unsupervised', None])
     parser.add_argument('--bow-loss', type=bool, default=False)
     parser.add_argument('-rnn', '--rnn-type', type=str, default='gru',
@@ -326,7 +327,7 @@ def main():
     parser.add_argument('--force-cpu', type=bool, default=False)
 
     # evaluation
-    parser.add_argument('-ng', '--n-generated', type=int, default=20)
+    parser.add_argument('-ng', '--n-generated', type=int, default=500)
 
     args = parser.parse_args()
 
