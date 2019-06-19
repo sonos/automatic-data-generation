@@ -70,6 +70,8 @@ def train_and_eval_cvae(data_folder,
                         force_cpu):
     # output folder
     output_dir = Path(output_folder)
+    if not output_dir.exists():
+        output_dir.mkdir()
     current_time = datetime.now().strftime('%b%d_%H-%M-%S')
     run_dir = output_dir / current_time
     run_dir.mkdir()
