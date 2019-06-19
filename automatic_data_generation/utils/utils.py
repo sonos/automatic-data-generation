@@ -4,12 +4,21 @@ import random
 import pickle
 import csv
 
-force_cpu = False
 
-def to_device(x, volatile=False):
-    if torch.cuda.is_available() and not force_cpu :
+def to_device(x, force_cpu):
+    if torch.cuda.is_available() and not force_cpu:
         x = x.cuda()
     return x
+
+
+_force_cpu = False
+
+
+def to_device_old(x):
+    if torch.cuda.is_available() and not _force_cpu:
+        x = x.cuda()
+    return x
+
 
 def create_augmented_dataset(args, raw_path, generated):
     augmented_path = raw_path.replace('.csv', '_aug{}.csv'.format(args.datasize, args.n_generated))
@@ -21,6 +30,7 @@ def create_augmented_dataset(args, raw_path, generated):
     for s, l, d, i in zip(generated['utterances'], generated['labellings'], generated['delexicalised'], generated['intents']):
         augmented_writer.writerow([s, l, d, i])
     return augmented_path
+
 
 def idx2word(idx, i2w, eos_idx):
 
