@@ -25,7 +25,8 @@ class SnipsDataset(BaseDataset):
                  max_sequence_length,
                  embedding_type,
                  embedding_dimension,
-                 max_vocab_size):
+                 max_vocab_size,
+                 output_folder):
         self.skip_header = True
         super(SnipsDataset, self).__init__(dataset_folder,
                                            input_type,
@@ -35,7 +36,8 @@ class SnipsDataset(BaseDataset):
                                            max_sequence_length,
                                            embedding_type,
                                            embedding_dimension,
-                                           max_vocab_size)
+                                           max_vocab_size,
+                                           output_folder)
 
     @staticmethod
     def get_datafields(text, delex, label, intent):

@@ -26,7 +26,8 @@ class BaseDataset(object):
                  max_sequence_length,
                  embedding_type,
                  embedding_dimension,
-                 max_vocab_size):
+                 max_vocab_size,
+                 output_folder):
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
 
@@ -36,7 +37,7 @@ class BaseDataset(object):
                                                       intent)
 
         train_path, valid_path = self.get_dataset_paths(
-            dataset_folder, dataset_size, skip_header)
+            dataset_folder, output_folder, dataset_size, skip_header)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
 
@@ -103,20 +104,26 @@ class BaseDataset(object):
         raise NotImplementedError
 
     @staticmethod
-    def get_dataset_paths(dataset_folder, dataset_size=None,
+    def get_dataset_paths(dataset_folder, output_folder, dataset_size=None,
                           skip_header=True):
-        # TODO: stratified shuffle split
         if dataset_size is None:
             return dataset_folder / 'train.csv', \
                    dataset_folder / 'validate.csv'
         else:
+            # TODO: stratified shuffle split
             original_train_path = dataset_folder / 'train.csv'
-            new_train_path = dataset_folder / 'train_{}.csv'.format(
-                dataset_size)
+            if output_folder is not None:
+                new_train_path = output_folder / 'train_{}.csv'.format(
+                    dataset_size)
+            else:
+                new_train_path = dataset_folder / 'train_{}.csv'.format(
+                    dataset_size)
             original_train = read_csv(original_train_path)
-            trimmed_train = random.sample(original_train, dataset_size)
             if skip_header:
+                trimmed_train = random.sample(original_train[1:], dataset_size)
                 trimmed_train = [original_train[0]] + trimmed_train
+            else:
+                trimmed_train = random.sample(original_train, dataset_size)
             write_csv(trimmed_train, new_train_path)
             return new_train_path, dataset_folder / 'validate.csv'
 

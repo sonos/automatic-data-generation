@@ -20,7 +20,8 @@ class SpamDataset(BaseDataset):
                  max_sequence_length,
                  embedding_type,
                  embedding_dimension,
-                 max_vocab_size):
+                 max_vocab_size,
+                 output_folder):
         super(SpamDataset, self).__init__(dataset_folder,
                                           input_type,
                                           dataset_size,
@@ -29,7 +30,8 @@ class SpamDataset(BaseDataset):
                                           max_sequence_length,
                                           embedding_type,
                                           embedding_dimension,
-                                          max_vocab_size)
+                                          max_vocab_size,
+                                          output_folder)
 
     @staticmethod
     def get_datafields(text, delex, label, intent):
