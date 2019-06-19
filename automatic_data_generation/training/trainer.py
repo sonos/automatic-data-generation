@@ -13,7 +13,13 @@ from automatic_data_generation.training.losses import compute_bow_loss, \
     compute_label_loss, compute_recon_loss, compute_kl_loss
 from automatic_data_generation.utils.utils import to_device
 
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
+                    '[%(filename)s:%(lineno)d] %(message)s',
+                    datefmt='%Y-%m-%d:%H:%M:%S',
+                    level=logging.INFO)
+
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 class Trainer(object):
@@ -32,7 +38,8 @@ class Trainer(object):
                  add_bow_loss=False,
                  print_loss_every=50,
                  record_loss_every=5,
-                 force_cpu=False):
+                 force_cpu=False,
+                 run_dir=None):
 
         self.force_cpu = force_cpu
         self.dataset = dataset
@@ -56,7 +63,19 @@ class Trainer(object):
         self.step = 0
         self.latent_rep = {i: [] for i in range(self.model.n_classes)}
 
-        self.summary_writer = SummaryWriter()
+        self.run_logs = {
+            'train': {
+                'recon_loss': [],
+                'kl_losses': [],
+                'conditioning_accuracy': []
+            },
+            'dev': {
+                'recon_loss': [],
+                'kl_losses': [],
+                'conditioning_accuracy': []
+            }
+        }
+        self.summary_writer = SummaryWriter(log_dir=run_dir)
 
     def run(self, n_epochs, dev_step_every_n_epochs=1):
         train_iter, val_iter = self.dataset.get_iterators(
@@ -79,7 +98,7 @@ class Trainer(object):
                     val_iter, is_last_epoch, "dev")
                 LOGGER.info('Dev loss after epoch %d: %f', self.epoch,
                             dev_loss)
-                LOGGER.info('Dev reconstruction loss after epoch %d: %f',
+                LOGGER.info('Dev recon loss after epoch %d: %f',
                             self.epoch, dev_recon_loss)
                 LOGGER.info('Dev KL loss after epoch %d: %f',
                             self.epoch, dev_kl_loss)
@@ -187,12 +206,20 @@ class Trainer(object):
             train_or_dev + '/recon-loss',
             recon_loss.detach().cpu().numpy() / batch_size,
             self.step)
+        self.run_logs[train_or_dev]['recon_loss'].append(
+            recon_loss.detach().cpu().numpy() / batch_size
+        )
+
         for i in range(self.model.z_size):
             self.summary_writer.add_scalars(
                 train_or_dev + '/kl-losses',
                 {str(i): kl_losses[i].detach().cpu().numpy() / batch_size},
                 self.step
             )
+            self.run_logs[train_or_dev]['kl_losses'].append(
+                kl_losses.detach().cpu().numpy()
+            )
+
         if self.model.conditional is not None:
             pred_labels = logc.data.max(1)[1].long()
             n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
@@ -200,6 +227,9 @@ class Trainer(object):
                 train_or_dev + '/conditioning-accuracy',
                 n_correct / batch_size,
                 self.step)
+            self.run_logs[train_or_dev]['conditioning_accuracy'].append(
+                n_correct / batch_size
+            )
 
         return total_loss / batch_size, recon_loss / batch_size, \
             kl_loss / batch_size
