@@ -37,6 +37,8 @@ class BaseDataset(object):
 
         train_path, valid_path = self.get_dataset_paths(
             dataset_folder, dataset_size, skip_header)
+        self.original_train_path = dataset_folder / 'train.csv'
+        self.train_path = train_path
 
         train, valid = torchtext.data.TabularDataset.splits(
             path='.',  # the root directory where the data lies
