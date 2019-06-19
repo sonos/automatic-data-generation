@@ -25,7 +25,8 @@ DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', 'the', 'what',
                '_spatial_relation_', '_state_', 'on', 'starting', 'there']
 
 
-def create_snips_dataset(dataset_pah, input_type, dataset_size=None):
+def create_snips_dataset(dataset_pah, input_type, dataset_size=None,
+                         output_folder=None):
     return SnipsDataset(
         dataset_folder=dataset_pah,
         input_type=input_type,
@@ -35,7 +36,8 @@ def create_snips_dataset(dataset_pah, input_type, dataset_size=None):
         max_sequence_length=10,
         embedding_type=None,
         embedding_dimension=100,
-        max_vocab_size=10000
+        max_vocab_size=10000,
+        output_folder=output_folder
     )
 
 
@@ -51,11 +53,17 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertListEqual(dataset.i2w, DELEX_VOCAB)
 
     def test_should_trim_train(self):
+        output_folder = DATASET_ROOT / "trimmed_dataset"
+        if not output_folder.exists():
+            output_folder.mkdir()
         dataset = create_snips_dataset(DATASET_ROOT,
                                        input_type='delexicalised',
-                                       dataset_size=3)
+                                       dataset_size=3,
+                                       output_folder=output_folder)
         self.assertEqual(dataset.len_train, 3)
         self.assertEqual(dataset.len_valid, 3)
+        trimmed_dataset_file = output_folder / "train_3.csv"
+        self.assertTrue(trimmed_dataset_file.exists())
 
 
 if __name__ == '__main__':
