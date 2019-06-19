@@ -260,7 +260,7 @@ if __name__ == '__main__':
     parser.add_argument('-mvs', '--max_vocab_size', type=int, default=10000)
     parser.add_argument('--emb_dim' , type=int, default=100)
     parser.add_argument('--emb_type' , type=str, default='glove', choices=['glove','none'])
-    parser.add_argument('--freeze_embeddings' , type=bool, default=True)
+    parser.add_argument('--freeze_embeddings' , type=bool, default=False)
     parser.add_argument('--tokenizer' , type=str, default='nltk', choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--slot_averaging' , type=str, default='micro', choices=['none', 'micro', 'macro'])
     parser.add_argument('--bow_loss', type=bool, default=False)
@@ -406,8 +406,8 @@ if __name__ == '__main__':
 
     NLL_recon = torch.nn.NLLLoss(reduction='sum', ignore_index=pad_idx)
     NLL_label = torch.nn.NLLLoss(reduction='sum')
-    if 'None' in i2int:
-        NLL_label.ignore_index = int2i['None']
+    # if 'None' in i2int:
+    #     NLL_label.ignore_index = int2i['None']
 
     train(model, datasets, args)
     
