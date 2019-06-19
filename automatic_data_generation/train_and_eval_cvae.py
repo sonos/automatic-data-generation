@@ -233,23 +233,6 @@ def train_and_eval_cvae(data_folder,
             logp,
             input_type='delexicalised'
         )
-        slot_expansion_sentences = generate_slot_expansion_sentences(
-            delexicalised=dataset.train.delexicalised,
-            intents=dataset.train.intent,
-            n_to_generate=n_generated,
-            w2i=dataset.w2i,
-            i2w=dataset.i2w,
-            eos_idx=dataset.eos_idx,
-            slotdic=slotdic
-        )
-        run_dict['slot_expansion_metrics'] = compute_generation_metrics(
-            dataset,
-            slot_expansion_sentences['utterances'],
-            slot_expansion_sentences['intents'],
-            logp,
-            input_type='utterance',
-            compute_entropy=False
-        )
 
     save_augmented_dataset(generated_sentences, n_generated,
                            dataset.train_path, run_dir)
