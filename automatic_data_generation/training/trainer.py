@@ -36,8 +36,6 @@ class Trainer(object):
                  label_anneal_rate=100,
                  label_anneal_target=1.,
                  add_bow_loss=False,
-                 print_loss_every=50,
-                 record_loss_every=5,
                  force_cpu=False,
                  run_dir=None):
 
@@ -47,8 +45,6 @@ class Trainer(object):
         self.optimizer = optimizer
 
         self.batch_size = batch_size
-        self.print_loss_every = print_loss_every
-        self.record_loss_every = record_loss_every
 
         self.annealing_strategy = annealing_strategy
         self.kl_anneal_time = kl_anneal_time
@@ -60,18 +56,19 @@ class Trainer(object):
         self.add_bow_loss = add_bow_loss
 
         self.epoch = -1
-        self.step = 0
+        self.train_step = 0
+        self.dev_step = 0
         self.latent_rep = {i: [] for i in range(self.model.n_classes)}
 
         self.run_logs = {
             'train': {
                 'recon_loss': [],
-                'kl_losses': [],
+                'kl_losses': dict([(k, []) for k in range(self.model.z_size)]),
                 'conditioning_accuracy': []
             },
             'dev': {
                 'recon_loss': [],
-                'kl_losses': [],
+                'kl_losses': dict([(k, []) for k in range(self.model.z_size)]),
                 'conditioning_accuracy': []
             }
         }
@@ -104,7 +101,6 @@ class Trainer(object):
                             self.epoch, dev_kl_loss)
 
     def do_one_sweep(self, iter, is_last_epoch, train_or_dev):
-        # TODO book keeping
         if train_or_dev not in ['train', 'dev']:
             raise TypeError("train_or_dev should be either train or dev")
 
@@ -120,11 +116,13 @@ class Trainer(object):
         for iteration, batch in enumerate(tqdm(iter)):
             if len(batch) < self.batch_size:
                 continue
-            self.step += 1
             if train_or_dev == "train":
+                self.train_step += 1
                 self.optimizer.zero_grad()
+            else:
+                self.dev_step += 1
 
-            # compute loss
+            # forward pass
             x, lengths = getattr(batch, self.dataset.input_type)
             input = x[:, :-1]  # remove <eos>
             target = x[:, 1:]  # remove <sos>
@@ -132,7 +130,7 @@ class Trainer(object):
             input, target = to_device(input, self.force_cpu), to_device(
                 target, self.force_cpu)
 
-            if self.model.conditional:
+            if self.model.conditional is not None:
                 y = batch.intent.squeeze()
                 y = to_device(y, self.force_cpu)
                 sorted_lengths, sorted_idx = torch.sort(lengths,
@@ -141,6 +139,7 @@ class Trainer(object):
 
             logp, mean, logv, logc, z, bow = self.model(input, lengths)
 
+            # save latent representation
             # TODO: to be ideally added to the tensorboard
             if train_or_dev == "train":
                 if is_last_epoch and self.model.conditional:
@@ -149,6 +148,7 @@ class Trainer(object):
                             z[i].cpu().detach().numpy()
                         )
 
+            # loss calculation
             loss, recon_loss, kl_loss = self.compute_loss(
                 logp, bow, target, lengths, mean, logv, logc, y, train_or_dev)
 
@@ -169,14 +169,17 @@ class Trainer(object):
                      train_or_dev):
         batch_size, seqlen, vocab_size = logp.size()
         target = target.view(batch_size, -1)
-
+        if train_or_dev == 'train':
+            step = self.train_step
+        else:
+            step = self.dev_step
         # reconstruction loss
         recon_loss = compute_recon_loss(
             self.dataset.pad_idx, vocab_size, length, logp, target)
 
         # kl loss
         kl_weight, kl_losses = compute_kl_loss(
-            logv, mean, self.annealing_strategy, self.step,
+            logv, mean, self.annealing_strategy, step,
             self.kl_anneal_time, self.kl_anneal_rate, self.kl_anneal_target)
         kl_loss = torch.sum(kl_losses)
 
@@ -189,7 +192,7 @@ class Trainer(object):
         # labels loss
         if self.model.conditional == 'supervised':
             label_loss, label_weight = compute_label_loss(
-                logc, y, self.annealing_strategy, self.step,
+                logc, y, self.annealing_strategy, step,
                 self.label_anneal_time, self.label_anneal_rate,
                 self.label_anneal_target)
             total_loss += label_weight * label_loss
@@ -205,28 +208,26 @@ class Trainer(object):
         self.summary_writer.add_scalar(
             train_or_dev + '/recon-loss',
             recon_loss.detach().cpu().numpy() / batch_size,
-            self.step)
+            step)
         self.run_logs[train_or_dev]['recon_loss'].append(
             recon_loss.detach().cpu().numpy() / batch_size
         )
-
         for i in range(self.model.z_size):
             self.summary_writer.add_scalars(
                 train_or_dev + '/kl-losses',
                 {str(i): kl_losses[i].detach().cpu().numpy() / batch_size},
-                self.step
+                step
             )
-            self.run_logs[train_or_dev]['kl_losses'].append(
-                kl_losses.detach().cpu().numpy()
+            self.run_logs[train_or_dev]['kl_losses'][i].append(
+                kl_losses[i].detach().cpu().numpy().item() / batch_size
             )
-
         if self.model.conditional is not None:
             pred_labels = logc.data.max(1)[1].long()
             n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
             self.summary_writer.add_scalar(
                 train_or_dev + '/conditioning-accuracy',
                 n_correct / batch_size,
-                self.step)
+                step)
             self.run_logs[train_or_dev]['conditioning_accuracy'].append(
                 n_correct / batch_size
             )
