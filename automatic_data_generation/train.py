@@ -115,9 +115,7 @@ def train(model, datasets, args):
             NLL_hist.append(NLL_loss.detach().cpu().numpy()/args.batch_size)
             KL_hist.append(KL_losses.detach().cpu().numpy()/args.batch_size)
             BOW_hist.append(BOW_loss.detach().cpu().numpy()/args.batch_size)
-            label_loss, label_weight = loss_labels(logc, y,
-                                                   args.anneal_function, step, args.k2, args.x2, args.m2)
-            loss = (NLL_loss + KL_weight * KL_loss + label_weight * label_loss) #/args.batch_size
+            loss = (NLL_loss + KL_weight * KL_loss) #/args.batch_size
 
             if args.bow_loss:
                 loss += BOW_loss
