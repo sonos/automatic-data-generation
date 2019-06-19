@@ -26,8 +26,10 @@ setup(
         "torchvision",
         "torchtext",
         "tensorboardX==1.4",
+        "tb-nightly",
         "nltk",
-        "spacy"
+        "spacy",
+        "pandas"
     ],
     extras_require=extras_require,
     classifiers=[
