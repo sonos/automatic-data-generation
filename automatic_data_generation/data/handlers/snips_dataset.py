@@ -93,7 +93,8 @@ class SnipsDataset(BaseDataset):
                         for word in self.tokenize(slot_value):
                             if self.text.vocab.stoi[word] != '<unk>':
                                 new_vectors.append(
-                                    self.text.vocab.vectors[self.text.vocab.stoi[word]]
+                                    self.text.vocab.vectors[
+                                        self.text.vocab.stoi[word]]
                                 )
                     new_vector = torch.mean(torch.stack(new_vectors))
 
@@ -103,7 +104,8 @@ class SnipsDataset(BaseDataset):
                         for word in self.tokenize(slot_value):
                             if self.text.vocab.stoi[word] != '<unk>':
                                 tmp.append(
-                                    self.text.vocab.vectors[self.text.vocab.stoi[word]]
+                                    self.text.vocab.vectors[
+                                        self.text.vocab.stoi[word]]
                                 )
                         new_vectors.append(torch.mean(torch.stack(tmp)))
                     new_vector = torch.mean(torch.stack(new_vectors))
