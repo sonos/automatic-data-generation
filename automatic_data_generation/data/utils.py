@@ -54,7 +54,7 @@ def get_fields(tokenize, max_sequence_length):
                                  fix_length=max_sequence_length,
                                  init_token='<sos>', eos_token='<eos>')
     intent = torchtext.data.Field(sequential=False, batch_first=True,
-                                  unk_token=None)
+                                  unk_token=None, pad_token=None)
     return text, delex, label, intent
 
 
