@@ -17,7 +17,7 @@ setup(
     version="0.1.0",
     description="Text generation library",
     license=None,
-    author="The Snips Team",
+    author="Stephane d'Ascoli and Alice Coucke",
     packages=find_packages(),
     install_requires=[
         "snips-nlu",
