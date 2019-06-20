@@ -36,9 +36,12 @@ def train_and_eval_cvae(args):
     output_dir = Path(args.output_folder)
     if not output_dir.exists():
         output_dir.mkdir()
-    current_time = datetime.now().strftime('%b%d_%H-%M-%S')
-    run_dir = output_dir / current_time
-    run_dir.mkdir()
+    if args.overwrite_output:
+        run_dir = output_dir
+    else:
+        current_time = datetime.now().strftime('%b%d_%H-%M-%S')
+        run_dir = output_dir / current_time
+        run_dir.mkdir()
 
     # data handling
     data_folder = Path(args.data_folder)
@@ -157,6 +160,7 @@ def main():
     # data
     parser.add_argument('--data-folder', type=str, default='data')
     parser.add_argument('--output-folder', type=str, default='output')
+    parser.add_argument('--overwrite-output', action='store_true')
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
@@ -183,7 +187,7 @@ def main():
     parser.add_argument('--conditioning', type=str, default='supervised',
                         choices=['supervised', 'unsupervised',
                                  NO_CONDITIONING])
-    parser.add_argument('--bow-loss', type=bool, default=False)
+    parser.add_argument('--bow-loss', action='store_true')
     parser.add_argument('-rnn', '--rnn-type', type=str, default='gru',
                         choices=['rnn', 'gru', 'lstm'])
     parser.add_argument('-hs', '--hidden-size', type=int, default=256)
@@ -193,7 +197,7 @@ def main():
     parser.add_argument('-ls', '--latent_size', type=int, default=8)
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-t', '--temperature', type=float, default=1)
-    parser.add_argument('-bi', '--bidirectional', type=bool, default=False)
+    parser.add_argument('-bi', '--bidirectional', action='store_true')
 
     # training
     parser.add_argument('-ep', '--n-epochs', type=int, default=5)
