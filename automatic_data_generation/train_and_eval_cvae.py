@@ -10,13 +10,16 @@ from pathlib import Path
 
 import torch
 
-from automatic_data_generation.utils.utils import create_dataset
 from automatic_data_generation.evaluation.generation import (
     generate_vae_sentences, save_augmented_dataset)
 from automatic_data_generation.evaluation.metrics import \
     compute_generation_metrics
 from automatic_data_generation.models.cvae import CVAE
 from automatic_data_generation.training.trainer import Trainer
+from automatic_data_generation.utils.constants import (NO_CONDITIONING,
+                                                       NO_SLOT_AVERAGING,
+                                                       NO_PREPROCESSING)
+from automatic_data_generation.utils.utils import create_dataset
 from automatic_data_generation.utils.utils import to_device
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
@@ -50,6 +53,9 @@ def train_and_eval_cvae(args):
     dataset.embed_unks(num_special_toks=4)
 
     # training
+    if args.conditioning == NO_CONDITIONING:
+        args.conditioning = None
+
     model = CVAE(
         conditional=args.conditioning,
         compute_bow=args.bow_loss,
@@ -150,7 +156,7 @@ def main():
 
     # data
     parser.add_argument('--data-folder', type=str, default='data')
-    parser.add_argument('--output-folder', type=str)
+    parser.add_argument('--output-folder', type=str, default='output')
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
@@ -160,19 +166,23 @@ def main():
     parser.add_argument('--dataset-size', type=int, default=None)
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
                         choices=['split', 'nltk', 'spacy'])
-    parser.add_argument('--preprocessing-type', type=str, default=None,
-                        choices=['stem', 'lemmatize'])
+    parser.add_argument('--preprocessing-type', type=str,
+                        default=NO_PREPROCESSING,
+                        choices=['stem', 'lemmatize', NO_PREPROCESSING])
     parser.add_argument('-msl', '--max_sequence_length', type=int, default=60)
     #
-    parser.add_argument('--embedding-type', type=str, default=None,
-                        choices=['glove'])
+    parser.add_argument('--embedding-type', type=str, default='glove',
+                        choices=['glove', 'random'])
     parser.add_argument('--embedding-dimension', type=int, default=100)
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
-    parser.add_argument('--slot-averaging', type=str, default=None,
-                        choices=['micro', 'macro'])
+    parser.add_argument('--slot-averaging', type=str,
+                        default='micro',
+                        choices=['micro', 'macro', NO_SLOT_AVERAGING])
+
     # model
-    parser.add_argument('--conditioning', type=str, default=None,
-                        choices=['supervised', 'unsupervised', None])
+    parser.add_argument('--conditioning', type=str, default='supervised',
+                        choices=['supervised', 'unsupervised',
+                                 NO_CONDITIONING])
     parser.add_argument('--bow-loss', type=bool, default=False)
     parser.add_argument('-rnn', '--rnn-type', type=str, default='gru',
                         choices=['rnn', 'gru', 'lstm'])
