@@ -5,9 +5,9 @@ from __future__ import unicode_literals
 
 from pathlib import Path
 
-from automatic_data_generation.data.utils import idx2word, surface_realisation, \
-    word2idx
-from automatic_data_generation.utils.io import read_csv, write_csv
+from automatic_data_generation.data.utils import (idx2word, surface_realisation,
+                                                  word2idx)
+from automatic_data_generation.utils.io import (read_csv, write_csv)
 
 
 def generate_vae_sentences(model, n_to_generate, input_type, i2int, i2w,
