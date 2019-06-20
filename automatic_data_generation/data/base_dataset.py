@@ -5,8 +5,8 @@ import torch
 import torchtext
 from torchtext.data import BucketIterator
 
-from automatic_data_generation.data.utils import get_fields, make_tokenizer
-from automatic_data_generation.utils.io import read_csv, write_csv
+from automatic_data_generation.data.utils import (get_fields, make_tokenizer)
+from automatic_data_generation.utils.io import (read_csv, write_csv)
 
 
 class BaseDataset(object):
@@ -195,5 +195,5 @@ class BaseDataset(object):
         print(
             "average GloVE norm is {}, number of known words are {}, "
             "total number of words are {}"
-            .format(running_norm / num_non_zero, num_non_zero, total_words)
+                .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
