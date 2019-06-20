@@ -103,10 +103,9 @@ class Trainer(object):
                 self.summary_writer.add_scalar(
                     'dev/recon-loss', dev_recon_loss, self.epoch)
                 self.run_logs['dev']['recon_loss'].append(dev_recon_loss)
-                for i in range(self.model.z_size):
-                    self.summary_writer.add_scalars(
+                self.summary_writer.add_scalar(
                         'dev/kl-loss', dev_kl_loss, self.epoch)
-                    self.run_logs['dev']['kl_loss'].append(dev_kl_loss)
+                self.run_logs['dev']['kl_loss'].append(dev_kl_loss)
                 self.summary_writer.add_scalar(
                     'dev/total-loss', dev_loss, self.epoch)
                 self.run_logs['dev']['total_loss'].append(dev_loss)
