@@ -27,6 +27,8 @@ class SnipsDataset(BaseDataset):
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
+                 none_folder,
+                 none_size,
                  output_folder):
         self.skip_header = True
         super(SnipsDataset, self).__init__(dataset_folder,
@@ -38,6 +40,8 @@ class SnipsDataset(BaseDataset):
                                            embedding_type,
                                            embedding_dimension,
                                            max_vocab_size,
+                                           none_folder,
+                                           none_size,
                                            output_folder)
 
     @staticmethod
@@ -47,6 +51,21 @@ class SnipsDataset(BaseDataset):
                       ("delexicalised", delex), ("intent", intent)]
         return skip_header, datafields
 
+    @staticmethod
+    def add_nones(sentences, none_folder, none_size):
+
+        column = {'penn-tree-bank':0, 'yelp':5, 'shakespeare':5}
+        none_path = os.path.join(none_folder, 'train.csv')
+            
+        none_reader = read_csv(none_train_path)
+
+        for row in none_reader[:none_size]:
+            utterance = row[column[dataset]]
+            new_row = [utterance, 'O '*len(word_tokenize(utterance)), utterance, 'None'] 
+            sentences.append(new_row)
+            
+        return sentences
+                                    
     def get_slotdic(self):
         slotdic = {}
         encountered_slot_values = {}

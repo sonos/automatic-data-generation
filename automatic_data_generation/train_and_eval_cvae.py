@@ -47,12 +47,14 @@ def train_and_eval_cvae(args):
     # data handling
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
+    none_folder = data_folder / args.none_type
 
     dataset, slotdic = create_dataset(
         args.dataset_type, dataset_folder, args.input_type, args.dataset_size,
         args.tokenizer_type, args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        args.slot_averaging, run_dir
+        none_folder, args.none_size,
+        args.slot_averaging, run_dir,
     )
     dataset.embed_unks(num_special_toks=4)
 
@@ -83,6 +85,7 @@ def train_and_eval_cvae(args):
     )
 
     model = to_device(model, args.force_cpu)
+    parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = getattr(torch.optim, args.optimizer_type)(
         model.parameters(),
         lr=args.learning_rate
@@ -171,10 +174,16 @@ def main():
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
+    parser.add_argument('--none-type', type=str, default='snips',
+                        choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
+                                 'penn-tree-bank'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-size', type=int, default=None)
+    parser.add_argument('--none-size', type=int, default=0)
+    parser.add_argument('--restrict_to_intent', nargs='+', type=str, default=None)
+    
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
                         choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--preprocessing-type', type=str,
@@ -185,6 +194,7 @@ def main():
     parser.add_argument('--embedding-type', type=str, default='glove',
                         choices=['glove', 'random'])
     parser.add_argument('--embedding-dimension', type=int, default=100)
+    parser.add_argument('--freeze_embeddings' , type=bool, default=False)    
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-averaging', type=str,
                         default='micro',

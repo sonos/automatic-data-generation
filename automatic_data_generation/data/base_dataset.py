@@ -27,7 +27,9 @@ class BaseDataset(object):
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
-                 output_folder):
+                 output_folder,
+                 none_folder,
+                 none_size):
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
 
@@ -37,7 +39,8 @@ class BaseDataset(object):
                                                       intent)
 
         train_path, valid_path = self.get_dataset_paths(
-            dataset_folder, output_folder, dataset_size, skip_header)
+            dataset_folder, output_folder, dataset_size, skip_header,
+            none_folder, none_size)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
 
@@ -104,14 +107,36 @@ class BaseDataset(object):
         raise NotImplementedError
 
     @staticmethod
+    @abstractmethod
+    def add_nones(sentences, none_folder, none_size):
+        """
+        Get metadata relating to sample with index `item`.
+        Args:
+            text (torchtext.data.Field): field for the text entries
+            delex (torchtext.data.Field): field for the delexicalised entries
+            label (torchtext.data.Field): field for the slot label entries
+            intent (torchtext.data.Field): field for the intent labels
+
+        Returns:
+            skip_header (bool): whether or not skip the csv header
+            datafields list(tuple(str, torchtext.data.Field)): the fields
+                should be in the same order as the columns in the CSV or TSV
+                file, while tuples of (name, None) represent columns that
+                will be ignored.
+        """
+        raise NotImplementedError
+
+
+    @staticmethod
     def get_dataset_paths(dataset_folder, output_folder, dataset_size=None,
-                          skip_header=True):
+                          skip_header=True, none_size=0, none_folder=None):
         if dataset_size is None:
             return dataset_folder / 'train.csv', \
                    dataset_folder / 'validate.csv'
         else:
             # TODO: stratified shuffle split
             original_train_path = dataset_folder / 'train.csv'
+            original_test_path = dataset_folder / 'validate.csv'
             if output_folder is not None:
                 new_train_path = output_folder / 'train_{}.csv'.format(
                     dataset_size)
@@ -119,13 +144,24 @@ class BaseDataset(object):
                 new_train_path = dataset_folder / 'train_{}.csv'.format(
                     dataset_size)
             original_train = read_csv(original_train_path)
-            if skip_header:
-                trimmed_train = random.sample(original_train[1:], dataset_size)
-                trimmed_train = [original_train[0]] + trimmed_train
+            original_test = read_csv(original_test_path)
+
+            new_train = random.sample(original_train[1:], dataset_size)
+            new_train = [original_train[0]] + new_train
+            
+            if none_size > 0:
+                if output_folder is not None:
+                    new_test_path = output_folder / 'validate_none.csv'
+                else:
+                    new_test_path = dataset_folder / 'validate_none.csv'
+                new_train = self.add_nones(new_train, none_folder, none_size)
+                new_test  = self.add_nones(test, none_folder, none_size=200)
+                write_csv(new_test, new_test_path)
             else:
-                trimmed_train = random.sample(original_train, dataset_size)
-            write_csv(trimmed_train, new_train_path)
-            return new_train_path, dataset_folder / 'validate.csv'
+                new_test_path = original_test_path
+
+            write_csv(new_train, new_train_path)
+            return new_train_path, new_test_path
 
     @property
     def len_train(self):
