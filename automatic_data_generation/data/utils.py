@@ -59,11 +59,11 @@ def get_fields(tokenize, max_sequence_length):
 
 
 def idx2word(idx, i2w, eos_idx):
-    sent_str = [str()]*len(idx)
+    sent_str = [str()] * len(idx)
     for i, sent in enumerate(idx):
         for word_id in sent:
             if word_id == eos_idx:
-                #sent_str[i] += "<eos>"
+                # sent_str[i] += "<eos>"
                 break
             else:
                 sent_str[i] += i2w[word_id] + " "
@@ -99,10 +99,10 @@ def surface_realisation(idx, i2w, eos_idx, slotdic):
                 for i, word in enumerate(slot_choice.split(' ')):
                     if word == '':
                         continue
-                    if i==0:
-                        labellings[isent] += ('B-'+slot+' ')
+                    if i == 0:
+                        labellings[isent] += ('B-' + slot + ' ')
                     else:
-                        labellings[isent] += ('I-'+slot+' ')
+                        labellings[isent] += ('I-' + slot + ' ')
             else:
                 labellings[isent] += 'O '
                 utterances[isent] += word + " "
