@@ -9,6 +9,7 @@ import torch
 
 from automatic_data_generation.data.base_dataset import BaseDataset
 from automatic_data_generation.data.utils import get_groups
+from automatic_data_generation.utils.constants import NO_SLOT_AVERAGING
 
 
 class SnipsDataset(BaseDataset):
@@ -77,7 +78,7 @@ class SnipsDataset(BaseDataset):
                 "Slot embedding only available for delexicalised utterances"
             )
 
-        if averaging is None:
+        if averaging == NO_SLOT_AVERAGING:
             return
 
         with open(slotdic_path, 'rb') as f:
