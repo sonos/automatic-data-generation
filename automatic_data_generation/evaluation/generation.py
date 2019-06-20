@@ -3,11 +3,9 @@
 
 from __future__ import unicode_literals
 
-from pathlib import Path
-
-from automatic_data_generation.data.utils import (idx2word, surface_realisation,
+from automatic_data_generation.data.utils import (idx2word,
+                                                  surface_realisation,
                                                   word2idx)
-from automatic_data_generation.utils.io import (read_csv, write_csv)
 
 
 def generate_vae_sentences(model, n_to_generate, input_type, i2int, i2w,
@@ -69,17 +67,3 @@ def generate_slot_expansion_sentences(delexicalised, intents, n_to_generate,
     slot_expansion_sentences['utterances'] = slot_expansion_utterances
 
     return slot_expansion_sentences
-
-
-def save_augmented_dataset(generated_sentences, n_generated, train_path,
-                           output_dir):
-    dataset = read_csv(train_path)
-    for s, l, d, i in zip(generated_sentences['utterances'],
-                          generated_sentences['labellings'],
-                          generated_sentences['delexicalised'],
-                          generated_sentences['intents']):
-        dataset.append([s, l, d, i])
-    augmented_path = output_dir / Path(train_path.name.replace(
-        '.csv', '_aug_{}.csv'.format(n_generated)
-    ))
-    write_csv(dataset, augmented_path)
