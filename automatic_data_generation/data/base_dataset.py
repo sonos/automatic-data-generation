@@ -58,7 +58,7 @@ class BaseDataset(object):
                              vectors=emb_vectors)
             delex.build_vocab(train, max_size=max_vocab_size,
                               vectors=emb_vectors)
-        elif embedding_type is None:
+        elif embedding_type == 'random':
             text.build_vocab(train, max_size=max_vocab_size)
             delex.build_vocab(train, max_size=max_vocab_size)
             text.vocab.vectors = torch.randn(len(text.vocab.itos),
@@ -90,7 +90,7 @@ class BaseDataset(object):
         Get metadata relating to sample with index `item`.
         Args:
             text (torchtext.data.Field): field for the text entries
-            delex (torchtext.data.Field): field for the delexicalized entries
+            delex (torchtext.data.Field): field for the delexicalised entries
             label (torchtext.data.Field): field for the slot label entries
             intent (torchtext.data.Field): field for the intent labels
 
