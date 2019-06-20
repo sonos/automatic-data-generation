@@ -10,10 +10,11 @@ from pathlib import Path
 
 import torch
 
-from automatic_data_generation.evaluation.generation import (
-    generate_vae_sentences, save_augmented_dataset)
+from automatic_data_generation.evaluation.generation import \
+    generate_vae_sentences
 from automatic_data_generation.evaluation.metrics import \
     compute_generation_metrics
+from automatic_data_generation.evaluation.utils import save_augmented_dataset
 from automatic_data_generation.models.cvae import CVAE
 from automatic_data_generation.training.trainer import Trainer
 from automatic_data_generation.utils.constants import (NO_CONDITIONING,
