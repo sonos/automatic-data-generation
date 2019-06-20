@@ -37,8 +37,9 @@ def train_and_eval_cvae(args):
     output_dir = Path(args.output_folder)
     if not output_dir.exists():
         output_dir.mkdir()
-    if args.overwrite_output:
-        run_dir = output_dir
+    if args.pickle is not None:
+        run_dir = output_dir / args.pickle
+        run_dir.mkdir()
     else:
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
@@ -161,7 +162,8 @@ def main():
     # data
     parser.add_argument('--data-folder', type=str, default='data')
     parser.add_argument('--output-folder', type=str, default='output')
-    parser.add_argument('--overwrite-output', action='store_true')
+    parser.add_argument('--pickle', type=str, default=None,
+                        help='for grid search experiments only')
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
