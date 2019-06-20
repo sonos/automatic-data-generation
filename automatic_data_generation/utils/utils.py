@@ -106,8 +106,9 @@ def create_dataset(dataset_type, dataset_folder, input_type, dataset_size,
 
 
 def create_augmented_dataset(args, raw_path, generated):
-    augmented_path = raw_path.replace('.csv', '_aug{}.csv'.format(args.datasize,
-                                                                  args.n_generated))
+    augmented_path = raw_path.replace('.csv',
+                                      '_aug{}.csv'.format(args.datasize,
+                                                          args.n_generated))
     print('Dumping augmented dataset at %s' % augmented_path)
     from shutil import copyfile
     copyfile(raw_path, augmented_path)
