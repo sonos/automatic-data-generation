@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.utils.rnn as rnn_utils
 
-from automatic_data_generation.utils.io import dump_json, load_json
+from automatic_data_generation.utils.io import (dump_json, load_json)
 from automatic_data_generation.utils.utils import to_device
 
 
@@ -13,6 +13,7 @@ class CVAE(nn.Module):
         Implementation from https://github.com/timbmg/Sentence-VAE adapted
         to the conditional case
     """
+
     def __init__(self, conditional=None, compute_bow=False, vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
@@ -157,7 +158,7 @@ class CVAE(nn.Module):
             prob = torch.rand(input_sequence.size())
             prob = to_device(prob)
             prob[(input_sequence.data - self.sos_idx) * (
-                    input_sequence.data - self.pad_idx) == 0] = 1
+                input_sequence.data - self.pad_idx) == 0] = 1
             decoder_input_sequence = input_sequence.clone()
             decoder_input_sequence[
                 prob < self.word_dropout_rate] = self.unk_idx
@@ -260,7 +261,7 @@ class CVAE(nn.Module):
 
             # update gloabl running sequence
             sequence_mask[sequence_running] = (
-                    input_sequence != self.eos_idx).data
+                input_sequence != self.eos_idx).data
             sequence_running = sequence_idx.masked_select(sequence_mask)
 
             # update local running sequences
