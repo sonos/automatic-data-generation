@@ -38,8 +38,7 @@ def train_and_eval_cvae(args):
     if not output_dir.exists():
         output_dir.mkdir()
     if args.pickle is not None:
-        run_dir = output_dir / args.pickle
-        run_dir.mkdir()
+        run_dir = output_dir
     else:
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
@@ -108,7 +107,8 @@ def train_and_eval_cvae(args):
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
-    model.save(run_dir / "model")
+    overwrite = True if args.pickle is not None else False
+    model.save(run_dir / "model", overwrite=overwrite)
 
     # evaluation
     run_dict = dict()
@@ -152,8 +152,12 @@ def train_and_eval_cvae(args):
         'before': dataset.vocab.vectors,
         'after': model.embedding.weight.data
     }
-    run_path = str(run_dir / "run.pkl")
-    torch.save(run_dict, run_path)
+
+    if args.pickle is not None:
+        run_dict_path = run_dir / "{}.pkl".format(args.pickle)
+    else:
+        run_dict_path = run_dir / "run.pkl"
+    torch.save(run_dict, str(run_dict_path))
 
 
 def main():
