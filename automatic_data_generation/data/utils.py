@@ -2,6 +2,8 @@ import random
 
 import torchtext
 
+from automatic_data_generation.utils.constants import NO_PREPROCESSING
+
 
 def make_tokenizer(tokenizer_type, preprocessing_type):
     if tokenizer_type == 'spacy':
@@ -23,7 +25,7 @@ def make_tokenizer(tokenizer_type, preprocessing_type):
                 lemmatizer = WordNetLemmatizer()
                 return [lemmatizer.lemmatize(tok) for tok in
                         word_tokenize(x)]
-            elif preprocessing_type is None:
+            elif preprocessing_type == NO_PREPROCESSING:
                 return word_tokenize(x)
 
     elif tokenizer_type == 'split':
