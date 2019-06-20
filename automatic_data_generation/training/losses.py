@@ -25,8 +25,7 @@ def compute_recon_loss(pad_idx, vocab_size, length, logp, target):
 
 def compute_kl_loss(logv, mean, annealing_strategy, step, k, x, m):
     kl_weight = annealing_fn(annealing_strategy, step, k, x, m)
-    kl_losses = -0.5 * torch.sum((1 + logv - mean.pow(2) - logv.exp()),
-                                 dim=0)
+    kl_losses = -0.5 * torch.sum((1 + logv - mean.pow(2) - logv.exp()), dim=0)
     return kl_weight, kl_losses
 
 
