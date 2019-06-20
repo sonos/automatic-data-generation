@@ -10,14 +10,9 @@ from pathlib import Path
 
 import torch
 
-from automatic_data_generation.data.handlers.atis_dataset import AtisDataset
-from automatic_data_generation.data.handlers.ptb_dataset import PTBDataset
-from automatic_data_generation.data.handlers.snips_dataset import SnipsDataset
-from automatic_data_generation.data.handlers.spam_dataset import SpamDataset
-from automatic_data_generation.data.handlers.yelp_dataset import YelpDataset
-from automatic_data_generation.evaluation.generation import \
-    generate_vae_sentences, save_augmented_dataset, \
-    generate_slot_expansion_sentences
+from automatic_data_generation.utils.utils import create_dataset
+from automatic_data_generation.evaluation.generation import (
+    generate_vae_sentences, save_augmented_dataset)
 from automatic_data_generation.evaluation.metrics import \
     compute_generation_metrics
 from automatic_data_generation.models.cvae import CVAE
@@ -33,43 +28,9 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
 
-def train_and_eval_cvae(data_folder,
-                        output_folder,
-                        dataset_type,
-                        input_type,
-                        dataset_size,
-                        tokenizer_type,
-                        preprocessing_type,
-                        max_sequence_length,
-                        embedding_type,
-                        embedding_dimension,
-                        max_vocab_size,
-                        slot_averaging,
-                        conditioning,
-                        bow_loss,
-                        rnn_type,
-                        hidden_size,
-                        word_dropout_rate,
-                        embedding_dropout_rate,
-                        latent_size,
-                        num_layers,
-                        bidirectional,
-                        temperature,
-                        n_epochs,
-                        optimizer_type,
-                        learning_rate,
-                        batch_size,
-                        annealing_strategy,
-                        kl_anneal_time,
-                        kl_anneal_rate,
-                        kl_anneal_target,
-                        label_anneal_time,
-                        label_anneal_rate,
-                        label_anneal_target,
-                        n_generated,
-                        force_cpu):
+def train_and_eval_cvae(args):
     # output folder
-    output_dir = Path(output_folder)
+    output_dir = Path(args.output_folder)
     if not output_dir.exists():
         output_dir.mkdir()
     current_time = datetime.now().strftime('%b%d_%H-%M-%S')
@@ -77,130 +38,64 @@ def train_and_eval_cvae(data_folder,
     run_dir.mkdir()
 
     # data handling
-    data_folder = Path(data_folder)
-    dataset_folder = data_folder / dataset_type
-    slotdic = None
-    if dataset_type == "snips":
-        dataset = SnipsDataset(
-            dataset_folder=dataset_folder,
-            input_type=input_type,
-            dataset_size=dataset_size,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir
-        )
-        if input_type == "delexicalised":
-            dataset.embed_slots(slot_averaging)
-            slotdic = dataset.get_slotdic()
-    elif dataset_type == "atis":
-        dataset = AtisDataset(
-            dataset_folder=dataset_folder,
-            input_type="utterance",
-            dataset_size=dataset_size,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir
-        )
-    elif dataset_type == "spam":
-        dataset = SpamDataset(
-            dataset_folder=dataset_folder,
-            input_type="utterance",
-            dataset_size=dataset_size,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir
-        )
-    elif dataset_type == "yelp":
-        dataset = YelpDataset(
-            dataset_folder=dataset_folder,
-            input_type="utterance",
-            dataset_size=dataset_size,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir
-        )
-    elif dataset_type == "penn-tree-bank":
-        dataset = PTBDataset(
-            dataset_folder=dataset_folder,
-            input_type="utterance",
-            dataset_size=dataset_size,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir
-        )
-    else:
-        raise TypeError("Unknown dataset type")
+    data_folder = Path(args.data_folder)
+    dataset_folder = data_folder / args.dataset_type
 
+    dataset, slotdic = create_dataset(
+        args.dataset_type, dataset_folder, args.input_type, args.dataset_size,
+        args.tokenizer_type, args.preprocessing_type, args.max_sequence_length,
+        args.embedding_type, args.embedding_dimension, args.max_vocab_size,
+        args.slot_averaging, run_dir
+    )
     dataset.embed_unks(num_special_toks=4)
 
     # training
     model = CVAE(
-        conditional=conditioning,
-        compute_bow=bow_loss,
+        conditional=args.conditioning,
+        compute_bow=args.bow_loss,
         vocab_size=dataset.vocab_size,
-        embedding_size=embedding_dimension,
-        rnn_type=rnn_type,
-        hidden_size=hidden_size,
-        word_dropout_rate=word_dropout_rate,
-        embedding_dropout_rate=embedding_dropout_rate,
-        z_size=latent_size,
+        embedding_size=args.embedding_dimension,
+        rnn_type=args.rnn_type,
+        hidden_size=args.hidden_size,
+        word_dropout_rate=args.word_dropout_rate,
+        embedding_dropout_rate=args.embedding_dropout_rate,
+        z_size=args.latent_size,
         n_classes=dataset.n_classes,
         sos_idx=dataset.sos_idx,
         eos_idx=dataset.eos_idx,
         pad_idx=dataset.pad_idx,
         unk_idx=dataset.unk_idx,
-        max_sequence_length=max_sequence_length,
-        num_layers=num_layers,
-        bidirectional=bidirectional,
-        temperature=temperature,
-        force_cpu=force_cpu
+        max_sequence_length=args.max_sequence_length,
+        num_layers=args.num_layers,
+        bidirectional=args.bidirectional,
+        temperature=args.temperature,
+        force_cpu=args.force_cpu
     )
 
-    model = to_device(model, force_cpu)
-    optimizer = getattr(torch.optim, optimizer_type)(
+    model = to_device(model, args.force_cpu)
+    optimizer = getattr(torch.optim, args.optimizer_type)(
         model.parameters(),
-        lr=learning_rate
+        lr=args.learning_rate
     )
 
     trainer = Trainer(
         dataset,
         model,
         optimizer,
-        batch_size=batch_size,
-        annealing_strategy=annealing_strategy,
-        kl_anneal_time=kl_anneal_time,
-        kl_anneal_rate=kl_anneal_rate,
-        kl_anneal_target=kl_anneal_target,
-        label_anneal_time=label_anneal_time,
-        label_anneal_rate=label_anneal_rate,
-        label_anneal_target=label_anneal_target,
-        add_bow_loss=bow_loss,
-        force_cpu=force_cpu,
+        batch_size=args.batch_size,
+        annealing_strategy=args.annealing_strategy,
+        kl_anneal_time=args.kl_anneal_time,
+        kl_anneal_rate=args.kl_anneal_rate,
+        kl_anneal_target=args.kl_anneal_target,
+        label_anneal_time=args.label_anneal_time,
+        label_anneal_rate=args.label_anneal_rate,
+        label_anneal_target=args.label_anneal_target,
+        add_bow_loss=args.bow_loss,
+        force_cpu=args.force_cpu,
         run_dir=run_dir / "tensorboard"
     )
 
-    trainer.run(n_epochs,
-                dev_step_every_n_epochs=1)
+    trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
     model.save(run_dir / "model")
 
@@ -210,8 +105,8 @@ def train_and_eval_cvae(data_folder,
     # generate queries
     generated_sentences, logp = generate_vae_sentences(
         model=model,
-        n_to_generate=n_generated,
-        input_type=input_type,
+        n_to_generate=args.n_generated,
+        input_type=args.input_type,
         i2int=dataset.i2int,
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
@@ -225,7 +120,7 @@ def train_and_eval_cvae(data_folder,
         logp
     )
 
-    if input_type == "delexicalised":
+    if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
             dataset,
             generated_sentences['delexicalised'],
@@ -234,9 +129,10 @@ def train_and_eval_cvae(data_folder,
             input_type='delexicalised'
         )
 
-    save_augmented_dataset(generated_sentences, n_generated,
+    save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
 
+    run_dict['args'] = vars(args)
     run_dict['logs'] = trainer.run_logs
     run_dict['latent_rep'] = trainer.latent_rep
     run_dict['i2w'] = dataset.i2w
@@ -316,7 +212,7 @@ def main():
 
     args = parser.parse_args()
 
-    train_and_eval_cvae(**vars(args))
+    train_and_eval_cvae(args)
 
 
 if __name__ == "__main__":
