@@ -16,8 +16,7 @@ def to_device(x, force_cpu):
 def create_dataset(dataset_type, dataset_folder, input_type, dataset_size,
                    tokenizer_type, preprocessing_type, max_sequence_length,
                    embedding_type, embedding_dimension, max_vocab_size,
-                   none_folder, none_size,
-                   slot_averaging, run_dir):
+                   slot_averaging, run_dir, none_folder, none_idx, none_size):
     slotdic = None
     if dataset_type == "snips":
         dataset = SnipsDataset(
@@ -32,6 +31,7 @@ def create_dataset(dataset_type, dataset_folder, input_type, dataset_size,
             max_vocab_size=max_vocab_size,
             output_folder=run_dir,
             none_folder=none_folder,
+            none_idx=none_idx,
             none_size=none_size
         )
         if input_type == "delexicalised":

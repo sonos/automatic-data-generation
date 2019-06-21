@@ -10,6 +10,7 @@ from pathlib import Path
 
 import torch
 
+from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
     generate_vae_sentences
 from automatic_data_generation.evaluation.metrics import \
@@ -48,13 +49,13 @@ def train_and_eval_cvae(args):
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
     none_folder = data_folder / args.none_type
+    none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
     dataset, slotdic = create_dataset(
         args.dataset_type, dataset_folder, args.input_type, args.dataset_size,
         args.tokenizer_type, args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        none_folder, args.none_size,
-        args.slot_averaging, run_dir,
+        args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
     dataset.embed_unks(num_special_toks=4)
 
@@ -174,16 +175,16 @@ def main():
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
-    parser.add_argument('--none-type', type=str, default='snips',
-                        choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
+    parser.add_argument('--none-type', type=str, default='penn-tree-bank',
+                        choices=['penn-tree-bank', 'shakespeare', 'subtitles'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-size', type=int, default=None)
-    parser.add_argument('--none-size', type=int, default=0)
-    parser.add_argument('--restrict_to_intent', nargs='+', type=str, default=None)
-    
+    parser.add_argument('--none-size', type=int, default=None)
+    parser.add_argument('--restrict_to_intent', nargs='+', type=str,
+                        default=None)
+
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
                         choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--preprocessing-type', type=str,
@@ -194,7 +195,7 @@ def main():
     parser.add_argument('--embedding-type', type=str, default='glove',
                         choices=['glove', 'random'])
     parser.add_argument('--embedding-dimension', type=int, default=100)
-    parser.add_argument('--freeze_embeddings' , type=bool, default=False)    
+    parser.add_argument('--freeze_embeddings', type=bool, default=False)
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-averaging', type=str,
                         default='micro',
