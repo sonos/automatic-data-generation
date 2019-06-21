@@ -4,12 +4,14 @@
 from __future__ import unicode_literals
 
 import pickle
+import random
 
 import torch
-
+from nltk import word_tokenize
 from automatic_data_generation.data.base_dataset import BaseDataset
 from automatic_data_generation.data.utils import get_groups
 from automatic_data_generation.utils.constants import NO_SLOT_AVERAGING
+from automatic_data_generation.utils.io import read_csv
 
 
 class SnipsDataset(BaseDataset):
@@ -27,9 +29,10 @@ class SnipsDataset(BaseDataset):
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
+                 output_folder,
                  none_folder,
-                 none_size,
-                 output_folder):
+                 none_idx,
+                 none_size):
         self.skip_header = True
         super(SnipsDataset, self).__init__(dataset_folder,
                                            input_type,
@@ -40,9 +43,10 @@ class SnipsDataset(BaseDataset):
                                            embedding_type,
                                            embedding_dimension,
                                            max_vocab_size,
+                                           output_folder,
                                            none_folder,
-                                           none_size,
-                                           output_folder)
+                                           none_idx,
+                                           none_size)
 
     @staticmethod
     def get_datafields(text, delex, label, intent):
@@ -52,18 +56,15 @@ class SnipsDataset(BaseDataset):
         return skip_header, datafields
 
     @staticmethod
-    def add_nones(sentences, none_folder, none_size):
-
-        column = {'penn-tree-bank':0, 'yelp':5, 'shakespeare':5}
-        none_path = os.path.join(none_folder, 'train.csv')
-            
-        none_reader = read_csv(none_train_path)
-
-        for row in none_reader[:none_size]:
-            utterance = row[column[dataset]]
-            new_row = [utterance, 'O '*len(word_tokenize(utterance)), utterance, 'None'] 
+    def add_nones(sentences, none_folder, none_idx, none_size):
+        none_path = none_folder / 'train.csv'
+        none_sentences = read_csv(none_path)
+        random.shuffle(none_sentences)
+        for row in none_sentences[:none_size]:
+            utterance = row[none_idx]
+            new_row = [utterance, 'O '*len(word_tokenize(utterance)),
+                       utterance, 'None']
             sentences.append(new_row)
-            
         return sentences
                                     
     def get_slotdic(self):
