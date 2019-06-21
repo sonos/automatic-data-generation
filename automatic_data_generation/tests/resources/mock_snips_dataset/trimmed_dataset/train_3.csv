@@ -1,0 +1,4 @@
+utterance,labels,delexicalised,intent
+What will the weather be in the Flight Park State Recreation Area ,O O O O O O O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,What will the weather be in the _geographic_poi_ ,GetWeather
+What is the weather in twenty three minutes in NV,O O O O B-timerange I-timerange I-timerange I-timerange O B-state ,What is the weather _timerange_ in _state_,GetWeather
+Will there be fog on March 3  2038 in Bonaire,O O O B-condition_description O B-timerange I-timerange I-timerange O B-country ,Will there be _condition_description_ on _timerange_ in _country_,GetWeather

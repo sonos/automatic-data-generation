@@ -1,0 +1,10 @@
+utterance,labels,delexicalised,intent
+Will there be fog on March 3  2038 in Bonaire,O O O B-condition_description O B-timerange I-timerange I-timerange O B-country ,Will there be _condition_description_ on _timerange_ in _country_,GetWeather
+What's the weather forecast close by Sligo ,O O O O O B-spatial_relation I-spatial_relation B-city ,What's the weather forecast _spatial_relation_ _city_ ,GetWeather
+What will the weather be in the Flight Park State Recreation Area ,O O O O O O O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,What will the weather be in the _geographic_poi_ ,GetWeather
+What is the weather in twenty three minutes in NV,O O O O B-timerange I-timerange I-timerange I-timerange O B-state ,What is the weather _timerange_ in _state_,GetWeather
+What is the forecast for Lesotho for starting this Fall,O O O O O B-country O O B-timerange I-timerange ,What is the forecast for _country_ for starting _timerange_,GetWeather
+rudolph <unk> N years old and former chairman of consolidated gold fields plc was named a nonexecutive director of this british industrial conglomerate,O O O O O O O O O O O O O O O O O O O O O O O O O ,rudolph <unk> N years old and former chairman of consolidated gold fields plc was named a nonexecutive director of this british industrial conglomerate,None
+the asbestos fiber <unk> is unusually <unk> once it enters the <unk> with even brief exposures to it causing symptoms that show up decades later researchers said,O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O ,the asbestos fiber <unk> is unusually <unk> once it enters the <unk> with even brief exposures to it causing symptoms that show up decades later researchers said,None
+pierre <unk> N years old will join the board as a nonexecutive director nov. N,O O O O O O O O O O O O O O O O O ,pierre <unk> N years old will join the board as a nonexecutive director nov. N,None
+mr. <unk> is chairman of <unk> n.v. the dutch publishing group,O O O O O O O O O O O O O O O ,mr. <unk> is chairman of <unk> n.v. the dutch publishing group,None

@@ -5,6 +5,7 @@
 venv*
 *egg-info/*
 runs/*
-test*
+tests/*
+output/
 __pycache__/
 .vector_cache/
