@@ -66,7 +66,7 @@ class BaseDataset(object):
             delex.vocab.vectors = torch.randn(len(delex.vocab.itos),
                                               embedding_dimension)
         else:
-            raise NotImplementedError
+            raise TypeError("Unknown embedding type")
 
         label.build_vocab(train)
         intent.build_vocab(train)
