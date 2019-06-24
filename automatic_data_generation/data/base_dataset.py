@@ -19,6 +19,7 @@ class BaseDataset(object):
 
     def __init__(self,
                  dataset_folder,
+                 restrict_to_intent,
                  input_type,
                  dataset_size,
                  tokenizer_type,
@@ -40,7 +41,7 @@ class BaseDataset(object):
                                                       intent)
 
         train_path, valid_path = self.build_data_files(
-            dataset_folder, output_folder, dataset_size, skip_header,
+            dataset_folder, restrict_to_intent, output_folder, dataset_size, skip_header,
             none_size, none_folder, none_idx)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
@@ -124,7 +125,7 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    def build_data_files(self, dataset_folder, output_folder,
+    def build_data_files(self, dataset_folder, restrict_to_intent, output_folder,
                          dataset_size=None, skip_header=True,
                          none_size=None, none_folder=None, none_idx=None):
         original_train_path = dataset_folder / 'train.csv'
@@ -133,17 +134,24 @@ class BaseDataset(object):
         new_train = read_csv(original_train_path)
         new_test = read_csv(original_test_path)
 
+        if skip_header:
+            header_train = new_train[0]
+            header_test = new_test[0]
+            new_train = new_train[1:]
+            new_test = new_test[1:]
+
+        # filter intents
+        if restrict_to_intent is not None:
+            new_train = self.filter_intents(new_train, restrict_to_intent)
+
+        # trim_dataset
         trim_prefix = ''
         if dataset_size is not None:
             # TODO: stratified shuffle split
             trim_prefix = '_{}'.format(dataset_size)
-            original_train = read_csv(original_train_path)
-            if skip_header:
-                new_train = random.sample(original_train[1:], dataset_size)
-                new_train = [original_train[0]] + new_train
-            else:
-                new_train = random.sample(original_train, dataset_size)
+            new_train = random.sample(new_train, dataset_size)
 
+        # add nones
         train_none_prefix = ''
         test_none_prefix = ''
         if none_size is not None:
@@ -165,6 +173,10 @@ class BaseDataset(object):
             new_test_path = dataset_folder / 'validate{}.csv'.format(
                 test_none_prefix)
 
+        if skip_header:
+            new_train = [header_train] + new_train
+            new_test =  [header_test] + new_test
+            
         write_csv(new_test, new_test_path)
         write_csv(new_train, new_train_path)
 

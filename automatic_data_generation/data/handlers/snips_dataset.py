@@ -21,6 +21,7 @@ class SnipsDataset(BaseDataset):
 
     def __init__(self,
                  dataset_folder,
+                 restrict_to_intent,
                  input_type,
                  dataset_size,
                  tokenizer_type,
@@ -35,6 +36,7 @@ class SnipsDataset(BaseDataset):
                  none_size):
         self.skip_header = True
         super(SnipsDataset, self).__init__(dataset_folder,
+                                           restrict_to_intent,
                                            input_type,
                                            dataset_size,
                                            tokenizer_type,
@@ -54,6 +56,11 @@ class SnipsDataset(BaseDataset):
         datafields = [("utterance", text), ("labels", label),
                       ("delexicalised", delex), ("intent", intent)]
         return skip_header, datafields
+
+    @staticmethod
+    def filter_intents(sentences, intents):
+        return [row for row in sentences if row[3] in intents]
+
 
     @staticmethod
     def add_nones(sentences, none_folder, none_idx, none_size):

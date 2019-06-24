@@ -52,7 +52,7 @@ def train_and_eval_cvae(args):
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
     dataset, slotdic = create_dataset(
-        args.dataset_type, dataset_folder, args.input_type, args.dataset_size,
+        args.dataset_type, dataset_folder, args.restrict_to_intent, args.input_type, args.dataset_size,
         args.tokenizer_type, args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
@@ -176,7 +176,7 @@ def main():
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--none-type', type=str, default='penn-tree-bank',
-                        choices=['penn-tree-bank', 'shakespeare', 'subtitles'])
+                        choices=['penn-tree-bank', 'shakespeare', 'subtitles', 'yelp'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
