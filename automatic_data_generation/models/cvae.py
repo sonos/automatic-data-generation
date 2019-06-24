@@ -300,11 +300,9 @@ class CVAE(nn.Module):
 
         return save_to
 
-    def save(self, folder, overwrite):
+    def save(self, folder):
         folder = Path(folder)
-        if not overwrite:
-            if folder.exists():
-                raise OSError("folder already exists, refusing to overwrite")
+        if not folder.exists():
             folder.mkdir()
 
         config = {

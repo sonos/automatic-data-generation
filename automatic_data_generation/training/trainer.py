@@ -62,6 +62,7 @@ class Trainer(object):
             'dev': {
                 'recon_loss': [],
                 'kl_loss': [],
+                'conditioning_accuracy': [],
                 'total_loss': []
             }
         }
@@ -78,7 +79,7 @@ class Trainer(object):
             
             self.epoch += 1
             is_last_epoch = self.epoch == n_epochs
-            train_loss, train_recon_loss, train_kl_loss = self.do_one_sweep(
+            train_loss, train_recon_loss, train_kl_loss, train_acc = self.do_one_sweep(
                 train_iter, is_last_epoch, "train")
 
             # logging
@@ -88,12 +89,14 @@ class Trainer(object):
                         self.epoch, train_recon_loss.item())
             LOGGER.info('Training KL loss after epoch %d: %f',
                         self.epoch, train_kl_loss.item())
+            LOGGER.info('Training accuracy after epoch %d: %f',
+                        self.epoch, train_acc)
             self.summary_writer.add_scalar(
                 'train/total-loss', train_loss, self.epoch)
             self.run_logs['train']['total_loss'].append(train_loss)
 
             if (idx + 1) % dev_step_every_n_epochs == 0:
-                dev_loss, dev_recon_loss, dev_kl_loss = self.do_one_sweep(
+                dev_loss, dev_recon_loss, dev_kl_loss, dev_acc = self.do_one_sweep(
                     val_iter, is_last_epoch, "dev")
 
                 # logging
@@ -103,6 +106,8 @@ class Trainer(object):
                             self.epoch, dev_recon_loss)
                 LOGGER.info('Dev KL loss after epoch %d: %f',
                             self.epoch, dev_kl_loss)
+                LOGGER.info('Dev acc after epoch %d: %f',
+                            self.epoch, dev_acc)
                 # summaries
                 self.summary_writer.add_scalar(
                     'dev/recon-loss', dev_recon_loss, self.epoch)
@@ -126,6 +131,7 @@ class Trainer(object):
         sweep_loss = 0
         sweep_recon_loss = 0
         sweep_kl_loss = 0
+        sweep_accuracy = 0
         n_batches = 0
         for iteration, batch in enumerate(tqdm(iter)):
             if len(batch) < self.batch_size:
@@ -161,12 +167,13 @@ class Trainer(object):
                         )
 
             # loss calculation
-            loss, recon_loss, kl_loss = self.compute_loss(
+            loss, recon_loss, kl_loss, accuracy = self.compute_loss(
                 logp, bow, target, lengths, mean, logv, logc, y, train_or_dev)
 
             sweep_loss += loss
             sweep_recon_loss += recon_loss
             sweep_kl_loss += kl_loss
+            sweep_accuracy += accuracy            
 
             n_batches += 1
             if train_or_dev == "train":
@@ -174,7 +181,7 @@ class Trainer(object):
                 self.optimizer.step()
 
         return sweep_loss / n_batches, sweep_recon_loss / n_batches, \
-               sweep_kl_loss / n_batches
+               sweep_kl_loss / n_batches, sweep_accuracy / n_batches 
 
     def compute_loss(self, logp, bow, target, length, mean, logv, logc, y,
                      train_or_dev):
@@ -230,16 +237,16 @@ class Trainer(object):
                 self.run_logs[train_or_dev]['kl_losses'][i].append(
                     kl_losses[i].detach().cpu().numpy().item() / batch_size
                 )
-            if self.model.conditional is not None:
-                pred_labels = logc.data.max(1)[1].long()
-                n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
-                self.summary_writer.add_scalar(
-                    train_or_dev + '/conditioning-accuracy',
-                    n_correct / batch_size,
-                    self.step)
-                self.run_logs[train_or_dev]['conditioning_accuracy'].append(
-                    n_correct / batch_size
-                )
+        if self.model.conditional is not None:
+            pred_labels = logc.data.max(1)[1].long()
+            n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
+            self.summary_writer.add_scalar(
+                train_or_dev + '/conditioning-accuracy',
+                n_correct / batch_size,
+                self.step)
+            self.run_logs[train_or_dev]['conditioning_accuracy'].append(
+                n_correct / batch_size
+            )
 
         return total_loss / batch_size, recon_loss / batch_size, \
-               kl_loss / batch_size
+               kl_loss / batch_size, n_correct / batch_size if self.model.conditional else 0
