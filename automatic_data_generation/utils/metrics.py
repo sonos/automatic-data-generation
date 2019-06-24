@@ -1,63 +1,29 @@
-import numpy as np
-import pandas as pd
+import os
 import torch
-from nltk.translate.bleu_score import (sentence_bleu, SmoothingFunction)
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.linear_model import SGDClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import LabelEncoder
-
+import numpy as np
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+import pickle
 
 def my_remove(list, elt):
     list.remove(elt)
     return list
 
-
-def compute_generation_metrics(dataset, generated_utterances,
-                               generated_intents, logp,
-                               input_type='utterance', compute_entropy=True):
-    bleu_scores = calc_bleu(dataset, generated_utterances,
-                            generated_intents, input_type)
-    originality, transfer = calc_originality_and_transfer(dataset, generated_utterances,
-                            generated_intents, input_type)
-    diversity = calc_diversity(dataset, generated_utterances)
-    intent_accuracy = intent_classification(
-        generated_utterances,
-        generated_intents,
-        train_path=dataset.original_train_path,
-        input_type=input_type
-    )
-    if input_type == 'utterance' and compute_entropy:
-        entropy = calc_entropy(logp)
-    else:
-        entropy = None
-
-    return {
-        'bleu_scores': bleu_scores,
-        'originality': originality,
-        'transfer' : transfer,
-        'diversity': diversity,
-        'intent_accuracy': intent_accuracy,
-        'entropy': entropy
-    }
-
-
-def calc_bleu(dataset, sentences, intents, type='utterance'):
+def calc_bleu(sentences, intents, datasets, type='utterance'):
 
     bleu_scores = {'quality':{}, 'diversity':{}, 'original_diversity':{}}
 
-    i2int = dataset.intent.vocab.itos
-    int2i = dataset.intent.vocab.stoi
+    i2int = datasets.INTENT.vocab.itos
+    int2i = datasets.INTENT.vocab.stoi
     cc = SmoothingFunction()
     references = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
 
-    for example in list(dataset.valid): # VALIDATION SET
+    for example in list(datasets.valid): # VALIDATION SET
         if example.intent in i2int:
             references[example.intent].append(getattr(example, type))
     for i, example in enumerate(sentences):
-        candidates[intents[i]].append(dataset.tokenize(example))
+        candidates[intents[i]].append(datasets.tokenize(example))
 
     for intent in i2int:
 
@@ -82,20 +48,21 @@ def calc_bleu(dataset, sentences, intents, type='utterance'):
 
     return bleu_scores
 
-def calc_originality_and_transfer(dataset, sentences, intents, type='utterance'):
+
+def calc_originality_and_transfer(sentences, intents, datasets, type='utterance'):
 
     originality = {}
     transfer = {}
 
-    i2int = dataset.intent.vocab.itos
-    int2i = dataset.intent.vocab.stoi
+    i2int = datasets.INTENT.vocab.itos
+    int2i = datasets.INTENT.vocab.stoi
     references = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
 
-    for example in dataset.train: # TRAINING SET
+    for example in datasets.train: # TRAINING SET
         references[example.intent].append(getattr(example, type))
     for i, example in enumerate(sentences): 
-        candidates[intents[i]].append(dataset.tokenize(example))
+        candidates[intents[i]].append(datasets.tokenize(example))
 
     # ORIGINALITY
     original_sentences = []
@@ -118,28 +85,23 @@ def calc_originality_and_transfer(dataset, sentences, intents, type='utterance')
 
     return originality, transfer
 
-
 def calc_entropy(logp):
-    normalization = 1. / logp.numel()
+    normalization = 1./logp.numel()
     entropy = - normalization * torch.sum(logp.view(-1))
     # perplexity = torch.exp(entropy).item()
     return entropy.item()
 
+def calc_diversity(sentences, datasets):
+    tokens = np.concatenate([datasets.tokenize(sentence) for sentence in sentences])
+    diversity = len(set(tokens)) / float(len(tokens))
+    return diversity
 
-def calc_diversity(dataset, sentences):
-    tokens = np.concatenate(
-        [dataset.tokenize(sentence) for sentence in sentences])
-    return len(set(tokens)) / float(len(tokens))
-
-
-def intent_classification(sentences, intents, train_path, input_type):
-    """
-        This only works for snips dataset for now...
-    """
+def intent_classification(sentences, intents, train_path, type='utterance'):
+    '''This only works for snips dataset for now...'''
 
     # if not os.path.exists('clf.pkl'):
     print('Training intent classifier')
-    intent_classifier = train_intent_classifier(train_path, input_type)
+    intent_classifier = train_intent_classifier(train_path, type)
 
     # else:
     # with open('clf.pkl', 'rb') as f:
@@ -148,21 +110,28 @@ def intent_classification(sentences, intents, train_path, input_type):
     preds = intent_classifier.predict(sentences)
 
     accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents) if intent != 'None'])
-                     / len([intent for intent in intents if intent != 'None'])) 
+                     / len([intent for intent in intents if intent != 'None']))    
 
     return accuracy
 
+def train_intent_classifier(train_path, type='utterance'):
 
-def train_intent_classifier(train_path, input_type):
+    import pandas as pd
+    from sklearn.preprocessing import LabelEncoder
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.pipeline import Pipeline
+    from sklearn.feature_extraction.text import TfidfTransformer
+    from sklearn.linear_model import LogisticRegression, SGDClassifier
+    
     data = pd.read_csv(train_path)
-    X = getattr(data, input_type)
+    X = getattr(data, type)
     y = data.intent
     label_encoder = LabelEncoder()
     y = label_encoder.fit_transform(y)
     model = Pipeline([
-        ('vect', CountVectorizer()),
-        ('tfidf', TfidfTransformer()),
-        ('model', SGDClassifier())
+                    ('vect',CountVectorizer()),
+                    ('tfidf', TfidfTransformer()),
+                    ('model', SGDClassifier())
     ])
     model.fit(X, y)
 
@@ -171,7 +140,7 @@ def train_intent_classifier(train_path, input_type):
             self.label_encoder = label_encoder
             self.classifier = model
 
-        def predict(self, sentences):
+        def predict(self,sentences):
             labels = model.predict(sentences)
             intents = list(label_encoder.inverse_transform(labels))
             return intents

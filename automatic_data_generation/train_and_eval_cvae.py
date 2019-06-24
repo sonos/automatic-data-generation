@@ -182,7 +182,7 @@ def main():
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-size', type=int, default=None)
     parser.add_argument('--none-size', type=int, default=None)
-    parser.add_argument('--restrict_to_intent', nargs='+', type=str,
+    parser.add_argument('--restrict-to-intent', nargs='+', type=str,
                         default=None)
 
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
