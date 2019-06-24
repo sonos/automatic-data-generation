@@ -283,7 +283,6 @@ class CVAE(nn.Module):
         return generations, z, y_onehot, logp
 
     def _sample(self, dist, mode='greedy'):
-
         if mode == 'greedy':
             _, sample = torch.topk(dist, 1, dim=-1)
         sample = sample.squeeze()

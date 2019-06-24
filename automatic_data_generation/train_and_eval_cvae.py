@@ -84,7 +84,10 @@ def train_and_eval_cvae(args):
         temperature=args.temperature,
         force_cpu=args.force_cpu
     )
-
+    if args.load_folder:
+        model.from_folder(args.load_folder)
+        print('Loaded model from %s' %args.load_folder)
+        
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = getattr(torch.optim, args.optimizer_type)(
@@ -137,6 +140,7 @@ def train_and_eval_cvae(args):
         generated_sentences['intents'],
         logp
     )
+    print(*[{k:v} for (k,v) in run_dict['metrics'].items()], sep='\n')        
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -146,6 +150,7 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
+        print(*[{k:v} for (k,v) in run_dict['delexicalised_metrics'].items()], sep='\n')        
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -173,6 +178,7 @@ def main():
     # data
     parser.add_argument('--data-folder', type=str, default='data')
     parser.add_argument('--output-folder', type=str, default='output')
+    parser.add_argument('--load-folder', type=str, default=None)
     parser.add_argument('--pickle', type=str, default=None,
                         help='for grid search experiments only')
     parser.add_argument('--dataset-type', type=str, default='snips',
@@ -193,7 +199,7 @@ def main():
     parser.add_argument('--preprocessing-type', type=str,
                         default=NO_PREPROCESSING,
                         choices=['stem', 'lemmatize', NO_PREPROCESSING])
-    parser.add_argument('-msl', '--max_sequence_length', type=int, default=60)
+    parser.add_argument('-msl', '--max_sequence_length', type=int, default=20)
     #
     parser.add_argument('--embedding-type', type=str, default='glove',
                         choices=['glove', 'random'])
