@@ -72,6 +72,10 @@ class Trainer(object):
             batch_size=self.batch_size)
 
         for idx in range(n_epochs):
+            import gc
+            gc.collect()
+            torch.cuda.empty_cache()
+            
             self.epoch += 1
             is_last_epoch = self.epoch == n_epochs
             train_loss, train_recon_loss, train_kl_loss = self.do_one_sweep(
