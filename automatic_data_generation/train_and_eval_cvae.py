@@ -39,7 +39,7 @@ def train_and_eval_cvae(args):
     if not output_dir.exists():
         output_dir.mkdir()
     if args.pickle is not None:
-        run_dir = output_dir
+        run_dir = Path('.')
     else:
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
@@ -111,8 +111,11 @@ def train_and_eval_cvae(args):
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
-    overwrite = True if args.pickle is not None else False
-    model.save(run_dir / "model", overwrite=overwrite)
+    if args.pickle is not None:
+        model_path = run_dir / "{}.pyT".format(args.pickle)
+    else:
+        model_path = run_dir / "run.pyT"
+    model.save(model_path)
 
     # evaluation
     run_dict = dict()
