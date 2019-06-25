@@ -1,4 +1,0 @@
-utterance,labels,delexicalised,intent
-in 1 week is there going to be a depression in Washington,B-timerange I-timerange I-timerange O O O O O O B-condition_description O B-state ,_timerange_ is there going to be a _condition_description_ in _state_,GetWeather
-How warm is it in Darnestown,O B-condition_temperature O O O B-city ,How _condition_temperature_ is it in _city_,GetWeather
-What is the weather like in Cameroon,O O O O O O B-country ,What is the weather like in _country_,GetWeather
