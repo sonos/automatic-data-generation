@@ -8,7 +8,8 @@ from automatic_data_generation.utils.constants import NO_PREPROCESSING
 NONE_COLUMN_MAPPING = {
     'penn-tree-bank': 0,
     'yelp': 5,
-    'shakespeare': 5
+    'shakespeare': 5,
+    'subtitles': 0
 }
 
 
