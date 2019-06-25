@@ -52,8 +52,9 @@ def train_and_eval_cvae(args):
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
     dataset, slotdic = create_dataset(
-        args.dataset_type, dataset_folder, args.restrict_to_intent, args.input_type, args.dataset_size,
-        args.tokenizer_type, args.preprocessing_type, args.max_sequence_length,
+        args.dataset_type, dataset_folder, args.restrict_to_intent,
+        args.input_type, args.dataset_size, args.tokenizer_type,
+        args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
@@ -86,8 +87,8 @@ def train_and_eval_cvae(args):
     )
     if args.load_folder:
         model.from_folder(args.load_folder)
-        print('Loaded model from %s' %args.load_folder)
-        
+        LOGGER.info('Loaded model from %s' % args.load_folder)
+
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = getattr(torch.optim, args.optimizer_type)(
@@ -140,7 +141,7 @@ def train_and_eval_cvae(args):
         generated_sentences['intents'],
         logp
     )
-    print(*[{k:v} for (k,v) in run_dict['metrics'].items()], sep='\n')        
+    LOGGER.debug(*[{k: v} for (k, v) in run_dict['metrics'].items()], sep='\n')
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -150,7 +151,8 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
-        print(*[{k:v} for (k,v) in run_dict['delexicalised_metrics'].items()], sep='\n')        
+        LOGGER.debug(*[{k: v} for (k, v) in run_dict[
+            'delexicalised_metrics'].items()], sep='\n')
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -185,7 +187,8 @@ def main():
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--none-type', type=str, default='penn-tree-bank',
-                        choices=['penn-tree-bank', 'shakespeare', 'subtitles', 'yelp'])
+                        choices=['penn-tree-bank', 'shakespeare',
+                                 'subtitles', 'yelp'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
@@ -194,13 +197,13 @@ def main():
     parser.add_argument('--restrict-to-intent', nargs='+', type=str,
                         default=None)
 
+    # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
                         choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--preprocessing-type', type=str,
                         default=NO_PREPROCESSING,
                         choices=['stem', 'lemmatize', NO_PREPROCESSING])
     parser.add_argument('-msl', '--max_sequence_length', type=int, default=20)
-    #
     parser.add_argument('--embedding-type', type=str, default='glove',
                         choices=['glove', 'random'])
     parser.add_argument('--embedding-dimension', type=int, default=100)
