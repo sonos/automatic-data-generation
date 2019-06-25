@@ -51,6 +51,10 @@ class AtisDataset(BaseDataset):
         return skip_header, datafields
 
     @staticmethod
+    def filter_intents(sentences, intents):
+        return [row for row in sentences if row[3] in intents]
+
+    @staticmethod
     def add_nones(sentences, none_folder, none_idx, none_size):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
