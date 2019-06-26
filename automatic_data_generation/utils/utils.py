@@ -49,7 +49,10 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir
+            output_folder=run_dir,
+            none_folder=none_folder,
+            none_idx=none_idx,
+            none_size=none_size
         )
     elif dataset_type == "spam":
         dataset = SpamDataset(
@@ -62,7 +65,10 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir
+            output_folder=run_dir,
+            none_folder=none_folder,
+            none_idx=none_idx,
+            none_size=none_size
         )
     elif dataset_type == "yelp":
         dataset = YelpDataset(
@@ -75,7 +81,10 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir
+            output_folder=run_dir,
+            none_folder=none_folder,
+            none_idx=none_idx,
+            none_size=none_size
         )
     elif dataset_type == "penn-tree-bank":
         dataset = PTBDataset(
@@ -88,7 +97,10 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir
+            output_folder=run_dir,
+            none_folder=none_folder,
+            none_idx=none_idx,
+            none_size=none_size
         )
     else:
         raise TypeError("Unknown dataset type")
