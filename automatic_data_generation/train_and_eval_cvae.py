@@ -116,9 +116,9 @@ def train_and_eval_cvae(args):
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
     if args.pickle is not None:
-        model_path = run_dir / "{}.pyT".format(args.pickle)
+        model_path = run_dir / "{}_weights".format(args.pickle)
     else:
-        model_path = run_dir / "run.pyT"
+        model_path = run_dir / "model"
     model.save(model_path)
 
     # evaluation
