@@ -283,7 +283,6 @@ class CVAE(nn.Module):
         return generations, z, y_onehot, logp
 
     def _sample(self, dist, mode='greedy'):
-
         if mode == 'greedy':
             _, sample = torch.topk(dist, 1, dim=-1)
         sample = sample.squeeze()
@@ -300,11 +299,9 @@ class CVAE(nn.Module):
 
         return save_to
 
-    def save(self, folder, overwrite):
+    def save(self, folder):
         folder = Path(folder)
-        if not overwrite:
-            if folder.exists():
-                raise OSError("folder already exists, refusing to overwrite")
+        if not folder.exists():
             folder.mkdir()
 
         config = {

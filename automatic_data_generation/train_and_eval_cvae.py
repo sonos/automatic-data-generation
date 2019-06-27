@@ -10,6 +10,7 @@ from pathlib import Path
 
 import torch
 
+from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
     generate_vae_sentences
 from automatic_data_generation.evaluation.metrics import \
@@ -38,7 +39,7 @@ def train_and_eval_cvae(args):
     if not output_dir.exists():
         output_dir.mkdir()
     if args.pickle is not None:
-        run_dir = output_dir
+        run_dir = Path('.')
     else:
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
@@ -47,12 +48,15 @@ def train_and_eval_cvae(args):
     # data handling
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
+    none_folder = data_folder / args.none_type
+    none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
     dataset, slotdic = create_dataset(
-        args.dataset_type, dataset_folder, args.input_type, args.dataset_size,
-        args.tokenizer_type, args.preprocessing_type, args.max_sequence_length,
+        args.dataset_type, dataset_folder, args.restrict_to_intent,
+        args.input_type, args.dataset_size, args.tokenizer_type,
+        args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        args.slot_averaging, run_dir
+        args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
     dataset.embed_unks(num_special_toks=4)
 
@@ -81,8 +85,12 @@ def train_and_eval_cvae(args):
         temperature=args.temperature,
         force_cpu=args.force_cpu
     )
+    if args.load_folder:
+        model.from_folder(args.load_folder)
+        LOGGER.info('Loaded model from %s' % args.load_folder)
 
     model = to_device(model, args.force_cpu)
+    parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = getattr(torch.optim, args.optimizer_type)(
         model.parameters(),
         lr=args.learning_rate
@@ -94,11 +102,11 @@ def train_and_eval_cvae(args):
         optimizer,
         batch_size=args.batch_size,
         annealing_strategy=args.annealing_strategy,
-        kl_anneal_time=args.kl_anneal_time,
         kl_anneal_rate=args.kl_anneal_rate,
+        kl_anneal_time=args.kl_anneal_time,
         kl_anneal_target=args.kl_anneal_target,
-        label_anneal_time=args.label_anneal_time,
         label_anneal_rate=args.label_anneal_rate,
+        label_anneal_time=args.label_anneal_time,
         label_anneal_target=args.label_anneal_target,
         add_bow_loss=args.bow_loss,
         force_cpu=args.force_cpu,
@@ -107,8 +115,11 @@ def train_and_eval_cvae(args):
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
-    overwrite = True if args.pickle is not None else False
-    model.save(run_dir / "model", overwrite=overwrite)
+    if args.pickle is not None:
+        model_path = run_dir / "{}_weights".format(args.pickle)
+    else:
+        model_path = run_dir / "model"
+    model.save(model_path)
 
     # evaluation
     run_dict = dict()
@@ -130,6 +141,7 @@ def train_and_eval_cvae(args):
         generated_sentences['intents'],
         logp
     )
+    LOGGER.debug(*[{k: v} for (k, v) in run_dict['metrics'].items()], sep='\n')
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -139,6 +151,8 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
+        LOGGER.debug(*[{k: v} for (k, v) in run_dict[
+            'delexicalised_metrics'].items()], sep='\n')
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -166,25 +180,34 @@ def main():
     # data
     parser.add_argument('--data-folder', type=str, default='data')
     parser.add_argument('--output-folder', type=str, default='output')
+    parser.add_argument('--load-folder', type=str, default=None)
     parser.add_argument('--pickle', type=str, default=None,
                         help='for grid search experiments only')
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
+    parser.add_argument('--none-type', type=str, default='penn-tree-bank',
+                        choices=['penn-tree-bank', 'shakespeare',
+                                 'subtitles', 'yelp'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-size', type=int, default=None)
+    parser.add_argument('--none-size', type=int, default=None)
+    parser.add_argument('--restrict-to-intent', nargs='+', type=str,
+                        default=None)
+
+    # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
                         choices=['split', 'nltk', 'spacy'])
     parser.add_argument('--preprocessing-type', type=str,
                         default=NO_PREPROCESSING,
                         choices=['stem', 'lemmatize', NO_PREPROCESSING])
-    parser.add_argument('-msl', '--max_sequence_length', type=int, default=60)
-    #
+    parser.add_argument('-msl', '--max_sequence_length', type=int, default=20)
     parser.add_argument('--embedding-type', type=str, default='glove',
                         choices=['glove', 'random'])
     parser.add_argument('--embedding-dimension', type=int, default=100)
+    parser.add_argument('--freeze_embeddings', type=bool, default=False)
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-averaging', type=str,
                         default='micro',
@@ -214,15 +237,15 @@ def main():
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
     parser.add_argument('-as', '--annealing-strategy', type=str,
                         default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k1', '--kl-anneal-time', type=float, default=0.01,
+    parser.add_argument('-k1', '--kl-anneal-time', type=float, default=300,
                         help='anneal time for KL weight')
-    parser.add_argument('-x1', '--kl-anneal-rate', type=int, default=300,
+    parser.add_argument('-x1', '--kl-anneal-rate', type=int, default=0.01,
                         help='anneal rate for KL weight')
     parser.add_argument('-m1', '--kl-anneal-target', type=float, default=1.,
                         help='final value for KL weight')
-    parser.add_argument('-k2', '--label-anneal-time', type=float, default=0.01,
+    parser.add_argument('-k2', '--label-anneal-time', type=float, default=100,
                         help='anneal time for label weight')
-    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=100,
+    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=0.01,
                         help='anneal rate for label weight')
     parser.add_argument('-m2', '--label-anneal-target', type=float, default=1.,
                         help='final value for label weight')

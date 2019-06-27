@@ -19,6 +19,7 @@ class BaseDataset(object):
 
     def __init__(self,
                  dataset_folder,
+                 restrict_to_intent,
                  input_type,
                  dataset_size,
                  tokenizer_type,
@@ -27,7 +28,10 @@ class BaseDataset(object):
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
-                 output_folder):
+                 output_folder,
+                 none_folder,
+                 none_idx,
+                 none_size):
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
 
@@ -36,8 +40,9 @@ class BaseDataset(object):
         skip_header, datafields = self.get_datafields(text, delex, label,
                                                       intent)
 
-        train_path, valid_path = self.get_dataset_paths(
-            dataset_folder, output_folder, dataset_size, skip_header)
+        train_path, valid_path = self.build_data_files(
+            dataset_folder, restrict_to_intent, output_folder, dataset_size,
+            skip_header, none_size, none_folder, none_idx)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
 
@@ -104,28 +109,96 @@ class BaseDataset(object):
         raise NotImplementedError
 
     @staticmethod
-    def get_dataset_paths(dataset_folder, output_folder, dataset_size=None,
-                          skip_header=True):
-        if dataset_size is None:
-            return dataset_folder / 'train.csv', \
-                   dataset_folder / 'validate.csv'
-        else:
+    @abstractmethod
+    def add_nones(sentences, none_folder, none_idx, none_size):
+        """
+        Get metadata relating to sample with index `item`.
+        Args:
+            sentences (list(list(str)): sentences to augment with None data
+            none_folder (Path): path to the folder with None data
+            none_idx (int): column index for data in None file
+            none_size (int): number of None sentences to add
+
+        Returns:
+            augmented_sentences (list(list(str)): list of sentences
+                augmented with None data
+        """
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def filter_intents(sentences, intents):
+        """
+        Get metadata relating to sample with index `item`.
+        Args:
+            sentences (list(list(str)): sentences be filtered
+            intents (list(str): list of intents to keep
+
+        Returns:
+            augmented_sentences (list(list(str)): list of sentences
+                augmented with None data
+        """
+        raise NotImplementedError
+
+    def build_data_files(self, dataset_folder, restrict_to_intent,
+                         output_folder, dataset_size=None, skip_header=True,
+                         none_size=None, none_folder=None, none_idx=None):
+        original_train_path = dataset_folder / 'train.csv'
+        original_test_path = dataset_folder / 'validate.csv'
+
+        new_train = read_csv(original_train_path)
+        new_test = read_csv(original_test_path)
+
+        if skip_header:
+            header_train = new_train[0]
+            header_test = new_test[0]
+            new_train = new_train[1:]
+            new_test = new_test[1:]
+
+        # filter intents
+        filter_prefix = ''
+        if restrict_to_intent is not None:
+            filter_prefix = '_filtered'
+            new_train = self.filter_intents(new_train, restrict_to_intent)
+            new_test = self.filter_intents(new_test, restrict_to_intent)
+
+        # trim_dataset
+        trim_prefix = ''
+        if dataset_size is not None:
             # TODO: stratified shuffle split
-            original_train_path = dataset_folder / 'train.csv'
-            if output_folder is not None:
-                new_train_path = output_folder / 'train_{}.csv'.format(
-                    dataset_size)
-            else:
-                new_train_path = dataset_folder / 'train_{}.csv'.format(
-                    dataset_size)
-            original_train = read_csv(original_train_path)
-            if skip_header:
-                trimmed_train = random.sample(original_train[1:], dataset_size)
-                trimmed_train = [original_train[0]] + trimmed_train
-            else:
-                trimmed_train = random.sample(original_train, dataset_size)
-            write_csv(trimmed_train, new_train_path)
-            return new_train_path, dataset_folder / 'validate.csv'
+            trim_prefix = '_{}'.format(dataset_size)
+            new_train = random.sample(new_train, dataset_size)
+
+        # add nones
+        train_none_prefix = ''
+        test_none_prefix = ''
+        if none_size is not None:
+            train_none_prefix = '_none_{}'.format(none_size)
+            test_none_prefix = '_with_none'
+            new_train = self.add_nones(new_train, none_folder, none_idx,
+                                       none_size)
+            new_test = self.add_nones(new_test, none_folder, none_idx,
+                                      none_size=200)
+
+        if output_folder is not None:
+            new_train_path = output_folder / 'train{}{}{}.csv'.format(
+                trim_prefix, train_none_prefix, filter_prefix)
+            new_test_path = output_folder / 'validate{}{}.csv'.format(
+                test_none_prefix, filter_prefix)
+        else:
+            new_train_path = dataset_folder / 'train{}{}{}.csv'.format(
+                trim_prefix, train_none_prefix, filter_prefix)
+            new_test_path = dataset_folder / 'validate{}{}.csv'.format(
+                test_none_prefix, filter_prefix)
+
+        if skip_header:
+            new_train = [header_train] + new_train
+            new_test = [header_test] + new_test
+            
+        write_csv(new_test, new_test_path)
+        write_csv(new_train, new_train_path)
+
+        return new_train_path, new_test_path
 
     @property
     def len_train(self):
