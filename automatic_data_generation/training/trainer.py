@@ -26,10 +26,10 @@ LOGGER.setLevel(logging.INFO)
 
 class Trainer(object):
     def __init__(self, dataset, model, optimizer, batch_size=64,
-                 annealing_strategy='logistic', kl_anneal_time=0.005,
-                 kl_anneal_rate=1000, kl_anneal_target=1.,
-                 label_anneal_time=0.01, label_anneal_rate=100,
-                 label_anneal_target=1., add_bow_loss=False, force_cpu=False,
+                 annealing_strategy='logistic',
+                 kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
+                 label_anneal_rate=0.01, label_anneal_time=100, label_anneal_target=1.,
+                 add_bow_loss=False, force_cpu=False,
                  run_dir=None):
 
         self.force_cpu = force_cpu
@@ -142,8 +142,8 @@ class Trainer(object):
         sweep_accuracy = 0
         n_batches = 0
         for iteration, batch in enumerate(tqdm(iter)):
-            if len(batch) < self.batch_size:
-                continue
+            # if len(batch) < self.batch_size and :
+            #     continue
             if train_or_dev == "train":
                 self.step += 1
                 self.optimizer.zero_grad()
@@ -203,7 +203,7 @@ class Trainer(object):
         # kl loss
         kl_weight, kl_losses = compute_kl_loss(
             logv, mean, self.annealing_strategy, self.step,
-            self.kl_anneal_time, self.kl_anneal_rate, self.kl_anneal_target)
+             self.kl_anneal_rate, self.kl_anneal_time, self.kl_anneal_target)
         kl_loss = torch.sum(kl_losses)
 
         total_loss = (recon_loss + kl_weight * kl_loss)

@@ -102,11 +102,11 @@ def train_and_eval_cvae(args):
         optimizer,
         batch_size=args.batch_size,
         annealing_strategy=args.annealing_strategy,
-        kl_anneal_time=args.kl_anneal_time,
         kl_anneal_rate=args.kl_anneal_rate,
+        kl_anneal_time=args.kl_anneal_time,
         kl_anneal_target=args.kl_anneal_target,
-        label_anneal_time=args.label_anneal_time,
         label_anneal_rate=args.label_anneal_rate,
+        label_anneal_time=args.label_anneal_time,
         label_anneal_target=args.label_anneal_target,
         add_bow_loss=args.bow_loss,
         force_cpu=args.force_cpu,
@@ -237,15 +237,15 @@ def main():
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
     parser.add_argument('-as', '--annealing-strategy', type=str,
                         default='logistic', choices=['logistic', 'linear'])
-    parser.add_argument('-k1', '--kl-anneal-time', type=float, default=0.01,
+    parser.add_argument('-k1', '--kl-anneal-time', type=float, default=300,
                         help='anneal time for KL weight')
-    parser.add_argument('-x1', '--kl-anneal-rate', type=int, default=300,
+    parser.add_argument('-x1', '--kl-anneal-rate', type=int, default=0.01,
                         help='anneal rate for KL weight')
     parser.add_argument('-m1', '--kl-anneal-target', type=float, default=1.,
                         help='final value for KL weight')
-    parser.add_argument('-k2', '--label-anneal-time', type=float, default=0.01,
+    parser.add_argument('-k2', '--label-anneal-time', type=float, default=100,
                         help='anneal time for label weight')
-    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=100,
+    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=0.01,
                         help='anneal rate for label weight')
     parser.add_argument('-m2', '--label-anneal-target', type=float, default=1.,
                         help='final value for label weight')
