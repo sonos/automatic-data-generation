@@ -3,7 +3,10 @@ import csv
 import json
 import os
 import pickle
-from automatic_data_generation.utils.utils import get_groups
+from pathlib import Path
+
+from automatic_data_generation.data.utils import get_groups
+from automatic_data_generation.utils.io import load_json, write_csv
 
 from nltk import word_tokenize
 
@@ -24,48 +27,49 @@ def iso2utf(datadir, outdir):
 
 def json2csv(datadir, outdir, samples_per_intent):
     print('Starting json2csv conversion...')
-    punctuation = [',', '.', ':', ';', '?', '!']
+    punctuation = [',', '.', ';', '?', '!', '\"']
+    data_folder = Path(datadir)
+    out_folder = Path(outdir)
 
     for split in ['train', 'validate']:
-
-        datadic = {}
-        for intent in os.listdir(datadir):
-            with open(
-                    os.path.join(
-                        datadir,
-                        intent,
-                        '{}_{}{}.json'.format(split, intent, '_full' if
-                            split == 'train' else '')
-                    ),
-                    encoding='ISO-8859-1'
-            ) as json_file:
-                datadic[intent] = json.load(json_file)[intent]
+        data_dict = {}
+        for intent_dir in data_folder.iterdir():
+            if not intent_dir.is_dir():
+                continue
+            intent = intent_dir.stem
+            suffix = '{}_{}{}.json'.format(
+                split, intent, '_full' if split == 'train' else ''
+            )
+            data_dict[intent] = load_json(intent_dir / suffix,
+                                          encoding='latin1')[intent]
 
         slotdic = {}
-
-        # intentfile = open('{}/{}_intents.txt'       .format(outdir, split), 'w')
-        # utterfile  = open('{}/{}_utterances.txt'    .format(outdir, split), 'w')
-        # labelfile  = open('{}/{}_labels.txt'        .format(outdir, split), 'w')
-        # delexfile  = open('{}/{}_delexicalised.txt' .format(outdir, split), 'w')
-        csvfile = open('{}/{}.csv'.format(outdir, split), 'w')
-        csv_writer = csv.writer(csvfile, delimiter=',', quotechar='"',
-                                quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow(['utterance', 'labels', 'delexicalised', 'intent'])
-
-        for intent, data in datadic.items():
+        csv_data = [['utterance', 'labels', 'delexicalised', 'intent']]
+        for intent, data in data_dict.items():
             for isent, sentence in enumerate(data):
                 if isent >= samples_per_intent:
                     break
                 utterance = ''
                 labelling = ''
-                # delexicalised = ''
                 delexicalised = ''
 
                 for group in sentence['data']:
                     words = group['text']
+                    try:
+                        words = words.encode('latin-1').decode('utf8')
+                    except (UnicodeDecodeError, UnicodeEncodeError):
+                        if 'entity' not in group.keys():
+                            print("skipping because of bad encoding:{}".format(
+                                words))
+                            continue
+                        else:
+                            words = words.encode('utf8').decode('utf8')
+
                     if remove_punctuation:
                         for p in punctuation:
-                            words = words.replace(p, ' ')
+                            words = words.replace(p, '')
+                    words = words.replace('\n', '')  # trailing new lines are
+                    # misread by csv writer
                     utterance += words
 
                     if 'entity' in group.keys():  # this group is a slot
@@ -94,18 +98,16 @@ def json2csv(datadir, outdir, samples_per_intent):
                         delexicalised += words
                         labelling += 'O ' * len(word_tokenize(words))
 
-                # intentfile.write(intent+'\n')
-                # utterfile.write(utterance+'\n')
-                # labelfile.write(labelling+'\n')
-                # delexfile.write(delexicalised+'\n')
-                csv_writer.writerow(
-                    [utterance, labelling, delexicalised, intent])
+                csv_data.append([utterance, labelling, delexicalised, intent])
 
-        with open('{}/{}_slot_values.pkl'.format(outdir, split), 'wb') as f:
+        output_file = out_folder / '{}.csv'.format(split)
+        write_csv(csv_data, output_file)
+
+        output_pickle_file = out_folder / '{}_slot_values.pkl'.format(split)
+        with open(output_pickle_file, 'wb') as f:
             print(slotdic.keys())
             pickle.dump(slotdic, f)
             print('Dumped slot dictionnary')
-
     print('Example : ')
     print('Original utterance : ', utterance)
     print('Labelled : ', labelling)
