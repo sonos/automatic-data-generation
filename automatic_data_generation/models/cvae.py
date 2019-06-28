@@ -14,7 +14,7 @@ class CVAE(nn.Module):
         to the conditional case
     """
 
-    def __init__(self, vectors, conditional=None, compute_bow=False,
+    def __init__(self, conditional=None, compute_bow=False,
                  vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
@@ -102,9 +102,6 @@ class CVAE(nn.Module):
             )
 
         self.outputs2vocab = nn.Linear(hidden_size, vocab_size)
-
-        # load embeddings
-        self.load_embedding(vectors)
 
     def forward(self, input_sequence, lengths):
         batch_size = input_sequence.size(0)
@@ -337,7 +334,7 @@ class CVAE(nn.Module):
             self.embedding.weight.data.copy_(vectors)
             self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
         else:
-            self.embedding.weight.data.copy_(vectors)                                                    
+            self.embedding.weight.data.copy_(vectors)
         
     @classmethod
     def from_folder(cls, folder):

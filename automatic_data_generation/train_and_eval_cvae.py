@@ -65,7 +65,6 @@ def train_and_eval_cvae(args):
 
     if not args.load_folder:
         model = CVAE(
-            vectors=dataset.vectors,
             conditional=args.conditioning,
             compute_bow=args.bow_loss,
             vocab_size=dataset.vocab_size,
@@ -90,7 +89,10 @@ def train_and_eval_cvae(args):
     else:
         model = CVAE.from_folder(args.load_folder)
         LOGGER.info('Loaded model from %s' % args.load_folder)
-        
+
+    # load embeddings
+    model.load_embedding(dataset.vectors)
+
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
     optimizer = getattr(torch.optim, args.optimizer_type)(
