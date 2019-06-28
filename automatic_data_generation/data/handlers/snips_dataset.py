@@ -94,8 +94,7 @@ class SnipsDataset(BaseDataset):
                     encountered_slot_values[slot_name].append(slot_value)
         return slotdic
 
-    def embed_slots(self, averaging='micro',
-                    slotdic_path='./data/snips/train_slot_values.pkl'):
+    def embed_slots(self, averaging, slotdic):
         """
         Create embeddings for the slots in the Snips dataset
         """
@@ -106,9 +105,6 @@ class SnipsDataset(BaseDataset):
 
         if averaging == NO_SLOT_AVERAGING:
             return
-
-        with open(slotdic_path, 'rb') as f:
-            slotdic = pickle.load(f)
 
         for i, token in enumerate(self.i2w):
             if token.startswith("_") and token.endswith("_"):

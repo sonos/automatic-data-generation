@@ -164,7 +164,7 @@ class Trainer(object):
                 y = y[sorted_idx]
 
             logp, mean, logv, logc, z, bow = self.model(input, lengths)
-
+            
             # save latent representation
             # TODO: to be ideally added to tensorboard
             if train_or_dev == "train":

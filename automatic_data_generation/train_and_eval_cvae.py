@@ -58,44 +58,50 @@ def train_and_eval_cvae(args):
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
-    dataset.embed_unks(num_special_toks=4)
 
     # training
     if args.conditioning == NO_CONDITIONING:
         args.conditioning = None
 
-    model = CVAE(
-        conditional=args.conditioning,
-        compute_bow=args.bow_loss,
-        vocab_size=dataset.vocab_size,
-        embedding_size=args.embedding_dimension,
-        rnn_type=args.rnn_type,
-        hidden_size=args.hidden_size,
-        word_dropout_rate=args.word_dropout_rate,
-        embedding_dropout_rate=args.embedding_dropout_rate,
-        z_size=args.latent_size,
-        n_classes=dataset.n_classes,
-        sos_idx=dataset.sos_idx,
-        eos_idx=dataset.eos_idx,
-        pad_idx=dataset.pad_idx,
-        unk_idx=dataset.unk_idx,
-        max_sequence_length=args.max_sequence_length,
-        num_layers=args.num_layers,
-        bidirectional=args.bidirectional,
-        temperature=args.temperature,
-        force_cpu=args.force_cpu
-    )
-    if args.load_folder:
-        model.from_folder(args.load_folder)
+    if not args.load_folder:
+        model = CVAE(
+            conditional=args.conditioning,
+            compute_bow=args.bow_loss,
+            vocab_size=dataset.vocab_size,
+            embedding_size=args.embedding_dimension,
+            rnn_type=args.rnn_type,
+            hidden_size=args.hidden_size,
+            word_dropout_rate=args.word_dropout_rate,
+            embedding_dropout_rate=args.embedding_dropout_rate,
+            z_size=args.latent_size,
+            n_classes=dataset.n_classes,
+            cat_size=dataset.n_classes if args.cat_size is None else args.cat_size, 
+            sos_idx=dataset.sos_idx,
+            eos_idx=dataset.eos_idx,
+            pad_idx=dataset.pad_idx,
+            unk_idx=dataset.unk_idx,
+            max_sequence_length=args.max_sequence_length,
+            num_layers=args.num_layers,
+            bidirectional=args.bidirectional,
+            temperature=args.temperature,
+            force_cpu=args.force_cpu
+        )
+    else:
+        model = CVAE.from_folder(args.load_folder)
         LOGGER.info('Loaded model from %s' % args.load_folder)
+
+    # load embeddings
+    model.load_embedding(dataset.vectors)
+    LOGGER.debug('Model embedding', model.embedding)
 
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
+
     optimizer = getattr(torch.optim, args.optimizer_type)(
         model.parameters(),
         lr=args.learning_rate
     )
-
+    
     trainer = Trainer(
         dataset,
         model,
@@ -225,6 +231,7 @@ def main():
     parser.add_argument('-ed', '--embedding-dropout-rate', type=float,
                         default=0.5)
     parser.add_argument('-ls', '--latent_size', type=int, default=8)
+    parser.add_argument('-cs', '--cat_size', type=int, default=None)
     parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-t', '--temperature', type=float, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
