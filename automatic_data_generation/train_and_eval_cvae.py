@@ -58,7 +58,6 @@ def train_and_eval_cvae(args):
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
-    dataset.embed_unks(num_special_toks=4)
 
     # training
     if args.conditioning == NO_CONDITIONING:
@@ -66,6 +65,7 @@ def train_and_eval_cvae(args):
 
     if not args.load_folder:
         model = CVAE(
+            vectors=dataset.vectors,
             conditional=args.conditioning,
             compute_bow=args.bow_loss,
             vocab_size=dataset.vocab_size,
@@ -89,10 +89,7 @@ def train_and_eval_cvae(args):
         )
     else:
         model = CVAE.from_folder(args.load_folder)
-        LOGGER.info('Loaded model from %s' % args.load_folder)                                                
-        
-    vectors = dataset.text.vocab.vectors if args.input_type=='utterance' else dataset.delex.vocab.vectors
-    model.load_embedding(vectors)
+        LOGGER.info('Loaded model from %s' % args.load_folder)
         
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
@@ -100,7 +97,7 @@ def train_and_eval_cvae(args):
         model.parameters(),
         lr=args.learning_rate
     )
-    print(model.embedding)
+    LOGGER.debug('Model embedding', model.embedding)
     
     trainer = Trainer(
         dataset,

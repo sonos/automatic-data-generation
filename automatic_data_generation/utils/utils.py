@@ -13,15 +13,16 @@ def to_device(x, force_cpu):
     return x
 
 
-def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type, dataset_size,
-                   tokenizer_type, preprocessing_type, max_sequence_length,
+def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
+                   input_type, dataset_size, tokenizer_type,
+                   preprocessing_type, max_sequence_length,
                    embedding_type, embedding_dimension, max_vocab_size,
                    slot_averaging, run_dir, none_folder, none_idx, none_size):
     slotdic = None
     if dataset_type == "snips":
         dataset = SnipsDataset(
             dataset_folder=dataset_folder,
-            restrict_to_intent = restrict_to_intent,
+            restrict_to_intent=restrict_to_intent,
             input_type=input_type,
             dataset_size=dataset_size,
             tokenizer_type=tokenizer_type,
@@ -37,7 +38,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type,
         )
         if input_type == "delexicalised":
             slotdic = dataset.get_slotdic()
-            # dataset.embed_slots(slot_averaging, slotdic)
+            dataset.embed_slots(slot_averaging, slotdic)
     elif dataset_type == "atis":
         dataset = AtisDataset(
             dataset_folder=dataset_folder,
@@ -104,5 +105,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent, input_type,
         )
     else:
         raise TypeError("Unknown dataset type")
+
+    dataset.embed_unks(num_special_toks=4)
 
     return dataset, slotdic
