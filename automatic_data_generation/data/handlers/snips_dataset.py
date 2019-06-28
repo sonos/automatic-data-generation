@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import pickle
 import random
 
+from pathlib import Path
 import torch
 from nltk import word_tokenize
 from automatic_data_generation.data.base_dataset import BaseDataset
@@ -74,8 +75,8 @@ class SnipsDataset(BaseDataset):
         return sentences
                                     
     def get_slotdic(self):
-        slotdic = {}
-        encountered_slot_values = {}
+        from collections import defaultdict
+        slotdic = defaultdict(set)
         for example in list(self.train):
             utterance, labelling, delexicalised, intent = \
                 example.utterance, example.labels, example.delexicalised, \
@@ -85,14 +86,11 @@ class SnipsDataset(BaseDataset):
                 if 'slot_name' in group.keys():
                     slot_name = group['slot_name']
                     slot_value = group['text']
-                    if slot_name not in encountered_slot_values.keys():
-                        encountered_slot_values[slot_name] = []
-                    if slot_name not in slotdic.keys():
-                        slotdic[slot_name] = []
-                    if slot_value not in encountered_slot_values[slot_name]:
-                        slotdic[slot_name].append(slot_value)
-                    encountered_slot_values[slot_name].append(slot_value)
-        return slotdic
+                    slotdic[slot_name].add(slot_value)
+        slotdic = {k:list(v) for k,v in slotdic.items()}
+        self.slotdic = slotdic
+
+        
 
     def embed_slots(self, averaging, slotdic):
         """
@@ -140,3 +138,41 @@ class SnipsDataset(BaseDataset):
 
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector
+
+    def save(self, folder):
+        folder = Path(folder)
+        if not folder.exists():
+            folder.mkdir()            
+        vocab_dict = {'i2w':self.i2w, 'i2int':self.i2int, 'slotdic':self.slotdic}
+        torch.save(vocab_dict, folder / "vocab.pth")
+                
+    def update(self, folder):
+
+        folder = Path(folder)
+        loaded_dict    = torch.load(str(folder / "vocab.pth"))
+        loaded_i2w     = loaded_dict['i2w']
+        loaded_i2int   = loaded_dict['i2int']
+        loaded_slotdic = loaded_dict['slotdic']
+        self.update_vocab(self.vocab, loaded_i2w)
+        self.update_vocab(self.intent.vocab, loaded_i2int)
+        self.update_vectors()
+        self.update_slotdic(loaded_slotdic)
+        
+        self.i2w = self.vocab.itos
+        self.w2i = self.vocab.stoi
+        self.i2int = self.intent.vocab.itos
+        self.int2i = self.intent.vocab.stoi
+        self.vectors = self.vocab.vectors
+
+        return len(loaded_i2w) # know how many output weights to keep...
+        
+    def update_slotdic(self, new_slotdic):
+        
+        def merge_dols(dol1, dol2): # Merge dictionaries of lists
+            keys = set(dol1).union(dol2)
+            no = []
+            return dict((k, list(set(dol1.get(k, no) + dol2.get(k, no)))) for k in keys)
+
+        updated_slotdic = merge_dols(self.slotdic, new_slotdic)
+
+        self.slotdic = updated_slotdic

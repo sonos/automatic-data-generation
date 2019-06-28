@@ -16,6 +16,7 @@ class YelpDataset(BaseDataset):
 
     def __init__(self,
                  dataset_folder,
+                 restrict_to_intent,
                  input_type,
                  dataset_size,
                  tokenizer_type,
@@ -29,6 +30,7 @@ class YelpDataset(BaseDataset):
                  none_idx,
                  none_size):
         super(YelpDataset, self).__init__(dataset_folder,
+                                          restrict_to_intent,
                                           input_type,
                                           dataset_size,
                                           tokenizer_type,

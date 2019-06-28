@@ -81,6 +81,7 @@ class BaseDataset(object):
         self.embedding_dimension = embedding_dimension
         self.embedding_type = embedding_type
         self.vocab = text.vocab if input_type == 'utterance' else delex.vocab
+        self.vectors = self.vocab.vectors
         self.i2w = self.vocab.itos
         self.w2i = self.vocab.stoi
         self.i2int = intent.vocab.itos
@@ -259,15 +260,15 @@ class BaseDataset(object):
         num_non_zero = 0
         total_words = 0
         for i in range(num_special_toks, sweep_range):
-            if len(self.vocab.vectors[i].nonzero()) == 0:
+            if len(self.vectors[i].nonzero()) == 0:
                 # std = 0.05 is based on the norm of average GloVE 100-dim
                 # word vectors
                 if init == "randn":
-                    torch.nn.init.normal_(self.vocab.vectors[i], mean=0,
+                    torch.nn.init.normal_(self.vectors[i], mean=0,
                                           std=0.05)
             else:
                 num_non_zero += 1
-                running_norm += torch.norm(self.vocab.vectors[i])
+                running_norm += torch.norm(self.vectors[i])
             total_words += 1
         print(
             "average GloVE norm is {}, number of known words are {}, "
@@ -275,45 +276,17 @@ class BaseDataset(object):
                 .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
 
-    def save(self, folder):
-        folder = Path(folder)
-        if not folder.exists():
-            folder.mkdir()            
-        vocab_dict = {'w2i':self.w2i, 'i2w':self.i2w, 'int2i':self.int2i, 'i2int':self.i2int}            
-        torch.save(vocab_dict, folder / "vocab.pth")
-
-    def load_vocab(self, folder):
-        folder = Path(folder)
-        vocab_dict = torch.load(str(folder / "vocab.pth"))
-        old_i2w = vocab_dict['i2w']
-
-        if self.input_type == 'utterance':
-            curr_i2w = self.text.vocab.itos
-            new_i2w = old_i2w[:-100] + [w for w in curr_i2w if w not in old_i2w][:100]
-            self.text.vocab.itos = new_i2w
-            self.text.vocab.stoi = {w:i for (i,w) in enumerate(new_i2w)}
-            if self.embedding_type == 'glove':
-                emb_vectors = "glove.6B.{}d".format(embedding_dimension)
-                text.vocab.load_vectors(vectors=emb_vectors)
-            elif embedding_type == 'random':
-                text.vocab.vectors = torch.randn(len(text.vocab.itos),
-                                             embedding_dimension)
-            
-        elif self.input_type == 'delexicalised':
-            curr_i2w = self.delex.vocab.itos
-            new_i2w = old_i2w[:-100] + [w for w in curr_i2w if w not in old_i2w][:100]
-            self.delex.vocab.itos = new_i2w
-            self.delex.vocab.stoi = {w:i for (i,w) in enumerate(new_i2w)}
-            if self.embedding_type == 'glove':
-                emb_vectors = "glove.6B.{}d".format(embedding_dimension)
-                delex.vocab.load_vectors(vectors=emb_vectors)
-            elif embedding_type == 'random':
-                delex.vocab.vectors = torch.randn(len(text.vocab.itos),
-                                             embedding_dimension)
-
-        old_i2int = vocab_dict['i2int']
-        curr_i2int = self.intent.vocab.itos
-        new_i2int = old_i2int + [intent for intent in curr_i2int if intent not in old_i2int]
-        self.intent.vocab.itos = new_i2int
-        self.intent.vocab.stoi = {intent:i for (i,intent) in enumerate(new_i2int)}
-
+        
+    def update_vocab(self, vocab, loaded_itos):
+        vocab.itos = loaded_itos + [w for w in vocab.itos if w not in loaded_itos]
+        # AND NOT
+        # vocab.itos = [w for w in vocab.itos if w not in loaded_itos] + loaded_itos 
+        # Order matters here ! We want the indices of the old dataset to be conserved...
+        vocab.stoi.update({w:i for (i,w) in enumerate(loaded_itos)})
+        
+    def update_vectors(self):
+        if self.embedding_type == 'glove':
+            emb_vectors = "glove.6B.{}d".format(self.embedding_dimension)
+            self.vocab.load_vectors(vectors=emb_vectors)
+        elif embedding_type == 'random':
+            self.vocab.vectors = torch.randn(len(self.vocab.itos), self.embedding_dimension)

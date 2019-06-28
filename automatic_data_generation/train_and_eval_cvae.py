@@ -51,7 +51,7 @@ def train_and_eval_cvae(args):
     none_folder = data_folder / args.none_type
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
-    dataset, slotdic = create_dataset(
+    dataset = create_dataset(
         args.dataset_type, dataset_folder, args.restrict_to_intent,
         args.input_type, args.dataset_size, args.tokenizer_type,
         args.preprocessing_type, args.max_sequence_length,
@@ -59,10 +59,9 @@ def train_and_eval_cvae(args):
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
     if args.load_folder:
-        dataset.load_vocab(args.load_folder)
+        original_vocab_size = dataset.update(args.load_folder)
         LOGGER.info('Loaded vocab from %s' % args.load_folder)
-    dataset.embed_unks()
-    
+
     # training
     if args.conditioning == NO_CONDITIONING:
         args.conditioning = None
@@ -92,18 +91,21 @@ def train_and_eval_cvae(args):
         )
     else:
         model = CVAE.from_folder(args.load_folder)
-        LOGGER.info('Loaded model from %s' % args.load_folder)                                                
+        LOGGER.info('Loaded model from %s' % args.load_folder)
+        model.n_classes = dataset.n_classes
         
-    vectors = dataset.text.vocab.vectors if args.input_type=='utterance' else dataset.delex.vocab.vectors
-    model.load_embedding(vectors)
-        
+    # load embeddings
+    model.update_embedding(dataset.vectors)
+    model.update_outputs2vocab(original_vocab_size, dataset.vocab_size)
+    LOGGER.debug('Model embedding', model.embedding)
+
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
+
     optimizer = getattr(torch.optim, args.optimizer_type)(
         model.parameters(),
         lr=args.learning_rate
     )
-    print(model.embedding)
     
     trainer = Trainer(
         dataset,
@@ -142,7 +144,7 @@ def train_and_eval_cvae(args):
         i2int=dataset.i2int,
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
-        slotdic=slotdic,
+        slotdic=dataset.slotdic,
         verbose=True
     )
     run_dict['metrics'] = compute_generation_metrics(
@@ -220,7 +222,7 @@ def main():
     parser.add_argument('--freeze_embeddings', type=bool, default=False)
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-averaging', type=str,
-                        default='micro',
+                        default=NO_SLOT_AVERAGING,
                         choices=['micro', 'macro', NO_SLOT_AVERAGING])
 
     # model

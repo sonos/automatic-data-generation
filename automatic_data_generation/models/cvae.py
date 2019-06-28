@@ -14,7 +14,8 @@ class CVAE(nn.Module):
         to the conditional case
     """
 
-    def __init__(self, conditional=None, compute_bow=False, vocab_size=None,
+    def __init__(self, conditional=None, compute_bow=False,
+                 vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
                  embedding_dropout_rate=0, z_size=100, n_classes=10, cat_size=10,
@@ -55,12 +56,11 @@ class CVAE(nn.Module):
         self.embedding_dropout_rate = embedding_dropout_rate
         self.embedding_dropout = nn.Dropout(p=embedding_dropout_rate)
 
+        # define graph
         if rnn_type == 'rnn':
             rnn = nn.RNN
         elif rnn_type == 'gru':
             rnn = nn.GRU
-        # elif rnn_type == 'lstm':
-        #     rnn = nn.LSTM
         else:
             raise ValueError()
 
@@ -72,7 +72,6 @@ class CVAE(nn.Module):
             num_layers=num_layers,
             bidirectional=self.bidirectional,
             batch_first=True)
-
         self.decoder_rnn = rnn(
             embedding_size,
             hidden_size,
@@ -80,9 +79,7 @@ class CVAE(nn.Module):
             bidirectional=False,
             batch_first=True
         )  # decoder should be unidirectional
-
         self.hidden_factor = (2 if bidirectional else 1) * num_layers
-
         self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, z_size)
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, z_size)
 
@@ -329,7 +326,18 @@ class CVAE(nn.Module):
 
         dump_json(config, folder / "config.json")
         torch.save(self.state_dict(), folder / "model.pth")
-        
+
+    def update_embedding(self, vectors):
+        vocab_size, embedding_size = vectors.size()
+        self.embedding = nn.Embedding(vocab_size, embedding_size)
+        self.embedding.weight.data.copy_(vectors)
+
+    def update_outputs2vocab(self, original_vocab_size, new_vocab_size):
+        # keep the original trained weights on last lawer except for new tokens
+        old_outputs2vocab = self.outputs2vocab.weight.data
+        self.outputs2vocab = nn.Linear(self.hidden_size, new_vocab_size)
+        self.outputs2vocab.weight.data[:original_vocab_size].copy_(old_outputs2vocab)
+            
     @classmethod
     def from_folder(cls, folder):
         folder = Path(folder)
@@ -339,11 +347,3 @@ class CVAE(nn.Module):
         model.load_state_dict(state_dict)
         return model
 
-    def load_embedding(self, vectors):
-        vocab_size, embedding_size = vectors.size()
-        if self.vocab_size != vocab_size: # vocab changed
-            self.embedding = nn.Embedding(vocab_size, embedding_size)
-            self.embedding.weight.data.copy_(vectors)
-            self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
-        else:
-            self.embedding.weight.data.copy_(vectors)                                                    
