@@ -77,6 +77,7 @@ class BaseDataset(object):
         intent.build_vocab(train)
 
         self.vocab = text.vocab if input_type == 'utterance' else delex.vocab
+        self.vectors = self.vocab.vectors
         self.i2w = self.vocab.itos
         self.w2i = self.vocab.stoi
         self.i2int = intent.vocab.itos
@@ -255,15 +256,15 @@ class BaseDataset(object):
         num_non_zero = 0
         total_words = 0
         for i in range(num_special_toks, sweep_range):
-            if len(self.vocab.vectors[i].nonzero()) == 0:
+            if len(self.vectors[i].nonzero()) == 0:
                 # std = 0.05 is based on the norm of average GloVE 100-dim
                 # word vectors
                 if init == "randn":
-                    torch.nn.init.normal_(self.vocab.vectors[i], mean=0,
+                    torch.nn.init.normal_(self.vectors[i], mean=0,
                                           std=0.05)
             else:
                 num_non_zero += 1
-                running_norm += torch.norm(self.vocab.vectors[i])
+                running_norm += torch.norm(self.vectors[i])
             total_words += 1
         print(
             "average GloVE norm is {}, number of known words are {}, "
