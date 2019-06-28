@@ -17,7 +17,7 @@ class CVAE(nn.Module):
     def __init__(self, conditional=None, compute_bow=False, vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
-                 embedding_dropout_rate=0, z_size=100, n_classes=10,
+                 embedding_dropout_rate=0, z_size=100, n_classes=10, cat_size=10,
                  sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
                  max_sequence_length=30, num_layers=1, bidirectional=False,
                  temperature=1, force_cpu=False):
@@ -36,7 +36,8 @@ class CVAE(nn.Module):
 
         self.z_size = z_size
         self.n_classes = n_classes
-        self.latent_size = z_size + n_classes if conditional is not None else \
+        self.cat_size = cat_size
+        self.latent_size = z_size + cat_size if conditional is not None else \
             z_size
 
         self.rnn_type = rnn_type
@@ -88,7 +89,7 @@ class CVAE(nn.Module):
         if conditional:
             self.hidden2cat = nn.Linear(
                 hidden_size * self.hidden_factor,
-                n_classes
+                cat_size
             )
         self.latent2hidden = nn.Linear(
             self.latent_size,
@@ -203,8 +204,8 @@ class CVAE(nn.Module):
         if self.conditional is not None:
             if y_onehot is None:
                 y = torch.LongTensor(batch_size, 1).random_() % self.n_classes
-                y_onehot = torch.FloatTensor(batch_size, self.n_classes)
-                y_onehot.fill_(0.001)
+                y_onehot = torch.FloatTensor(batch_size, self.cat_size)
+                y_onehot.fill_(0)
                 y_onehot.scatter_(dim=1, index=y, value=1)
             latent = to_device(torch.cat((z, y_onehot), dim=1), self.force_cpu)
         else:
@@ -315,6 +316,7 @@ class CVAE(nn.Module):
             "embedding_dropout_rate": self.embedding_dropout_rate,
             "z_size": self.z_size,
             "n_classes": self.n_classes,
+            "cat_size": self.cat_size,
             "sos_idx": self.sos_idx,
             "eos_idx": self.eos_idx,
             "pad_idx": self.pad_idx,
@@ -328,10 +330,20 @@ class CVAE(nn.Module):
         dump_json(config, folder / "config.json")
         torch.save(self.state_dict(), folder / "model.pth")
 
+    def load_embedding(self, vectors):
+        vocab_size, embedding_size = vectors.size()
+        if self.vocab_size != vocab_size: # vocab changed
+            self.embedding = nn.Embedding(vocab_size, embedding_size)
+            self.embedding.weight.data.copy_(vectors)
+            self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
+        else:
+            self.embedding.weight.data.copy_(vectors)                                                    
+        
     @classmethod
     def from_folder(cls, folder):
         folder = Path(folder)
         config = load_json(folder / "config.json")
         model = cls(**config)
-        model.load_state_dict(torch.load(str(folder / "model.pth")))
+        state_dict = torch.load(str(folder / "model.pth"))        
+        model.load_state_dict(state_dict)
         return model
