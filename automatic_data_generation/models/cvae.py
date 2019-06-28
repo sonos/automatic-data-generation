@@ -14,7 +14,8 @@ class CVAE(nn.Module):
         to the conditional case
     """
 
-    def __init__(self, conditional=None, compute_bow=False, vocab_size=None,
+    def __init__(self, vectors, conditional=None, compute_bow=False,
+                 vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
                  embedding_dropout_rate=0, z_size=100, n_classes=10, cat_size=10,
@@ -55,12 +56,11 @@ class CVAE(nn.Module):
         self.embedding_dropout_rate = embedding_dropout_rate
         self.embedding_dropout = nn.Dropout(p=embedding_dropout_rate)
 
+        # define graph
         if rnn_type == 'rnn':
             rnn = nn.RNN
         elif rnn_type == 'gru':
             rnn = nn.GRU
-        # elif rnn_type == 'lstm':
-        #     rnn = nn.LSTM
         else:
             raise ValueError()
 
@@ -72,7 +72,6 @@ class CVAE(nn.Module):
             num_layers=num_layers,
             bidirectional=self.bidirectional,
             batch_first=True)
-
         self.decoder_rnn = rnn(
             embedding_size,
             hidden_size,
@@ -80,9 +79,7 @@ class CVAE(nn.Module):
             bidirectional=False,
             batch_first=True
         )  # decoder should be unidirectional
-
         self.hidden_factor = (2 if bidirectional else 1) * num_layers
-
         self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, z_size)
         self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, z_size)
 
@@ -105,6 +102,9 @@ class CVAE(nn.Module):
             )
 
         self.outputs2vocab = nn.Linear(hidden_size, vocab_size)
+
+        # load embeddings
+        self.load_embedding(vectors)
 
     def forward(self, input_sequence, lengths):
         batch_size = input_sequence.size(0)
@@ -332,7 +332,7 @@ class CVAE(nn.Module):
 
     def load_embedding(self, vectors):
         vocab_size, embedding_size = vectors.size()
-        if self.vocab_size != vocab_size: # vocab changed
+        if self.vocab_size != vocab_size:  # vocab changed
             self.embedding = nn.Embedding(vocab_size, embedding_size)
             self.embedding.weight.data.copy_(vectors)
             self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
