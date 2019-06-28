@@ -329,15 +329,6 @@ class CVAE(nn.Module):
 
         dump_json(config, folder / "config.json")
         torch.save(self.state_dict(), folder / "model.pth")
-
-    def load_embedding(self, vectors):
-        vocab_size, embedding_size = vectors.size()
-        if self.vocab_size != vocab_size: # vocab changed
-            self.embedding = nn.Embedding(vocab_size, embedding_size)
-            self.embedding.weight.data.copy_(vectors)
-            self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
-        else:
-            self.embedding.weight.data.copy_(vectors)                                                    
         
     @classmethod
     def from_folder(cls, folder):
@@ -347,3 +338,12 @@ class CVAE(nn.Module):
         state_dict = torch.load(str(folder / "model.pth"))        
         model.load_state_dict(state_dict)
         return model
+
+    def load_embedding(self, vectors):
+        vocab_size, embedding_size = vectors.size()
+        if self.vocab_size != vocab_size: # vocab changed
+            self.embedding = nn.Embedding(vocab_size, embedding_size)
+            self.embedding.weight.data.copy_(vectors)
+            self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
+        else:
+            self.embedding.weight.data.copy_(vectors)                                                    

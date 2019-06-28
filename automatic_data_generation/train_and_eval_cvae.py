@@ -58,8 +58,11 @@ def train_and_eval_cvae(args):
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
-    dataset.embed_unks(num_special_toks=4)
-
+    if args.load_folder:
+        dataset.load_vocab(args.load_folder)
+        LOGGER.info('Loaded vocab from %s' % args.load_folder)
+    dataset.embed_unks()
+    
     # training
     if args.conditioning == NO_CONDITIONING:
         args.conditioning = None
@@ -122,9 +125,10 @@ def train_and_eval_cvae(args):
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
     if args.pickle is not None:
-        model_path = run_dir / "{}_weights".format(args.pickle)
+        model_path = run_dir / "{}_load".format(args.pickle)
     else:
-        model_path = run_dir / "model"
+        model_path = run_dir / "load"
+    dataset.save(model_path)
     model.save(model_path)
 
     # evaluation

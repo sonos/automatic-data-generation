@@ -1,6 +1,7 @@
 import random
 from abc import ABCMeta, abstractmethod
 
+from pathlib import Path
 import torch
 import torchtext
 from torchtext.data import BucketIterator
@@ -76,6 +77,9 @@ class BaseDataset(object):
         label.build_vocab(train)
         intent.build_vocab(train)
 
+        self.input_type = input_type
+        self.embedding_dimension = embedding_dimension
+        self.embedding_type = embedding_type
         self.vocab = text.vocab if input_type == 'utterance' else delex.vocab
         self.i2w = self.vocab.itos
         self.w2i = self.vocab.stoi
@@ -270,3 +274,46 @@ class BaseDataset(object):
             "total number of words are {}"
                 .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
+
+    def save(self, folder):
+        folder = Path(folder)
+        if not folder.exists():
+            folder.mkdir()            
+        vocab_dict = {'w2i':self.w2i, 'i2w':self.i2w, 'int2i':self.int2i, 'i2int':self.i2int}            
+        torch.save(vocab_dict, folder / "vocab.pth")
+
+    def load_vocab(self, folder):
+        folder = Path(folder)
+        vocab_dict = torch.load(str(folder / "vocab.pth"))
+        old_i2w = vocab_dict['i2w']
+
+        if self.input_type == 'utterance':
+            curr_i2w = self.text.vocab.itos
+            new_i2w = old_i2w[:-100] + [w for w in curr_i2w if w not in old_i2w][:100]
+            self.text.vocab.itos = new_i2w
+            self.text.vocab.stoi = {w:i for (i,w) in enumerate(new_i2w)}
+            if self.embedding_type == 'glove':
+                emb_vectors = "glove.6B.{}d".format(embedding_dimension)
+                text.vocab.load_vectors(vectors=emb_vectors)
+            elif embedding_type == 'random':
+                text.vocab.vectors = torch.randn(len(text.vocab.itos),
+                                             embedding_dimension)
+            
+        elif self.input_type == 'delexicalised':
+            curr_i2w = self.delex.vocab.itos
+            new_i2w = old_i2w[:-100] + [w for w in curr_i2w if w not in old_i2w][:100]
+            self.delex.vocab.itos = new_i2w
+            self.delex.vocab.stoi = {w:i for (i,w) in enumerate(new_i2w)}
+            if self.embedding_type == 'glove':
+                emb_vectors = "glove.6B.{}d".format(embedding_dimension)
+                delex.vocab.load_vectors(vectors=emb_vectors)
+            elif embedding_type == 'random':
+                delex.vocab.vectors = torch.randn(len(text.vocab.itos),
+                                             embedding_dimension)
+
+        old_i2int = vocab_dict['i2int']
+        curr_i2int = self.intent.vocab.itos
+        new_i2int = old_i2int + [intent for intent in curr_i2int if intent not in old_i2int]
+        self.intent.vocab.itos = new_i2int
+        self.intent.vocab.stoi = {intent:i for (i,intent) in enumerate(new_i2int)}
+

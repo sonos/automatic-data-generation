@@ -97,6 +97,7 @@ def calc_originality_and_transfer(dataset, sentences, intents, type='utterance')
     for i, example in enumerate(sentences): 
         candidates[intents[i]].append(dataset.tokenize(example))
 
+    print(candidates)
     # ORIGINALITY
     original_sentences = []
     for intent in i2int:
