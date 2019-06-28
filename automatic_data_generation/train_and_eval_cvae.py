@@ -92,14 +92,15 @@ def train_and_eval_cvae(args):
 
     # load embeddings
     model.load_embedding(dataset.vectors)
+    LOGGER.debug('Model embedding', model.embedding)
 
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
+
     optimizer = getattr(torch.optim, args.optimizer_type)(
         model.parameters(),
         lr=args.learning_rate
     )
-    LOGGER.debug('Model embedding', model.embedding)
     
     trainer = Trainer(
         dataset,
