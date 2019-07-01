@@ -8,7 +8,6 @@ Requirements: Python2.7, pip
 
 ```
 virtualenv venv
-# copy pip.conf to venv/
 . venv/bin/activate
 pip install -e .
 ```
