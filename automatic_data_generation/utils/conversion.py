@@ -114,6 +114,80 @@ def json2csv(datadir, outdir, samples_per_intent):
     print('Delexicalised : ', delexicalised)
 
     print('Successfully converted json2csv !')
+    
+def new_json2csv(datadir, outdir):
+    
+
+    data_folder = Path(datadir)
+    out_folder = Path(outdir)
+    
+    data = load_json(data_folder / 'dataset.json', encoding='latin1')
+
+    remove_punctuation=True
+    punctuation = [',', '.', ';', '?', '!', '\"']
+    
+    val_fraction = 0.2
+    
+    for split in ['train', 'validate']:
+        
+        csv_data = [['utterance', 'labels', 'delexicalised', 'intent']]
+
+        for intent in data['intents'].keys():
+            
+            num_val_sentences = int(val_fraction * len(data['intents'][intent]['utterances']))
+            print(split,intent, num_val_sentences)
+            if split=='validate':
+                sentences = data['intents'][intent]['utterances'][:num_val_sentences]
+            else:
+                sentences = data['intents'][intent]['utterances'][num_val_sentences:]
+            print(len(sentences))
+                
+            for sentence in sentences:
+
+                utterance = ''
+                labelling = ''
+                delexicalised = ''
+
+                for group in sentence['data']:
+                    words = group['text']
+                    try:
+                        words = words.encode('latin-1').decode('utf8')
+                    except (UnicodeDecodeError, UnicodeEncodeError):
+                        if 'entity' not in group.keys():
+                            print("skipping because of bad encoding:{}".format(
+                                words))
+                            continue
+                        else:
+                            words = words.encode('utf8').decode('utf8')
+                    if remove_punctuation:
+                        for p in punctuation:
+                            words = words.replace(p, '')
+                    words = words.replace('\n', '')  # trailing new lines are
+                    # misread by csv writer
+                    utterance += words
+
+                    if 'slot_name' in group.keys():  # this group is a slot
+                        slot = group['slot_name'].lower()
+                        if remove_punctuation:
+                            for p in punctuation:
+                                slot = slot.replace(p, '')
+
+                        delexicalised += '_' + slot + '_'
+                        for i, word in enumerate(word_tokenize(words)):
+                            if i == 0:
+                                word = 'B-' + slot + ' '
+                            else:
+                                word = 'I-' + slot + ' '
+                            labelling += word
+
+                    else:  # this group is just context
+                        delexicalised += words
+                        labelling += 'O ' * len(word_tokenize(words))
+
+                csv_data.append([utterance, labelling, delexicalised, intent])
+
+        output_file = out_folder / '{}.csv'.format(split)
+        write_csv(csv_data, output_file)
 
 
 def csv2json(csv_path):
