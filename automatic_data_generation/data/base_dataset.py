@@ -276,6 +276,37 @@ class BaseDataset(object):
                 .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
 
+    def save(self, folder):
+        folder = Path(folder)
+        if not folder.exists():
+            folder.mkdir()            
+        vocab_dict = {'i2w':self.i2w, 'i2int':self.i2int}
+        if self.input_type == 'delexicalised':
+            vocab_dict['slotdic'] = self.slotdic
+        torch.save(vocab_dict, folder / "vocab.pth")
+                
+    def update(self, folder):
+
+        folder = Path(folder)
+        loaded_dict    = torch.load(str(folder / "vocab.pth"))
+        loaded_i2w     = loaded_dict['i2w']
+        loaded_i2int   = loaded_dict['i2int']
+        self.update_vocab(self.vocab, loaded_i2w)
+        self.update_vocab(self.intent.vocab, loaded_i2int)
+        self.update_vectors()
+
+        if self.input_type == 'delexicalised':
+            loaded_slotdic = loaded_dict['slotdic']
+            self.update_slotdic(loaded_slotdic)
+        
+        self.i2w = self.vocab.itos
+        self.w2i = self.vocab.stoi
+        self.i2int = self.intent.vocab.itos
+        self.int2i = self.intent.vocab.stoi
+        self.vectors = self.vocab.vectors
+
+        return len(loaded_i2w)
+
         
     def update_vocab(self, vocab, loaded_itos):
         vocab.itos = loaded_itos + [w for w in vocab.itos if w not in loaded_itos]

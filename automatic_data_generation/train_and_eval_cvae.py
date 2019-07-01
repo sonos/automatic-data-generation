@@ -146,7 +146,7 @@ def train_and_eval_cvae(args):
         i2int=dataset.i2int,
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
-        slotdic=dataset.slotdic,
+        slotdic=dataset.slotdic if args.input_type=='delexicalised' else None,
         verbose=True
     )
     run_dict['generated'] = generated_sentences

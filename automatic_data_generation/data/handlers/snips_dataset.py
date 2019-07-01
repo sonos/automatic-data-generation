@@ -139,32 +139,6 @@ class SnipsDataset(BaseDataset):
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector
 
-    def save(self, folder):
-        folder = Path(folder)
-        if not folder.exists():
-            folder.mkdir()            
-        vocab_dict = {'i2w':self.i2w, 'i2int':self.i2int, 'slotdic':self.slotdic}
-        torch.save(vocab_dict, folder / "vocab.pth")
-                
-    def update(self, folder):
-
-        folder = Path(folder)
-        loaded_dict    = torch.load(str(folder / "vocab.pth"))
-        loaded_i2w     = loaded_dict['i2w']
-        loaded_i2int   = loaded_dict['i2int']
-        loaded_slotdic = loaded_dict['slotdic']
-        self.update_vocab(self.vocab, loaded_i2w)
-        self.update_vocab(self.intent.vocab, loaded_i2int)
-        self.update_vectors()
-        self.update_slotdic(loaded_slotdic)
-        
-        self.i2w = self.vocab.itos
-        self.w2i = self.vocab.stoi
-        self.i2int = self.intent.vocab.itos
-        self.int2i = self.intent.vocab.stoi
-        self.vectors = self.vocab.vectors
-
-        return len(loaded_i2w)
     
     def update_slotdic(self, new_slotdic):
         

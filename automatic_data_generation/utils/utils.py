@@ -44,6 +44,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
     elif dataset_type == "atis":
         dataset = AtisDataset(
             dataset_folder=dataset_folder,
+            restrict_to_intent=restrict_to_intent,
             input_type="utterance",
             dataset_size=dataset_size,
             tokenizer_type=tokenizer_type,
@@ -60,6 +61,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
     elif dataset_type == "spam":
         dataset = SpamDataset(
             dataset_folder=dataset_folder,
+            restrict_to_intent=restrict_to_intent,
             input_type="utterance",
             dataset_size=dataset_size,
             tokenizer_type=tokenizer_type,
@@ -76,6 +78,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
     elif dataset_type == "yelp":
         dataset = YelpDataset(
             dataset_folder=dataset_folder,
+            restrict_to_intent=restrict_to_intent,
             input_type="utterance",
             dataset_size=dataset_size,
             tokenizer_type=tokenizer_type,
@@ -92,6 +95,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
     elif dataset_type == "penn-tree-bank":
         dataset = PTBDataset(
             dataset_folder=dataset_folder,
+            restrict_to_intent=restrict_to_intent,
             input_type="utterance",
             dataset_size=dataset_size,
             tokenizer_type=tokenizer_type,
