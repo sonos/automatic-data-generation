@@ -64,12 +64,9 @@ def train_and_eval_cvae(args):
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
     if args.load_folder:
-        original_vocab_size = dataset.vocab_size
-        dataset.update(args.load_folder)
+        original_vocab_size = dataset.update(args.load_folder)
         LOGGER.info('Loaded vocab from %s' % args.load_folder)
 
-    print(dataset.slotdic)
-        
     # training
     if args.conditioning == NO_CONDITIONING:
         args.conditioning = None

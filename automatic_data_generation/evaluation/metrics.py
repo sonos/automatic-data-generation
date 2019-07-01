@@ -61,21 +61,25 @@ def calc_bleu(dataset, sentences, intents, type='utterance'):
 
     for intent in i2int:
 
-        # QUALITY
-        bleu_scores['quality'][intent] = np.mean(
-            [sentence_bleu(references[intent], candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1) for
-             candidate in candidates[intent]])
+        try:            
+            # QUALITY
+            bleu_scores['quality'][intent] = np.mean(
+                [sentence_bleu(references[intent], candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1) for
+                 candidate in candidates[intent]])
+            
+            # DIVERSITY
+            bleu_scores['diversity'][intent] = np.mean(
+                [1-sentence_bleu(my_remove(candidates[intent],candidate), candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
+                 for candidate in candidates[intent]])
+            
+            # ORIGINAL DIVERSITY
+            bleu_scores['original_diversity'][intent] = np.mean(
+                [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
+                 for reference in references[intent]])
 
-        # DIVERSITY
-        bleu_scores['diversity'][intent] = np.mean(
-            [1-sentence_bleu(my_remove(candidates[intent],candidate), candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
-             for candidate in candidates[intent]])
-
-        # ORIGINAL DIVERSITY
-        bleu_scores['original_diversity'][intent] = np.mean(
-            [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
-             for reference in references[intent]])
-
+        except:
+            print("Failed for intent %s" %intent)
+            
     bleu_scores['quality']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['quality'].values()])
     bleu_scores['diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['diversity'].values()])
     bleu_scores['original_diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['original_diversity'].values()])
@@ -137,19 +141,14 @@ def intent_classification(sentences, intents, train_path, input_type):
         This only works for snips dataset for now...
     """
 
-    # if not os.path.exists('clf.pkl'):
-    print('Training intent classifier')
-    intent_classifier = train_intent_classifier(train_path, input_type)
-
-    # else:
-    # with open('clf.pkl', 'rb') as f:
-    #     intent_classifier = pickle.load(f)
-
-    preds = intent_classifier.predict(sentences)
-
-    accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents) if intent != 'None'])
+    try:
+        intent_classifier = train_intent_classifier(train_path, input_type)
+        preds = intent_classifier.predict(sentences)
+        accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents) if intent != 'None'])
                      / len([intent for intent in intents if intent != 'None'])) 
-
+    except:
+        print("Was not able to train intent classifier")
+        
     return accuracy
 
 

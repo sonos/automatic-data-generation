@@ -163,7 +163,9 @@ class SnipsDataset(BaseDataset):
         self.i2int = self.intent.vocab.itos
         self.int2i = self.intent.vocab.stoi
         self.vectors = self.vocab.vectors
-        
+
+        return len(loaded_i2w)
+    
     def update_slotdic(self, new_slotdic):
         
         def merge_dols(dol1, dol2): # Merge dictionaries of lists
