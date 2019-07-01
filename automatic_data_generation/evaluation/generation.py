@@ -9,11 +9,11 @@ from automatic_data_generation.data.utils import (idx2word,
 
 
 def generate_vae_sentences(model, n_to_generate, input_type, i2int, i2w,
-                           eos_idx, slotdic, verbose=False):
+                           eos_idx, slotdic, seed=42, verbose=False):
     generated_sentences = {}
 
     model.eval()
-    samples, z, y_onehot, logp = model.inference(n=n_to_generate)
+    samples, z, y_onehot, logp = model.inference(n=n_to_generate, seed=seed)
     samples = samples.cpu().numpy()
 
     generated_sentences['samples'] = samples
@@ -27,7 +27,8 @@ def generate_vae_sentences(model, n_to_generate, input_type, i2int, i2w,
         delexicalised = idx2word(samples, i2w=i2w, eos_idx=eos_idx)
         labellings, utterances = surface_realisation(samples, i2w=i2w,
                                                      eos_idx=eos_idx,
-                                                     slotdic=slotdic)
+                                                     slotdic=slotdic,
+                                                     seed=seed)
         generated_sentences['labellings'] = labellings
         generated_sentences['delexicalised'] = delexicalised
         generated_sentences['utterances'] = utterances

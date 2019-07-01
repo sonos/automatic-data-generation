@@ -190,8 +190,10 @@ class CVAE(nn.Module):
 
         return logp, mean, logv, logc, z, bow
 
-    def inference(self, n=10, z=None, y_onehot=None, temperature=0):
+    def inference(self, n=10, z=None, y_onehot=None, temperature=0, seed=42):
 
+        torch.manual_seed(seed)
+        
         if z is None:
             batch_size = n
             z = torch.randn(batch_size, self.z_size)

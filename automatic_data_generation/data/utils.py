@@ -1,9 +1,7 @@
 import random
-
 import torchtext
 
 from automatic_data_generation.utils.constants import NO_PREPROCESSING
-
 
 NONE_COLUMN_MAPPING = {
     'penn-tree-bank': 0,
@@ -91,7 +89,10 @@ def word2idx(sentences, w2i):
     return idx
 
 
-def surface_realisation(idx, i2w, eos_idx, slotdic):
+def surface_realisation(idx, i2w, eos_idx, slotdic, seed):
+
+    random.seed(seed)
+    
     utterances = [str() for i in range(len(idx))]
     labellings = [str() for i in range(len(idx))]
 

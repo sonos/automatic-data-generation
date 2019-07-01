@@ -87,7 +87,7 @@ class SnipsDataset(BaseDataset):
                     slot_name = group['slot_name']
                     slot_value = group['text']
                     slotdic[slot_name].add(slot_value)
-        slotdic = {k:list(v) for k,v in slotdic.items()}
+        slotdic = {k:sorted(list(v)) for k,v in slotdic.items()} # sort for reproducibility
         self.slotdic = slotdic
 
         
@@ -163,8 +163,6 @@ class SnipsDataset(BaseDataset):
         self.i2int = self.intent.vocab.itos
         self.int2i = self.intent.vocab.stoi
         self.vectors = self.vocab.vectors
-
-        return len(loaded_i2w) # know how many output weights to keep...
         
     def update_slotdic(self, new_slotdic):
         

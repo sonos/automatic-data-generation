@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 
 import torch
+import random
 
 from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
@@ -34,6 +35,10 @@ LOGGER.setLevel(logging.INFO)
 
 
 def train_and_eval_cvae(args):
+
+    torch.manual_seed(args.seed)
+    random.seed(args.seed)
+    
     # output folder
     output_dir = Path(args.output_folder)
     if not output_dir.exists():
@@ -59,9 +64,12 @@ def train_and_eval_cvae(args):
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
     if args.load_folder:
-        original_vocab_size = dataset.update(args.load_folder)
+        original_vocab_size = dataset.vocab_size
+        dataset.update(args.load_folder)
         LOGGER.info('Loaded vocab from %s' % args.load_folder)
 
+    print(dataset.slotdic)
+        
     # training
     if args.conditioning == NO_CONDITIONING:
         args.conditioning = None
@@ -92,12 +100,10 @@ def train_and_eval_cvae(args):
     else:
         model = CVAE.from_folder(args.load_folder)
         LOGGER.info('Loaded model from %s' % args.load_folder)
-        model.n_classes = dataset.n_classes
-        
-    # load embeddings
-    model.update_embedding(dataset.vectors)
-    model.update_outputs2vocab(original_vocab_size, dataset.vocab_size)
-    LOGGER.debug('Model embedding', model.embedding)
+        model.n_classes = dataset.n_classes        
+        print(model.n_classes)
+        model.update_embedding(dataset.vectors)
+        model.update_outputs2vocab(original_vocab_size, dataset.vocab_size)
 
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
@@ -145,8 +151,10 @@ def train_and_eval_cvae(args):
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
         slotdic=dataset.slotdic,
+        seed=args.seed,
         verbose=True
     )
+    run_dict['generated'] = generated_sentences
     run_dict['metrics'] = compute_generation_metrics(
         dataset,
         generated_sentences['utterances'],
@@ -190,6 +198,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     # data
+    parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--data-folder', type=str, default='data')
     parser.add_argument('--output-folder', type=str, default='output')
     parser.add_argument('--load-folder', type=str, default=None)
