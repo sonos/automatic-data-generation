@@ -98,7 +98,6 @@ def train_and_eval_cvae(args):
         model = CVAE.from_folder(args.load_folder)
         LOGGER.info('Loaded model from %s' % args.load_folder)
         model.n_classes = dataset.n_classes        
-        print(model.n_classes)
         model.update_embedding(dataset.vectors)
         model.update_outputs2vocab(original_vocab_size, dataset.vocab_size)
 
@@ -148,7 +147,6 @@ def train_and_eval_cvae(args):
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
         slotdic=dataset.slotdic,
-        seed=args.seed,
         verbose=True
     )
     run_dict['generated'] = generated_sentences

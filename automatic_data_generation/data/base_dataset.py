@@ -33,8 +33,11 @@ class BaseDataset(object):
                  none_folder,
                  none_idx,
                  none_size):
+
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
+        self.embedding_dimension = embedding_dimension
+        self.embedding_type = embedding_type
 
         text, delex, label, intent = get_fields(self.tokenize,
                                                 max_sequence_length)
@@ -77,9 +80,6 @@ class BaseDataset(object):
         label.build_vocab(train)
         intent.build_vocab(train)
 
-        self.input_type = input_type
-        self.embedding_dimension = embedding_dimension
-        self.embedding_type = embedding_type
         self.vocab = text.vocab if input_type == 'utterance' else delex.vocab
         self.vectors = self.vocab.vectors
         self.i2w = self.vocab.itos
@@ -288,5 +288,5 @@ class BaseDataset(object):
         if self.embedding_type == 'glove':
             emb_vectors = "glove.6B.{}d".format(self.embedding_dimension)
             self.vocab.load_vectors(vectors=emb_vectors)
-        elif embedding_type == 'random':
+        elif self.embedding_type == 'random':
             self.vocab.vectors = torch.randn(len(self.vocab.itos), self.embedding_dimension)

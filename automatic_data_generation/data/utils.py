@@ -89,10 +89,8 @@ def word2idx(sentences, w2i):
     return idx
 
 
-def surface_realisation(idx, i2w, eos_idx, slotdic, seed):
+def surface_realisation(idx, i2w, eos_idx, slotdic):
 
-    random.seed(seed)
-    
     utterances = [str() for i in range(len(idx))]
     labellings = [str() for i in range(len(idx))]
 
