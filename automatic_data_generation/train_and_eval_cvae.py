@@ -10,6 +10,7 @@ from pathlib import Path
 
 import torch
 import random
+import numpy as np
 
 from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
@@ -38,6 +39,7 @@ def train_and_eval_cvae(args):
 
     torch.manual_seed(args.seed)
     random.seed(args.seed)
+    np.random.seed(args.seed)
     
     # output folder
     output_dir = Path(args.output_folder)

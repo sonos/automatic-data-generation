@@ -167,12 +167,18 @@ class BaseDataset(object):
             new_train = self.filter_intents(new_train, restrict_to_intent)
             new_test = self.filter_intents(new_test, restrict_to_intent)
 
-        # trim_dataset
+        # trim_dataset : 
         trim_prefix = ''
         if dataset_size is not None:
-            # TODO: stratified shuffle split
             trim_prefix = '_{}'.format(dataset_size)
-            new_train = random.sample(new_train, dataset_size)
+            original_dataset_size = len(new_train)
+            keep_fraction = dataset_size/original_dataset_size
+            from sklearn.model_selection import StratifiedShuffleSplit
+            intents = [row[3] for row in new_train]
+            sss = StratifiedShuffleSplit(n_splits=1, test_size=1-keep_fraction)
+            keep_indices = list(sss.split(intents, intents))[0][0]
+            new_train = [new_train[i] for i in keep_indices]
+            # new_train = random.sample(new_train, dataset_size)
 
         # add nones
         train_none_prefix = ''
