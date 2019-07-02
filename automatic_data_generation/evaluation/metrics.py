@@ -145,11 +145,11 @@ def intent_classification(sentences, intents, train_path, input_type):
         intent_classifier = train_intent_classifier(train_path, input_type)
         preds = intent_classifier.predict(sentences)
         accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents) if intent != 'None'])
-                     / len([intent for intent in intents if intent != 'None'])) 
+                     / len([intent for intent in intents if intent != 'None']))
+        return accuracy
     except:
         print("Was not able to train intent classifier")
-        
-    return accuracy
+        return None
 
 
 def train_intent_classifier(train_path, input_type):

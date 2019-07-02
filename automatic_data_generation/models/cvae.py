@@ -247,8 +247,6 @@ class CVAE(nn.Module):
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
             logits = self.outputs2vocab(output)
-            if t == 0:  # prevent from generating empty sentences
-                logits[:, :, self.eos_idx] = torch.min(logits, dim=-1)[0]
             logp = nn.functional.log_softmax(logits / self.temperature, dim=-1)
 
             input_sequence = self._sample(logits)
@@ -280,11 +278,12 @@ class CVAE(nn.Module):
 
         return generations, z, y_onehot, logp
 
-    def _sample(self, dist, mode='greedy'):
-        if mode == 'greedy':
-            _, sample = torch.topk(dist, 1, dim=-1)
+    def _sample(self, dist, k=1):
+        batch_size, seqlen, vocab_size = dist.size()
+        _, sample = torch.topk(dist, k, dim=-1)
+        sample = sample.view(batch_size*k, seqlen)
         sample = sample.squeeze()
-
+        
         return sample
 
     def _save_sample(self, save_to, sample, running_seqs, t):

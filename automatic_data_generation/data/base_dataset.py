@@ -255,7 +255,7 @@ class BaseDataset(object):
         return train_iter, valid_iter
 
     def embed_unks(self, init="randn", num_special_toks=2):
-        sweep_range = len(self.vocab)
+        sweep_range = self.vocab_size
         running_norm = 0.
         num_non_zero = 0
         total_words = 0

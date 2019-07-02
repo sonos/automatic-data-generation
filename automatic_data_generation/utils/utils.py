@@ -20,7 +20,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
                    embedding_type, embedding_dimension, max_vocab_size,
                    slot_averaging, run_dir, none_folder, none_idx, none_size):
     
-    if dataset_type == "snips":
+    if dataset_type.startswith("snips"):
         dataset = SnipsDataset(
             dataset_folder=dataset_folder,
             restrict_to_intent=restrict_to_intent,

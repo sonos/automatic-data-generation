@@ -156,7 +156,7 @@ def train_and_eval_cvae(args):
         generated_sentences['intents'],
         logp
     )
-    LOGGER.debug(*[{k: v} for (k, v) in run_dict['metrics'].items()], sep='\n')
+    LOGGER.info(*[{k: v} for (k, v) in run_dict['metrics'].items()])
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -166,8 +166,8 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
-        LOGGER.debug(*[{k: v} for (k, v) in run_dict[
-            'delexicalised_metrics'].items()], sep='\n')
+        LOGGER.info(*[{k: v} for (k, v) in run_dict[
+            'delexicalised_metrics'].items()])
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -177,6 +177,8 @@ def train_and_eval_cvae(args):
     run_dict['latent_rep'] = trainer.latent_rep
     run_dict['i2w'] = dataset.i2w
     run_dict['w2i'] = dataset.w2i
+    run_dict['i2int'] = dataset.i2int
+    run_dict['int2i'] = dataset.int2i
     run_dict['vectors'] = {
         'before': dataset.vocab.vectors,
         'after': model.embedding.weight.data
@@ -200,11 +202,11 @@ def main():
     parser.add_argument('--pickle', type=str, default=None,
                         help='for grid search experiments only')
     parser.add_argument('--dataset-type', type=str, default='snips',
-                        choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
+                        choices=['snips', 'snips-assistant', 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--none-type', type=str, default='penn-tree-bank',
                         choices=['penn-tree-bank', 'shakespeare',
-                                 'subtitles', 'yelp'])
+                                 'subtitles', 'yelp', 'snips-assistant'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
