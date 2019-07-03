@@ -5,12 +5,12 @@ from __future__ import unicode_literals
 
 import argparse
 import logging
+import random
 from datetime import datetime
 from pathlib import Path
 
-import torch
-import random
 import numpy as np
+import torch
 
 from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
@@ -36,11 +36,10 @@ LOGGER.setLevel(logging.INFO)
 
 
 def train_and_eval_cvae(args):
-
     torch.manual_seed(args.seed)
     random.seed(args.seed)
     np.random.seed(args.seed)
-    
+
     # output folder
     output_dir = Path(args.output_folder)
     if not output_dir.exists():
@@ -53,7 +52,7 @@ def train_and_eval_cvae(args):
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
     run_dir.mkdir()
-        
+
     # data handling
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
@@ -87,7 +86,7 @@ def train_and_eval_cvae(args):
             embedding_dropout_rate=args.embedding_dropout_rate,
             z_size=args.latent_size,
             n_classes=dataset.n_classes,
-            cat_size=dataset.n_classes if args.cat_size is None else args.cat_size, 
+            cat_size=dataset.n_classes if args.cat_size is None else args.cat_size,
             sos_idx=dataset.sos_idx,
             eos_idx=dataset.eos_idx,
             pad_idx=dataset.pad_idx,
@@ -101,7 +100,7 @@ def train_and_eval_cvae(args):
     else:
         model = CVAE.from_folder(args.load_folder)
         LOGGER.info('Loaded model from %s' % args.load_folder)
-        model.n_classes = dataset.n_classes        
+        model.n_classes = dataset.n_classes
         model.update_embedding(dataset.vectors)
         model.update_outputs2vocab(original_vocab_size, dataset.vocab_size)
 
@@ -112,7 +111,7 @@ def train_and_eval_cvae(args):
         model.parameters(),
         lr=args.learning_rate
     )
-    
+
     trainer = Trainer(
         dataset,
         model,
@@ -150,7 +149,7 @@ def train_and_eval_cvae(args):
         i2int=dataset.i2int,
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
-        slotdic=dataset.slotdic if args.input_type=='delexicalised' else None,
+        slotdic=dataset.slotdic if args.input_type == 'delexicalised' else None,
         verbose=True
     )
     run_dict['generated'] = generated_sentences
@@ -160,8 +159,8 @@ def train_and_eval_cvae(args):
         generated_sentences['intents'],
         logp
     )
-    for k,v in run_dict['metrics'].items():
-        LOGGER.info((k,v))
+    for k, v in run_dict['metrics'].items():
+        LOGGER.info((k, v))
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -171,8 +170,8 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
-    for k,v in run_dict['delexicalised_metrics'].items():
-        LOGGER.info((k,v))
+    for k, v in run_dict['delexicalised_metrics'].items():
+        LOGGER.info((k, v))
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -207,7 +206,8 @@ def main():
     parser.add_argument('--pickle', type=str, default=None,
                         help='for grid search experiments only')
     parser.add_argument('--dataset-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'atis', 'sentiment', 'spam', 'yelp',
+                        choices=['snips', 'snips-assistant', 'atis',
+                                 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--none-type', type=str, default='penn-tree-bank',
                         choices=['penn-tree-bank', 'shakespeare',
