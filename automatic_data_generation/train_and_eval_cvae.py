@@ -5,9 +5,11 @@ from __future__ import unicode_literals
 
 import argparse
 import logging
+import random
 from datetime import datetime
 from pathlib import Path
 
+import numpy as np
 import torch
 
 from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
@@ -34,16 +36,22 @@ LOGGER.setLevel(logging.INFO)
 
 
 def train_and_eval_cvae(args):
+    torch.manual_seed(args.seed)
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+
     # output folder
     output_dir = Path(args.output_folder)
     if not output_dir.exists():
         output_dir.mkdir()
     if args.pickle is not None:
-        run_dir = Path('.')
+        pickle_path = Path(args.pickle.rstrip('.pkl'))
+        pickle_name = pickle_path.stem
+        run_dir = pickle_path
     else:
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
-        run_dir.mkdir()
+    run_dir.mkdir()
 
     # data handling
     data_folder = Path(args.data_folder)
@@ -51,13 +59,16 @@ def train_and_eval_cvae(args):
     none_folder = data_folder / args.none_type
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
-    dataset, slotdic = create_dataset(
+    dataset = create_dataset(
         args.dataset_type, dataset_folder, args.restrict_to_intent,
         args.input_type, args.dataset_size, args.tokenizer_type,
         args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
         args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
     )
+    if args.load_folder:
+        original_vocab_size = dataset.update(args.load_folder)
+        LOGGER.info('Loaded vocab from %s' % args.load_folder)
 
     # training
     if args.conditioning == NO_CONDITIONING:
@@ -75,7 +86,7 @@ def train_and_eval_cvae(args):
             embedding_dropout_rate=args.embedding_dropout_rate,
             z_size=args.latent_size,
             n_classes=dataset.n_classes,
-            cat_size=dataset.n_classes if args.cat_size is None else args.cat_size, 
+            cat_size=dataset.n_classes if args.cat_size is None else args.cat_size,
             sos_idx=dataset.sos_idx,
             eos_idx=dataset.eos_idx,
             pad_idx=dataset.pad_idx,
@@ -89,10 +100,9 @@ def train_and_eval_cvae(args):
     else:
         model = CVAE.from_folder(args.load_folder)
         LOGGER.info('Loaded model from %s' % args.load_folder)
-
-    # load embeddings
-    model.load_embedding(dataset.vectors)
-    LOGGER.debug('Model embedding', model.embedding)
+        model.n_classes = dataset.n_classes
+        model.update_embedding(dataset.vectors)
+        model.update_outputs2vocab(original_vocab_size, dataset.vocab_size)
 
     model = to_device(model, args.force_cpu)
     parameters = filter(lambda p: p.requires_grad, model.parameters())
@@ -101,7 +111,7 @@ def train_and_eval_cvae(args):
         model.parameters(),
         lr=args.learning_rate
     )
-    
+
     trainer = Trainer(
         dataset,
         model,
@@ -122,9 +132,10 @@ def train_and_eval_cvae(args):
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
     if args.pickle is not None:
-        model_path = run_dir / "{}_weights".format(args.pickle)
+        model_path = run_dir / "{}_load".format(pickle_name)
     else:
-        model_path = run_dir / "model"
+        model_path = run_dir / "load"
+    dataset.save(model_path)
     model.save(model_path)
 
     # evaluation
@@ -138,16 +149,18 @@ def train_and_eval_cvae(args):
         i2int=dataset.i2int,
         i2w=dataset.i2w,
         eos_idx=dataset.eos_idx,
-        slotdic=slotdic,
+        slotdic=dataset.slotdic if args.input_type == 'delexicalised' else None,
         verbose=True
     )
+    run_dict['generated'] = generated_sentences
     run_dict['metrics'] = compute_generation_metrics(
         dataset,
         generated_sentences['utterances'],
         generated_sentences['intents'],
         logp
     )
-    LOGGER.debug(*[{k: v} for (k, v) in run_dict['metrics'].items()], sep='\n')
+    for k, v in run_dict['metrics'].items():
+        LOGGER.info((k, v))
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -157,8 +170,8 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
-        LOGGER.debug(*[{k: v} for (k, v) in run_dict[
-            'delexicalised_metrics'].items()], sep='\n')
+    for k, v in run_dict['delexicalised_metrics'].items():
+        LOGGER.info((k, v))
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -168,13 +181,15 @@ def train_and_eval_cvae(args):
     run_dict['latent_rep'] = trainer.latent_rep
     run_dict['i2w'] = dataset.i2w
     run_dict['w2i'] = dataset.w2i
+    run_dict['i2int'] = dataset.i2int
+    run_dict['int2i'] = dataset.int2i
     run_dict['vectors'] = {
         'before': dataset.vocab.vectors,
         'after': model.embedding.weight.data
     }
 
     if args.pickle is not None:
-        run_dict_path = run_dir / "{}.pkl".format(args.pickle)
+        run_dict_path = run_dir / "{}.pkl".format(pickle_name)
     else:
         run_dict_path = run_dir / "run.pkl"
     torch.save(run_dict, str(run_dict_path))
@@ -184,17 +199,19 @@ def main():
     parser = argparse.ArgumentParser()
 
     # data
+    parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--data-folder', type=str, default='data')
     parser.add_argument('--output-folder', type=str, default='output')
     parser.add_argument('--load-folder', type=str, default=None)
     parser.add_argument('--pickle', type=str, default=None,
                         help='for grid search experiments only')
     parser.add_argument('--dataset-type', type=str, default='snips',
-                        choices=['snips', 'atis', 'sentiment', 'spam', 'yelp',
+                        choices=['snips', 'snips-assistant', 'atis',
+                                 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--none-type', type=str, default='penn-tree-bank',
                         choices=['penn-tree-bank', 'shakespeare',
-                                 'subtitles', 'yelp'])
+                                 'subtitles', 'yelp', 'snips-assistant'])
     parser.add_argument('-it', '--input_type', type=str,
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
@@ -216,7 +233,7 @@ def main():
     parser.add_argument('--freeze_embeddings', type=bool, default=False)
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-averaging', type=str,
-                        default='micro',
+                        default=NO_SLOT_AVERAGING,
                         choices=['micro', 'macro', NO_SLOT_AVERAGING])
 
     # model

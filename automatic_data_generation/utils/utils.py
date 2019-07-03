@@ -1,3 +1,4 @@
+import random
 import torch
 
 from automatic_data_generation.data.handlers.atis_dataset import AtisDataset
@@ -18,8 +19,8 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
                    preprocessing_type, max_sequence_length,
                    embedding_type, embedding_dimension, max_vocab_size,
                    slot_averaging, run_dir, none_folder, none_idx, none_size):
-    slotdic = None
-    if dataset_type == "snips":
+    
+    if dataset_type.startswith("snips"):
         dataset = SnipsDataset(
             dataset_folder=dataset_folder,
             restrict_to_intent=restrict_to_intent,
@@ -37,8 +38,9 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
             none_size=none_size
         )
         if input_type == "delexicalised":
-            slotdic = dataset.get_slotdic()
-            dataset.embed_slots(slot_averaging, slotdic)
+            dataset.build_slotdic()
+            dataset.embed_slots(slot_averaging, dataset.slotdic)
+
     elif dataset_type == "atis":
         dataset = AtisDataset(
             dataset_folder=dataset_folder,
@@ -112,4 +114,4 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
 
     dataset.embed_unks(num_special_toks=4)
 
-    return dataset, slotdic
+    return dataset

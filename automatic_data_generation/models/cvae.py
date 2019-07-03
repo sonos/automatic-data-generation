@@ -18,7 +18,8 @@ class CVAE(nn.Module):
                  vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
-                 embedding_dropout_rate=0, z_size=100, n_classes=10, cat_size=10,
+                 embedding_dropout_rate=0, z_size=100, n_classes=10,
+                 cat_size=10,
                  sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
                  max_sequence_length=30, num_layers=1, bidirectional=False,
                  temperature=1, force_cpu=False):
@@ -156,7 +157,7 @@ class CVAE(nn.Module):
             prob = torch.rand(input_sequence.size())
             prob = to_device(prob)
             prob[(input_sequence.data - self.sos_idx) * (
-                input_sequence.data - self.pad_idx) == 0] = 1
+                    input_sequence.data - self.pad_idx) == 0] = 1
             decoder_input_sequence = input_sequence.clone()
             decoder_input_sequence[
                 prob < self.word_dropout_rate] = self.unk_idx
@@ -247,8 +248,6 @@ class CVAE(nn.Module):
             output, hidden = self.decoder_rnn(input_embedding, hidden)
 
             logits = self.outputs2vocab(output)
-            if t == 0:  # prevent from generating empty sentences
-                logits[:, :, self.eos_idx] = torch.min(logits, dim=-1)[0]
             logp = nn.functional.log_softmax(logits / self.temperature, dim=-1)
 
             input_sequence = self._sample(logits)
@@ -259,7 +258,7 @@ class CVAE(nn.Module):
 
             # update gloabl running sequence
             sequence_mask[sequence_running] = (
-                input_sequence != self.eos_idx).data
+                    input_sequence != self.eos_idx).data
             sequence_running = sequence_idx.masked_select(sequence_mask)
 
             # update local running sequences
@@ -280,9 +279,10 @@ class CVAE(nn.Module):
 
         return generations, z, y_onehot, logp
 
-    def _sample(self, dist, mode='greedy'):
-        if mode == 'greedy':
-            _, sample = torch.topk(dist, 1, dim=-1)
+    def _sample(self, dist, k=1):
+        batch_size, seqlen, vocab_size = dist.size()
+        _, sample = torch.topk(dist, k, dim=-1)
+        sample = sample.view(batch_size * k, seqlen)
         sample = sample.squeeze()
 
         return sample
@@ -327,20 +327,23 @@ class CVAE(nn.Module):
         dump_json(config, folder / "config.json")
         torch.save(self.state_dict(), folder / "model.pth")
 
-    def load_embedding(self, vectors):
+    def update_embedding(self, vectors):
         vocab_size, embedding_size = vectors.size()
-        if self.vocab_size != vocab_size:  # vocab changed
-            self.embedding = nn.Embedding(vocab_size, embedding_size)
-            self.embedding.weight.data.copy_(vectors)
-            self.outputs2vocab = nn.Linear(self.hidden_size, vocab_size)
-        else:
-            self.embedding.weight.data.copy_(vectors)
-        
+        self.embedding = nn.Embedding(vocab_size, embedding_size)
+        self.embedding.weight.data.copy_(vectors)
+
+    def update_outputs2vocab(self, original_vocab_size, new_vocab_size):
+        # keep the original trained weights on last lawer except for new tokens
+        old_outputs2vocab = self.outputs2vocab.weight.data
+        self.outputs2vocab = nn.Linear(self.hidden_size, new_vocab_size)
+        self.outputs2vocab.weight.data[:original_vocab_size].copy_(
+            old_outputs2vocab)
+
     @classmethod
     def from_folder(cls, folder):
         folder = Path(folder)
         config = load_json(folder / "config.json")
         model = cls(**config)
-        state_dict = torch.load(str(folder / "model.pth"))        
+        state_dict = torch.load(str(folder / "model.pth"))
         model.load_state_dict(state_dict)
         return model
