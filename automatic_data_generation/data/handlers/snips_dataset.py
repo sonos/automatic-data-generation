@@ -3,13 +3,13 @@
 
 from __future__ import unicode_literals
 
-import pickle
 import random
-
-from pathlib import Path
 from collections import defaultdict
+from pathlib import Path
+
 import torch
 from nltk import word_tokenize
+
 from automatic_data_generation.data.base_dataset import BaseDataset
 from automatic_data_generation.data.utils import get_groups
 from automatic_data_generation.utils.constants import NO_SLOT_AVERAGING
@@ -37,6 +37,7 @@ class SnipsDataset(BaseDataset):
                  none_idx,
                  none_size):
         self.skip_header = True
+        self.slotdic = None
         super(SnipsDataset, self).__init__(dataset_folder,
                                            restrict_to_intent,
                                            input_type,
@@ -66,7 +67,7 @@ class SnipsDataset(BaseDataset):
     @staticmethod
     def get_intents(sentences):
         return [row[3] for row in sentences]
-    
+
     @staticmethod
     def add_nones(sentences, none_folder, none_idx, none_size):
         none_path = none_folder / 'train.csv'
@@ -74,12 +75,12 @@ class SnipsDataset(BaseDataset):
         random.shuffle(none_sentences)
         for row in none_sentences[:none_size]:
             utterance = row[none_idx]
-            new_row = [utterance, 'O '*len(word_tokenize(utterance)),
+            new_row = [utterance, 'O ' * len(word_tokenize(utterance)),
                        utterance, 'None']
             sentences.append(new_row)
         return sentences
-                                    
-    def get_slotdic(self):
+
+    def build_slotdic(self):
         slotdic = defaultdict(set)
         for example in list(self.train):
             utterance, labelling, delexicalised, intent = \
@@ -91,25 +92,23 @@ class SnipsDataset(BaseDataset):
                     slot_name = group['slot_name']
                     slot_value = group['text']
                     slotdic[slot_name].add(slot_value)
-        slotdic = {k:sorted(list(v)) for k,v in slotdic.items()} # sort for reproducibility
+        slotdic = {k: sorted(list(v)) for k, v in
+                   slotdic.items()}  # sort for reproducibility
         self.slotdic = slotdic
 
-
     def update(self, folder):
-
         folder = Path(folder)
-        loaded_dict    = torch.load(str(folder / "vocab.pth"))
-        loaded_i2w     = loaded_dict['i2w']
-        loaded_i2int   = loaded_dict['i2int']
+        loaded_dict = torch.load(str(folder / "vocab.pth"))
+        loaded_i2w = loaded_dict['i2w']
+        loaded_i2int = loaded_dict['i2int']
         self.update_vocab(self.vocab, loaded_i2w)
         self.update_vocab(self.intent.vocab, loaded_i2int)
         self.update_vectors()
 
         if self.input_type == 'delexicalised':
-            raise NotImplementedError # overrided in Snips dataset
             loaded_slotdic = loaded_dict['slotdic']
             self.update_slotdic(loaded_slotdic)
-        
+
         self.i2w = self.vocab.itos
         self.w2i = self.vocab.stoi
         self.i2int = self.intent.vocab.itos
@@ -117,7 +116,6 @@ class SnipsDataset(BaseDataset):
         self.vectors = self.vocab.vectors
 
         return len(loaded_i2w)
-
 
     def embed_slots(self, averaging, slotdic):
         """
@@ -166,14 +164,14 @@ class SnipsDataset(BaseDataset):
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector
 
-    
     def update_slotdic(self, new_slotdic):
-        
-        def merge_dols(dol1, dol2): # Merge dictionaries of lists
+        def merge_dols(dol1, dol2):  # merge dictionaries of lists
             keys = set(dol1).union(dol2)
             no = []
-            return dict((k, list(set(dol1.get(k, no) + dol2.get(k, no)))) for k in keys)
+            return dict(
+                (k, list(set(dol1.get(k, no) + dol2.get(k, no))))
+                for k in keys
+            )
 
         updated_slotdic = merge_dols(self.slotdic, new_slotdic)
-
         self.slotdic = updated_slotdic

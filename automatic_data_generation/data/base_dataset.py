@@ -1,15 +1,14 @@
-import random
 from abc import ABCMeta, abstractmethod
-
 from pathlib import Path
+
 import torch
 import torchtext
+from sklearn.model_selection import StratifiedShuffleSplit
 from torchtext.data import BucketIterator
 
 from automatic_data_generation.data.utils import (get_fields, make_tokenizer)
 from automatic_data_generation.utils.io import (read_csv, write_csv)
 
-from sklearn.model_selection import StratifiedShuffleSplit
 
 class BaseDataset(object):
     """
@@ -146,6 +145,12 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
+    def update_slotdic(self, new_slotdic):
+        """
+        Update the slot dictionnary of the dataset.
+        """
+        raise NotImplementedError
+
     def build_data_files(self, dataset_folder, restrict_to_intent,
                          output_folder, dataset_size=None, skip_header=True,
                          none_size=None, none_folder=None, none_idx=None):
@@ -168,14 +173,15 @@ class BaseDataset(object):
             new_train = self.filter_intents(new_train, restrict_to_intent)
             new_test = self.filter_intents(new_test, restrict_to_intent)
 
-        # trim_dataset : 
+        # trim_dataset
         trim_prefix = ''
         if dataset_size is not None:
             trim_prefix = '_{}'.format(dataset_size)
             original_dataset_size = len(new_train)
-            keep_fraction = dataset_size/original_dataset_size
+            keep_fraction = dataset_size / original_dataset_size
             intents = self.get_intents(new_train)
-            sss = StratifiedShuffleSplit(n_splits=1, test_size=1-keep_fraction)
+            sss = StratifiedShuffleSplit(n_splits=1,
+                                         test_size=1 - keep_fraction)
             keep_indices = list(sss.split(intents, intents))[0][0]
             new_train = [new_train[i] for i in keep_indices]
             # new_train = random.sample(new_train, dataset_size)
@@ -205,7 +211,7 @@ class BaseDataset(object):
         if skip_header:
             new_train = [header_train] + new_train
             new_test = [header_test] + new_test
-            
+
         write_csv(new_test, new_test_path)
         write_csv(new_train, new_train_path)
 
@@ -283,20 +289,21 @@ class BaseDataset(object):
         )
 
     def save(self, folder):
+        # TODO slotdic is not defined except for Snips dataset
         folder = Path(folder)
         if not folder.exists():
-            folder.mkdir()            
-        vocab_dict = {'i2w':self.i2w, 'i2int':self.i2int}
+            folder.mkdir()
+        vocab_dict = {'i2w': self.i2w, 'i2int': self.i2int}
         if self.input_type == 'delexicalised':
             vocab_dict['slotdic'] = self.slotdic
         torch.save(vocab_dict, folder / "vocab.pth")
-                
-    def update(self, folder):
 
+    def update(self, folder):
+        # TODO slotdic is not defined except for Snips dataset
         folder = Path(folder)
-        loaded_dict    = torch.load(str(folder / "vocab.pth"))
-        loaded_i2w     = loaded_dict['i2w']
-        loaded_i2int   = loaded_dict['i2int']
+        loaded_dict = torch.load(str(folder / "vocab.pth"))
+        loaded_i2w = loaded_dict['i2w']
+        loaded_i2int = loaded_dict['i2int']
         self.update_vocab(self.vocab, loaded_i2w)
         self.update_vocab(self.intent.vocab, loaded_i2int)
         self.update_vectors()
@@ -304,7 +311,7 @@ class BaseDataset(object):
         if self.input_type == 'delexicalised':
             loaded_slotdic = loaded_dict['slotdic']
             self.update_slotdic(loaded_slotdic)
-        
+
         self.i2w = self.vocab.itos
         self.w2i = self.vocab.stoi
         self.i2int = self.intent.vocab.itos
@@ -313,20 +320,17 @@ class BaseDataset(object):
 
         return len(loaded_i2w)
 
-        
-    def update_vocab(self, vocab, loaded_itos):
-        vocab.itos = loaded_itos + [w for w in vocab.itos if w not in loaded_itos]
-        # AND NOT
-        # vocab.itos = [w for w in vocab.itos if w not in loaded_itos] + loaded_itos 
-        # Order matters here ! We want the indices of the old dataset to be conserved...
-        vocab.stoi.update({w:i for (i,w) in enumerate(loaded_itos)})
-        
+    @staticmethod
+    def update_vocab(field_vocab, loaded_itos):
+        # order matters: the indices of the old dataset should be conserved
+        field_vocab.itos = loaded_itos + [w for w in field_vocab.itos if
+                                          w not in loaded_itos]
+        field_vocab.stoi.update({w: i for (i, w) in enumerate(loaded_itos)})
+
     def update_vectors(self):
         if self.embedding_type == 'glove':
             emb_vectors = "glove.6B.{}d".format(self.embedding_dimension)
             self.vocab.load_vectors(vectors=emb_vectors)
         elif self.embedding_type == 'random':
-            self.vocab.vectors = torch.randn(len(self.vocab.itos), self.embedding_dimension)
-
-    def update_slotdic(self, new_slotdic):
-        raise NotImplementedError
+            self.vocab.vectors = torch.randn(len(self.vocab.itos),
+                                             self.embedding_dimension)

@@ -19,8 +19,9 @@ def compute_generation_metrics(dataset, generated_utterances,
                                input_type='utterance', compute_entropy=True):
     bleu_scores = calc_bleu(dataset, generated_utterances,
                             generated_intents, input_type)
-    originality, transfer = calc_originality_and_transfer(dataset, generated_utterances,
-                            generated_intents, input_type)
+    originality, transfer = calc_originality_and_transfer(
+        dataset, generated_utterances, generated_intents, input_type
+    )
     diversity = calc_diversity(dataset, generated_utterances)
     intent_accuracy = intent_classification(
         generated_utterances,
@@ -36,7 +37,7 @@ def compute_generation_metrics(dataset, generated_utterances,
     return {
         'bleu_scores': bleu_scores,
         'originality': originality,
-        'transfer' : transfer,
+        'transfer': transfer,
         'diversity': diversity,
         'intent_accuracy': intent_accuracy,
         'entropy': entropy
@@ -44,8 +45,7 @@ def compute_generation_metrics(dataset, generated_utterances,
 
 
 def calc_bleu(dataset, sentences, intents, type='utterance'):
-
-    bleu_scores = {'quality':{}, 'diversity':{}, 'original_diversity':{}}
+    bleu_scores = {'quality': {}, 'diversity': {}, 'original_diversity': {}}
 
     i2int = dataset.intent.vocab.itos
     int2i = dataset.intent.vocab.stoi
@@ -53,7 +53,7 @@ def calc_bleu(dataset, sentences, intents, type='utterance'):
     references = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
 
-    for example in list(dataset.valid): # VALIDATION SET
+    for example in list(dataset.valid):  # VALIDATION SET
         if example.intent in i2int:
             references[example.intent].append(getattr(example, type))
     for i, example in enumerate(sentences):
@@ -61,33 +61,52 @@ def calc_bleu(dataset, sentences, intents, type='utterance'):
 
     for intent in i2int:
 
-        try:            
+        try:
             # QUALITY
             bleu_scores['quality'][intent] = np.mean(
-                [sentence_bleu(references[intent], candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1) for
-                 candidate in candidates[intent]])
-            
+                [sentence_bleu(
+                    references[intent],
+                    candidate,
+                    weights=[0.25, 0.25, 0.25, 0.25],
+                    smoothing_function=cc.method1
+                ) for candidate in candidates[intent]]
+            )
+
             # DIVERSITY
             bleu_scores['diversity'][intent] = np.mean(
-                [1-sentence_bleu(my_remove(candidates[intent],candidate), candidate, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
-                 for candidate in candidates[intent]])
-            
+                [1 - sentence_bleu(
+                    my_remove(candidates[intent], candidate),
+                    candidate,
+                    weights=[0.25, 0.25, 0.25, 0.25],
+                    smoothing_function=cc.method1
+                ) for candidate in candidates[intent]]
+            )
+
             # ORIGINAL DIVERSITY
             bleu_scores['original_diversity'][intent] = np.mean(
-                [1-sentence_bleu(my_remove(references[intent],reference), reference, weights=[0.25, 0.25, 0.25, 0.25], smoothing_function=cc.method1)
-                 for reference in references[intent]])
-
+                [1 - sentence_bleu(
+                    my_remove(references[intent], reference),
+                    reference,
+                    weights=[0.25, 0.25, 0.25, 0.25],
+                    smoothing_function=cc.method1
+                ) for reference in references[intent]]
+            )
         except:
-            print("Failed for intent %s" %intent)
-            
-    bleu_scores['quality']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['quality'].values()])
-    bleu_scores['diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['diversity'].values()])
-    bleu_scores['original_diversity']['avg'] = np.mean([bleu_score for bleu_score in bleu_scores['original_diversity'].values()])
+            print("Failed for intent %s" % intent)
+
+    bleu_scores['quality']['avg'] = np.mean(
+        [bleu_score for bleu_score in bleu_scores['quality'].values()])
+    bleu_scores['diversity']['avg'] = np.mean(
+        [bleu_score for bleu_score in bleu_scores['diversity'].values()])
+    bleu_scores['original_diversity']['avg'] = np.mean(
+        [bleu_score for bleu_score in
+         bleu_scores['original_diversity'].values()])
 
     return bleu_scores
 
-def calc_originality_and_transfer(dataset, sentences, intents, type='utterance'):
 
+def calc_originality_and_transfer(dataset, sentences, intents,
+                                  type='utterance'):
     originality = {}
     transfer = {}
 
@@ -96,27 +115,32 @@ def calc_originality_and_transfer(dataset, sentences, intents, type='utterance')
     references = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
 
-    for example in dataset.train: # TRAINING SET
+    for example in dataset.train:  # TRAINING SET
         references[example.intent].append(getattr(example, type))
-    for i, example in enumerate(sentences): 
+    for i, example in enumerate(sentences):
         candidates[intents[i]].append(dataset.tokenize(example))
 
     # ORIGINALITY
     original_sentences = []
     for intent in i2int:
-        original = [candidate for candidate in candidates[intent] if candidate not in references[intent]]
+        original = [candidate for candidate in candidates[intent] if
+                    candidate not in references[intent]]
         original_sentences += original
         originality[intent] = float(len(original) / len(candidates[intent]))
     originality['avg'] = np.mean([x for x in originality.values()])
 
     # TRANSFER
-    from sklearn.feature_extraction.text import CountVectorizer
-    ref_vocabs  = {intent: CountVectorizer().fit(list(map(' '.join, references[intent]))).vocabulary_ for intent in i2int}
-    cand_vocabs = {intent: CountVectorizer().fit(list(map(' '.join, candidates[intent]))).vocabulary_ for intent in i2int}
+    ref_vocabs = {intent: CountVectorizer().fit(
+        list(map(' '.join, references[intent]))).vocabulary_ for intent in
+                  i2int}
+    cand_vocabs = {intent: CountVectorizer().fit(
+        list(map(' '.join, candidates[intent]))).vocabulary_ for intent in
+                   i2int}
 
     for intent in i2int:
-        transferred = [token for token in cand_vocabs[intent] if token not in ref_vocabs[intent]]
-        transfer[intent] = len(transferred)/len(cand_vocabs[intent])
+        transferred = [token for token in cand_vocabs[intent] if
+                       token not in ref_vocabs[intent]]
+        transfer[intent] = len(transferred) / len(cand_vocabs[intent])
         print('Transferred to intent {} : '.format(intent), transferred)
     transfer['avg'] = np.mean([x for x in transfer.values()])
 
@@ -144,8 +168,13 @@ def intent_classification(sentences, intents, train_path, input_type):
     try:
         intent_classifier = train_intent_classifier(train_path, input_type)
         preds = intent_classifier.predict(sentences)
-        accuracy = float(sum([pred==intent for pred, intent in zip(preds,intents) if intent != 'None'])
-                     / len([intent for intent in intents if intent != 'None']))
+        accuracy = float(
+            sum(
+                [pred == intent for pred, intent in zip(preds, intents) if
+                 intent != 'None']
+            ) / len(
+                [intent for intent in intents if intent != 'None'])
+        )
         return accuracy
     except:
         print("Was not able to train intent classifier")

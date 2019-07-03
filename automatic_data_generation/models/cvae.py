@@ -18,7 +18,8 @@ class CVAE(nn.Module):
                  vocab_size=None,
                  embedding_size=100, rnn_type='gru',
                  hidden_size=128, word_dropout_rate=0,
-                 embedding_dropout_rate=0, z_size=100, n_classes=10, cat_size=10,
+                 embedding_dropout_rate=0, z_size=100, n_classes=10,
+                 cat_size=10,
                  sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
                  max_sequence_length=30, num_layers=1, bidirectional=False,
                  temperature=1, force_cpu=False):
@@ -156,7 +157,7 @@ class CVAE(nn.Module):
             prob = torch.rand(input_sequence.size())
             prob = to_device(prob)
             prob[(input_sequence.data - self.sos_idx) * (
-                input_sequence.data - self.pad_idx) == 0] = 1
+                    input_sequence.data - self.pad_idx) == 0] = 1
             decoder_input_sequence = input_sequence.clone()
             decoder_input_sequence[
                 prob < self.word_dropout_rate] = self.unk_idx
@@ -257,7 +258,7 @@ class CVAE(nn.Module):
 
             # update gloabl running sequence
             sequence_mask[sequence_running] = (
-                input_sequence != self.eos_idx).data
+                    input_sequence != self.eos_idx).data
             sequence_running = sequence_idx.masked_select(sequence_mask)
 
             # update local running sequences
@@ -281,9 +282,9 @@ class CVAE(nn.Module):
     def _sample(self, dist, k=1):
         batch_size, seqlen, vocab_size = dist.size()
         _, sample = torch.topk(dist, k, dim=-1)
-        sample = sample.view(batch_size*k, seqlen)
+        sample = sample.view(batch_size * k, seqlen)
         sample = sample.squeeze()
-        
+
         return sample
 
     def _save_sample(self, save_to, sample, running_seqs, t):
@@ -335,14 +336,14 @@ class CVAE(nn.Module):
         # keep the original trained weights on last lawer except for new tokens
         old_outputs2vocab = self.outputs2vocab.weight.data
         self.outputs2vocab = nn.Linear(self.hidden_size, new_vocab_size)
-        self.outputs2vocab.weight.data[:original_vocab_size].copy_(old_outputs2vocab)
-            
+        self.outputs2vocab.weight.data[:original_vocab_size].copy_(
+            old_outputs2vocab)
+
     @classmethod
     def from_folder(cls, folder):
         folder = Path(folder)
         config = load_json(folder / "config.json")
         model = cls(**config)
-        state_dict = torch.load(str(folder / "model.pth"))        
+        state_dict = torch.load(str(folder / "model.pth"))
         model.load_state_dict(state_dict)
         return model
-
