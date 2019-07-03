@@ -3,5 +3,5 @@ Will there be fog on March 3  2038 in Bonaire,O O O B-condition_description O B-
 What's the weather forecast close by Sligo ,O O O O O B-spatial_relation I-spatial_relation B-city ,What's the weather forecast _spatial_relation_ _city_ ,GetWeather
 What will the weather be in the Flight Park State Recreation Area ,O O O O O O O B-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi I-geographic_poi ,What will the weather be in the _geographic_poi_ ,GetWeather
 What is the weather in twenty three minutes in NV,O O O O B-timerange I-timerange I-timerange I-timerange O B-state ,What is the weather _timerange_ in _state_,GetWeather
-What is the forecast for Lesotho for starting this Fall,O O O O O B-country O O B-timerange I-timerange ,What is the forecast for _country_ for starting _timerange_,GetWeather
-This is a sentence from a random intent,O O O O O O O O, This is a sentence from a random intent, RandomIntent
+Book restaurant for party of 7 at a pub in Ford Heights,O B-restaurant_type O O O B-party_size_number O O B-restaurant_type O B-city I-city ,Book _restaurant_type_ for party of _party_size_number_ at a _restaurant_type_ in _city_,BookRestaurant
+Book a table at a brasserie type restaurant that serves jain for a party of 8,O O O O O B-restaurant_type O B-restaurant_type O O B-cuisine O O O O B-party_size_number ,Book a table at a _restaurant_type_ type _restaurant_type_ that serves _cuisine_ for a party of _party_size_number_,BookRestaurant

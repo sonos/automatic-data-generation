@@ -13,19 +13,22 @@ ROOT_PATH = Path(os.path.dirname(os.path.abspath(__file__)))
 DATASET_ROOT = ROOT_PATH / 'resources' / 'mock_snips_dataset'
 PTB_DATASET_ROOT = ROOT_PATH / 'resources' / 'mock_ptb_dataset'
 
-VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', 'the', 'in', 'what', 'is',
-         'weather', 'a', 'be', 'for', 'forecast', 'this', 'will', "'s",
-         '2038', '3', 'area', 'bonaire', 'by', 'close', 'fall', 'flight',
-         'fog', 'from', 'intent', 'lesotho', 'march', 'minutes', 'nv', 'on',
-         'park', 'random', 'recreation', 'sentence', 'sligo', 'starting',
-         'state', 'there', 'three', 'twenty']
+VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', 'in', 'a', 'the', 'weather',
+         'what', 'at', 'be', 'book', 'for', 'of', 'party', 'restaurant',
+         'will', "'s", '2038', '3', '7', '8', 'area', 'bonaire',
+         'brasserie', 'by', 'close', 'flight', 'fog', 'ford', 'forecast',
+         'heights', 'is', 'jain', 'march', 'minutes', 'nv', 'on', 'park',
+         'pub', 'recreation', 'serves', 'sligo', 'state', 'table', 'that',
+         'there', 'three', 'twenty', 'type']
 
-DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', 'the', 'what',
-               '_timerange_', 'in', 'is', 'weather', '_country_', 'a', 'be',
-               'for', 'forecast', 'will', "'s", '_city_',
-               '_condition_description_', '_geographic_poi_',
-               '_spatial_relation_', '_state_', 'from', 'intent', 'on',
-               'random', 'sentence', 'starting', 'there', 'this']
+
+DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', '_restaurant_type_', 'a',
+               'in', 'the', 'weather', 'what', '_city_', '_party_size_number_',
+               '_timerange_', 'at', 'be', 'book', 'for', 'of', 'party', 'will',
+               "'s", '_condition_description_', '_country_', '_cuisine_',
+               '_geographic_poi_', '_spatial_relation_', '_state_',
+               'forecast', 'is', 'on', 'serves', 'table', 'that', 'there',
+               'type']
 
 
 def create_snips_dataset(dataset_path, restrict_to_intent=None,
@@ -74,6 +77,13 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertEqual(dataset.len_valid, 3)
         trimmed_dataset_file = output_folder / "train_3.csv"
         self.assertTrue(trimmed_dataset_file.exists())
+        # trim should be stratified
+        n_weather = len([item for item in dataset.train.examples if
+                         item.intent == 'GetWeather'])
+        n_restaurant = len([item for item in dataset.train.examples if
+                            item.intent == 'BookRestaurant'])
+        self.assertEqual(n_weather, 2)
+        self.assertEqual(n_restaurant, 1)
 
     def test_should_add_none(self):
         none_folder = PTB_DATASET_ROOT
@@ -100,7 +110,7 @@ class TestSnipsDataset(unittest.TestCase):
                                        restrict_to_intent=['GetWeather'],
                                        input_type='utterance',
                                        output_folder=output_folder)
-        self.assertEqual(dataset.len_train, 5)
+        self.assertEqual(dataset.len_train, 4)
         self.assertEqual(dataset.len_valid, 3)
         self.assertListEqual(dataset.i2int, ['GetWeather'])
         train_dataset_file = output_folder / "train_filtered.csv"
