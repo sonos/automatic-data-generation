@@ -38,7 +38,7 @@ def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
             none_size=none_size
         )
         if input_type == "delexicalised":
-            dataset.get_slotdic()
+            dataset.build_slotdic()
             dataset.embed_slots(slot_averaging, dataset.slotdic)
 
     elif dataset_type == "atis":
