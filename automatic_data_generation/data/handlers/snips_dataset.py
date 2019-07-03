@@ -7,6 +7,7 @@ import pickle
 import random
 
 from pathlib import Path
+from collections import defaultdict
 import torch
 from nltk import word_tokenize
 from automatic_data_generation.data.base_dataset import BaseDataset
@@ -63,6 +64,10 @@ class SnipsDataset(BaseDataset):
         return [row for row in sentences if row[3] in intents]
 
     @staticmethod
+    def get_intents(sentences):
+        return [row[3] for row in sentences]
+    
+    @staticmethod
     def add_nones(sentences, none_folder, none_idx, none_size):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
@@ -75,7 +80,6 @@ class SnipsDataset(BaseDataset):
         return sentences
                                     
     def get_slotdic(self):
-        from collections import defaultdict
         slotdic = defaultdict(set)
         for example in list(self.train):
             utterance, labelling, delexicalised, intent = \
@@ -90,7 +94,30 @@ class SnipsDataset(BaseDataset):
         slotdic = {k:sorted(list(v)) for k,v in slotdic.items()} # sort for reproducibility
         self.slotdic = slotdic
 
+
+    def update(self, folder):
+
+        folder = Path(folder)
+        loaded_dict    = torch.load(str(folder / "vocab.pth"))
+        loaded_i2w     = loaded_dict['i2w']
+        loaded_i2int   = loaded_dict['i2int']
+        self.update_vocab(self.vocab, loaded_i2w)
+        self.update_vocab(self.intent.vocab, loaded_i2int)
+        self.update_vectors()
+
+        if self.input_type == 'delexicalised':
+            raise NotImplementedError # overrided in Snips dataset
+            loaded_slotdic = loaded_dict['slotdic']
+            self.update_slotdic(loaded_slotdic)
         
+        self.i2w = self.vocab.itos
+        self.w2i = self.vocab.stoi
+        self.i2int = self.intent.vocab.itos
+        self.int2i = self.intent.vocab.stoi
+        self.vectors = self.vocab.vectors
+
+        return len(loaded_i2w)
+
 
     def embed_slots(self, averaging, slotdic):
         """

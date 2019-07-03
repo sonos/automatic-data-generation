@@ -9,6 +9,7 @@ from torchtext.data import BucketIterator
 from automatic_data_generation.data.utils import (get_fields, make_tokenizer)
 from automatic_data_generation.utils.io import (read_csv, write_csv)
 
+from sklearn.model_selection import StratifiedShuffleSplit
 
 class BaseDataset(object):
     """
@@ -173,8 +174,7 @@ class BaseDataset(object):
             trim_prefix = '_{}'.format(dataset_size)
             original_dataset_size = len(new_train)
             keep_fraction = dataset_size/original_dataset_size
-            from sklearn.model_selection import StratifiedShuffleSplit
-            intents = [row[3] for row in new_train]
+            intents = self.get_intents(new_train)
             sss = StratifiedShuffleSplit(n_splits=1, test_size=1-keep_fraction)
             keep_indices = list(sss.split(intents, intents))[0][0]
             new_train = [new_train[i] for i in keep_indices]
@@ -327,3 +327,6 @@ class BaseDataset(object):
             self.vocab.load_vectors(vectors=emb_vectors)
         elif self.embedding_type == 'random':
             self.vocab.vectors = torch.randn(len(self.vocab.itos), self.embedding_dimension)
+
+    def update_slotdic(self, new_slotdic):
+        raise NotImplementedError

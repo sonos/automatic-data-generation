@@ -46,12 +46,14 @@ def train_and_eval_cvae(args):
     if not output_dir.exists():
         output_dir.mkdir()
     if args.pickle is not None:
-        run_dir = Path('.')
+        pickle_path = Path(args.pickle.rstrip('.pkl'))
+        pickle_name = pickle_path.stem
+        run_dir = pickle_path
     else:
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
-        run_dir.mkdir()
-
+    run_dir.mkdir()
+        
     # data handling
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
@@ -131,7 +133,7 @@ def train_and_eval_cvae(args):
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
 
     if args.pickle is not None:
-        model_path = run_dir / "{}_load".format(args.pickle)
+        model_path = run_dir / "{}_load".format(pickle_name)
     else:
         model_path = run_dir / "load"
     dataset.save(model_path)
@@ -158,7 +160,8 @@ def train_and_eval_cvae(args):
         generated_sentences['intents'],
         logp
     )
-    LOGGER.info(*[{k: v} for (k, v) in run_dict['metrics'].items()])
+    for k,v in run_dict['metrics'].items():
+        LOGGER.info((k,v))
 
     if args.input_type == "delexicalised":
         run_dict['delexicalised_metrics'] = compute_generation_metrics(
@@ -168,8 +171,8 @@ def train_and_eval_cvae(args):
             logp,
             input_type='delexicalised'
         )
-        LOGGER.info(*[{k: v} for (k, v) in run_dict[
-            'delexicalised_metrics'].items()])
+    for k,v in run_dict['delexicalised_metrics'].items():
+        LOGGER.info((k,v))
 
     save_augmented_dataset(generated_sentences, args.n_generated,
                            dataset.train_path, run_dir)
@@ -187,7 +190,7 @@ def train_and_eval_cvae(args):
     }
 
     if args.pickle is not None:
-        run_dict_path = run_dir / "{}.pkl".format(args.pickle)
+        run_dict_path = run_dir / "{}.pkl".format(pickle_name)
     else:
         run_dict_path = run_dir / "run.pkl"
     torch.save(run_dict, str(run_dict_path))
