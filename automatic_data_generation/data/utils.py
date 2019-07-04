@@ -68,7 +68,7 @@ def get_fields(tokenize, max_sequence_length):
     return text, delex, label, intent
 
 
-def idx2word(idx, i2w, eos_idx):
+def idx2word(idx, i2w, eos_idx=None):
     sent_str = [str()] * len(idx)
     for i, sent in enumerate(idx):
         for word_id in sent:

@@ -23,35 +23,37 @@ class SnipsDataset(BaseDataset):
 
     def __init__(self,
                  dataset_folder,
-                 restrict_to_intent,
-                 input_type,
                  dataset_size,
+                 restrict_intent,
+                 none_folder,
+                 none_size,
+                 none_intent,
+                 none_idx,
+                 input_type,
                  tokenizer_type,
                  preprocessing_type,
                  max_sequence_length,
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
-                 output_folder,
-                 none_folder,
-                 none_idx,
-                 none_size):
+                 output_folder):
         self.skip_header = True
         self.slotdic = None
         super(SnipsDataset, self).__init__(dataset_folder,
-                                           restrict_to_intent,
-                                           input_type,
                                            dataset_size,
+                                           restrict_intent,
+                                           none_folder,
+                                           none_size,
+                                           none_intent,
+                                           none_idx,
+                                           input_type,
                                            tokenizer_type,
                                            preprocessing_type,
                                            max_sequence_length,
                                            embedding_type,
                                            embedding_dimension,
                                            max_vocab_size,
-                                           output_folder,
-                                           none_folder,
-                                           none_idx,
-                                           none_size)
+                                           output_folder)
 
     @staticmethod
     def get_datafields(text, delex, label, intent):
@@ -68,14 +70,19 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
-    @staticmethod
-    def add_nones(sentences, none_folder, none_idx, none_size):
+    def add_nones(self, sentences, none_folder, none_size=None, none_intent=None, none_idx=None):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
+        if none_intent is not None:
+            none_sentences = self.filter_intents(none_sentences, none_intent)
         random.shuffle(none_sentences)
         for row in none_sentences[:none_size]:
-            utterance = row[none_idx]
-            new_row = [utterance, 'O ' * len(word_tokenize(utterance)),
+            if 'snips' in str(none_folder):
+                new_row = row
+                new_row[3] = 'None'
+            else:
+                utterance = row[none_idx]
+                new_row = [utterance, 'O ' * len(word_tokenize(utterance)),
                        utterance, 'None']
             sentences.append(new_row)
         return sentences

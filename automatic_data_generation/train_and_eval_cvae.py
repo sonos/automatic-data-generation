@@ -41,17 +41,18 @@ def train_and_eval_cvae(args):
     np.random.seed(args.seed)
 
     # output folder
-    output_dir = Path(args.output_folder)
-    if not output_dir.exists():
-        output_dir.mkdir()
     if args.pickle is not None:
         pickle_path = Path(args.pickle.rstrip('.pkl'))
         pickle_name = pickle_path.stem
         run_dir = pickle_path
     else:
+        output_dir = Path(args.output_folder)
+        if not output_dir.exists():
+            output_dir.mkdir()
         current_time = datetime.now().strftime('%b%d_%H-%M-%S')
         run_dir = output_dir / current_time
-    run_dir.mkdir()
+    if not run_dir.exists():
+        run_dir.mkdir()
 
     # data handling
     data_folder = Path(args.data_folder)
@@ -59,12 +60,13 @@ def train_and_eval_cvae(args):
     none_folder = data_folder / args.none_type
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
-    dataset = create_dataset(
-        args.dataset_type, dataset_folder, args.restrict_to_intent,
-        args.input_type, args.dataset_size, args.tokenizer_type,
+    dataset = create_dataset(args.dataset_type,
+        dataset_folder, args.dataset_size, args.restrict_intent,
+        none_folder, args.none_size, args.none_intent, none_idx,
+        args.input_type, args.tokenizer_type,
         args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        args.slot_averaging, run_dir, none_folder, none_idx, args.none_size
+        args.slot_averaging, run_dir
     )
     if args.load_folder:
         original_vocab_size = dataset.update(args.load_folder)
@@ -126,7 +128,9 @@ def train_and_eval_cvae(args):
         label_anneal_target=args.label_anneal_target,
         add_bow_loss=args.bow_loss,
         force_cpu=args.force_cpu,
-        run_dir=run_dir / "tensorboard"
+        run_dir=run_dir / "tensorboard",
+        i2w = dataset.i2w,
+        i2int = dataset.i2int
     )
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
@@ -189,7 +193,7 @@ def train_and_eval_cvae(args):
     }
 
     if args.pickle is not None:
-        run_dict_path = run_dir / "{}.pkl".format(pickle_name)
+        run_dict_path = run_dir.parents[0] / "{}.pkl".format(pickle_name)
     else:
         run_dict_path = run_dir / "run.pkl"
     torch.save(run_dict, str(run_dict_path))
@@ -205,19 +209,21 @@ def main():
     parser.add_argument('--load-folder', type=str, default=None)
     parser.add_argument('--pickle', type=str, default=None,
                         help='for grid search experiments only')
+    parser.add_argument('-it', '--input_type', type=str,
+                        default='delexicalised',
+                        choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'snips-assistant', 'atis',
                                  'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
-    parser.add_argument('--none-type', type=str, default='penn-tree-bank',
-                        choices=['penn-tree-bank', 'shakespeare',
-                                 'subtitles', 'yelp', 'snips-assistant'])
-    parser.add_argument('-it', '--input_type', type=str,
-                        default='delexicalised',
-                        choices=['delexicalised', 'utterance'])
+    parser.add_argument('--none-type', type=str, default='snips',
+                        choices=['snips', 'snips-assistant', 'penn-tree-bank',
+                                 'shakespeare', 'subtitles', 'yelp'])
     parser.add_argument('--dataset-size', type=int, default=None)
     parser.add_argument('--none-size', type=int, default=None)
-    parser.add_argument('--restrict-to-intent', nargs='+', type=str,
+    parser.add_argument('--restrict-intent', nargs='+', type=str,
+                        default=None)
+    parser.add_argument('--none-intent', nargs='+', type=str,
                         default=None)
 
     # data representation
