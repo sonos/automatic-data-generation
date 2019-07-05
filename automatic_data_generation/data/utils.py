@@ -6,6 +6,7 @@ from automatic_data_generation.utils.constants import NO_PREPROCESSING
 NONE_COLUMN_MAPPING = {
     'snips':0,
     'snips-assistant':0,
+    'snips-merged':0,
     'penn-tree-bank': 0,
     'yelp': 5,
     'shakespeare': 5,

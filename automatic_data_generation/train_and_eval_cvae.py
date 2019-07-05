@@ -213,12 +213,13 @@ def main():
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'atis',
-                                 'sentiment', 'spam', 'yelp',
+                        choices=['snips', 'snips-assistant', 'snips-merged',
+                                 'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--none-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'penn-tree-bank',
-                                 'shakespeare', 'subtitles', 'yelp'])
+                        choices=['snips', 'snips-assistant', 'snips-merged',
+                                 'atis', 'sentiment', 'spam', 'yelp',
+                                 'penn-tree-bank'])
     parser.add_argument('--dataset-size', type=int, default=None)
     parser.add_argument('--none-size', type=int, default=None)
     parser.add_argument('--restrict-intent', nargs='+', type=str,
