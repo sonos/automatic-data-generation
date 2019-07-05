@@ -5,10 +5,11 @@ import os
 import pickle
 from pathlib import Path
 
-from automatic_data_generation.data.utils import get_groups
-from automatic_data_generation.utils.io import load_json, write_csv
-
 from nltk import word_tokenize
+
+from automatic_data_generation.data.utils import get_groups, get_groups_v2
+from automatic_data_generation.utils.io import load_json, write_csv, read_csv, \
+    dump_json
 
 remove_punctuation = True
 
@@ -114,34 +115,34 @@ def json2csv(datadir, outdir, samples_per_intent):
     print('Delexicalised : ', delexicalised)
 
     print('Successfully converted json2csv !')
-    
-def new_json2csv(datadir, outdir):
-    
 
+
+def new_json2csv(datadir, outdir):
     data_folder = Path(datadir)
     out_folder = Path(outdir)
-    
     data = load_json(data_folder / 'dataset.json', encoding='latin1')
-
-    remove_punctuation=True
+    remove_punctuation = True
     punctuation = [',', '.', ';', '?', '!', '\"']
-    
+
     val_fraction = 0.2
-    
+
     for split in ['train', 'validate']:
-        
+
         csv_data = [['utterance', 'labels', 'delexicalised', 'intent']]
 
         for intent in data['intents'].keys():
-            
-            num_val_sentences = int(val_fraction * len(data['intents'][intent]['utterances']))
-            print(split,intent, num_val_sentences)
-            if split=='validate':
-                sentences = data['intents'][intent]['utterances'][:num_val_sentences]
+
+            num_val_sentences = int(
+                val_fraction * len(data['intents'][intent]['utterances']))
+            print(split, intent, num_val_sentences)
+            if split == 'validate':
+                sentences = data['intents'][intent]['utterances'][
+                            :num_val_sentences]
             else:
-                sentences = data['intents'][intent]['utterances'][num_val_sentences:]
+                sentences = data['intents'][intent]['utterances'][
+                            num_val_sentences:]
             print(len(sentences))
-                
+
             for sentence in sentences:
 
                 utterance = ''
@@ -190,56 +191,70 @@ def new_json2csv(datadir, outdir):
         write_csv(csv_data, output_file)
 
 
-def csv2json(csv_path):
-    print('Starting csv2json conversion...')
-
-    jsondic = {'language': 'en'}
+def extract_intents_entities(data, entity_mapping=None):
     intents = {}
     entities = {}
 
-    encountered_slot_values = {}
-
-    csv_file = open(csv_path, 'r')
-    reader = csv.reader(csv_file)
-
-    for irow, row in enumerate(reader):
-
+    encountered_entity_values = {}
+    for irow, row in enumerate(data):
         if irow == 0:  # ignore header
             continue
 
         utterance, labelling, delexicalised, intent = row
         if intent not in intents.keys():
             intents[intent] = {'utterances': []}
-        groups = get_groups(word_tokenize(utterance), word_tokenize(labelling))
+
+        groups = get_groups_v2(word_tokenize(utterance), word_tokenize(
+            labelling), entity_mapping)
         intents[intent]['utterances'].append({'data': groups})
+        # entities
         for group in groups:
-            if 'slot_name' in group.keys():
-                slot_name = group['slot_name']
-                slot_value = group['text']
-                if slot_name not in encountered_slot_values.keys():
-                    encountered_slot_values[slot_name] = []
+            if 'entity' in group.keys():
+                entity = group['entity']
+                entity_value = group['text']
+                entity_type = "builtin" if "snips/" in entity else "custom"
 
-                if slot_name not in entities.keys():
-                    entities[slot_name] = {"data": [],
-                                           "use_synonyms": True,
-                                           "automatically_extensible": True,
-                                           "matching_strictness": 1.0
-                                           }
-                if slot_value not in encountered_slot_values[slot_name]:
-                    entities[slot_name]['data'].append(
-                        {'value': slot_value,
-                         'synonyms': []})
-                if slot_value == 'added ':
-                    print(groups, utterance, labelling)
+                if entity not in entities.keys():
+                    if entity_type == "builtin":
+                        entities[entity] = {
+                            "entity_type": entity_type,
+                        }
+                    else:
+                        entities[entity] = {
+                            "data": [],
+                            "use_synonyms": True,
+                            "entity_type": entity_type,
+                            "automatically_extensible": True,
+                            "matching_strictness": 1.0
+                        }
 
-                encountered_slot_values[slot_name].append(slot_value)
+                if entity_type == "custom":
+                    if entity not in encountered_entity_values.keys():
+                        encountered_entity_values[entity] = []
+                    if entity_value not in encountered_entity_values[entity]:
+                        entities[entity]['data'].append(
+                            {
+                                'value': entity_value,
+                                'synonyms': []
+                            }
+                        )
+                    encountered_entity_values[entity].append(entity_value)
+
+    return intents, entities
+
+
+def csv2json(csv_path_in, output_dir):
+    print('Starting csv2json conversion...')
+    jsondic = {'language': 'en'}
+    csv_data = read_csv(Path(csv_path_in))
+    intents, entities = extract_intents_entities(csv_data)
 
     jsondic['intents'] = intents
     jsondic['entities'] = entities
 
-    json_path = csv_path.replace('.csv', '.json')
-    with open(json_path, 'w') as jsonfile:
-        json.dump(jsondic, jsonfile)
+    filename = str(Path(csv_path_in).stem) + '.json'
+    path_out = Path(output_dir) / filename
+    dump_json(jsondic, path_out)
 
     print('Successfully converted csv2json !')
 
@@ -248,7 +263,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--datadir', type=str, default='data/snips_original')
     parser.add_argument('--outdir', type=str, default='data/snips')
-    parser.add_argument('-spi', '--samples_per_intent', type=int, default=10000)
+    parser.add_argument('-spi', '--samples_per_intent', type=int,
+                        default=10000)
     parser.add_argument('--augmented', type=int, default=1)
     parser.add_argument('--convert_to', type=str, default='csv')
     parser.add_argument('--remove_punctuation', type=int, default=1)
@@ -261,6 +277,6 @@ if __name__ == '__main__':
     if args.convert_to == 'csv':
         json2csv(args.datadir, args.outdir, args.samples_per_intent)
     if args.convert_to == 'json':
-        csv2json(args.datadir, args.outdir, args.augmented)
+        csv2json(args.datadir, args.outdir)
     if args.convert_to == 'utf':
         iso2utf(args.datadir, args.outdir)
