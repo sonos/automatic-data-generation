@@ -148,3 +148,46 @@ def get_groups(words, labels):
     groups.append(group)  # dump previous group
 
     return groups
+
+
+def get_groups_v2(words, labels, entity_mapping=None):
+    """
+    Extracts text, slot name and slot value from a tokenized sentence and
+    its BIO labelling
+    """
+    prev_label = None
+    groups = []
+    zipped = zip(words, labels)
+    for i, (word, label) in enumerate(zipped):
+        if label.startswith('B-'):  # start slot group
+            if i != 0:
+                if 'entity' in group:
+                    group['text'] = group['text'].rstrip()
+                groups.append(group)  # dump previous group
+                if prev_label != 'O':
+                    groups.append({'text': ' '})
+            slot = label.lstrip('B-')
+            slot_ = entity_mapping.get(slot, slot) if entity_mapping is not \
+                None else slot
+            group = {'text': (word + ' '), 'entity': slot_, 'slot_name': slot}
+
+        elif label == 'O' and prev_label != 'O':  # start context group
+            if i != 0:
+                if 'entity' in group:
+                    group['text'] = group['text'].rstrip()
+                groups.append(group)  # dump previous group
+            if prev_label is None:
+                group = {'text': (word + ' ')}
+            else:
+                group = {'text': (' ' + word + ' ')}
+
+        else:
+            group['text'] += (word + ' ')
+
+        prev_label = label
+
+    if 'entity' in group:
+        group['text'] = group['text'].rstrip()
+    groups.append(group)  # dump previous group
+
+    return groups
