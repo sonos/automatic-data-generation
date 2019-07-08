@@ -60,39 +60,38 @@ def calc_bleu(candidates, references, type='utterance'):
     cc = SmoothingFunction()
 
     for intent in candidates.keys():
+        # try:
+        # QUALITY
+        bleu_scores['quality'][intent] = np.mean(
+            [sentence_bleu(
+                references[intent],
+                candidate,
+                weights=[0.25, 0.25, 0.25, 0.25],
+                smoothing_function=cc.method1
+            ) for candidate in candidates[intent]]
+        )
 
-        try:
-            # QUALITY
-            bleu_scores['quality'][intent] = np.mean(
-                [sentence_bleu(
-                    references[intent],
-                    candidate,
-                    weights=[0.25, 0.25, 0.25, 0.25],
-                    smoothing_function=cc.method1
-                ) for candidate in candidates[intent]]
-            )
+        # DIVERSITY
+        bleu_scores['diversity'][intent] = np.mean(
+            [1 - sentence_bleu(
+                my_remove(candidates[intent], candidate),
+                candidate,
+                weights=[0.25, 0.25, 0.25, 0.25],
+                smoothing_function=cc.method1
+            ) for candidate in candidates[intent]]
+        )
 
-            # DIVERSITY
-            bleu_scores['diversity'][intent] = np.mean(
-                [1 - sentence_bleu(
-                    my_remove(candidate[intent], candidate),
-                    candidate,
-                    weights=[0.25, 0.25, 0.25, 0.25],
-                    smoothing_function=cc.method1
-                ) for candidate in candidates[intent]]
-            )
-
-            # ORIGINAL DIVERSITY
-            bleu_scores['original_diversity'][intent] = np.mean(
-                [1 - sentence_bleu(
-                    my_remove(references[intent], reference),
-                    reference,
-                    weights=[0.25, 0.25, 0.25, 0.25],
-                    smoothing_function=cc.method1
-                ) for reference in references[intent]]
-            )
-        except:
-            print("Failed for intent %s" % intent)
+        # ORIGINAL DIVERSITY
+        bleu_scores['original_diversity'][intent] = np.mean(
+            [1 - sentence_bleu(
+                my_remove(references[intent], reference),
+                reference,
+                weights=[0.25, 0.25, 0.25, 0.25],
+                smoothing_function=cc.method1
+            ) for reference in references[intent]]
+        )
+        # except:
+        #     print("Failed for intent %s" % intent)
 
     bleu_scores['quality']['avg'] = np.mean(
         [bleu_score for bleu_score in bleu_scores['quality'].values()])
@@ -108,7 +107,7 @@ def calc_bleu(candidates, references, type='utterance'):
 def calc_originality_and_transfer(candidates, references, type='utterance'):
 
     originality = {}
-    transfer = {}
+    transfer = {'metric':{}, 'tokens':{}}
 
     # ORIGINALITY
     original_sentences = []
@@ -130,9 +129,9 @@ def calc_originality_and_transfer(candidates, references, type='utterance'):
     for intent in candidates.keys():
         transferred = [token for token in cand_vocabs[intent] if
                        token not in ref_vocabs[intent]]
-        transfer[intent] = len(transferred) / len(cand_vocabs[intent])
-        print('Transferred to intent {} : '.format(intent), transferred)
-    transfer['avg'] = np.mean([x for x in transfer.values()])
+        transfer['tokens'][intent] = transferred
+        transfer['metric'][intent] = len(transferred) / len(cand_vocabs[intent])
+    transfer['metric']['avg'] = np.mean([x for x in transfer['metric'].values()])
 
     return originality, transfer
 
@@ -155,17 +154,18 @@ def intent_classification(candidates, train_path, input_type):
         This only works for snips dataset for now...
     """
     accuracies = {}
-    try:
-        intent_classifier = train_intent_classifier(train_path, input_type)
-        for intent, sentences in candidates.items():
-            preds = intent_classifier.predict(sentences)
-            accuracy = sum([pred==intent for pred in preds]) / len(preds)
-            accuracies[intent] = accuracy
-        accuracies['avg'] = np.mean([x for x in accuracies.values()])
-        return accuracies
-    except:
-        print("Was not able to train intent classifier")
-        return None
+    # try:
+    intent_classifier = train_intent_classifier(train_path, input_type)
+    for intent, tokenized_sentences in candidates.items():
+        sentences = [' '.join(sentence) for sentence in tokenized_sentences]
+        preds = intent_classifier.predict(sentences)
+        accuracy = sum([pred==intent for pred in preds]) / len(preds)
+        accuracies[intent] = accuracy
+    accuracies['avg'] = np.mean([x for x in accuracies.values()])
+    return accuracies
+    # except:
+    #     print("Was not able to train intent classifier")
+    #     return None
 
 
 def train_intent_classifier(train_path, input_type):
