@@ -234,7 +234,7 @@ class Trainer(object):
             if 'None' in self.dataset.i2int:
                 none_idx = self.dataset.int2i['None']
             else:
-                none_idx = -1
+                none_idx = -100
             label_loss, label_weight = compute_label_loss(
                 logc, y, self.annealing_strategy, self.step,
                 self.label_anneal_time, self.label_anneal_rate,

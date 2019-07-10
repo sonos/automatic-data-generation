@@ -173,7 +173,7 @@ class SnipsDataset(BaseDataset):
                     new_vector = torch.mean(torch.stack(new_vectors), dim=0)
 
                 else:
-                    raise ValueError(slot_embedding)
+                    raise ValueError("Unknown averaging strategy: {}".format(slot_embedding))
 
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector

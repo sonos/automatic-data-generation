@@ -40,31 +40,9 @@ def create_dataset(dataset_type,
             max_vocab_size=max_vocab_size,
             output_folder=run_dir
         )
-        if input_type == "delexicalised":
-            dataset.build_slotdic()
-            dataset.embed_unks(num_special_toks=4)
-            dataset.embed_slots(slot_embedding, dataset.slotdic)
 
     elif dataset_type == "atis":
         dataset = AtisDataset(
-            dataset_folder=dataset_folder,
-            dataset_size=dataset_size,
-            restrict_intent=restrict_intent,
-            none_folder=none_folder,
-            none_size=none_size,
-            none_intent=none_intent,
-            none_idx=none_idx,
-            input_type=input_type,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir
-        )
-    elif dataset_type == "spam":
-        dataset = SpamDataset(
             dataset_folder=dataset_folder,
             dataset_size=dataset_size,
             restrict_intent=restrict_intent,
@@ -119,5 +97,10 @@ def create_dataset(dataset_type,
         )
     else:
         raise TypeError("Unknown dataset type")
+
+    dataset.embed_unks(num_special_toks=4)
+    if input_type == "delexicalised":
+        dataset.build_slotdic()
+        dataset.embed_slots(slot_embedding, dataset.slotdic)
 
     return dataset
