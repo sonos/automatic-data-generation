@@ -20,19 +20,20 @@ class BaseDataset(object):
 
     def __init__(self,
                  dataset_folder,
-                 restrict_to_intent,
-                 input_type,
                  dataset_size,
+                 restrict_intent,
+                 none_folder,
+                 none_size,
+                 none_intent,
+                 none_idx,
+                 input_type,
                  tokenizer_type,
                  preprocessing_type,
                  max_sequence_length,
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
-                 output_folder,
-                 none_folder,
-                 none_idx,
-                 none_size):
+                 output_folder):
 
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
@@ -45,8 +46,9 @@ class BaseDataset(object):
                                                       intent)
 
         train_path, valid_path = self.build_data_files(
-            dataset_folder, restrict_to_intent, output_folder, dataset_size,
-            skip_header, none_size, none_folder, none_idx)
+            dataset_folder, dataset_size, restrict_intent,
+            none_folder, none_size, none_intent, none_idx,
+            output_folder, skip_header)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
 
@@ -151,9 +153,10 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    def build_data_files(self, dataset_folder, restrict_to_intent,
-                         output_folder, dataset_size=None, skip_header=True,
-                         none_size=None, none_folder=None, none_idx=None):
+    def build_data_files(self, dataset_folder,  dataset_size=None, restrict_intent=None,
+                         none_folder=None, none_size=None, none_intent=None, none_idx=None,
+                         output_folder=None, skip_header=True):
+
         original_train_path = dataset_folder / 'train.csv'
         original_test_path = dataset_folder / 'validate.csv'
 
@@ -168,10 +171,10 @@ class BaseDataset(object):
 
         # filter intents
         filter_prefix = ''
-        if restrict_to_intent is not None:
+        if restrict_intent is not None:
             filter_prefix = '_filtered'
-            new_train = self.filter_intents(new_train, restrict_to_intent)
-            new_test = self.filter_intents(new_test, restrict_to_intent)
+            new_train = self.filter_intents(new_train, restrict_intent)
+            new_test = self.filter_intents(new_test, restrict_intent)
 
         # trim_dataset
         trim_prefix = ''
@@ -192,10 +195,8 @@ class BaseDataset(object):
         if none_size is not None:
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
-            new_train = self.add_nones(new_train, none_folder, none_idx,
-                                       none_size)
-            new_test = self.add_nones(new_test, none_folder, none_idx,
-                                      none_size=200)
+            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intent=none_intent, none_idx=none_idx)
+            new_test = self.add_nones(new_test, none_folder, none_size=200, none_intent=none_intent, none_idx=none_idx)
 
         if output_folder is not None:
             new_train_path = output_folder / 'train{}{}{}.csv'.format(
