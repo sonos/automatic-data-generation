@@ -51,7 +51,7 @@ class Trainer(object):
         self.label_anneal_target = label_anneal_target
         self.add_bow_loss = add_bow_loss
 
-        self.epoch = -1
+        self.epoch = 0
         self.step = 0
         self.latent_rep = {i: [] for i in range(self.model.n_classes)}
 

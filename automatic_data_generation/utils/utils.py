@@ -20,7 +20,7 @@ def create_dataset(dataset_type,
                    input_type, tokenizer_type,
                    preprocessing_type, max_sequence_length,
                    embedding_type, embedding_dimension, max_vocab_size,
-                   slot_averaging, run_dir):
+                   slot_embedding, run_dir):
     
     if dataset_type.startswith("snips"):
         dataset = SnipsDataset(
@@ -42,7 +42,8 @@ def create_dataset(dataset_type,
         )
         if input_type == "delexicalised":
             dataset.build_slotdic()
-            dataset.embed_slots(slot_averaging, dataset.slotdic)
+            dataset.embed_unks(num_special_toks=4)
+            dataset.embed_slots(slot_embedding, dataset.slotdic)
 
     elif dataset_type == "atis":
         dataset = AtisDataset(
@@ -118,7 +119,5 @@ def create_dataset(dataset_type,
         )
     else:
         raise TypeError("Unknown dataset type")
-
-    dataset.embed_unks(num_special_toks=4)
 
     return dataset

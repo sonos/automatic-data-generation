@@ -21,7 +21,7 @@ from automatic_data_generation.evaluation.utils import save_augmented_dataset
 from automatic_data_generation.models.cvae import CVAE
 from automatic_data_generation.training.trainer import Trainer
 from automatic_data_generation.utils.constants import (NO_CONDITIONING,
-                                                       NO_SLOT_AVERAGING,
+                                                       NO_SLOT_EMBEDDING,
                                                        NO_PREPROCESSING)
 from automatic_data_generation.utils.utils import create_dataset
 from automatic_data_generation.utils.utils import to_device
@@ -66,7 +66,7 @@ def train_and_eval_cvae(args):
         args.input_type, args.tokenizer_type,
         args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        args.slot_averaging, run_dir
+        args.slot_embedding, run_dir
     )
     if args.load_folder:
         original_vocab_size = dataset.update(args.load_folder)
@@ -239,9 +239,9 @@ def main():
     parser.add_argument('--embedding-dimension', type=int, default=100)
     parser.add_argument('--freeze_embeddings', type=bool, default=False)
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
-    parser.add_argument('--slot-averaging', type=str,
-                        default=NO_SLOT_AVERAGING,
-                        choices=['micro', 'macro', NO_SLOT_AVERAGING])
+    parser.add_argument('--slot-embedding', type=str,
+                        default=NO_SLOT_EMBEDDING,
+                        choices=['micro', 'macro', 'litteral', NO_SLOT_EMBEDDING])
 
     # model
     parser.add_argument('--conditioning', type=str, default='supervised',
