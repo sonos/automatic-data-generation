@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
 
+import numpy as np
 import torch
 import torchtext
 from sklearn.model_selection import StratifiedShuffleSplit
@@ -19,21 +20,22 @@ class BaseDataset(object):
     __metaclass__ = ABCMeta
 
     def __init__(self,
-                 dataset_folder,
-                 dataset_size,
-                 restrict_intent,
-                 none_folder,
-                 none_size,
-                 none_intent,
-                 none_idx,
-                 input_type,
-                 tokenizer_type,
-                 preprocessing_type,
-                 max_sequence_length,
-                 embedding_type,
-                 embedding_dimension,
-                 max_vocab_size,
-                 output_folder):
+                 dataset_folder:str,
+                 dataset_size:int,
+                 restrict_intents:list,
+                 none_folder:str,
+                 none_size:int,
+                 none_intents:list,
+                 none_idx:int,
+                 cosine_threshold:float,
+                 input_type:str,
+                 tokenizer_type:str,
+                 preprocessing_type:str,
+                 max_sequence_length:int,
+                 embedding_type:str,
+                 embedding_dimension:int,
+                 max_vocab_size:int,
+                 output_folder:str):
 
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
@@ -46,8 +48,8 @@ class BaseDataset(object):
                                                       intent)
 
         train_path, valid_path = self.build_data_files(
-            dataset_folder, dataset_size, restrict_intent,
-            none_folder, none_size, none_intent, none_idx,
+            dataset_folder, dataset_size, restrict_intents,
+            none_folder, none_size, none_intents, none_idx, cosine_threshold,
             output_folder, skip_header)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
@@ -117,7 +119,7 @@ class BaseDataset(object):
 
     @staticmethod
     @abstractmethod
-    def add_nones(sentences, none_folder, none_idx, none_size):
+    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, none_idx=None, cosine_threshold=None):
         """
         Get metadata relating to sample with index `item`.
         Args:
@@ -153,9 +155,9 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    def build_data_files(self, dataset_folder,  dataset_size=None, restrict_intent=None,
-                         none_folder=None, none_size=None, none_intent=None, none_idx=None,
-                         output_folder=None, skip_header=True):
+    def build_data_files(self, dataset_folder,  dataset_size=None, restrict_intents=None,
+                         none_folder=None, none_size=None, none_intents=None, none_idx=None,
+                         cosine_threshold=None, output_folder=None, skip_header=True):
 
         original_train_path = dataset_folder / 'train.csv'
         original_test_path = dataset_folder / 'validate.csv'
@@ -171,10 +173,10 @@ class BaseDataset(object):
 
         # filter intents
         filter_prefix = ''
-        if restrict_intent is not None:
+        if restrict_intents is not None:
             filter_prefix = '_filtered'
-            new_train = self.filter_intents(new_train, restrict_intent)
-            new_test = self.filter_intents(new_test, restrict_intent)
+            new_train = self.filter_intents(new_train, restrict_intents)
+            new_test = self.filter_intents(new_test, restrict_intents)
 
         # trim_dataset
         trim_prefix = ''
@@ -195,8 +197,10 @@ class BaseDataset(object):
         if none_size is not None:
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
-            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intent=none_intent, none_idx=none_idx)
-            new_test = self.add_nones(new_test, none_folder, none_size=200, none_intent=none_intent, none_idx=none_idx)
+            if cosine_threshold is not None:
+                none_intents = self.select_none_intents(dataset_folder, none_folder, cosine_threshold)
+            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intents=none_intents, none_idx=none_idx)
+            new_test = self.add_nones(new_test, none_folder, none_size=200, none_intents=none_intents, none_idx=none_idx)
 
         if output_folder is not None:
             new_train_path = output_folder / 'train{}{}{}.csv'.format(
@@ -218,6 +222,23 @@ class BaseDataset(object):
 
         return new_train_path, new_test_path
 
+    def select_none_intents(self, dataset_folder, none_folder, cosine_threshold):
+        # select none intents according to overlap with original intents
+        selected_none_intents = []
+        non_intents = []
+        def cosine(u, v):
+            return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
+        intent_vectors = self.load_intent_vectors(dataset_folder)
+        none_vectors = self.load_intent_vectors(none_folder)
+        for none_intent, none_vector in none_vectors.items():
+            for intent, intent_vector in intent_vectors.items():
+                if cosine(none_vector, intent_vector) > cosine_threshold:
+                    print('none intent {} is close to {}'.format(none_intent, intent))
+                    selected_none_intents.append(none_intent)
+                    break
+        return selected_none_intents
+
+    
     @property
     def len_train(self):
         return len(self.train)
@@ -288,6 +309,10 @@ class BaseDataset(object):
             "total number of words are {}"
                 .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
+
+    def load_intent_vectors(self, dataset_folder):
+        intent_vectors_path = dataset_folder / 'vectors.pkl'
+        return torch.load(intent_vectors_path)
 
     def save(self, folder):
         # TODO slotdic is not defined except for Snips dataset

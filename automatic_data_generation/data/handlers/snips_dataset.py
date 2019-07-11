@@ -24,11 +24,12 @@ class SnipsDataset(BaseDataset):
     def __init__(self,
                  dataset_folder,
                  dataset_size,
-                 restrict_intent,
+                 restrict_intents,
                  none_folder,
                  none_size,
-                 none_intent,
+                 none_intents,
                  none_idx,
+                 cosine_threshold,
                  input_type,
                  tokenizer_type,
                  preprocessing_type,
@@ -41,11 +42,12 @@ class SnipsDataset(BaseDataset):
         self.slotdic = None
         super(SnipsDataset, self).__init__(dataset_folder,
                                            dataset_size,
-                                           restrict_intent,
+                                           restrict_intents,
                                            none_folder,
                                            none_size,
-                                           none_intent,
+                                           none_intents,
                                            none_idx,
+                                           cosine_threshold,
                                            input_type,
                                            tokenizer_type,
                                            preprocessing_type,
@@ -70,11 +72,13 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
-    def add_nones(self, sentences, none_folder, none_size=None, none_intent=None, none_idx=None):
+    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, none_idx=None):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
-        if none_intent is not None:
-            none_sentences = self.filter_intents(none_sentences, none_intent)
+
+        if none_intents is not None:
+            none_sentences = self.filter_intents(none_sentences, none_intents)            
+
         random.shuffle(none_sentences)
         for row in none_sentences[:none_size]:
             if 'snips' in str(none_folder):

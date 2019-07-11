@@ -7,6 +7,7 @@ NONE_COLUMN_MAPPING = {
     'snips':0,
     'snips-assistant':0,
     'snips-merged':0,
+    'snips-dump':0,
     'penn-tree-bank': 0,
     'yelp': 5,
     'shakespeare': 5,

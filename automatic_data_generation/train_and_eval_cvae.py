@@ -61,8 +61,8 @@ def train_and_eval_cvae(args):
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
     dataset = create_dataset(args.dataset_type,
-        dataset_folder, args.dataset_size, args.restrict_intent,
-        none_folder, args.none_size, args.none_intent, none_idx,
+        dataset_folder, args.dataset_size, args.restrict_intents, 
+        none_folder, args.none_size, args.none_intents, none_idx, args.cosine_threshold,
         args.input_type, args.tokenizer_type,
         args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
@@ -213,19 +213,22 @@ def main():
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'snips-merged',
-                                 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
-    parser.add_argument('--none-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'snips-merged',
+                        choices=['snips', 'snips-assistant', 'snips-merged', 'snips-dump',
                                  'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--dataset-size', type=int, default=None)
+    parser.add_argument('--restrict-intents', nargs='+', type=str,
+                        default=None)
+
+    # none class
+    parser.add_argument('--none-type', type=str, default='snips',
+                        choices=['snips', 'snips-assistant', 'snips-merged', 'snips-dump',
+                                 'atis', 'sentiment', 'spam', 'yelp',
+                                 'penn-tree-bank'])
     parser.add_argument('--none-size', type=int, default=None)
-    parser.add_argument('--restrict-intent', nargs='+', type=str,
+    parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--none-intent', nargs='+', type=str,
-                        default=None)
+    parser.add_argument('--cosine_threshold', type=float, default=None)
 
     # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
