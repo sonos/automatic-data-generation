@@ -1,15 +1,14 @@
 import argparse
 import csv
-import json
 import os
 import pickle
 from pathlib import Path
 
 from nltk import word_tokenize
 
-from automatic_data_generation.data.utils import get_groups, get_groups_v2
-from automatic_data_generation.utils.io import load_json, write_csv, read_csv, \
-    dump_json
+from automatic_data_generation.data.utils import get_groups_v2
+from automatic_data_generation.utils.io import (load_json, write_csv,
+                                                read_csv, dump_json)
 
 remove_punctuation = True
 
@@ -191,7 +190,8 @@ def new_json2csv(datadir, outdir):
         write_csv(csv_data, output_file)
 
 
-def extract_intents_entities(data, entity_mapping=None):
+def extract_intents_entities(data, entity_mapping=None,
+                             automatically_extensible=True):
     intents = {}
     entities = {}
 
@@ -224,7 +224,7 @@ def extract_intents_entities(data, entity_mapping=None):
                             "data": [],
                             "use_synonyms": True,
                             "entity_type": entity_type,
-                            "automatically_extensible": True,
+                            "automatically_extensible": automatically_extensible,
                             "matching_strictness": 1.0
                         }
 
