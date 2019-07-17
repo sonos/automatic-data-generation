@@ -198,7 +198,7 @@ class BaseDataset(object):
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
             if cosine_threshold is not None:
-                none_intents = self.select_none_intents(dataset_folder, none_folder, cosine_threshold)
+                none_intents = self.select_none_intents(dataset_folder, restrict_intents, none_folder, cosine_threshold)
             new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intents=none_intents, none_idx=none_idx)
             new_test = self.add_nones(new_test, none_folder, none_size=200, none_intents=none_intents, none_idx=none_idx)
 
@@ -222,7 +222,7 @@ class BaseDataset(object):
 
         return new_train_path, new_test_path
 
-    def select_none_intents(self, dataset_folder, none_folder, cosine_threshold):
+    def select_none_intents(self, dataset_folder, restrict_intents, none_folder, cosine_threshold):
         # select none intents according to overlap with original intents
         selected_none_intents = []
         non_intents = []
@@ -232,6 +232,8 @@ class BaseDataset(object):
         none_vectors = self.load_intent_vectors(none_folder)
         for none_intent, none_vector in none_vectors.items():
             for intent, intent_vector in intent_vectors.items():
+                if restrict_intents is not None and intent not in restrict_intents:
+                    continue
                 if cosine(none_vector, intent_vector) > cosine_threshold:
                     print('none intent {} is close to {}'.format(none_intent, intent))
                     selected_none_intents.append(none_intent)
