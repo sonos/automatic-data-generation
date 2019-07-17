@@ -83,7 +83,8 @@ def train_and_eval_cvae(args):
             vocab_size=dataset.vocab_size,
             embedding_size=args.embedding_dimension,
             rnn_type=args.rnn_type,
-            hidden_size=args.hidden_size,
+            hidden_size_encoder=args.hidden_size_encoder,
+            hidden_size_decoder=args.hidden_size_decoder,
             word_dropout_rate=args.word_dropout_rate,
             embedding_dropout_rate=args.embedding_dropout_rate,
             z_size=args.latent_size,
@@ -94,7 +95,8 @@ def train_and_eval_cvae(args):
             pad_idx=dataset.pad_idx,
             unk_idx=dataset.unk_idx,
             max_sequence_length=args.max_sequence_length,
-            num_layers=args.num_layers,
+            num_layers_encoder=args.num_layers_encoder,
+            num_layers_decoder=args.num_layers_decoder,
             bidirectional=args.bidirectional,
             temperature=args.temperature,
             force_cpu=args.force_cpu
@@ -253,13 +255,15 @@ def main():
     parser.add_argument('--bow-loss', action='store_true')
     parser.add_argument('-rnn', '--rnn-type', type=str, default='gru',
                         choices=['rnn', 'gru', 'lstm'])
-    parser.add_argument('-hs', '--hidden-size', type=int, default=256)
+    parser.add_argument('-hse', '--hidden-size-encoder', type=int, default=256)
+    parser.add_argument('-hsd', '--hidden-size-decoder', type=int, default=256)
+    parser.add_argument('-nle', '--num-layers-encoder', type=int, default=1)
+    parser.add_argument('-nld', '--num-layers-decoder', type=int, default=1)
     parser.add_argument('-wd', '--word-dropout-rate', type=float, default=0.)
     parser.add_argument('-ed', '--embedding-dropout-rate', type=float,
                         default=0.5)
     parser.add_argument('-ls', '--latent_size', type=int, default=8)
     parser.add_argument('-cs', '--cat_size', type=int, default=None)
-    parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-t', '--temperature', type=float, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
 
@@ -277,9 +281,9 @@ def main():
                         help='anneal rate for KL weight')
     parser.add_argument('-m1', '--kl-anneal-target', type=float, default=1.,
                         help='final value for KL weight')
-    parser.add_argument('-k2', '--label-anneal-time', type=float, default=100,
+    parser.add_argument('-k2', '--label-anneal-time', type=float, default=0,
                         help='anneal time for label weight')
-    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=0.01,
+    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=100,
                         help='anneal rate for label weight')
     parser.add_argument('-m2', '--label-anneal-target', type=float, default=1.,
                         help='final value for label weight')
