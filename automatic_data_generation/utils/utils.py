@@ -14,104 +14,93 @@ def to_device(x, force_cpu):
     return x
 
 
-def create_dataset(dataset_type, dataset_folder, restrict_to_intent,
-                   input_type, dataset_size, tokenizer_type,
+def create_dataset(dataset_type,
+                   dataset_folder, dataset_size, restrict_intent,
+                   none_folder, none_size, none_intent, none_idx,
+                   input_type, tokenizer_type,
                    preprocessing_type, max_sequence_length,
                    embedding_type, embedding_dimension, max_vocab_size,
-                   slot_averaging, run_dir, none_folder, none_idx, none_size):
+                   slot_embedding, run_dir):
     
     if dataset_type.startswith("snips"):
         dataset = SnipsDataset(
             dataset_folder=dataset_folder,
-            restrict_to_intent=restrict_to_intent,
-            input_type=input_type,
             dataset_size=dataset_size,
+            restrict_intent=restrict_intent,
+            none_folder=none_folder,
+            none_size=none_size,
+            none_intent=none_intent,
+            none_idx=none_idx,
+            input_type=input_type,
             tokenizer_type=tokenizer_type,
             preprocessing_type=preprocessing_type,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir,
-            none_folder=none_folder,
-            none_idx=none_idx,
-            none_size=none_size
+            output_folder=run_dir
         )
-        if input_type == "delexicalised":
-            dataset.build_slotdic()
-            dataset.embed_slots(slot_averaging, dataset.slotdic)
 
     elif dataset_type == "atis":
         dataset = AtisDataset(
             dataset_folder=dataset_folder,
-            restrict_to_intent=restrict_to_intent,
-            input_type="utterance",
             dataset_size=dataset_size,
+            restrict_intent=restrict_intent,
+            none_folder=none_folder,
+            none_size=none_size,
+            none_intent=none_intent,
+            none_idx=none_idx,
+            input_type=input_type,
             tokenizer_type=tokenizer_type,
             preprocessing_type=preprocessing_type,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir,
-            none_folder=none_folder,
-            none_idx=none_idx,
-            none_size=none_size
-        )
-    elif dataset_type == "spam":
-        dataset = SpamDataset(
-            dataset_folder=dataset_folder,
-            restrict_to_intent=restrict_to_intent,
-            input_type="utterance",
-            dataset_size=dataset_size,
-            tokenizer_type=tokenizer_type,
-            preprocessing_type=preprocessing_type,
-            max_sequence_length=max_sequence_length,
-            embedding_type=embedding_type,
-            embedding_dimension=embedding_dimension,
-            max_vocab_size=max_vocab_size,
-            output_folder=run_dir,
-            none_folder=none_folder,
-            none_idx=none_idx,
-            none_size=none_size
+            output_folder=run_dir
         )
     elif dataset_type == "yelp":
         dataset = YelpDataset(
             dataset_folder=dataset_folder,
-            restrict_to_intent=restrict_to_intent,
-            input_type="utterance",
             dataset_size=dataset_size,
+            restrict_intent=restrict_intent,
+            none_folder=none_folder,
+            none_size=none_size,
+            none_intent=none_intent,
+            none_idx=none_idx,
+            input_type=input_type,
             tokenizer_type=tokenizer_type,
             preprocessing_type=preprocessing_type,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir,
-            none_folder=none_folder,
-            none_idx=none_idx,
-            none_size=none_size
+            output_folder=run_dir
         )
     elif dataset_type == "penn-tree-bank":
         dataset = PTBDataset(
             dataset_folder=dataset_folder,
-            restrict_to_intent=restrict_to_intent,
-            input_type="utterance",
             dataset_size=dataset_size,
+            restrict_intent=restrict_intent,
+            none_folder=none_folder,
+            none_size=none_size,
+            none_intent=none_intent,
+            none_idx=none_idx,
+            input_type=input_type,
             tokenizer_type=tokenizer_type,
             preprocessing_type=preprocessing_type,
             max_sequence_length=max_sequence_length,
             embedding_type=embedding_type,
             embedding_dimension=embedding_dimension,
             max_vocab_size=max_vocab_size,
-            output_folder=run_dir,
-            none_folder=none_folder,
-            none_idx=none_idx,
-            none_size=none_size
+            output_folder=run_dir
         )
     else:
         raise TypeError("Unknown dataset type")
 
     dataset.embed_unks(num_special_toks=4)
+    if input_type == "delexicalised":
+        dataset.build_slotdic()
+        dataset.embed_slots(slot_embedding, dataset.slotdic)
 
     return dataset

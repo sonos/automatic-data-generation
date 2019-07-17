@@ -30,19 +30,20 @@ class PTBDataset(BaseDataset):
                  none_idx,
                  none_size):
         super(PTBDataset, self).__init__(dataset_folder,
-                                         restrict_to_intent,
-                                         input_type,
-                                         dataset_size,
-                                         tokenizer_type,
-                                         preprocessing_type,
-                                         max_sequence_length,
-                                         embedding_type,
-                                         embedding_dimension,
-                                         max_vocab_size,
-                                         output_folder,
-                                         none_folder,
-                                         none_idx,
-                                         none_size)
+                                           dataset_size,
+                                           restrict_intent,
+                                           none_folder,
+                                           none_size,
+                                           none_intent,
+                                           none_idx,
+                                           input_type,
+                                           tokenizer_type,
+                                           preprocessing_type,
+                                           max_sequence_length,
+                                           embedding_type,
+                                           embedding_dimension,
+                                           max_vocab_size,
+                                           output_folder)
 
     @staticmethod
     def get_datafields(text, delex, label, intent):

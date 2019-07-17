@@ -12,7 +12,7 @@ from nltk import word_tokenize
 
 from automatic_data_generation.data.base_dataset import BaseDataset
 from automatic_data_generation.data.utils import get_groups
-from automatic_data_generation.utils.constants import NO_SLOT_AVERAGING
+from automatic_data_generation.utils.constants import NO_SLOT_EMBEDDING
 from automatic_data_generation.utils.io import read_csv
 
 
@@ -23,35 +23,37 @@ class SnipsDataset(BaseDataset):
 
     def __init__(self,
                  dataset_folder,
-                 restrict_to_intent,
-                 input_type,
                  dataset_size,
+                 restrict_intent,
+                 none_folder,
+                 none_size,
+                 none_intent,
+                 none_idx,
+                 input_type,
                  tokenizer_type,
                  preprocessing_type,
                  max_sequence_length,
                  embedding_type,
                  embedding_dimension,
                  max_vocab_size,
-                 output_folder,
-                 none_folder,
-                 none_idx,
-                 none_size):
+                 output_folder):
         self.skip_header = True
         self.slotdic = None
         super(SnipsDataset, self).__init__(dataset_folder,
-                                           restrict_to_intent,
-                                           input_type,
                                            dataset_size,
+                                           restrict_intent,
+                                           none_folder,
+                                           none_size,
+                                           none_intent,
+                                           none_idx,
+                                           input_type,
                                            tokenizer_type,
                                            preprocessing_type,
                                            max_sequence_length,
                                            embedding_type,
                                            embedding_dimension,
                                            max_vocab_size,
-                                           output_folder,
-                                           none_folder,
-                                           none_idx,
-                                           none_size)
+                                           output_folder)
 
     @staticmethod
     def get_datafields(text, delex, label, intent):
@@ -68,14 +70,19 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
-    @staticmethod
-    def add_nones(sentences, none_folder, none_idx, none_size):
+    def add_nones(self, sentences, none_folder, none_size=None, none_intent=None, none_idx=None):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
+        if none_intent is not None:
+            none_sentences = self.filter_intents(none_sentences, none_intent)
         random.shuffle(none_sentences)
         for row in none_sentences[:none_size]:
-            utterance = row[none_idx]
-            new_row = [utterance, 'O ' * len(word_tokenize(utterance)),
+            if 'snips' in str(none_folder):
+                new_row = row
+                new_row[3] = 'None'
+            else:
+                utterance = row[none_idx]
+                new_row = [utterance, 'O ' * len(word_tokenize(utterance)),
                        utterance, 'None']
             sentences.append(new_row)
         return sentences
@@ -117,7 +124,7 @@ class SnipsDataset(BaseDataset):
 
         return len(loaded_i2w)
 
-    def embed_slots(self, averaging, slotdic):
+    def embed_slots(self, slot_embedding, slotdic):
         """
         Create embeddings for the slots in the Snips dataset
         """
@@ -126,7 +133,7 @@ class SnipsDataset(BaseDataset):
                 "Slot embedding only available for delexicalised utterances"
             )
 
-        if averaging == NO_SLOT_AVERAGING:
+        if slot_embedding == NO_SLOT_EMBEDDING:
             return
 
         for i, token in enumerate(self.i2w):
@@ -135,8 +142,15 @@ class SnipsDataset(BaseDataset):
                 new_vectors = []
 
                 slot_values = slotdic[slot]
-
-                if averaging == 'micro':
+                
+                if slot_embedding == "litteral":
+                    slot_tokens = slot.split('_')
+                    for slot_token in slot_tokens:
+                        new_vectors.append(self.text.vocab.vectors[
+                        self.text.vocab.stoi[slot_token]])
+                    new_vector = torch.mean(torch.stack(new_vectors), dim=0)
+                
+                elif slot_embedding == 'micro':
                     for slot_value in slot_values:
                         for word in self.tokenize(slot_value):
                             if self.text.vocab.stoi[word] != '<unk>':
@@ -144,9 +158,9 @@ class SnipsDataset(BaseDataset):
                                     self.text.vocab.vectors[
                                         self.text.vocab.stoi[word]]
                                 )
-                    new_vector = torch.mean(torch.stack(new_vectors))
+                    new_vector = torch.mean(torch.stack(new_vectors), dim=0)
 
-                elif averaging == 'macro':
+                elif slot_embedding == 'macro':
                     for slot_value in slot_values:
                         tmp = []
                         for word in self.tokenize(slot_value):
@@ -156,10 +170,10 @@ class SnipsDataset(BaseDataset):
                                         self.text.vocab.stoi[word]]
                                 )
                         new_vectors.append(torch.mean(torch.stack(tmp)))
-                    new_vector = torch.mean(torch.stack(new_vectors))
+                    new_vector = torch.mean(torch.stack(new_vectors), dim=0)
 
                 else:
-                    raise ValueError("Unknown averaging strategy")
+                    raise ValueError("Unknown averaging strategy: {}".format(slot_embedding))
 
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector

@@ -13,6 +13,7 @@ from automatic_data_generation.training.losses import (compute_bow_loss,
                                                        compute_label_loss,
                                                        compute_recon_loss,
                                                        compute_kl_loss)
+from automatic_data_generation.data.utils import idx2word
 from automatic_data_generation.utils.utils import to_device
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
@@ -30,12 +31,14 @@ class Trainer(object):
                  kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
                  label_anneal_rate=0.01, label_anneal_time=100, label_anneal_target=1.,
                  add_bow_loss=False, force_cpu=False,
-                 run_dir=None):
+                 run_dir=None, i2w=None, i2int=None):
 
         self.force_cpu = force_cpu
         self.dataset = dataset
         self.model = model
         self.optimizer = optimizer
+        self.i2w = i2w
+        self.i2int = i2int
 
         self.batch_size = batch_size
 
@@ -48,7 +51,7 @@ class Trainer(object):
         self.label_anneal_target = label_anneal_target
         self.add_bow_loss = add_bow_loss
 
-        self.epoch = -1
+        self.epoch = 0
         self.step = 0
         self.latent_rep = {i: [] for i in range(self.model.n_classes)}
 
@@ -164,9 +167,23 @@ class Trainer(object):
                 y = y[sorted_idx]
 
             logp, mean, logv, logc, z, bow = self.model(input, lengths)
+
+            # _, reversed_idx = torch.sort(sorted_idx)
+            # y = y[reversed_idx]
+            # logc = logc[reversed_idx]
+            # real_label = [self.i2int[label] for label in y]
+            # pred_label = []
+            # for i, pred in enumerate(logc.max(1)[1]):
+            #     if pred<len(self.i2int):
+            #         pred_label.append((self.i2int[pred], torch.exp(logc[i,pred]).item()))
+            #     else:
+            #         pred_label.append((None, torch.exp(logc[i,pred]).item()))
+            # print(idx2word(input[:5], self.i2w, self.i2w.index('<eos>')))
+            # print(real_label[:5])
+            # print(pred_label[:5])
+            # print('\n')
             
             # save latent representation
-            # TODO: to be ideally added to tensorboard
             if train_or_dev == "train":
                 if is_last_epoch and self.model.conditional:
                     for i, intent in enumerate(y):
@@ -214,10 +231,14 @@ class Trainer(object):
 
         # labels loss
         if self.model.conditional == 'supervised':
+            if 'None' in self.dataset.i2int:
+                none_idx = self.dataset.int2i['None']
+            else:
+                none_idx = -100
             label_loss, label_weight = compute_label_loss(
                 logc, y, self.annealing_strategy, self.step,
                 self.label_anneal_time, self.label_anneal_rate,
-                self.label_anneal_target)
+                self.label_anneal_target,  none_idx=none_idx)
             total_loss += label_weight * label_loss
         elif self.model.conditional == 'unsupervised':
             entropy = torch.sum(
