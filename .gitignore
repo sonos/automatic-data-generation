@@ -2,9 +2,11 @@
 *.json
 .idea/*
 venv*
+*.pyc
 *egg-info/*
 runs/*
 tests/*
 output/
+data/snips_slu_benchmark/
 __pycache__/
 .vector_cache/
