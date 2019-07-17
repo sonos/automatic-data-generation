@@ -23,9 +23,7 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
 
 INTENTS = {
-    "AddToPlaylist": {
-        'artist': 'snips/musicArtist',
-    },
+    "AddToPlaylist": {},
     "BookRestaurant": {
         'timerange': 'snips/datetime',
         'party_size_number': 'snips/number',
@@ -38,11 +36,7 @@ INTENTS = {
         'timerange': 'snips/datetime',
     },
     "SearchCreativeWork": {},
-    "PlayMusic": {
-        'track': 'snips/musicTrack',
-        'artist': 'snips/musicArtist',
-        'album': 'snips/musicAlbum',
-    },
+    "PlayMusic": {},
     "SearchScreeningEvent": {
         'timerange': 'snips/datetime',
     },
@@ -53,10 +47,9 @@ ENTITY_MAPPING = {
     'party_size_number': 'snips/number',
     'rating_value': 'snips/number',
     'best_rating': 'snips/number',
-    'track': 'snips/musicTrack',
-    'artist': 'snips/musicArtist',
-    'album': 'snips/musicAlbum',
 }
+
+PUNCTUATIONS = [',', '.', ';', '?', '!', '\"']
 
 ROOT_PATH = Path('../nlu-benchmark/2017-06-custom-intent-engines/')
 
@@ -71,11 +64,14 @@ def main():
 def get_utterance_list(output_folder):
     sentence_list = []
     for intent in INTENTS:
-        path = ROOT_PATH / intent / 'validate_' + intent + '.json'
+        path = ROOT_PATH / intent / 'validate_{}.json'.format(intent)
         dataset = load_json(path)
         to_add = []
         for query in dataset[intent]:
-            to_add.append(''.join([chunk['text'] for chunk in query['data']]))
+            text = ''.join([chunk['text'] for chunk in query['data']])
+            for p in PUNCTUATIONS:
+                text = text.replace(p, '')
+            to_add.append(text.replace)
 
         sentence_list.extend(to_add)
 
@@ -222,7 +218,12 @@ def create_datasets(path_to_data_folders):
     for t in data_root_folder.iterdir():  # iterate over train size
         if not t.is_dir():  # ignore reference train
             continue
-        train_size = int(str(t).split('_')[-1])
+        if 'runs' not in str(t):
+            continue
+        try:
+            train_size = int(str(t).split('_')[-1])
+        except:
+            import ipdb; ipdb.set_trace()
         LOGGER.info("Processing datasets of size: %s" % train_size)
         for s in t.iterdir():  # iterate over seeds
             if not s.is_dir():  # ignore pkl

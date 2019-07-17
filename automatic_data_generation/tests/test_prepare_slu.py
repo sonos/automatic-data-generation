@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 
 import unittest
 
-from automatic_data_generation.utils.prepare_slu_data import merge_entity_dict, \
-    augment_dataset, compute_dataset_size
+from automatic_data_generation.utils.slu_benchmarks.prepare_slu_data import (
+    merge_entity_dict, augment_dataset, compute_dataset_size)
 
 
 class TestPrepareSLU(unittest.TestCase):
