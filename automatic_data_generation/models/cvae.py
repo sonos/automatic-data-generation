@@ -151,7 +151,7 @@ class CVAE(nn.Module):
 
         if self.bidirectional or self.num_layers_decoder > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.num_layers_decoder, batch_size, self.hidden_size)
+            hidden = hidden.view(self.num_layers_decoder, batch_size, self.hidden_size_decoder)
         else:
             hidden = hidden.unsqueeze(0)
 

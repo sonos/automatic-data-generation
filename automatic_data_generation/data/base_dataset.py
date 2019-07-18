@@ -20,22 +20,22 @@ class BaseDataset(object):
     __metaclass__ = ABCMeta
 
     def __init__(self,
-                 dataset_folder:str,
-                 dataset_size:int,
-                 restrict_intents:list,
-                 none_folder:str,
-                 none_size:int,
-                 none_intents:list,
-                 none_idx:int,
-                 cosine_threshold:float,
-                 input_type:str,
-                 tokenizer_type:str,
-                 preprocessing_type:str,
-                 max_sequence_length:int,
-                 embedding_type:str,
-                 embedding_dimension:int,
-                 max_vocab_size:int,
-                 output_folder:str):
+                 dataset_folder,
+                 dataset_size,
+                 restrict_intents,
+                 none_folder,
+                 none_size,
+                 none_intents,
+                 none_idx,
+                 cosine_threshold,
+                 input_type,
+                 tokenizer_type,
+                 preprocessing_type,
+                 max_sequence_length,
+                 embedding_type,
+                 embedding_dimension,
+                 max_vocab_size,
+                 output_folder):
 
         self.input_type = input_type
         self.tokenize = make_tokenizer(tokenizer_type, preprocessing_type)
@@ -117,7 +117,6 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
     def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, none_idx=None, cosine_threshold=None):
         """
@@ -225,10 +224,9 @@ class BaseDataset(object):
     def select_none_intents(self, dataset_folder, restrict_intents, none_folder, cosine_threshold):
         # select none intents according to overlap with original intents
         selected_none_intents = []
-        non_intents = []
         def cosine(u, v):
             return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-        intent_vectors = self.load_intent_vectors(dataset_folder)
+        intent_vectors = self.load_intent_vectors(dataset_folder) # this is cheating a bit !
         none_vectors = self.load_intent_vectors(none_folder)
         for none_intent, none_vector in none_vectors.items():
             for intent, intent_vector in intent_vectors.items():
