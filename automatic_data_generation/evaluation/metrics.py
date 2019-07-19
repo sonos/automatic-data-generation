@@ -16,8 +16,8 @@ def my_remove(list, elt):
 
 def compute_generation_metrics(dataset, sentences, intents, logp,
                                input_type='utterance', compute_entropy=True):
-    i2int = dataset.intent.vocab.itos
-    int2i = dataset.intent.vocab.stoi
+
+    i2int = dataset.i2int
     references_train = {intent: [] for intent in i2int}
     references_valid = {intent: [] for intent in i2int}
     candidates = {intent: [] for intent in i2int}
@@ -31,6 +31,10 @@ def compute_generation_metrics(dataset, sentences, intents, logp,
     for i, example in enumerate(sentences):
         candidates[intents[i]].append(dataset.tokenize(example))
 
+    del references_train['None']
+    del references_valid['None']
+    del candidates['None']
+        
     accuracies = intent_classification(
         candidates,
         train_path=dataset.original_train_path,

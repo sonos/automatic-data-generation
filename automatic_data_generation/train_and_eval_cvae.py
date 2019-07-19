@@ -230,7 +230,7 @@ def main():
     parser.add_argument('--none-size', type=int, default=None)
     parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--cosine_threshold', type=float, default=None)
+    parser.add_argument('--cosine-threshold', type=float, default=None)
 
     # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
