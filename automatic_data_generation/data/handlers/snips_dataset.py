@@ -11,7 +11,7 @@ import torch
 from nltk import word_tokenize
 
 from automatic_data_generation.data.base_dataset import BaseDataset
-from automatic_data_generation.data.utils import get_groups
+from automatic_data_generation.data.utils.utils import get_groups
 from automatic_data_generation.utils.constants import NO_SLOT_EMBEDDING
 from automatic_data_generation.utils.io import read_csv
 
@@ -72,7 +72,8 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
-    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, none_idx=None):
+    def add_nones(self, sentences, none_folder, none_size=None,
+                  none_intents=None, none_idx=None):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
 
