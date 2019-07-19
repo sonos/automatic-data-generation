@@ -13,7 +13,6 @@ from automatic_data_generation.training.losses import (compute_bow_loss,
                                                        compute_label_loss,
                                                        compute_recon_loss,
                                                        compute_kl_loss)
-from automatic_data_generation.data.utils import idx2word
 from automatic_data_generation.utils.utils import to_device
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
@@ -26,12 +25,15 @@ LOGGER.setLevel(logging.INFO)
 
 
 class Trainer(object):
-    def __init__(self, dataset, model, optimizer, batch_size=64,
-                 annealing_strategy='logistic',
-                 kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
-                 label_anneal_rate=0.01, label_anneal_time=100, label_anneal_target=1.,
-                 add_bow_loss=False, force_cpu=False,
-                 run_dir=None, i2w=None, i2int=None):
+    def __init__(
+            self, dataset, model, optimizer, batch_size=64,
+            annealing_strategy='logistic',
+            kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
+            label_anneal_rate=0.01, label_anneal_time=100,
+            label_anneal_target=1.,
+            add_bow_loss=False, force_cpu=False,
+            run_dir=None, i2w=None, i2int=None
+    ):
 
         self.force_cpu = force_cpu
         self.dataset = dataset
@@ -62,8 +64,9 @@ class Trainer(object):
                 'conditioning_accuracy': [],
                 'total_loss': [],
                 'classifications': {real_intent:
-                                    {pred_intent: 0 for pred_intent in self.i2int+['None']}
-                                    for real_intent in self.i2int+['None']}
+                                        {pred_intent: 0 for pred_intent in
+                                         self.i2int + ['None']}
+                                    for real_intent in self.i2int + ['None']}
             },
             'dev': {
                 'recon_loss': [],
@@ -71,8 +74,9 @@ class Trainer(object):
                 'conditioning_accuracy': [],
                 'total_loss': [],
                 'classifications': {real_intent:
-                                    {pred_intent: 0 for pred_intent in self.i2int+['None']}
-                                    for real_intent in self.i2int+['None']}
+                                        {pred_intent: 0 for pred_intent in
+                                         self.i2int + ['None']}
+                                    for real_intent in self.i2int + ['None']}
             }
         }
         self.summary_writer = SummaryWriter(log_dir=run_dir)
@@ -136,7 +140,6 @@ class Trainer(object):
                 self.run_logs['dev']['total_loss'].append(
                     dev_loss.cpu().detach().numpy().item())
 
-
     def do_one_sweep(self, iter, is_last_epoch, train_or_dev):
         if train_or_dev not in ['train', 'dev']:
             raise TypeError("train_or_dev should be either train or dev")
@@ -175,13 +178,17 @@ class Trainer(object):
 
             logp, mean, logv, logc, z, bow = self.model(input, lengths)
 
+            # save classifications
             _, reversed_idx = torch.sort(sorted_idx)
             y = y[reversed_idx]
             logc = logc[reversed_idx]
             real_labels = [self.i2int[label] for label in y]
-            pred_labels = [self.i2int[label] if label<len(self.i2int) else 'None' for label in logc.max(1)[1]]
+            pred_labels = [
+                self.i2int[label] if label < len(self.i2int) else 'None' for
+                label in logc.max(1)[1]]
             for real_label, pred_label in zip(real_labels, pred_labels):
-                self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
+                self.run_logs[train_or_dev]['classifications'][real_label][
+                    pred_label] += 1
 
             # save latent representation
             if train_or_dev == "train":
@@ -220,7 +227,7 @@ class Trainer(object):
         # kl loss
         kl_weight, kl_losses = compute_kl_loss(
             logv, mean, self.annealing_strategy, self.step,
-             self.kl_anneal_rate, self.kl_anneal_time, self.kl_anneal_target)
+            self.kl_anneal_rate, self.kl_anneal_time, self.kl_anneal_target)
         kl_loss = torch.sum(kl_losses)
 
         total_loss = (recon_loss + kl_weight * kl_loss)
@@ -238,7 +245,7 @@ class Trainer(object):
             label_loss, label_weight = compute_label_loss(
                 logc, y, self.annealing_strategy, self.step,
                 self.label_anneal_time, self.label_anneal_rate,
-                self.label_anneal_target,  none_idx=none_idx)
+                self.label_anneal_target, none_idx=none_idx)
             total_loss += label_weight * label_loss
         elif self.model.conditional == 'unsupervised':
             entropy = torch.sum(
