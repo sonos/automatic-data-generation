@@ -31,25 +31,27 @@ DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', '_restaurant_type_', 'a',
                'type']
 
 
-def create_snips_dataset(dataset_path, restrict_to_intent=None,
+def create_snips_dataset(dataset_path, restrict_intents=None,
                          input_type='utterance',
                          dataset_size=None, none_folder=None,
-                         none_size=None, none_idx=None,
+                         none_size=None, none_idx=None, none_intents=None,
                          output_folder=None):
     return SnipsDataset(
         dataset_folder=dataset_path,
-        restrict_to_intent=restrict_to_intent,
-        input_type=input_type,
         dataset_size=dataset_size,
+        restrict_intents=restrict_intents,
+        none_folder=none_folder,
+        none_size=none_size,
+        none_intents=none_intents,
+        none_idx=none_idx,
+        cosine_threshold=None,
+        input_type=input_type,
         tokenizer_type='nltk',
         preprocessing_type='no_preprocessing',
         max_sequence_length=10,
         embedding_type='random',
         embedding_dimension=100,
         max_vocab_size=10000,
-        none_folder=none_folder,
-        none_idx=none_idx,
-        none_size=none_size,
         output_folder=output_folder
     )
 
@@ -107,7 +109,7 @@ class TestSnipsDataset(unittest.TestCase):
         if not output_folder.exists():
             output_folder.mkdir()
         dataset = create_snips_dataset(DATASET_ROOT,
-                                       restrict_to_intent=['GetWeather'],
+                                       restrict_intents=['GetWeather'],
                                        input_type='utterance',
                                        output_folder=output_folder)
         self.assertEqual(dataset.len_train, 4)
@@ -124,7 +126,7 @@ class TestSnipsDataset(unittest.TestCase):
         if not output_folder.exists():
             output_folder.mkdir()
         dataset = create_snips_dataset(DATASET_ROOT,
-                                       restrict_to_intent=['GetWeather'],
+                                       restrict_intents=['GetWeather'],
                                        none_folder=none_folder, none_idx=0,
                                        none_size=4,
                                        dataset_size=3,
