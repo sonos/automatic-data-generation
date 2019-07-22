@@ -32,18 +32,21 @@ def compute_generation_metrics(dataset, sentences, intents, logp,
     for i, example in enumerate(sentences):
         candidates[intents[i]].append(dataset.tokenize(example))
 
-    del references_train['None']
-    del references_valid['None']
-    del candidates['None']
+    references_train.pop('None', None)
+    references_valid.pop('None', None)
+    candidates.pop('None', None)
 
-    accuracies = intent_classification(
+    accuracies, correctly_classified_candidates = intent_classification(
         candidates,
         train_path=dataset.original_train_path,
         input_type=input_type
     )  # only keep well-conditioned candidates
-
-    bleu_scores = calc_bleu(candidates, references_valid, input_type)
-    originality, transfer = calc_originality_and_transfer(candidates,
+    correctly_classified_candidates = {k:v for (k,v) in correctly_classified_candidates.items() if v} # discard empty intents
+    
+    bleu_scores = calc_bleu(correctly_classified_candidates,
+                            references_valid,
+                            input_type)
+    originality, transfer = calc_originality_and_transfer(correctly_classified_candidates,
                                                           references_train,
                                                           input_type)
     diversity = calc_diversity(dataset, sentences)
@@ -162,17 +165,18 @@ def intent_classification(candidates, train_path, input_type):
         This only works for snips dataset for now...
     """
     accuracies = {}
+    correctly_classified_candidates = {intent: [] for intent in candidates.keys()}
     intent_classifier = train_intent_classifier(train_path, input_type)
     for intent, tokenized_sentences in candidates.items():
         sentences = [' '.join(sentence) for sentence in tokenized_sentences]
         preds = intent_classifier.predict(sentences)
         corrects = [pred == intent for pred in preds]
-        candidates[intent] = [cand for i, cand in enumerate(candidates[intent])
+        correctly_classified_candidates[intent] = [cand for i, cand in enumerate(candidates[intent])
                               if corrects[i]]
         accuracy = sum(corrects) / len(preds)
         accuracies[intent] = accuracy
     accuracies['avg'] = np.mean([x for x in accuracies.values()])
-    return accuracies
+    return accuracies, correctly_classified_candidates
 
 
 def train_intent_classifier(train_path, input_type):
