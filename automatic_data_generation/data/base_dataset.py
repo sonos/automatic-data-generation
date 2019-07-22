@@ -1,13 +1,24 @@
+import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
 
+import numpy as np
 import torch
 import torchtext
 from sklearn.model_selection import StratifiedShuffleSplit
 from torchtext.data import BucketIterator
 
-from automatic_data_generation.data.utils import (get_fields, make_tokenizer)
+from automatic_data_generation.data.utils.utils import (get_fields,
+                                                        make_tokenizer)
 from automatic_data_generation.utils.io import (read_csv, write_csv)
+
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
+                           '[%(filename)s:%(lineno)d] %(message)s',
+                    datefmt='%Y-%m-%d:%H:%M:%S',
+                    level=logging.INFO)
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 class BaseDataset(object):
@@ -21,11 +32,12 @@ class BaseDataset(object):
     def __init__(self,
                  dataset_folder,
                  dataset_size,
-                 restrict_intent,
+                 restrict_intents,
                  none_folder,
                  none_size,
-                 none_intent,
+                 none_intents,
                  none_idx,
+                 cosine_threshold,
                  input_type,
                  tokenizer_type,
                  preprocessing_type,
@@ -46,8 +58,8 @@ class BaseDataset(object):
                                                       intent)
 
         train_path, valid_path = self.build_data_files(
-            dataset_folder, dataset_size, restrict_intent,
-            none_folder, none_size, none_intent, none_idx,
+            dataset_folder, dataset_size, restrict_intents,
+            none_folder, none_size, none_intents, none_idx, cosine_threshold,
             output_folder, skip_header)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
@@ -115,16 +127,19 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def add_nones(sentences, none_folder, none_idx, none_size):
+    def add_nones(self, sentences, none_folder, none_size=None,
+                  none_intents=None, none_idx=None):
         """
         Get metadata relating to sample with index `item`.
         Args:
             sentences (list(list(str)): sentences to augment with None data
             none_folder (Path): path to the folder with None data
-            none_idx (int): column index for data in None file
             none_size (int): number of None sentences to add
+            none_intents (list(str)): restriction on intents of the None
+                sentences
+            none_idx (int): column index for data in None file
+
 
         Returns:
             augmented_sentences (list(list(str)): list of sentences
@@ -153,9 +168,11 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    def build_data_files(self, dataset_folder,  dataset_size=None, restrict_intent=None,
-                         none_folder=None, none_size=None, none_intent=None, none_idx=None,
-                         output_folder=None, skip_header=True):
+    def build_data_files(self, dataset_folder, dataset_size=None,
+                         restrict_intents=None, none_folder=None,
+                         none_size=None, none_intents=None, none_idx=None,
+                         cosine_threshold=None, output_folder=None,
+                         skip_header=True):
 
         original_train_path = dataset_folder / 'train.csv'
         original_test_path = dataset_folder / 'validate.csv'
@@ -171,10 +188,10 @@ class BaseDataset(object):
 
         # filter intents
         filter_prefix = ''
-        if restrict_intent is not None:
+        if restrict_intents is not None:
             filter_prefix = '_filtered'
-            new_train = self.filter_intents(new_train, restrict_intent)
-            new_test = self.filter_intents(new_test, restrict_intent)
+            new_train = self.filter_intents(new_train, restrict_intents)
+            new_test = self.filter_intents(new_test, restrict_intents)
 
         # trim_dataset
         trim_prefix = ''
@@ -195,8 +212,19 @@ class BaseDataset(object):
         if none_size is not None:
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
-            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intent=none_intent, none_idx=none_idx)
-            new_test = self.add_nones(new_test, none_folder, none_size=200, none_intent=none_intent, none_idx=none_idx)
+            if cosine_threshold is not None:
+                none_intents = self.select_none_intents(
+                    dataset_folder, restrict_intents, none_folder,
+                    cosine_threshold
+                )
+            new_train = self.add_nones(
+                new_train, none_folder, none_size=none_size,
+                none_intents=none_intents, none_idx=none_idx
+            )
+            new_test = self.add_nones(
+                new_test, none_folder, none_size=200,
+                none_intents=none_intents, none_idx=none_idx
+            )
 
         if output_folder is not None:
             new_train_path = output_folder / 'train{}{}{}.csv'.format(
@@ -217,6 +245,33 @@ class BaseDataset(object):
         write_csv(new_train, new_train_path)
 
         return new_train_path, new_test_path
+
+    def select_none_intents(self, dataset_folder, restrict_intents,
+                            none_folder, cosine_threshold):
+        """
+        Select none intents which embeddings are close to original intents
+        """
+
+        def cosine(u, v):
+            return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
+
+        intent_vectors = self.load_intent_vectors(
+            dataset_folder)  # TODO: recompute embedding for intents on the fly
+        none_vectors = self.load_intent_vectors(none_folder)
+
+        selected_none_intents = []
+        for none_intent, none_vector in none_vectors.items():
+            for intent, intent_vector in intent_vectors.items():
+                if restrict_intents is not None and intent not in \
+                        restrict_intents:
+                    continue
+                if cosine(none_vector, intent_vector) > cosine_threshold:
+                    LOGGER.info('none intent {} is close to {}'.format(
+                        none_intent, intent))
+                    selected_none_intents.append(none_intent)
+                    break
+
+        return selected_none_intents
 
     @property
     def len_train(self):
@@ -288,6 +343,10 @@ class BaseDataset(object):
             "total number of words are {}"
                 .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
+
+    def load_intent_vectors(self, dataset_folder):
+        intent_vectors_path = dataset_folder / 'vectors.pkl'
+        return torch.load(intent_vectors_path)
 
     def save(self, folder):
         # TODO slotdic is not defined except for Snips dataset

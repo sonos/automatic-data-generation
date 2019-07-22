@@ -15,6 +15,9 @@ def annealing_fn(annealing_strategy, step, k, x, m):
 
 
 def compute_recon_loss(pad_idx, vocab_size, length, logp, target):
+    """
+    Reconstruction loss
+    """
     # cut-off unnecessary padding from target, and flatten
     target = target[:, :torch.max(length).item()].contiguous().view(-1)
     logp = logp.view(-1, vocab_size)
@@ -24,12 +27,18 @@ def compute_recon_loss(pad_idx, vocab_size, length, logp, target):
 
 
 def compute_kl_loss(logv, mean, annealing_strategy, step, k, x, m):
+    """
+    Kullback-Leibler loss
+    """
     kl_weight = annealing_fn(annealing_strategy, step, k, x, m)
     kl_losses = -0.5 * torch.sum((1 + logv - mean.pow(2) - logv.exp()), dim=0)
     return kl_weight, kl_losses
 
 
 def compute_bow_loss(batch_size, bow, target):
+    """
+    Bag-of-words loss (Zhao et al., 2017)
+    """
     if bow is not None:
         bow.view(batch_size, -1)
         return - torch.einsum('iik->', bow[:, target])
@@ -37,8 +46,11 @@ def compute_bow_loss(batch_size, bow, target):
         return torch.Tensor([0])
 
 
-def compute_label_loss(logc, target, annealing_strategy, step, k, x, m, none_idx):
-    # Negative Log Likelihood
+def compute_label_loss(logc, target, annealing_strategy, step, k, x, m,
+                       none_idx):
+    """
+    Label loss for supervision
+    """
     label_weight = annealing_fn(annealing_strategy, step, k, x, m)
     nll_label = torch.nn.NLLLoss(reduction='sum', ignore_index=none_idx)
     label_loss = nll_label(logc, target)

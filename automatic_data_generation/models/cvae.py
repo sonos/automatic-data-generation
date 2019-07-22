@@ -14,15 +14,18 @@ class CVAE(nn.Module):
         to the conditional case
     """
 
-    def __init__(self, conditional=None, compute_bow=False,
-                 vocab_size=None,
-                 embedding_size=100, rnn_type='gru',
-                 hidden_size=128, word_dropout_rate=0,
-                 embedding_dropout_rate=0, z_size=100, n_classes=10,
-                 cat_size=10,
-                 sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
-                 max_sequence_length=30, num_layers=1, bidirectional=False,
-                 temperature=1, force_cpu=False):
+    def __init__(
+            self, conditional=None, compute_bow=False,
+            vocab_size=None,
+            embedding_size=100, rnn_type='gru',
+            hidden_size_encoder=128, hidden_size_decoder=128,
+            word_dropout_rate=0, embedding_dropout_rate=0,
+            z_size=100, n_classes=10, cat_size=10,
+            sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
+            max_sequence_length=30, num_layers_encoder=1, num_layers_decoder=1,
+            bidirectional=False,
+            temperature=1, force_cpu=False
+    ):
 
         super().__init__()
         self.tensor = torch.cuda.FloatTensor if torch.cuda.is_available() \
@@ -44,8 +47,10 @@ class CVAE(nn.Module):
 
         self.rnn_type = rnn_type
         self.bidirectional = bidirectional
-        self.num_layers = num_layers
-        self.hidden_size = hidden_size
+        self.num_layers_encoder = num_layers_encoder
+        self.num_layers_decoder = num_layers_decoder
+        self.hidden_size_encoder = hidden_size_encoder
+        self.hidden_size_decoder = hidden_size_decoder
         self.temperature = temperature
 
         if vocab_size is None:
@@ -69,29 +74,33 @@ class CVAE(nn.Module):
 
         self.encoder_rnn = rnn(
             embedding_size,
-            hidden_size,
-            num_layers=num_layers,
+            hidden_size_encoder,
+            num_layers=num_layers_encoder,
             bidirectional=self.bidirectional,
             batch_first=True)
         self.decoder_rnn = rnn(
             embedding_size,
-            hidden_size,
-            num_layers=num_layers,
+            hidden_size_decoder,
+            num_layers=num_layers_decoder,
             bidirectional=False,
             batch_first=True
         )  # decoder should be unidirectional
-        self.hidden_factor = (2 if bidirectional else 1) * num_layers
-        self.hidden2mean = nn.Linear(hidden_size * self.hidden_factor, z_size)
-        self.hidden2logv = nn.Linear(hidden_size * self.hidden_factor, z_size)
+
+        self.hidden_factor_encoder = (2 if bidirectional else 1) * num_layers_encoder
+        self.hidden_factor_decoder = (2 if bidirectional else 1) * num_layers_decoder
+        self.hidden2mean = nn.Linear(
+            hidden_size_encoder * self.hidden_factor_encoder, z_size)
+        self.hidden2logv = nn.Linear(
+            hidden_size_encoder * self.hidden_factor_encoder, z_size)
 
         if conditional:
             self.hidden2cat = nn.Linear(
-                hidden_size * self.hidden_factor,
+                hidden_size_encoder * self.hidden_factor_encoder,
                 cat_size
             )
         self.latent2hidden = nn.Linear(
             self.latent_size,
-            hidden_size * self.num_layers
+            hidden_size_decoder * self.num_layers_decoder
         )
 
         if self.bow:
@@ -102,7 +111,7 @@ class CVAE(nn.Module):
                 nn.Linear(int((self.z_size + vocab_size) / 2), vocab_size)
             )
 
-        self.outputs2vocab = nn.Linear(hidden_size, vocab_size)
+        self.outputs2vocab = nn.Linear(hidden_size_decoder, vocab_size)
 
     def forward(self, input_sequence, lengths):
         batch_size = input_sequence.size(0)
@@ -118,11 +127,11 @@ class CVAE(nn.Module):
         )
         _, hidden = self.encoder_rnn(packed_input)
 
-        if self.bidirectional or self.num_layers > 1:
+        if self.bidirectional or self.num_layers_encoder > 1:
             # flatten hidden state
             hidden = hidden.view(
                 batch_size,
-                self.hidden_size * self.hidden_factor
+                self.hidden_size_encoder * self.hidden_factor_encoder
             )
         else:
             hidden = hidden.squeeze()
@@ -145,9 +154,10 @@ class CVAE(nn.Module):
         # DECODER
         hidden = self.latent2hidden(latent)
 
-        if self.bidirectional or self.num_layers > 1:
+        if self.bidirectional or self.num_layers_decoder > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.num_layers, batch_size, self.hidden_size)
+            hidden = hidden.view(self.num_layers_decoder, batch_size,
+                                 self.hidden_size_decoder)
         else:
             hidden = hidden.unsqueeze(0)
 
@@ -212,9 +222,10 @@ class CVAE(nn.Module):
 
         hidden = self.latent2hidden(latent)
 
-        if self.bidirectional or self.num_layers > 1:
+        if self.bidirectional or self.num_layers_decoder > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.num_layers, batch_size, self.hidden_size)
+            hidden = hidden.view(self.num_layers_decoder, batch_size,
+                                 self.hidden_size)
         else:
             hidden = hidden.unsqueeze(0)
 
@@ -308,7 +319,8 @@ class CVAE(nn.Module):
             "vocab_size": self.vocab_size,
             "embedding_size": self.embedding_size,
             "rnn_type": self.rnn_type,
-            "hidden_size": self.hidden_size,
+            "hidden_size_encoder": self.hidden_size_encoder,
+            "hidden_size_decoder": self.hidden_size_decoder,
             "word_dropout_rate": self.word_dropout_rate,
             "embedding_dropout_rate": self.embedding_dropout_rate,
             "z_size": self.z_size,
@@ -319,7 +331,8 @@ class CVAE(nn.Module):
             "pad_idx": self.pad_idx,
             "unk_idx": self.unk_idx,
             "max_sequence_length": self.max_sequence_length,
-            "num_layers": self.num_layers,
+            "num_layers_encoder": self.num_layers_encoder,
+            "num_layers_decoder": self.num_layers_decoder,
             "bidirectional": self.bidirectional,
             "temperature": self.temperature,
         }
@@ -335,7 +348,8 @@ class CVAE(nn.Module):
     def update_outputs2vocab(self, original_vocab_size, new_vocab_size):
         # keep the original trained weights on last lawer except for new tokens
         old_outputs2vocab = self.outputs2vocab.weight.data
-        self.outputs2vocab = nn.Linear(self.hidden_size, new_vocab_size)
+        self.outputs2vocab = nn.Linear(self.hidden_size_decoder,
+                                       new_vocab_size)
         self.outputs2vocab.weight.data[:original_vocab_size].copy_(
             old_outputs2vocab)
 
