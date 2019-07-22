@@ -3,9 +3,9 @@
 
 from __future__ import unicode_literals
 
-from automatic_data_generation.data.utils import (idx2word,
-                                                  surface_realisation,
-                                                  word2idx)
+from automatic_data_generation.data.utils.utils import (idx2word,
+                                                        surface_realisation,
+                                                        word2idx)
 
 
 def generate_vae_sentences(model, n_to_generate, input_type, i2int, i2w,

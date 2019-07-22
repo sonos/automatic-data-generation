@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
+from automatic_data_generation.data.utils.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
     generate_vae_sentences
 from automatic_data_generation.evaluation.metrics import \
@@ -55,19 +55,35 @@ def train_and_eval_cvae(args):
         run_dir.mkdir()
 
     # data handling
+    if args.cosine_threshold is not None and args.none_intents is not None:
+        raise ValueError("None intents cannot be specified while using a "
+                         "cosine similarity selection")
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
     none_folder = data_folder / args.none_type
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
-    dataset = create_dataset(args.dataset_type,
-        dataset_folder, args.dataset_size, args.restrict_intent,
-        none_folder, args.none_size, args.none_intent, none_idx,
-        args.input_type, args.tokenizer_type,
-        args.preprocessing_type, args.max_sequence_length,
-        args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        args.slot_embedding, run_dir
+    dataset = create_dataset(
+        dataset_type=args.dataset_type,
+        dataset_folder=dataset_folder,
+        dataset_size=args.dataset_size,
+        restrict_intents=args.restrict_intents,
+        none_folder=none_folder,
+        none_size=args.none_size,
+        none_intents=args.none_intents,
+        none_idx=none_idx,
+        cosine_threshold=args.cosine_threshold,
+        input_type=args.input_type,
+        tokenizer_type=args.tokenizer_type,
+        preprocessing_type=args.preprocessing_type,
+        max_sequence_length=args.max_sequence_length,
+        embedding_type=args.embedding_type,
+        embedding_dimension=args.embedding_dimension,
+        max_vocab_size=args.max_vocab_size,
+        slot_embedding=args.slot_embedding,
+        run_dir=run_dir
     )
+
     if args.load_folder:
         original_vocab_size = dataset.update(args.load_folder)
         LOGGER.info('Loaded vocab from %s' % args.load_folder)
@@ -83,7 +99,8 @@ def train_and_eval_cvae(args):
             vocab_size=dataset.vocab_size,
             embedding_size=args.embedding_dimension,
             rnn_type=args.rnn_type,
-            hidden_size=args.hidden_size,
+            hidden_size_encoder=args.hidden_size_encoder,
+            hidden_size_decoder=args.hidden_size_decoder,
             word_dropout_rate=args.word_dropout_rate,
             embedding_dropout_rate=args.embedding_dropout_rate,
             z_size=args.latent_size,
@@ -94,7 +111,8 @@ def train_and_eval_cvae(args):
             pad_idx=dataset.pad_idx,
             unk_idx=dataset.unk_idx,
             max_sequence_length=args.max_sequence_length,
-            num_layers=args.num_layers,
+            num_layers_encoder=args.num_layers_encoder,
+            num_layers_decoder=args.num_layers_decoder,
             bidirectional=args.bidirectional,
             temperature=args.temperature,
             force_cpu=args.force_cpu
@@ -129,8 +147,8 @@ def train_and_eval_cvae(args):
         add_bow_loss=args.bow_loss,
         force_cpu=args.force_cpu,
         run_dir=run_dir / "tensorboard",
-        i2w = dataset.i2w,
-        i2int = dataset.i2int
+        i2w=dataset.i2w,
+        i2int=dataset.i2int
     )
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
@@ -214,18 +232,23 @@ def main():
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'snips-assistant', 'snips-merged',
-                                 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
-    parser.add_argument('--none-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'snips-merged',
+                                 'snips-dump',
                                  'atis', 'sentiment', 'spam', 'yelp',
                                  'penn-tree-bank'])
     parser.add_argument('--dataset-size', type=int, default=None)
+    parser.add_argument('--restrict-intents', nargs='+', type=str,
+                        default=None)
+
+    # none class
+    parser.add_argument('--none-type', type=str, default='snips',
+                        choices=['snips', 'snips-assistant', 'snips-merged',
+                                 'snips-dump',
+                                 'atis', 'sentiment', 'spam', 'yelp',
+                                 'penn-tree-bank'])
     parser.add_argument('--none-size', type=int, default=None)
-    parser.add_argument('--restrict-intent', nargs='+', type=str,
+    parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--none-intent', nargs='+', type=str,
-                        default=None)
+    parser.add_argument('--cosine-threshold', type=float, default=None)
 
     # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',
@@ -241,7 +264,8 @@ def main():
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-embedding', type=str,
                         default=NO_SLOT_EMBEDDING,
-                        choices=['micro', 'macro', 'litteral', NO_SLOT_EMBEDDING])
+                        choices=['micro', 'macro', 'litteral',
+                                 NO_SLOT_EMBEDDING])
 
     # model
     parser.add_argument('--conditioning', type=str, default='supervised',
@@ -250,13 +274,15 @@ def main():
     parser.add_argument('--bow-loss', action='store_true')
     parser.add_argument('-rnn', '--rnn-type', type=str, default='gru',
                         choices=['rnn', 'gru', 'lstm'])
-    parser.add_argument('-hs', '--hidden-size', type=int, default=256)
+    parser.add_argument('-hse', '--hidden-size-encoder', type=int, default=256)
+    parser.add_argument('-hsd', '--hidden-size-decoder', type=int, default=256)
+    parser.add_argument('-nle', '--num-layers-encoder', type=int, default=1)
+    parser.add_argument('-nld', '--num-layers-decoder', type=int, default=1)
     parser.add_argument('-wd', '--word-dropout-rate', type=float, default=0.)
     parser.add_argument('-ed', '--embedding-dropout-rate', type=float,
                         default=0.5)
     parser.add_argument('-ls', '--latent_size', type=int, default=8)
     parser.add_argument('-cs', '--cat_size', type=int, default=None)
-    parser.add_argument('-nl', '--num_layers', type=int, default=1)
     parser.add_argument('-t', '--temperature', type=float, default=1)
     parser.add_argument('-bi', '--bidirectional', action='store_true')
 
@@ -274,9 +300,9 @@ def main():
                         help='anneal rate for KL weight')
     parser.add_argument('-m1', '--kl-anneal-target', type=float, default=1.,
                         help='final value for KL weight')
-    parser.add_argument('-k2', '--label-anneal-time', type=float, default=100,
+    parser.add_argument('-k2', '--label-anneal-time', type=float, default=0,
                         help='anneal time for label weight')
-    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=0.01,
+    parser.add_argument('-x2', '--label-anneal-rate', type=int, default=100,
                         help='anneal rate for label weight')
     parser.add_argument('-m2', '--label-anneal-target', type=float, default=1.,
                         help='final value for label weight')

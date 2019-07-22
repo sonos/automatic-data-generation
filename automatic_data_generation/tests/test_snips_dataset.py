@@ -4,8 +4,11 @@
 from __future__ import unicode_literals
 
 import os
+import random
 import unittest
 from pathlib import Path
+
+import numpy as np
 
 from automatic_data_generation.data.handlers.snips_dataset import SnipsDataset
 
@@ -21,7 +24,6 @@ VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', 'in', 'a', 'the', 'weather',
          'pub', 'recreation', 'serves', 'sligo', 'state', 'table', 'that',
          'there', 'three', 'twenty', 'type']
 
-
 DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', '_restaurant_type_', 'a',
                'in', 'the', 'weather', 'what', '_city_', '_party_size_number_',
                '_timerange_', 'at', 'be', 'book', 'for', 'of', 'party', 'will',
@@ -31,41 +33,50 @@ DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', '_restaurant_type_', 'a',
                'type']
 
 
-def create_snips_dataset(dataset_path, restrict_to_intent=None,
+def create_snips_dataset(dataset_path, restrict_intents=None,
                          input_type='utterance',
                          dataset_size=None, none_folder=None,
-                         none_size=None, none_idx=None,
+                         none_size=None, none_idx=None, none_intents=None,
                          output_folder=None):
     return SnipsDataset(
         dataset_folder=dataset_path,
-        restrict_to_intent=restrict_to_intent,
-        input_type=input_type,
         dataset_size=dataset_size,
+        restrict_intents=restrict_intents,
+        none_folder=none_folder,
+        none_size=none_size,
+        none_intents=none_intents,
+        none_idx=none_idx,
+        cosine_threshold=None,
+        input_type=input_type,
         tokenizer_type='nltk',
         preprocessing_type='no_preprocessing',
         max_sequence_length=10,
         embedding_type='random',
         embedding_dimension=100,
         max_vocab_size=10000,
-        none_folder=none_folder,
-        none_idx=none_idx,
-        none_size=none_size,
         output_folder=output_folder
     )
 
 
 class TestSnipsDataset(unittest.TestCase):
+
     def test_should_read_vocab(self):
+        random.seed(42)
+        np.random.seed(42)
         dataset = create_snips_dataset(DATASET_ROOT,
                                        input_type='utterance')
         self.assertListEqual(dataset.i2w, VOCAB)
 
     def test_should_read_delex_vocab(self):
+        random.seed(42)
+        np.random.seed(42)
         dataset = create_snips_dataset(DATASET_ROOT,
                                        input_type='delexicalised')
         self.assertListEqual(dataset.i2w, DELEX_VOCAB)
 
     def test_should_trim_train(self):
+        random.seed(42)
+        np.random.seed(42)
         output_folder = DATASET_ROOT / "trimmed_dataset"
         if not output_folder.exists():
             output_folder.mkdir()
@@ -86,6 +97,8 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertEqual(n_restaurant, 1)
 
     def test_should_add_none(self):
+        random.seed(42)
+        np.random.seed(42)
         none_folder = PTB_DATASET_ROOT
         output_folder = DATASET_ROOT / "none_dataset"
         if not output_folder.exists():
@@ -103,11 +116,13 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertTrue(validated_dataset_file.exists())
 
     def test_should_restrict_intents(self):
+        random.seed(42)
+        np.random.seed(42)
         output_folder = DATASET_ROOT / "restricted_dataset"
         if not output_folder.exists():
             output_folder.mkdir()
         dataset = create_snips_dataset(DATASET_ROOT,
-                                       restrict_to_intent=['GetWeather'],
+                                       restrict_intents=['GetWeather'],
                                        input_type='utterance',
                                        output_folder=output_folder)
         self.assertEqual(dataset.len_train, 4)
@@ -119,12 +134,14 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertTrue(validated_dataset_file.exists())
 
     def test_should_mix_everything(self):
+        random.seed(42)
+        np.random.seed(42)
         none_folder = PTB_DATASET_ROOT
         output_folder = DATASET_ROOT / "all"
         if not output_folder.exists():
             output_folder.mkdir()
         dataset = create_snips_dataset(DATASET_ROOT,
-                                       restrict_to_intent=['GetWeather'],
+                                       restrict_intents=['GetWeather'],
                                        none_folder=none_folder, none_idx=0,
                                        none_size=4,
                                        dataset_size=3,
@@ -136,7 +153,7 @@ class TestSnipsDataset(unittest.TestCase):
         train_dataset_file = output_folder / "train_3_none_4_filtered.csv"
         self.assertTrue(train_dataset_file.exists())
         validated_dataset_file = output_folder / \
-            "validate_with_none_filtered.csv"
+                                 "validate_with_none_filtered.csv"
         self.assertTrue(validated_dataset_file.exists())
 
 
