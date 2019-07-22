@@ -132,7 +132,8 @@ def train_and_eval_cvae(args):
         force_cpu=args.force_cpu,
         run_dir=run_dir / "tensorboard",
         i2w = dataset.i2w,
-        i2int = dataset.i2int
+        i2int = dataset.i2int,
+        alpha = args.alpha
     )
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
@@ -231,6 +232,7 @@ def main():
     parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
     parser.add_argument('--cosine-threshold', type=float, default=None)
+    parser.add_argument('--alpha', type=float, default=1)
 
     # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',

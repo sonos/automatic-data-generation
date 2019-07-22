@@ -31,7 +31,7 @@ class Trainer(object):
                  kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
                  label_anneal_rate=0.01, label_anneal_time=100, label_anneal_target=1.,
                  add_bow_loss=False, force_cpu=False,
-                 run_dir=None, i2w=None, i2int=None):
+                 run_dir=None, i2w=None, i2int=None, alpha=1.):
 
         self.force_cpu = force_cpu
         self.dataset = dataset
@@ -50,6 +50,7 @@ class Trainer(object):
         self.label_anneal_rate = label_anneal_rate
         self.label_anneal_target = label_anneal_target
         self.add_bow_loss = add_bow_loss
+        self.alpha = alpha
 
         self.epoch = 0
         self.step = 0
@@ -193,7 +194,7 @@ class Trainer(object):
 
             # loss calculation
             loss, recon_loss, kl_loss, accuracy = self.compute_loss(
-                logp, bow, target, lengths, mean, logv, logc, y, train_or_dev)
+                logp, bow, target, lengths, mean, logv, logc, y, self.alpha, train_or_dev)
 
             sweep_loss += loss
             sweep_recon_loss += recon_loss
@@ -208,7 +209,7 @@ class Trainer(object):
         return sweep_loss / n_batches, sweep_recon_loss / n_batches, \
                sweep_kl_loss / n_batches, sweep_accuracy / n_batches
 
-    def compute_loss(self, logp, bow, target, length, mean, logv, logc, y,
+    def compute_loss(self, logp, bow, target, length, mean, logv, logc, y, alpha,
                      train_or_dev):
         batch_size, seqlen, vocab_size = logp.size()
         target = target.view(batch_size, -1)
@@ -238,7 +239,7 @@ class Trainer(object):
             label_loss, label_weight = compute_label_loss(
                 logc, y, self.annealing_strategy, self.step,
                 self.label_anneal_time, self.label_anneal_rate,
-                self.label_anneal_target,  none_idx=none_idx)
+                self.label_anneal_target,  none_idx, self.alpha)
             total_loss += label_weight * label_loss
         elif self.model.conditional == 'unsupervised':
             entropy = torch.sum(
