@@ -4,8 +4,11 @@
 from __future__ import unicode_literals
 
 import os
+import random
 import unittest
 from pathlib import Path
+
+import numpy as np
 
 from automatic_data_generation.data.handlers.snips_dataset import SnipsDataset
 
@@ -20,7 +23,6 @@ VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', 'in', 'a', 'the', 'weather',
          'heights', 'is', 'jain', 'march', 'minutes', 'nv', 'on', 'park',
          'pub', 'recreation', 'serves', 'sligo', 'state', 'table', 'that',
          'there', 'three', 'twenty', 'type']
-
 
 DELEX_VOCAB = ['<unk>', '<pad>', '<sos>', '<eos>', '_restaurant_type_', 'a',
                'in', 'the', 'weather', 'what', '_city_', '_party_size_number_',
@@ -57,17 +59,24 @@ def create_snips_dataset(dataset_path, restrict_intents=None,
 
 
 class TestSnipsDataset(unittest.TestCase):
+
     def test_should_read_vocab(self):
+        random.seed(42)
+        np.random.seed(42)
         dataset = create_snips_dataset(DATASET_ROOT,
                                        input_type='utterance')
         self.assertListEqual(dataset.i2w, VOCAB)
 
     def test_should_read_delex_vocab(self):
+        random.seed(42)
+        np.random.seed(42)
         dataset = create_snips_dataset(DATASET_ROOT,
                                        input_type='delexicalised')
         self.assertListEqual(dataset.i2w, DELEX_VOCAB)
 
     def test_should_trim_train(self):
+        random.seed(42)
+        np.random.seed(42)
         output_folder = DATASET_ROOT / "trimmed_dataset"
         if not output_folder.exists():
             output_folder.mkdir()
@@ -88,6 +97,8 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertEqual(n_restaurant, 1)
 
     def test_should_add_none(self):
+        random.seed(42)
+        np.random.seed(42)
         none_folder = PTB_DATASET_ROOT
         output_folder = DATASET_ROOT / "none_dataset"
         if not output_folder.exists():
@@ -105,6 +116,8 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertTrue(validated_dataset_file.exists())
 
     def test_should_restrict_intents(self):
+        random.seed(42)
+        np.random.seed(42)
         output_folder = DATASET_ROOT / "restricted_dataset"
         if not output_folder.exists():
             output_folder.mkdir()
@@ -121,6 +134,8 @@ class TestSnipsDataset(unittest.TestCase):
         self.assertTrue(validated_dataset_file.exists())
 
     def test_should_mix_everything(self):
+        random.seed(42)
+        np.random.seed(42)
         none_folder = PTB_DATASET_ROOT
         output_folder = DATASET_ROOT / "all"
         if not output_folder.exists():
@@ -138,7 +153,7 @@ class TestSnipsDataset(unittest.TestCase):
         train_dataset_file = output_folder / "train_3_none_4_filtered.csv"
         self.assertTrue(train_dataset_file.exists())
         validated_dataset_file = output_folder / \
-            "validate_with_none_filtered.csv"
+                                 "validate_with_none_filtered.csv"
         self.assertTrue(validated_dataset_file.exists())
 
 
