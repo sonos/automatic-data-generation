@@ -6,7 +6,7 @@ from pathlib import Path
 
 from nltk import word_tokenize
 
-from automatic_data_generation.data.utils import get_groups_v2
+from automatic_data_generation.data.utils.utils import get_groups_v2
 from automatic_data_generation.utils.io import (load_json, write_csv,
                                                 read_csv, dump_json)
 
