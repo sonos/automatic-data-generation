@@ -27,6 +27,7 @@ class BaseDataset(object):
                  none_size,
                  none_intents,
                  none_idx,
+                 infersent_selection,
                  cosine_threshold,
                  input_type,
                  tokenizer_type,
@@ -49,7 +50,8 @@ class BaseDataset(object):
 
         train_path, valid_path = self.build_data_files(
             dataset_folder, dataset_size, restrict_intents,
-            none_folder, none_size, none_intents, none_idx, cosine_threshold,
+            none_folder, none_size, none_intents, none_idx,
+            infersent_selection, cosine_threshold,
             output_folder, skip_header)
         self.original_train_path = dataset_folder / 'train.csv'
         self.train_path = train_path
@@ -118,7 +120,7 @@ class BaseDataset(object):
         raise NotImplementedError
 
     @abstractmethod
-    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, none_idx=None, cosine_threshold=None):
+    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, pseudolabels=None, none_idx=None):
         """
         Get metadata relating to sample with index `item`.
         Args:
@@ -156,7 +158,8 @@ class BaseDataset(object):
 
     def build_data_files(self, dataset_folder,  dataset_size=None, restrict_intents=None,
                          none_folder=None, none_size=None, none_intents=None, none_idx=None,
-                         cosine_threshold=None, output_folder=None, skip_header=True):
+                         infersent_selection="no_infersent_selection", cosine_threshold=None,
+                         output_folder=None, skip_header=True):
 
         original_train_path = dataset_folder / 'train.csv'
         original_test_path = dataset_folder / 'validate.csv'
@@ -196,9 +199,12 @@ class BaseDataset(object):
         if none_size is not None:
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
-            if cosine_threshold is not None:
-                none_intents = self.select_none_intents(dataset_folder, restrict_intents, none_folder, cosine_threshold)
-            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intents=none_intents, none_idx=none_idx)
+            if infersent_selection is not 'no_infersent_selection':
+                assert(none_intents is None)
+                none_intents, pseudolabels = self.select_none_intents(dataset_folder, restrict_intents, none_folder, cosine_threshold)
+                if infersent_selection == 'unsupervised':
+                    pseudolabels = None # ignore pseudolabels
+            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intents=none_intents, pseudolabels=pseudolabels, none_idx=none_idx)
             new_test = self.add_nones(new_test, none_folder, none_size=200, none_intents=none_intents, none_idx=none_idx)
 
         if output_folder is not None:
@@ -224,6 +230,7 @@ class BaseDataset(object):
     def select_none_intents(self, dataset_folder, restrict_intents, none_folder, cosine_threshold):
         # select none intents according to overlap with original intents
         selected_none_intents = []
+        pseudolabels = {}
         def cosine(u, v):
             return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
         intent_vectors = self.load_intent_vectors(dataset_folder) # this is cheating a bit !
@@ -235,8 +242,9 @@ class BaseDataset(object):
                 if cosine(none_vector, intent_vector) > cosine_threshold:
                     print('none intent {} is close to {}'.format(none_intent, intent))
                     selected_none_intents.append(none_intent)
+                    pseudolabels[none_intent] = intent
                     break
-        return selected_none_intents
+        return selected_none_intents, pseudolabels
 
     
     @property

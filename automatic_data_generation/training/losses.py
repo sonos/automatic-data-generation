@@ -39,8 +39,7 @@ def compute_bow_loss(batch_size, bow, target):
 
 def compute_label_loss(logc, target, annealing_strategy, step, k, x, m, none_idx, alpha):
     # Negative Log Likelihood
-    preds = logc.max(1)[1]
-    none_mask = preds==none_idx
+    none_mask = target==none_idx
     label_weight = annealing_fn(annealing_strategy, step, k, x, m)
     nll_label = torch.nn.NLLLoss(reduction='none') #, ignore_index=none_idx)
     label_loss = nll_label(logc, target)

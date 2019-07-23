@@ -29,6 +29,7 @@ class SnipsDataset(BaseDataset):
                  none_size,
                  none_intents,
                  none_idx,
+                 infersent_selection,
                  cosine_threshold,
                  input_type,
                  tokenizer_type,
@@ -47,6 +48,7 @@ class SnipsDataset(BaseDataset):
                                            none_size,
                                            none_intents,
                                            none_idx,
+                                           infersent_selection,
                                            cosine_threshold,
                                            input_type,
                                            tokenizer_type,
@@ -72,7 +74,7 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
-    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, none_idx=None):
+    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, pseudolabels=None, none_idx=None):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
 
@@ -83,7 +85,10 @@ class SnipsDataset(BaseDataset):
         for row in none_sentences[:none_size]:
             if 'snips' in str(none_folder):
                 new_row = row
-                new_row[3] = 'None'
+                if pseudolabels:
+                    new_row[3] = pseudolabels[row[3]]
+                else :
+                    new_row[3] = 'None'
             else:
                 utterance = row[none_idx]
                 new_row = [utterance, 'O ' * len(word_tokenize(utterance)),

@@ -22,7 +22,8 @@ from automatic_data_generation.models.cvae import CVAE
 from automatic_data_generation.training.trainer import Trainer
 from automatic_data_generation.utils.constants import (NO_CONDITIONING,
                                                        NO_SLOT_EMBEDDING,
-                                                       NO_PREPROCESSING)
+                                                       NO_PREPROCESSING,
+                                                       NO_INFERSENT)
 from automatic_data_generation.utils.utils import create_dataset
 from automatic_data_generation.utils.utils import to_device
 
@@ -62,7 +63,8 @@ def train_and_eval_cvae(args):
 
     dataset = create_dataset(args.dataset_type,
         dataset_folder, args.dataset_size, args.restrict_intents, 
-        none_folder, args.none_size, args.none_intents, none_idx, args.cosine_threshold,
+        none_folder, args.none_size, args.none_intents, none_idx,
+        args.infersent_selection, args.cosine_threshold,
         args.input_type, args.tokenizer_type,
         args.preprocessing_type, args.max_sequence_length,
         args.embedding_type, args.embedding_dimension, args.max_vocab_size,
@@ -231,7 +233,9 @@ def main():
     parser.add_argument('--none-size', type=int, default=None)
     parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--cosine-threshold', type=float, default=None)
+    parser.add_argument('--infersent-selection', type=str, choices=['supervised', 'unsupervised', NO_INFERSENT],
+                        default=NO_INFERSENT)
+    parser.add_argument('--cosine-threshold', type=float, default=0.9)
     parser.add_argument('--alpha', type=float, default=1)
 
     # data representation
