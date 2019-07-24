@@ -54,7 +54,7 @@ class Trainer(object):
 
         self.epoch = 0
         self.step = 0
-        self.latent_rep = {i: [] for i in range(self.model.n_classes)}
+        self.latent_rep = {intent: [] for intent in i2int}
 
         self.run_logs = {
             'train': {
@@ -63,9 +63,9 @@ class Trainer(object):
                 'conditioning_accuracy': [],
                 'total_loss': [],
                 'classifications': {real_intent:
-                                    {pred_intent: 0 for pred_intent in self.i2int+['None']}
-                                    for real_intent in self.i2int+['None']},
-                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int+['None']}
+                                    {pred_intent: 0 for pred_intent in self.i2int}
+                                    for real_intent in self.i2int},
+                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int}
             },
             'dev': {
                 'recon_loss': [],
@@ -73,9 +73,9 @@ class Trainer(object):
                 'conditioning_accuracy': [],
                 'total_loss': [],
                 'classifications': {real_intent:
-                                    {pred_intent: 0 for pred_intent in self.i2int+['None']}
-                                    for real_intent in self.i2int+['None']},
-                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int+['None']}
+                                    {pred_intent: 0 for pred_intent in self.i2int}
+                                    for real_intent in self.i2int},
+                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int}
             }
         }
         self.summary_writer = SummaryWriter(log_dir=run_dir)
@@ -90,7 +90,7 @@ class Trainer(object):
             torch.cuda.empty_cache()
 
             self.epoch += 1
-            is_last_epoch = self.epoch == n_epochs
+            is_last_epoch = self.epoch == n_epochs-1
             train_loss, train_recon_loss, train_kl_loss, train_acc = self.do_one_sweep(
                 train_iter, is_last_epoch, "train")
 
@@ -178,21 +178,22 @@ class Trainer(object):
 
             logp, mean, logv, logc, z, bow = self.model(input, lengths)
 
-            _, reversed_idx = torch.sort(sorted_idx)
-            y = y[reversed_idx]
-            logc = logc[reversed_idx]
-            real_labels = [self.i2int[label] for label in y]
-            pred_labels = [self.i2int[label] if label<len(self.i2int) else 'None' for label in logc.max(1)[1]]
-            for real_label, pred_label in zip(real_labels, pred_labels):
-                self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
-            for real_label in real_labels:
-                self.run_logs[train_or_dev]['transfer'][real_label] += logc.sum(dim=0).cpu().detach()
-                
-            # save latent representation
-            if train_or_dev == "train":
-                if is_last_epoch and self.model.conditional:
+            if is_last_epoch:
+                _, reversed_idx = torch.sort(sorted_idx)
+                y = y[reversed_idx]
+                logc = logc[reversed_idx]
+                real_labels = [self.i2int[label] for label in y]
+                pred_labels = [self.i2int[label] if label<len(self.i2int) else 'None' for label in logc.max(1)[1]]
+                for real_label, pred_label in zip(real_labels, pred_labels):
+                    self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
+                for real_label in real_labels:
+                    print(y,logc)
+                    self.run_logs[train_or_dev]['transfer'][real_label] += logc.sum(dim=0).cpu().detach()
+                    
+                # save latent representation
+                if train_or_dev == "train" and self.model.conditional:
                     for i, intent in enumerate(y):
-                        self.latent_rep[int(intent)].append(
+                        self.latent_rep[self.i2int[intent]].append(
                             z[i].cpu().detach().numpy()
                         )
 
@@ -210,6 +211,13 @@ class Trainer(object):
                 loss.backward()
                 self.optimizer.step()
 
+        if is_last_epoch:
+            for intent1 in self.i2int:
+                n_sentences = sum(self.run_logs[train_or_dev]['classifications'][intent1].values())
+                self.run_logs[train_or_dev]['transfer'][intent1] /= n_sentences
+                for intent2 in self.i2int:
+                    self.run_logs[train_or_dev]['classifications'][intent1][intent2] /= n_sentences
+                
         return sweep_loss / n_batches, sweep_recon_loss / n_batches, \
                sweep_kl_loss / n_batches, sweep_accuracy / n_batches
 

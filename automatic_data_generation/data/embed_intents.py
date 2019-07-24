@@ -8,7 +8,9 @@ from pathlib import Path
 from collections import defaultdict
 
 def embed_dataset(dataset_path, infersent_path):
-
+    """
+    To make this work, first run ./get_infersent.sh
+    """
     MODEL_PATH = infersent_path / "encoder/infersent1.pkl"
     params_model = {'bsize': 64, 'word_emb_dim': 300, 'enc_lstm_dim': 2048,
                     'pool_type': 'max', 'dpout_model': 0.0, 'version': 1}
@@ -41,7 +43,7 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--dataset_path', type=str, default='data/snips/')
-    parser.add_argument('--infersent_path', type=str, default='/home/stephane/InferSent/')
+    parser.add_argument('--infersent_path', type=str, default='InferSent/')
     args = parser.parse_args()
     
     infersent_path = Path(args.infersent_path)
