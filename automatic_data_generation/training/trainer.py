@@ -173,6 +173,7 @@ class Trainer(object):
             input, target = to_device(input, self.force_cpu), to_device(
                 target, self.force_cpu)
 
+            y = None
             if self.model.conditional is not None:
                 y = batch.intent.squeeze()
                 y = to_device(y, self.force_cpu)
@@ -202,7 +203,7 @@ class Trainer(object):
 
             # loss calculation
             loss, recon_loss, kl_loss, accuracy = self.compute_loss(
-                logp, bow, target, lengths, mean, logv, logc, y, self.alpha, train_or_dev)
+                logp, bow, target, lengths, mean, logv, logc, y, train_or_dev)
 
             sweep_loss += loss
             sweep_recon_loss += recon_loss
@@ -224,7 +225,7 @@ class Trainer(object):
         return sweep_loss / n_batches, sweep_recon_loss / n_batches, \
                sweep_kl_loss / n_batches, sweep_accuracy / n_batches
 
-    def compute_loss(self, logp, bow, target, length, mean, logv, logc, y, alpha,
+    def compute_loss(self, logp, bow, target, length, mean, logv, logc, y,
                      train_or_dev):
         batch_size, seqlen, vocab_size = logp.size()
         target = target.view(batch_size, -1)
