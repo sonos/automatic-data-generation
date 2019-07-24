@@ -247,7 +247,8 @@ class BaseDataset(object):
         """
         Select none intents which embeddings are close to original intents
         """
-
+        selected_none_intents = []
+        pseudolabels = {}
         def cosine(u, v):
             return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
         intent_vectors = self.load_intent_vectors(dataset_folder) # this is cheating a bit !
