@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from automatic_data_generation.data.utils import NONE_COLUMN_MAPPING
+from automatic_data_generation.data.utils.utils import NONE_COLUMN_MAPPING
 from automatic_data_generation.evaluation.generation import \
     generate_vae_sentences
 from automatic_data_generation.evaluation.metrics import \
@@ -56,20 +56,36 @@ def train_and_eval_cvae(args):
         run_dir.mkdir()
 
     # data handling
+    if args.cosine_threshold is not None and args.none_intents is not None:
+        raise ValueError("None intents cannot be specified while using a "
+                         "cosine similarity selection")
     data_folder = Path(args.data_folder)
     dataset_folder = data_folder / args.dataset_type
     none_folder = data_folder / args.none_type
     none_idx = NONE_COLUMN_MAPPING[args.none_type]
 
-    dataset = create_dataset(args.dataset_type,
-        dataset_folder, args.dataset_size, args.restrict_intents, 
-        none_folder, args.none_size, args.none_intents, none_idx,
-        args.infersent_selection, args.cosine_threshold,
-        args.input_type, args.tokenizer_type,
-        args.preprocessing_type, args.max_sequence_length,
-        args.embedding_type, args.embedding_dimension, args.max_vocab_size,
-        args.slot_embedding, run_dir
+    dataset = create_dataset(
+        dataset_type=args.dataset_type,
+        dataset_folder=dataset_folder,
+        dataset_size=args.dataset_size,
+        restrict_intents=args.restrict_intents,
+        none_folder=none_folder,
+        none_size=args.none_size,
+        none_intents=args.none_intents,
+        none_idx=none_idx,
+        infersent_selection=args.infersent_selection,
+        cosine_threshold=args.cosine_threshold,
+        input_type=args.input_type,
+        tokenizer_type=args.tokenizer_type,
+        preprocessing_type=args.preprocessing_type,
+        max_sequence_length=args.max_sequence_length,
+        embedding_type=args.embedding_type,
+        embedding_dimension=args.embedding_dimension,
+        max_vocab_size=args.max_vocab_size,
+        slot_embedding=args.slot_embedding,
+        run_dir=run_dir
     )
+
     if args.load_folder:
         original_vocab_size = dataset.update(args.load_folder)
         LOGGER.info('Loaded vocab from %s' % args.load_folder)
@@ -133,8 +149,6 @@ def train_and_eval_cvae(args):
         add_bow_loss=args.bow_loss,
         force_cpu=args.force_cpu,
         run_dir=run_dir / "tensorboard",
-        i2w = dataset.i2w,
-        i2int = dataset.i2int,
         alpha = args.alpha
     )
 
@@ -252,7 +266,8 @@ def main():
     parser.add_argument('-mvs', '--max-vocab-size', type=int, default=10000)
     parser.add_argument('--slot-embedding', type=str,
                         default=NO_SLOT_EMBEDDING,
-                        choices=['micro', 'macro', 'litteral', NO_SLOT_EMBEDDING])
+                        choices=['micro', 'macro', 'litteral',
+                                 NO_SLOT_EMBEDDING])
 
     # model
     parser.add_argument('--conditioning', type=str, default='supervised',

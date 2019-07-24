@@ -1,3 +1,4 @@
+import logging
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
 
@@ -7,8 +8,17 @@ import torchtext
 from sklearn.model_selection import StratifiedShuffleSplit
 from torchtext.data import BucketIterator
 
-from automatic_data_generation.data.utils import (get_fields, make_tokenizer)
+from automatic_data_generation.data.utils.utils import (get_fields,
+                                                        make_tokenizer)
 from automatic_data_generation.utils.io import (read_csv, write_csv)
+
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
+                           '[%(filename)s:%(lineno)d] %(message)s',
+                    datefmt='%Y-%m-%d:%H:%M:%S',
+                    level=logging.INFO)
+
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 
 
 class BaseDataset(object):
@@ -120,14 +130,18 @@ class BaseDataset(object):
         raise NotImplementedError
 
     @abstractmethod
-    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, pseudolabels=None, none_idx=None):
+    def add_nones(self, sentences, none_folder, none_size=None,
+                  none_intents=None, none_idx=None):
         """
         Get metadata relating to sample with index `item`.
         Args:
             sentences (list(list(str)): sentences to augment with None data
             none_folder (Path): path to the folder with None data
-            none_idx (int): column index for data in None file
             none_size (int): number of None sentences to add
+            none_intents (list(str)): restriction on intents of the None
+                sentences
+            none_idx (int): column index for data in None file
+
 
         Returns:
             augmented_sentences (list(list(str)): list of sentences
@@ -228,10 +242,12 @@ class BaseDataset(object):
 
         return new_train_path, new_test_path
 
-    def select_none_intents(self, dataset_folder, restrict_intents, none_folder, cosine_threshold):
-        # select none intents according to overlap with original intents
-        selected_none_intents = []
-        pseudolabels = {}
+    def select_none_intents(self, dataset_folder, restrict_intents,
+                            none_folder, cosine_threshold):
+        """
+        Select none intents which embeddings are close to original intents
+        """
+
         def cosine(u, v):
             return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
         intent_vectors = self.load_intent_vectors(dataset_folder) # this is cheating a bit !

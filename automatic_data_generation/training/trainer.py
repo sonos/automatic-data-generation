@@ -13,7 +13,7 @@ from automatic_data_generation.training.losses import (compute_bow_loss,
                                                        compute_label_loss,
                                                        compute_recon_loss,
                                                        compute_kl_loss)
-from automatic_data_generation.data.utils import idx2word
+from automatic_data_generation.data.utils.utils import idx2word
 from automatic_data_generation.utils.utils import to_device
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
@@ -26,19 +26,24 @@ LOGGER.setLevel(logging.INFO)
 
 
 class Trainer(object):
-    def __init__(self, dataset, model, optimizer, batch_size=64,
-                 annealing_strategy='logistic',
-                 kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
-                 label_anneal_rate=0.01, label_anneal_time=100, label_anneal_target=1.,
-                 add_bow_loss=False, force_cpu=False,
-                 run_dir=None, i2w=None, i2int=None, alpha=1.):
+    def __init__(
+            self, dataset, model, optimizer, batch_size=64,
+            annealing_strategy='logistic',
+            kl_anneal_rate=0.01, kl_anneal_time=100, kl_anneal_target=1.,
+            label_anneal_rate=0.01, label_anneal_time=100,
+            label_anneal_target=1.,
+            add_bow_loss=False, force_cpu=False,
+            run_dir=None, alpha=1.
+    ):
 
         self.force_cpu = force_cpu
         self.dataset = dataset
         self.model = model
         self.optimizer = optimizer
-        self.i2w = i2w
-        self.i2int = i2int
+        self.i2w = dataset.i2w
+        self.i2int = dataset.i2int
+        self.w2i = dataset.w2i
+        self.int2i = dataset.int2i
 
         self.batch_size = batch_size
 
@@ -54,7 +59,7 @@ class Trainer(object):
 
         self.epoch = 0
         self.step = 0
-        self.latent_rep = {intent: [] for intent in i2int}
+        self.latent_rep = {intent: [] for intent in self.i2int}
 
         self.run_logs = {
             'train': {
@@ -139,7 +144,6 @@ class Trainer(object):
                 self.run_logs['dev']['total_loss'].append(
                     dev_loss.cpu().detach().numpy().item())
 
-
     def do_one_sweep(self, iter, is_last_epoch, train_or_dev):
         if train_or_dev not in ['train', 'dev']:
             raise TypeError("train_or_dev should be either train or dev")
@@ -187,7 +191,6 @@ class Trainer(object):
                 for real_label, pred_label in zip(real_labels, pred_labels):
                     self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
                 for real_label in real_labels:
-                    print(y,logc)
                     self.run_logs[train_or_dev]['transfer'][real_label] += logc.sum(dim=0).cpu().detach()
                     
                 # save latent representation
@@ -233,7 +236,7 @@ class Trainer(object):
         # kl loss
         kl_weight, kl_losses = compute_kl_loss(
             logv, mean, self.annealing_strategy, self.step,
-             self.kl_anneal_rate, self.kl_anneal_time, self.kl_anneal_target)
+            self.kl_anneal_rate, self.kl_anneal_time, self.kl_anneal_target)
         kl_loss = torch.sum(kl_losses)
 
         total_loss = (recon_loss + kl_weight * kl_loss)
@@ -244,14 +247,14 @@ class Trainer(object):
 
         # labels loss
         if self.model.conditional == 'supervised':
-            if 'None' in self.dataset.i2int:
-                none_idx = self.dataset.int2i['None']
+            if 'None' in self.i2int:
+                none_idx = self.int2i['None']
             else:
                 none_idx = -100
             label_loss, label_weight = compute_label_loss(
                 logc, y, self.annealing_strategy, self.step,
                 self.label_anneal_time, self.label_anneal_rate,
-                self.label_anneal_target,  none_idx, self.alpha)
+                self.label_anneal_target, none_idx, self.alpha)
             total_loss += label_weight * label_loss
         elif self.model.conditional == 'unsupervised':
             entropy = torch.sum(
@@ -282,15 +285,17 @@ class Trainer(object):
                 )
         n_correct = 0
         if self.model.conditional is not None:
-            pred_labels = logc.data.max(1)[1].long()
-            n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
+            mask = y != self.int2i['None'] # ignore nones
+            pred_labels = logc[mask].data.max(1)[1].long()
+            true_labels = y[mask].data
+            n_correct = pred_labels.eq(true_labels).cpu().sum().float().item()
         self.summary_writer.add_scalar(
             train_or_dev + '/conditioning-accuracy',
-            n_correct / batch_size,
+            n_correct / len(true_labels),
             self.step)
         self.run_logs[train_or_dev]['conditioning_accuracy'].append(
-            n_correct / batch_size
+            n_correct / len(true_labels)
         )
 
         return total_loss / batch_size, recon_loss / batch_size, \
-               kl_loss / batch_size, n_correct / batch_size
+               kl_loss / batch_size, n_correct / len(true_labels)

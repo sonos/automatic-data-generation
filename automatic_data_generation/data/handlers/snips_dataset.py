@@ -11,7 +11,7 @@ import torch
 from nltk import word_tokenize
 
 from automatic_data_generation.data.base_dataset import BaseDataset
-from automatic_data_generation.data.utils import get_groups
+from automatic_data_generation.data.utils.utils import get_groups
 from automatic_data_generation.utils.constants import NO_SLOT_EMBEDDING
 from automatic_data_generation.utils.io import read_csv
 

@@ -36,6 +36,7 @@ def compute_generation_metrics(dataset, sentences, intents, logp,
     references_valid.pop('None', None)
     candidates.pop('None', None)
 
+    # intent classification
     accuracies, correctly_classified_candidates = intent_classification(
         candidates,
         train_path=dataset.original_train_path,
@@ -49,6 +50,8 @@ def compute_generation_metrics(dataset, sentences, intents, logp,
                                                           references_train,
                                                           input_type)
     diversity = calc_diversity(dataset, sentences)
+
+    # entropy
     if input_type == 'utterance' and compute_entropy:
         entropy = calc_entropy(logp)
     else:
@@ -166,14 +169,16 @@ def intent_classification(candidates, train_path, input_type):
         This only works for snips dataset for now...
     """
     accuracies = {}
-    correctly_classified_candidates = {intent: [] for intent in candidates.keys()}
+    correctly_classified_candidates = {intent: [] for intent in
+                                       candidates.keys()}
     intent_classifier = train_intent_classifier(train_path, input_type)
     for intent, tokenized_sentences in candidates.items():
         sentences = [' '.join(sentence) for sentence in tokenized_sentences]
         preds = intent_classifier.predict(sentences)
         corrects = [pred == intent for pred in preds]
-        correctly_classified_candidates[intent] = [cand for i, cand in enumerate(candidates[intent])
-                              if corrects[i]]
+        correctly_classified_candidates[intent] = [
+            cand for i, cand in enumerate(candidates[intent]) if corrects[i]
+        ]
         accuracy = sum(corrects) / len(preds)
         accuracies[intent] = accuracy
     accuracies['avg'] = np.mean([x for x in accuracies.values()])

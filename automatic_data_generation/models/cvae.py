@@ -14,16 +14,18 @@ class CVAE(nn.Module):
         to the conditional case
     """
 
-    def __init__(self, conditional=None, compute_bow=False,
-                 vocab_size=None,
-                 embedding_size=100, rnn_type='gru',
-                 hidden_size_encoder=128, hidden_size_decoder=128,
-                 word_dropout_rate=0, embedding_dropout_rate=0,
-                 z_size=100, n_classes=10, cat_size=10,
-                 sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
-                 max_sequence_length=30, num_layers_encoder=1, num_layers_decoder=1,
-                 bidirectional=False,
-                 temperature=1, force_cpu=False):
+    def __init__(
+            self, conditional=None, compute_bow=False,
+            vocab_size=None,
+            embedding_size=100, rnn_type='gru',
+            hidden_size_encoder=128, hidden_size_decoder=128,
+            word_dropout_rate=0, embedding_dropout_rate=0,
+            z_size=100, n_classes=10, cat_size=10,
+            sos_idx=0, eos_idx=0, pad_idx=0, unk_idx=0,
+            max_sequence_length=30, num_layers_encoder=1, num_layers_decoder=1,
+            bidirectional=False,
+            temperature=1, force_cpu=False
+    ):
 
         super().__init__()
         self.tensor = torch.cuda.FloatTensor if torch.cuda.is_available() \
@@ -83,10 +85,13 @@ class CVAE(nn.Module):
             bidirectional=False,
             batch_first=True
         )  # decoder should be unidirectional
+
         self.hidden_factor_encoder = (2 if bidirectional else 1) * num_layers_encoder
         self.hidden_factor_decoder = (2 if bidirectional else 1) * num_layers_decoder
-        self.hidden2mean = nn.Linear(hidden_size_encoder * self.hidden_factor_encoder, z_size)
-        self.hidden2logv = nn.Linear(hidden_size_encoder * self.hidden_factor_encoder, z_size)
+        self.hidden2mean = nn.Linear(
+            hidden_size_encoder * self.hidden_factor_encoder, z_size)
+        self.hidden2logv = nn.Linear(
+            hidden_size_encoder * self.hidden_factor_encoder, z_size)
 
         if conditional:
             self.hidden2cat = nn.Linear(
@@ -151,7 +156,8 @@ class CVAE(nn.Module):
 
         if self.bidirectional or self.num_layers_decoder > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.num_layers_decoder, batch_size, self.hidden_size_decoder)
+            hidden = hidden.view(self.num_layers_decoder, batch_size,
+                                 self.hidden_size_decoder)
         else:
             hidden = hidden.unsqueeze(0)
 
@@ -218,7 +224,8 @@ class CVAE(nn.Module):
 
         if self.bidirectional or self.num_layers_decoder > 1:
             # unflatten hidden state
-            hidden = hidden.view(self.num_layers_decoder, batch_size, self.hidden_size)
+            hidden = hidden.view(self.num_layers_decoder, batch_size,
+                                 self.hidden_size)
         else:
             hidden = hidden.unsqueeze(0)
 
@@ -341,7 +348,8 @@ class CVAE(nn.Module):
     def update_outputs2vocab(self, original_vocab_size, new_vocab_size):
         # keep the original trained weights on last lawer except for new tokens
         old_outputs2vocab = self.outputs2vocab.weight.data
-        self.outputs2vocab = nn.Linear(self.hidden_size_decoder, new_vocab_size)
+        self.outputs2vocab = nn.Linear(self.hidden_size_decoder,
+                                       new_vocab_size)
         self.outputs2vocab.weight.data[:original_vocab_size].copy_(
             old_outputs2vocab)
 
