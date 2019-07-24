@@ -64,7 +64,8 @@ class Trainer(object):
                 'total_loss': [],
                 'classifications': {real_intent:
                                     {pred_intent: 0 for pred_intent in self.i2int+['None']}
-                                    for real_intent in self.i2int+['None']}
+                                    for real_intent in self.i2int+['None']},
+                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int+['None']}
             },
             'dev': {
                 'recon_loss': [],
@@ -73,7 +74,8 @@ class Trainer(object):
                 'total_loss': [],
                 'classifications': {real_intent:
                                     {pred_intent: 0 for pred_intent in self.i2int+['None']}
-                                    for real_intent in self.i2int+['None']}
+                                    for real_intent in self.i2int+['None']},
+                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int+['None']}
             }
         }
         self.summary_writer = SummaryWriter(log_dir=run_dir)
@@ -183,7 +185,9 @@ class Trainer(object):
             pred_labels = [self.i2int[label] if label<len(self.i2int) else 'None' for label in logc.max(1)[1]]
             for real_label, pred_label in zip(real_labels, pred_labels):
                 self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
-
+            for real_label in real_labels:
+                self.run_logs[train_or_dev]['transfer'][real_label] += logc.sum(dim=0).cpu().detach()
+                
             # save latent representation
             if train_or_dev == "train":
                 if is_last_epoch and self.model.conditional:

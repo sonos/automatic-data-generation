@@ -199,6 +199,7 @@ class BaseDataset(object):
         if none_size is not None:
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
+            pseudolabels = None
             if infersent_selection is not 'no_infersent_selection':
                 assert(none_intents is None)
                 none_intents, pseudolabels = self.select_none_intents(dataset_folder, restrict_intents, none_folder, cosine_threshold)

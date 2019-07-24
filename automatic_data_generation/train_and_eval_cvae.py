@@ -23,7 +23,7 @@ from automatic_data_generation.training.trainer import Trainer
 from automatic_data_generation.utils.constants import (NO_CONDITIONING,
                                                        NO_SLOT_EMBEDDING,
                                                        NO_PREPROCESSING,
-                                                       NO_INFERSENT)
+                                                       NO_INFERSENT_SELECTION)
 from automatic_data_generation.utils.utils import create_dataset
 from automatic_data_generation.utils.utils import to_device
 
@@ -233,8 +233,8 @@ def main():
     parser.add_argument('--none-size', type=int, default=None)
     parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--infersent-selection', type=str, choices=['supervised', 'unsupervised', NO_INFERSENT],
-                        default=NO_INFERSENT)
+    parser.add_argument('--infersent-selection', type=str, choices=['supervised', 'unsupervised', NO_INFERSENT_SELECTION],
+                        default=NO_INFERSENT_SELECTION)
     parser.add_argument('--cosine-threshold', type=float, default=0.9)
     parser.add_argument('--alpha', type=float, default=1)
 
