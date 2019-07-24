@@ -131,6 +131,7 @@ def get_groups(words, labels):
 
     prev_label = None
     groups = []
+    group  = {}
 
     zipped = zip(words, labels)
     for i, (word, label) in enumerate(zipped):

@@ -22,7 +22,8 @@ from automatic_data_generation.models.cvae import CVAE
 from automatic_data_generation.training.trainer import Trainer
 from automatic_data_generation.utils.constants import (NO_CONDITIONING,
                                                        NO_SLOT_EMBEDDING,
-                                                       NO_PREPROCESSING)
+                                                       NO_PREPROCESSING,
+                                                       NO_INFERSENT_SELECTION)
 from automatic_data_generation.utils.utils import create_dataset
 from automatic_data_generation.utils.utils import to_device
 
@@ -72,6 +73,7 @@ def train_and_eval_cvae(args):
         none_size=args.none_size,
         none_intents=args.none_intents,
         none_idx=none_idx,
+        infersent_selection=args.infersent_selection,
         cosine_threshold=args.cosine_threshold,
         input_type=args.input_type,
         tokenizer_type=args.tokenizer_type,
@@ -147,8 +149,7 @@ def train_and_eval_cvae(args):
         add_bow_loss=args.bow_loss,
         force_cpu=args.force_cpu,
         run_dir=run_dir / "tensorboard",
-        i2w=dataset.i2w,
-        i2int=dataset.i2int
+        alpha = args.alpha
     )
 
     trainer.run(args.n_epochs, dev_step_every_n_epochs=1)
@@ -232,9 +233,8 @@ def main():
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-type', type=str, default='snips',
                         choices=['snips', 'snips-assistant', 'snips-merged',
-                                 'snips-dump',
-                                 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
+                                 'snips-dump', 'atis', 'sentiment', 'spam',
+                                 'yelp', 'penn-tree-bank'])
     parser.add_argument('--dataset-size', type=int, default=None)
     parser.add_argument('--restrict-intents', nargs='+', type=str,
                         default=None)
@@ -242,13 +242,17 @@ def main():
     # none class
     parser.add_argument('--none-type', type=str, default='snips',
                         choices=['snips', 'snips-assistant', 'snips-merged',
-                                 'snips-dump',
-                                 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
+                                 'snips-dump', 'atis', 'sentiment', 'spam',
+                                 'yelp', 'penn-tree-bank'])
     parser.add_argument('--none-size', type=int, default=None)
     parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--cosine-threshold', type=float, default=None)
+    parser.add_argument('--infersent-selection', type=str,
+                        choices=['supervised', 'unsupervised',
+                                 NO_INFERSENT_SELECTION],
+                        default=NO_INFERSENT_SELECTION)
+    parser.add_argument('--cosine-threshold', type=float, default=0.9)
+    parser.add_argument('--alpha', type=float, default=1)
 
     # data representation
     parser.add_argument('--tokenizer-type', type=str, default='nltk',

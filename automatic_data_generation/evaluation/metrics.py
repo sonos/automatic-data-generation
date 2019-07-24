@@ -42,9 +42,6 @@ def compute_generation_metrics(dataset, sentences, intents, logp,
         train_path=dataset.original_train_path,
         input_type=input_type
     )  # only keep well-conditioned candidates
-    correctly_classified_candidates = {k: v for (k, v) in
-                                       correctly_classified_candidates.items()
-                                       if v}  # discard empty intents
 
     # BLEU
     bleu_scores = calc_bleu(correctly_classified_candidates,
@@ -56,8 +53,6 @@ def compute_generation_metrics(dataset, sentences, intents, logp,
         correctly_classified_candidates,
         references_train,
         input_type)
-
-    # diversity
     diversity = calc_diversity(dataset, sentences)
 
     # entropy
@@ -132,6 +127,8 @@ def calc_originality_and_transfer(candidates, references, type='utterance'):
     # ORIGINALITY
     original_sentences = []
     for intent in candidates.keys():
+        if not candidates[intent]:
+            originality[intent] = 0
         original = [candidate for candidate in candidates[intent] if
                     candidate not in references[intent]]
         original_sentences += original
@@ -143,7 +140,8 @@ def calc_originality_and_transfer(candidates, references, type='utterance'):
         list(map(' '.join, references[intent]))).vocabulary_ for intent in
                   candidates.keys()}
     cand_vocabs = {intent: CountVectorizer().fit(
-        list(map(' '.join, candidates[intent]))).vocabulary_ for intent in
+        list(map(' '.join, candidates[intent] if candidates[
+            intent] else ' '))).vocabulary_ for intent in
                    candidates.keys()}
 
     for intent in candidates.keys():

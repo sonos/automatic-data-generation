@@ -46,12 +46,12 @@ def compute_bow_loss(batch_size, bow, target):
         return torch.Tensor([0])
 
 
-def compute_label_loss(logc, target, annealing_strategy, step, k, x, m,
-                       none_idx):
-    """
-    Label loss for supervision
-    """
+def compute_label_loss(logc, target, annealing_strategy, step, k, x, m, none_idx, alpha):
+    # Negative Log Likelihood
+    none_mask = target==none_idx
     label_weight = annealing_fn(annealing_strategy, step, k, x, m)
-    nll_label = torch.nn.NLLLoss(reduction='sum', ignore_index=none_idx)
+    nll_label = torch.nn.NLLLoss(reduction='none') #, ignore_index=none_idx)
     label_loss = nll_label(logc, target)
+    label_loss[none_mask] *= alpha
+    label_loss = torch.sum(label_loss)
     return label_weight, label_loss

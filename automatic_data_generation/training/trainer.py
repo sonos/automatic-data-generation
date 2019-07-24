@@ -13,6 +13,7 @@ from automatic_data_generation.training.losses import (compute_bow_loss,
                                                        compute_label_loss,
                                                        compute_recon_loss,
                                                        compute_kl_loss)
+from automatic_data_generation.data.utils.utils import idx2word
 from automatic_data_generation.utils.utils import to_device
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
@@ -32,15 +33,17 @@ class Trainer(object):
             label_anneal_rate=0.01, label_anneal_time=100,
             label_anneal_target=1.,
             add_bow_loss=False, force_cpu=False,
-            run_dir=None, i2w=None, i2int=None
+            run_dir=None, alpha=1.
     ):
 
         self.force_cpu = force_cpu
         self.dataset = dataset
         self.model = model
         self.optimizer = optimizer
-        self.i2w = i2w
-        self.i2int = i2int
+        self.i2w = dataset.i2w
+        self.i2int = dataset.i2int
+        self.w2i = dataset.w2i
+        self.int2i = dataset.int2i
 
         self.batch_size = batch_size
 
@@ -52,10 +55,11 @@ class Trainer(object):
         self.label_anneal_rate = label_anneal_rate
         self.label_anneal_target = label_anneal_target
         self.add_bow_loss = add_bow_loss
+        self.alpha = alpha
 
         self.epoch = 0
         self.step = 0
-        self.latent_rep = {i: [] for i in range(self.model.n_classes)}
+        self.latent_rep = {intent: [] for intent in self.i2int}
 
         self.run_logs = {
             'train': {
@@ -64,9 +68,9 @@ class Trainer(object):
                 'conditioning_accuracy': [],
                 'total_loss': [],
                 'classifications': {real_intent:
-                                        {pred_intent: 0 for pred_intent in
-                                         self.i2int + ['None']}
-                                    for real_intent in self.i2int + ['None']}
+                                    {pred_intent: 0 for pred_intent in self.i2int}
+                                    for real_intent in self.i2int},
+                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int}
             },
             'dev': {
                 'recon_loss': [],
@@ -74,9 +78,9 @@ class Trainer(object):
                 'conditioning_accuracy': [],
                 'total_loss': [],
                 'classifications': {real_intent:
-                                        {pred_intent: 0 for pred_intent in
-                                         self.i2int + ['None']}
-                                    for real_intent in self.i2int + ['None']}
+                                    {pred_intent: 0 for pred_intent in self.i2int}
+                                    for real_intent in self.i2int},
+                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int}
             }
         }
         self.summary_writer = SummaryWriter(log_dir=run_dir)
@@ -91,7 +95,7 @@ class Trainer(object):
             torch.cuda.empty_cache()
 
             self.epoch += 1
-            is_last_epoch = self.epoch == n_epochs
+            is_last_epoch = self.epoch == n_epochs-1
             train_loss, train_recon_loss, train_kl_loss, train_acc = self.do_one_sweep(
                 train_iter, is_last_epoch, "train")
 
@@ -169,6 +173,7 @@ class Trainer(object):
             input, target = to_device(input, self.force_cpu), to_device(
                 target, self.force_cpu)
 
+            y = None
             if self.model.conditional is not None:
                 y = batch.intent.squeeze()
                 y = to_device(y, self.force_cpu)
@@ -178,23 +183,21 @@ class Trainer(object):
 
             logp, mean, logv, logc, z, bow = self.model(input, lengths)
 
-            # save classifications
-            _, reversed_idx = torch.sort(sorted_idx)
-            y = y[reversed_idx]
-            logc = logc[reversed_idx]
-            real_labels = [self.i2int[label] for label in y]
-            pred_labels = [
-                self.i2int[label] if label < len(self.i2int) else 'None' for
-                label in logc.max(1)[1]]
-            for real_label, pred_label in zip(real_labels, pred_labels):
-                self.run_logs[train_or_dev]['classifications'][real_label][
-                    pred_label] += 1
-
-            # save latent representation
-            if train_or_dev == "train":
-                if is_last_epoch and self.model.conditional:
+            if is_last_epoch:
+                _, reversed_idx = torch.sort(sorted_idx)
+                y = y[reversed_idx]
+                logc = logc[reversed_idx]
+                real_labels = [self.i2int[label] for label in y]
+                pred_labels = [self.i2int[label] if label<len(self.i2int) else 'None' for label in logc.max(1)[1]]
+                for real_label, pred_label in zip(real_labels, pred_labels):
+                    self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
+                for real_label in real_labels:
+                    self.run_logs[train_or_dev]['transfer'][real_label] += logc.sum(dim=0).cpu().detach()
+                    
+                # save latent representation
+                if train_or_dev == "train" and self.model.conditional:
                     for i, intent in enumerate(y):
-                        self.latent_rep[int(intent)].append(
+                        self.latent_rep[self.i2int[intent]].append(
                             z[i].cpu().detach().numpy()
                         )
 
@@ -212,6 +215,13 @@ class Trainer(object):
                 loss.backward()
                 self.optimizer.step()
 
+        if is_last_epoch:
+            for intent1 in self.i2int:
+                n_sentences = sum(self.run_logs[train_or_dev]['classifications'][intent1].values())
+                self.run_logs[train_or_dev]['transfer'][intent1] /= n_sentences
+                for intent2 in self.i2int:
+                    self.run_logs[train_or_dev]['classifications'][intent1][intent2] /= n_sentences
+                
         return sweep_loss / n_batches, sweep_recon_loss / n_batches, \
                sweep_kl_loss / n_batches, sweep_accuracy / n_batches
 
@@ -238,14 +248,14 @@ class Trainer(object):
 
         # labels loss
         if self.model.conditional == 'supervised':
-            if 'None' in self.dataset.i2int:
-                none_idx = self.dataset.int2i['None']
+            if 'None' in self.i2int:
+                none_idx = self.int2i['None']
             else:
                 none_idx = -100
             label_loss, label_weight = compute_label_loss(
                 logc, y, self.annealing_strategy, self.step,
                 self.label_anneal_time, self.label_anneal_rate,
-                self.label_anneal_target, none_idx=none_idx)
+                self.label_anneal_target, none_idx, self.alpha)
             total_loss += label_weight * label_loss
         elif self.model.conditional == 'unsupervised':
             entropy = torch.sum(
@@ -276,15 +286,17 @@ class Trainer(object):
                 )
         n_correct = 0
         if self.model.conditional is not None:
-            pred_labels = logc.data.max(1)[1].long()
-            n_correct = pred_labels.eq(y.data).cpu().sum().float().item()
+            mask = y != self.int2i['None'] # ignore nones
+            pred_labels = logc[mask].data.max(1)[1].long()
+            true_labels = y[mask].data
+            n_correct = pred_labels.eq(true_labels).cpu().sum().float().item()
         self.summary_writer.add_scalar(
             train_or_dev + '/conditioning-accuracy',
-            n_correct / batch_size,
+            n_correct / len(true_labels),
             self.step)
         self.run_logs[train_or_dev]['conditioning_accuracy'].append(
-            n_correct / batch_size
+            n_correct / len(true_labels)
         )
 
         return total_loss / batch_size, recon_loss / batch_size, \
-               kl_loss / batch_size, n_correct / batch_size
+               kl_loss / batch_size, n_correct / len(true_labels)
