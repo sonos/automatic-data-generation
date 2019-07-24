@@ -85,7 +85,7 @@ class SnipsDataset(BaseDataset):
         for row in none_sentences[:none_size]:
             if 'snips' in str(none_folder):
                 new_row = row
-                if pseudolabels:
+                if pseudolabels is not None:
                     new_row[3] = pseudolabels[row[3]]
                 else :
                     new_row[3] = 'None'

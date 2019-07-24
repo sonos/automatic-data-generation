@@ -11,6 +11,8 @@ from torchtext.data import BucketIterator
 from automatic_data_generation.data.utils.utils import (get_fields,
                                                         make_tokenizer)
 from automatic_data_generation.utils.io import (read_csv, write_csv)
+from automatic_data_generation.utils.constants import NO_INFERSENT_SELECTION
+
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
                            '[%(filename)s:%(lineno)d] %(message)s',
@@ -214,7 +216,7 @@ class BaseDataset(object):
             train_none_prefix = '_none_{}'.format(none_size)
             test_none_prefix = '_with_none'
             pseudolabels = None
-            if infersent_selection is not 'no_infersent_selection':
+            if infersent_selection != NO_INFERSENT_SELECTION:
                 assert(none_intents is None)
                 none_intents, pseudolabels = self.select_none_intents(dataset_folder, restrict_intents, none_folder, cosine_threshold)
                 if infersent_selection == 'unsupervised':
