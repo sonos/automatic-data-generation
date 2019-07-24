@@ -4,7 +4,7 @@ Automatic data generation with CVAEs -- Internship by Stéphane
 
 ## Install
 
-Requirements: Python2.7, pip
+Requirements: Python3.6, pip
 
 ```
 virtualenv venv
