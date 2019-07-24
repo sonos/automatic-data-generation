@@ -10,9 +10,8 @@ from torchtext.data import BucketIterator
 
 from automatic_data_generation.data.utils.utils import (get_fields,
                                                         make_tokenizer)
-from automatic_data_generation.utils.io import (read_csv, write_csv)
 from automatic_data_generation.utils.constants import NO_INFERSENT_SELECTION
-
+from automatic_data_generation.utils.io import (read_csv, write_csv)
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
                            '[%(filename)s:%(lineno)d] %(message)s',
@@ -133,7 +132,7 @@ class BaseDataset(object):
 
     @abstractmethod
     def add_nones(self, sentences, none_folder, none_size=None,
-                  none_intents=None, none_idx=None):
+                  none_intents=None, pseudolabels=None, none_idx=None):
         """
         Get metadata relating to sample with index `item`.
         Args:
@@ -142,6 +141,7 @@ class BaseDataset(object):
             none_size (int): number of None sentences to add
             none_intents (list(str)): restriction on intents of the None
                 sentences
+            pseudolabels (dict): intents for the None class
             none_idx (int): column index for data in None file
 
 
@@ -172,9 +172,12 @@ class BaseDataset(object):
         """
         raise NotImplementedError
 
-    def build_data_files(self, dataset_folder,  dataset_size=None, restrict_intents=None,
-                         none_folder=None, none_size=None, none_intents=None, none_idx=None,
-                         infersent_selection="no_infersent_selection", cosine_threshold=None,
+    def build_data_files(self, dataset_folder, dataset_size=None,
+                         restrict_intents=None,
+                         none_folder=None, none_size=None, none_intents=None,
+                         none_idx=None,
+                         infersent_selection="no_infersent_selection",
+                         cosine_threshold=None,
                          output_folder=None, skip_header=True):
 
         original_train_path = dataset_folder / 'train.csv'
@@ -217,12 +220,20 @@ class BaseDataset(object):
             test_none_prefix = '_with_none'
             pseudolabels = None
             if infersent_selection != NO_INFERSENT_SELECTION:
-                assert(none_intents is None)
-                none_intents, pseudolabels = self.select_none_intents(dataset_folder, restrict_intents, none_folder, cosine_threshold)
+                assert (none_intents is None)
+                none_intents, pseudolabels = self.select_none_intents(
+                    dataset_folder, restrict_intents, none_folder,
+                    cosine_threshold)
                 if infersent_selection == 'unsupervised':
-                    pseudolabels = None # ignore pseudolabels
-            new_train = self.add_nones(new_train, none_folder, none_size=none_size, none_intents=none_intents, pseudolabels=pseudolabels, none_idx=none_idx)
-            new_test = self.add_nones(new_test, none_folder, none_size=200, none_intents=none_intents, none_idx=none_idx)
+                    pseudolabels = None  # ignore pseudolabels
+            new_train = self.add_nones(new_train, none_folder,
+                                       none_size=none_size,
+                                       none_intents=none_intents,
+                                       pseudolabels=pseudolabels,
+                                       none_idx=none_idx)
+            new_test = self.add_nones(new_test, none_folder, none_size=200,
+                                      none_intents=none_intents,
+                                      none_idx=none_idx)
 
         if output_folder is not None:
             new_train_path = output_folder / 'train{}{}{}.csv'.format(
@@ -251,22 +262,25 @@ class BaseDataset(object):
         """
         selected_none_intents = []
         pseudolabels = {}
+
         def cosine(u, v):
             return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
-        intent_vectors = self.load_intent_vectors(dataset_folder) # this is cheating a bit !
+
+        intent_vectors = self.load_intent_vectors(
+            dataset_folder)  # TODO: recompute embedding for intents on the fly
         none_vectors = self.load_intent_vectors(none_folder)
         for none_intent, none_vector in none_vectors.items():
             for intent, intent_vector in intent_vectors.items():
                 if restrict_intents is not None and intent not in restrict_intents:
                     continue
                 if cosine(none_vector, intent_vector) > cosine_threshold:
-                    print('none intent {} is close to {}'.format(none_intent, intent))
+                    LOGGER.info('none intent {} is close to {}'.format(
+                        none_intent, intent))
                     selected_none_intents.append(none_intent)
                     pseudolabels[none_intent] = intent
                     break
         return selected_none_intents, pseudolabels
 
-    
     @property
     def len_train(self):
         return len(self.train)
