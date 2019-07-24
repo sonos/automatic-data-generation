@@ -74,12 +74,13 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
-    def add_nones(self, sentences, none_folder, none_size=None, none_intents=None, pseudolabels=None, none_idx=None):
+    def add_nones(self, sentences, none_folder, none_size=None,
+                  none_intents=None, pseudolabels=None, none_idx=None):
         none_path = none_folder / 'train.csv'
         none_sentences = read_csv(none_path)
 
         if none_intents is not None:
-            none_sentences = self.filter_intents(none_sentences, none_intents)            
+            none_sentences = self.filter_intents(none_sentences, none_intents)
 
         random.shuffle(none_sentences)
         for row in none_sentences[:none_size]:
@@ -87,12 +88,12 @@ class SnipsDataset(BaseDataset):
                 new_row = row
                 if pseudolabels is not None:
                     new_row[3] = pseudolabels[row[3]]
-                else :
+                else:
                     new_row[3] = 'None'
             else:
                 utterance = row[none_idx]
                 new_row = [utterance, 'O ' * len(word_tokenize(utterance)),
-                       utterance, 'None']
+                           utterance, 'None']
             sentences.append(new_row)
         return sentences
 
@@ -151,14 +152,15 @@ class SnipsDataset(BaseDataset):
                 new_vectors = []
 
                 slot_values = slotdic[slot]
-                
+
                 if slot_embedding == "litteral":
                     slot_tokens = slot.split('_')
                     for slot_token in slot_tokens:
                         new_vectors.append(self.text.vocab.vectors[
-                        self.text.vocab.stoi[slot_token]])
+                                               self.text.vocab.stoi[
+                                                   slot_token]])
                     new_vector = torch.mean(torch.stack(new_vectors), dim=0)
-                
+
                 elif slot_embedding == 'micro':
                     for slot_value in slot_values:
                         for word in self.tokenize(slot_value):
@@ -182,7 +184,8 @@ class SnipsDataset(BaseDataset):
                     new_vector = torch.mean(torch.stack(new_vectors), dim=0)
 
                 else:
-                    raise ValueError("Unknown averaging strategy: {}".format(slot_embedding))
+                    raise ValueError("Unknown averaging strategy: {}".format(
+                        slot_embedding))
 
                 self.delex.vocab.vectors[
                     self.delex.vocab.stoi[token]] = new_vector

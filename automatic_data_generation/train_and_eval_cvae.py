@@ -232,22 +232,24 @@ def main():
                         default='delexicalised',
                         choices=['delexicalised', 'utterance'])
     parser.add_argument('--dataset-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'snips-merged', 'snips-dump',
-                                 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
+                        choices=['snips', 'snips-assistant', 'snips-merged',
+                                 'snips-dump', 'atis', 'sentiment', 'spam',
+                                 'yelp', 'penn-tree-bank'])
     parser.add_argument('--dataset-size', type=int, default=None)
     parser.add_argument('--restrict-intents', nargs='+', type=str,
                         default=None)
 
     # none class
     parser.add_argument('--none-type', type=str, default='snips',
-                        choices=['snips', 'snips-assistant', 'snips-merged', 'snips-dump',
-                                 'atis', 'sentiment', 'spam', 'yelp',
-                                 'penn-tree-bank'])
+                        choices=['snips', 'snips-assistant', 'snips-merged',
+                                 'snips-dump', 'atis', 'sentiment', 'spam',
+                                 'yelp', 'penn-tree-bank'])
     parser.add_argument('--none-size', type=int, default=None)
     parser.add_argument('--none-intents', nargs='+', type=str,
                         default=None)
-    parser.add_argument('--infersent-selection', type=str, choices=['supervised', 'unsupervised', NO_INFERSENT_SELECTION],
+    parser.add_argument('--infersent-selection', type=str,
+                        choices=['supervised', 'unsupervised',
+                                 NO_INFERSENT_SELECTION],
                         default=NO_INFERSENT_SELECTION)
     parser.add_argument('--cosine-threshold', type=float, default=0.9)
     parser.add_argument('--alpha', type=float, default=1)
