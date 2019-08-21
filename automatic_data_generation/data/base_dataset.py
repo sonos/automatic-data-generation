@@ -155,9 +155,9 @@ class BaseDataset(object):
     @abstractmethod
     def filter_intents(sentences, intents):
         """
-        Get metadata relating to sample with index `item`.
+        Filter sentences on intents.
         Args:
-            sentences (list(list(str)): sentences be filtered
+            sentences (list(list(str)): sentences to be filtered
             intents (list(str): list of intents to keep
 
         Returns:
@@ -168,9 +168,33 @@ class BaseDataset(object):
 
     def update_slotdic(self, new_slotdic):
         """
-        Update the slot dictionnary of the dataset.
+        Update the slot dictionary of the dataset.
         """
         raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def get_intents(sentences):
+        """
+        Get intents from list of sentences.
+        Args:
+            sentences (list(list(str)): sentences
+
+        Returns:
+            intents (list(str)): list of intents
+        """
+
+    @staticmethod
+    @abstractmethod
+    def get_utterances_dict(sentences):
+        """
+        Get a dictionary with intents as keys and list of utterances.
+        Args:
+            sentences (list(list(str)): sentences
+
+        Returns:
+            intents (dict): dict with utterances per intent
+        """
 
     def build_data_files(self, dataset_folder, dataset_size=None,
                          restrict_intents=None,
@@ -222,7 +246,7 @@ class BaseDataset(object):
             if infersent_selection != NO_INFERSENT_SELECTION:
                 assert (none_intents is None)
                 none_intents, pseudolabels = self.select_none_intents(
-                    dataset_folder, restrict_intents, none_folder,
+                    new_train, restrict_intents, none_folder,
                     cosine_threshold)
                 if infersent_selection == 'unsupervised':
                     pseudolabels = None  # ignore pseudolabels
@@ -255,7 +279,7 @@ class BaseDataset(object):
 
         return new_train_path, new_test_path
 
-    def select_none_intents(self, dataset_folder, restrict_intents,
+    def select_none_intents(self, sentences, restrict_intents,
                             none_folder, cosine_threshold):
         """
         Select none intents which embeddings are close to original intents
@@ -266,9 +290,13 @@ class BaseDataset(object):
         def cosine(u, v):
             return np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))
 
-        intent_vectors = self.load_intent_vectors(
-            dataset_folder)  # TODO: recompute embedding for intents on the fly
-        none_vectors = self.load_intent_vectors(none_folder)
+        intent_vectors = self.compute_intent_vectors(sentences)
+
+        # loading precomputed none vectors
+        # TODO: make sure they are computed beforehand
+        none_vectors_path = none_folder / 'vectors.pkl'
+        none_vectors = torch.load(none_vectors_path)
+
         for none_intent, none_vector in none_vectors.items():
             for intent, intent_vector in intent_vectors.items():
                 if restrict_intents is not None and intent not in restrict_intents:
@@ -352,9 +380,36 @@ class BaseDataset(object):
                 .format(running_norm / num_non_zero, num_non_zero, total_words)
         )
 
-    def load_intent_vectors(self, dataset_folder):
-        intent_vectors_path = dataset_folder / 'vectors.pkl'
-        return torch.load(intent_vectors_path)
+    def compute_intent_vectors(self, sentences):
+        # TODO IMPLEMENT CACHING!
+        from InferSent.models import InferSent
+        infersent_folder = Path('./Infersent')
+        infersent_path = Path(infersent_folder / 'encoder' / 'infersent1.pkl')
+        MODEL_PARAMETERS = {'bsize': 64, 'word_emb_dim': 300,
+                            'enc_lstm_dim': 2048,
+                            'pool_type': 'max', 'dpout_model': 0.0,
+                            'version': 1}
+        W2V_PATH = infersent_folder / 'GloVe' / 'glove.840B.300d.txt'
+
+        model = InferSent(MODEL_PARAMETERS)
+        model.load_state_dict(torch.load(infersent_path))
+        if torch.cuda.is_available():
+            model.cuda()
+
+        model.set_w2v_path(W2V_PATH)
+        model.build_vocab_k_words(K=100000)
+
+        utterances_dict = self.get_utterances_dict(sentences)
+
+        vectors = {}
+        for i, (intent, sentences) in enumerate(utterances_dict.items()):
+            LOGGER.info(
+                '{}/{} done'.format(i + 1, len(utterances_dict.items())))
+            embeddings = model.encode(sentences)
+            avg_embedding = np.mean(embeddings, axis=0)
+            vectors[intent] = avg_embedding
+
+        return vectors
 
     def save(self, folder):
         # TODO slotdic is not defined except for Snips dataset

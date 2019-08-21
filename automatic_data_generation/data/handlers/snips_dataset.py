@@ -74,6 +74,14 @@ class SnipsDataset(BaseDataset):
     def get_intents(sentences):
         return [row[3] for row in sentences]
 
+    @staticmethod
+    def get_utterances_dict(sentences):
+        utterance_dict = defaultdict(list)
+        for irow, row in enumerate(sentences):
+            utterance, labels, delexicalised, intent = row
+            utterance_dict[intent].append(utterance)
+        return utterance_dict
+
     def add_nones(self, sentences, none_folder, none_size=None,
                   none_intents=None, pseudolabels=None, none_idx=None):
         none_path = none_folder / 'train.csv'
