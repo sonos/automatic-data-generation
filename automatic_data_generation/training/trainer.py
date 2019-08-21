@@ -13,7 +13,6 @@ from automatic_data_generation.training.losses import (compute_bow_loss,
                                                        compute_label_loss,
                                                        compute_recon_loss,
                                                        compute_kl_loss)
-from automatic_data_generation.data.utils.utils import idx2word
 from automatic_data_generation.utils.utils import to_device
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s '
@@ -67,20 +66,27 @@ class Trainer(object):
                 'kl_losses': [[] for _ in range(self.model.z_size)],
                 'conditioning_accuracy': [],
                 'total_loss': [],
-                'classifications': {real_intent:
-                                    {pred_intent: 0 for pred_intent in self.i2int}
-                                    for real_intent in self.i2int},
-                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int}
+                'classifications': {
+                    real_intent: {pred_intent: 0 for pred_intent in self.i2int}
+                    for real_intent in self.i2int
+                },
+                'transfer': {
+                    real_intent: torch.zeros(model.cat_size) for
+                    real_intent in self.i2int}
             },
             'dev': {
                 'recon_loss': [],
                 'kl_loss': [],
                 'conditioning_accuracy': [],
                 'total_loss': [],
-                'classifications': {real_intent:
-                                    {pred_intent: 0 for pred_intent in self.i2int}
-                                    for real_intent in self.i2int},
-                'transfer': {real_intent: torch.zeros(model.cat_size) for real_intent in self.i2int}
+                'classifications': {
+                    real_intent: {pred_intent: 0 for pred_intent in self.i2int}
+                    for real_intent in self.i2int
+                },
+                'transfer': {
+                    real_intent: torch.zeros(model.cat_size) for
+                    real_intent in self.i2int
+                }
             }
         }
         self.summary_writer = SummaryWriter(log_dir=run_dir)
@@ -95,7 +101,7 @@ class Trainer(object):
             torch.cuda.empty_cache()
 
             self.epoch += 1
-            is_last_epoch = self.epoch == n_epochs-1
+            is_last_epoch = self.epoch == n_epochs - 1
             train_loss, train_recon_loss, train_kl_loss, train_acc = self.do_one_sweep(
                 train_iter, is_last_epoch, "train")
 
@@ -188,12 +194,16 @@ class Trainer(object):
                 y = y[reversed_idx]
                 logc = logc[reversed_idx]
                 real_labels = [self.i2int[label] for label in y]
-                pred_labels = [self.i2int[label] if label<len(self.i2int) else 'None' for label in logc.max(1)[1]]
+                pred_labels = [
+                    self.i2int[label] if label < len(self.i2int) else 'None'
+                    for label in logc.max(1)[1]]
                 for real_label, pred_label in zip(real_labels, pred_labels):
-                    self.run_logs[train_or_dev]['classifications'][real_label][pred_label] += 1
+                    self.run_logs[train_or_dev]['classifications'][real_label][
+                        pred_label] += 1
                 for real_label in real_labels:
-                    self.run_logs[train_or_dev]['transfer'][real_label] += logc.sum(dim=0).cpu().detach()
-                    
+                    self.run_logs[train_or_dev]['transfer'][
+                        real_label] += logc.sum(dim=0).cpu().detach()
+
                 # save latent representation
                 if train_or_dev == "train" and self.model.conditional:
                     for i, intent in enumerate(y):
@@ -217,11 +227,14 @@ class Trainer(object):
 
         if is_last_epoch:
             for intent1 in self.i2int:
-                n_sentences = sum(self.run_logs[train_or_dev]['classifications'][intent1].values())
+                n_sentences = sum(
+                    self.run_logs[train_or_dev]['classifications'][
+                        intent1].values())
                 self.run_logs[train_or_dev]['transfer'][intent1] /= n_sentences
                 for intent2 in self.i2int:
-                    self.run_logs[train_or_dev]['classifications'][intent1][intent2] /= n_sentences
-                
+                    self.run_logs[train_or_dev]['classifications'][intent1][
+                        intent2] /= n_sentences
+
         return sweep_loss / n_batches, sweep_recon_loss / n_batches, \
                sweep_kl_loss / n_batches, sweep_accuracy / n_batches
 
@@ -286,7 +299,7 @@ class Trainer(object):
                 )
         n_correct = 0
         if self.model.conditional is not None:
-            mask = y != self.int2i['None'] # ignore nones
+            mask = y != self.int2i['None']  # ignore nones
             pred_labels = logc[mask].data.max(1)[1].long()
             true_labels = y[mask].data
             n_correct = pred_labels.eq(true_labels).cpu().sum().float().item()
