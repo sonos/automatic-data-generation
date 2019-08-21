@@ -383,7 +383,7 @@ class BaseDataset(object):
     def compute_intent_vectors(self, sentences):
         # TODO IMPLEMENT CACHING!
         from InferSent.models import InferSent
-        infersent_folder = Path('./Infersent')
+        infersent_folder = Path('./InferSent')
         infersent_path = Path(infersent_folder / 'encoder' / 'infersent1.pkl')
         MODEL_PARAMETERS = {'bsize': 64, 'word_emb_dim': 300,
                             'enc_lstm_dim': 2048,
@@ -395,7 +395,6 @@ class BaseDataset(object):
         model.load_state_dict(torch.load(infersent_path))
         if torch.cuda.is_available():
             model.cuda()
-
         model.set_w2v_path(W2V_PATH)
         model.build_vocab_k_words(K=100000)
 
