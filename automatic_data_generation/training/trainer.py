@@ -218,7 +218,8 @@ class Trainer(object):
             sweep_loss += loss
             sweep_recon_loss += recon_loss
             sweep_kl_loss += kl_loss
-            sweep_accuracy += accuracy
+            if accuracy is not None:  # batch contains non-nones examples
+                sweep_accuracy += accuracy
 
             n_batches += 1
             if train_or_dev == "train":
@@ -288,28 +289,30 @@ class Trainer(object):
                 recon_loss.cpu().detach().numpy() / batch_size
             )
             for i in range(self.model.z_size):
+                kl_loss_i = kl_losses[i].cpu().detach().numpy().item() \
+                                 / batch_size
                 self.summary_writer.add_scalars(
                     train_or_dev + '/kl-losses',
-                    {str(i): kl_losses[i].cpu().detach().numpy().item() /
-                             batch_size},
+                    {str(i): kl_loss_i},
                     self.step
                 )
-                self.run_logs[train_or_dev]['kl_losses'][i].append(
-                    kl_losses[i].cpu().detach().numpy().item() / batch_size
-                )
-        n_correct = 0
+                self.run_logs[train_or_dev]['kl_losses'][i].append(kl_loss_i)
+        accuracy = None
         if self.model.conditional is not None:
             mask = y != self.int2i['None']  # ignore nones
-            pred_labels = logc[mask].data.max(1)[1].long()
-            true_labels = y[mask].data
-            n_correct = pred_labels.eq(true_labels).cpu().sum().float().item()
-        self.summary_writer.add_scalar(
-            train_or_dev + '/conditioning-accuracy',
-            n_correct / len(true_labels),
-            self.step)
-        self.run_logs[train_or_dev]['conditioning_accuracy'].append(
-            n_correct / len(true_labels)
-        )
+            if logc[mask].shape[0] > 0:  # not only nones in batch
+                pred_labels = logc[mask].data.max(1)[1].long()
+                true_labels = y[mask].data
+                n_correct = pred_labels.eq(
+                    true_labels).cpu().sum().float().item()
+                accuracy = n_correct / len(true_labels)
+                self.summary_writer.add_scalar(
+                    train_or_dev + '/conditioning-accuracy',
+                    accuracy,
+                    self.step)
+                self.run_logs[train_or_dev]['conditioning_accuracy'].append(
+                    accuracy
+                )
 
         return total_loss / batch_size, recon_loss / batch_size, \
-               kl_loss / batch_size, n_correct / len(true_labels)
+               kl_loss / batch_size, accuracy
