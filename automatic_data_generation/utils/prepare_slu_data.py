@@ -122,7 +122,7 @@ def make_dataset_dict(intents, entities, language='en'):
 def stratified_trim(data, data_size):
     original_data_size = len(data)
     keep_fraction = data_size / original_data_size
-    intents_list = [row[3] for row in data]
+    intents_list = [row[3] for row in data[1:]]
     sss = StratifiedShuffleSplit(n_splits=1,
                                  test_size=1 - keep_fraction,
                                  random_state=42)
@@ -131,14 +131,14 @@ def stratified_trim(data, data_size):
 
 
 def augment_dataset(train_data, train_entities, augmentation_data,
-                    ref_data, augmentation_ratio=0.5):
+                    ref_data, augmentation_ratio=0.5, entity_mapping=None):
     aug_size = (len(train_data) - 1) * augmentation_ratio  # skip header
 
     # augmented dataset
     from_aug = stratified_trim(augmentation_data, aug_size)
     train_aug = train_data + from_aug
     aug_intents, aug_entities = extract_intents_entities(
-        train_aug, ENTITY_MAPPING)
+        train_aug, entity_mapping)
     aug_train_entities = merge_entity_dict(train_entities, aug_entities)
     augmented_train_dataset = make_dataset_dict(aug_intents,
                                                 aug_train_entities)
@@ -150,7 +150,7 @@ def augment_dataset(train_data, train_entities, augmentation_data,
     from_ref = stratified_trim(unseen_ref_data, aug_size)
     train_ref = train_data + from_ref
     ref_intents, ref_entities = extract_intents_entities(
-        train_ref, ENTITY_MAPPING)
+        train_ref, entity_mapping)
     ref_train_entities = merge_entity_dict(train_entities, ref_entities)
     ref_train_dataset = make_dataset_dict(ref_intents, ref_train_entities)
 
@@ -184,13 +184,15 @@ def compute_dataset_size_per_intent(dataset):
 def process_and_dump_augmentation(current_path, train_data, train_entities,
                                   augmentation_data, ref_data,
                                   augmentation_ratio,
-                                  train_size):
+                                  train_size,
+                                  entity_mapping):
     augmented_train_dataset, ref_train_dataset = augment_dataset(
         train_data=train_data,
         train_entities=train_entities,
         augmentation_data=augmentation_data,
         ref_data=ref_data,
-        augmentation_ratio=augmentation_ratio
+        augmentation_ratio=augmentation_ratio,
+        entity_mapping=entity_mapping
     )
 
     target_train_size = int(train_size * (1 + augmentation_ratio))
@@ -213,9 +215,20 @@ def process_and_dump_augmentation(current_path, train_data, train_entities,
         json.dumps(compute_dataset_size_per_intent(augmented_train_dataset)))
 
 
+def remove_none(csv_data):
+    return [datum for datum in csv_data if datum[-1] != "None"]
+
+
 @main.command('create_datasets')
 @click.option('--path_to_data_folders', required=True, type=str)
-def create_datasets(path_to_data_folders):
+@click.option('--has_none', is_flag=True, default=False)
+@click.option('--remove_music_builtins', is_flag=True, default=False)
+def create_datasets(path_to_data_folders, has_none=False,
+                    remove_music_builtins=False):
+    entity_mapping = copy.deepcopy(ENTITY_MAPPING)
+    if remove_music_builtins:
+        [entity_mapping.pop(key) for key in ['track', 'album', 'artist']]
+
     data_root_folder = Path(path_to_data_folders)
     ref_train_path = data_root_folder / 'train.csv'
     ref_train_dataset = read_csv(ref_train_path)
@@ -229,25 +242,42 @@ def create_datasets(path_to_data_folders):
                 continue
             LOGGER.info("Processing seed: %s" % str(s.name))
             # validate
-            val_csv_data = read_csv(s / 'validate.csv')
+            if has_none:
+                val_csv_data = read_csv(s / 'validate_with_none.csv')
+                val_csv_data = remove_none(val_csv_data)
+            else:
+                val_csv_data = read_csv(s / 'validate.csv')
             val_intents, val_entities = extract_intents_entities(
-                val_csv_data, ENTITY_MAPPING)
+                val_csv_data, entity_mapping)
             val_dataset = make_dataset_dict(val_intents, val_entities)
             dump_json(val_dataset, s / 'validate.json'.format(train_size))
 
             # train
-            tr_csv_data = read_csv(s / 'train_{}.csv'.format(train_size))
+            if has_none:
+                tr_csv_data = read_csv(s / 'train_{}_none_{}.csv'.format(
+                    train_size, train_size))
+                tr_csv_data = remove_none(tr_csv_data)
+            else:
+                tr_csv_data = read_csv(s / 'train_{}.csv'.format(train_size))
             train_intents, train_entities = extract_intents_entities(
-                tr_csv_data, ENTITY_MAPPING)
+                tr_csv_data, entity_mapping)
             enriched_train_entities = merge_entity_dict(train_entities,
                                                         val_entities)
             train_dataset = make_dataset_dict(train_intents,
                                               enriched_train_entities)
             dump_json(train_dataset, s / 'train_{}.json'.format(train_size))
 
-            # augmented
-            csv_data = read_csv(s / 'train_{}_aug_2000.csv'.format(train_size))
+            # augmented --> replace 2000 by 1000!!!!!!!!!!!!!!!!!!!
+            if has_none:
+                csv_data = read_csv(
+                    s / 'train_{}_none_{}_aug_2000.csv'.format(train_size,
+                                                               train_size)
+                )
+            else:
+                csv_data = read_csv(s / 'train_{}_aug_2000.csv'.format(
+                    train_size))
             augmented_utterances = csv_data[-2000:]
+            augmented_utterances = remove_none(augmented_utterances)
 
             process_and_dump_augmentation(
                 current_path=s,
@@ -256,18 +286,24 @@ def create_datasets(path_to_data_folders):
                 augmentation_data=augmented_utterances,
                 ref_data=ref_train_dataset,
                 augmentation_ratio=0.5,
-                train_size=train_size
+                train_size=train_size,
+                entity_mapping=entity_mapping
             )
 
-            process_and_dump_augmentation(
-                current_path=s,
-                train_data=tr_csv_data,
-                train_entities=enriched_train_entities,
-                augmentation_data=augmented_utterances,
-                ref_data=ref_train_dataset,
-                augmentation_ratio=1,
-                train_size=train_size
-            )
+            try:
+                process_and_dump_augmentation(
+                    current_path=s,
+                    train_data=tr_csv_data,
+                    train_entities=enriched_train_entities,
+                    augmentation_data=augmented_utterances,
+                    ref_data=ref_train_dataset,
+                    augmentation_ratio=1,
+                    train_size=train_size,
+                    entity_mapping=entity_mapping
+                )
+            except ValueError:
+                LOGGER.info("Skipping: ref size %s, augmentation ratio 1" %
+                            str(train_size))
 
 
 if __name__ == '__main__':

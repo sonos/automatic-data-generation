@@ -223,7 +223,7 @@ def extract_intents_entities(data, entity_mapping=None):
                             "data": [],
                             "use_synonyms": True,
                             "entity_type": entity_type,
-                            "automatically_extensible": True,
+                            "automatically_extensible": False,
                             "matching_strictness": 1.0
                         }
 
