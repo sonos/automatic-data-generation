@@ -1,6 +1,6 @@
 # automatic-data-generation
 
-Pytorch implementation of experiments described in "Conditioned Query Generation for Task-Oriented Dialogue Systems".
+Pytorch implementation of experiments described in "Conditioned Text Generation with Transfer for Closed-Domain Dialogue Systems" by S. d'Ascoli, A. Coucke et al. accepted for publication at the 8th International Conference on Statistical Language and Speech Processing (2020).
 This is a work in progress, feel free to reach out for any question.
 
 ## Install
