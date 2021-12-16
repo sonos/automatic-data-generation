@@ -1,6 +1,6 @@
 # automatic-data-generation
 
-Pytorch implementation of experiments described in "Conditioned Text Generation with Transfer for Closed-Domain Dialogue Systems" by S. d'Ascoli, A. Coucke et al. accepted for publication at the 8th International Conference on Statistical Language and Speech Processing (2020).
+Pytorch implementation of experiments described in "[Conditioned Text Generation with Transfer for Closed-Domain Dialogue Systems](https://arxiv.org/pdf/2011.02143.pdf)" by S. d'Ascoli, A. Coucke, F. Caltagirone, A. Caulier, M. Lelarge accepted for publication at the 8th International Conference on Statistical Language and Speech Processing (2020).
 This is a work in progress, feel free to reach out for any question.
 
 ## Install
